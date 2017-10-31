@@ -1,4 +1,4 @@
-package com.t1t.t1c.com.t1t.t1c.exceptions;
+package com.t1t.t1c.exceptions;
 
 /**
  * Simple factory for creating REST exceptions.

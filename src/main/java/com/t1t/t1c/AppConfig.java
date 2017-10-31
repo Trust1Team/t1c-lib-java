@@ -1,6 +1,6 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
