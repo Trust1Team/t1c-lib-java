@@ -1,4 +1,4 @@
-# Trust1Connector Distribution Service
+# Trust1Connector Java Client
 [![][t1c-logo]][Trust1Connector-url]
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5bc9a3d8c6344eb81a6c09b2f8b3ae2)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/t1c-distribution-api&amp;utm_campaign=Badge_Grade)
 
@@ -58,7 +58,7 @@ You can be released from the requirements of the Affero General Public License
  source product...
 Irrespective of your choice of license, the T1T logo as depicted below may not be removed from this file, or from any software or other product or service to which it is applied, without the express prior written permission of Trust1Team sarl. The T1T logo is an EU Registered Trademark (n° 12943131).
 ```
-## Release Notes - Trust1Connector - Version ds-0.5.5
+## Release Notes - Trust1Connector Java Client
 
 
 [Trust1Team-url]: http://trust1team.com
