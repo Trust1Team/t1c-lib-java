@@ -10,5 +10,4 @@ public interface IConfig {
     String APP_ENVIRONMENT = "t1c.environment";
     String PROP_FILE_DATE = "date";
     String PROP_FILE_VERSION = "version";
-    String PROP_FILE_CONFIG_FILE = "configuration.file";
 }
