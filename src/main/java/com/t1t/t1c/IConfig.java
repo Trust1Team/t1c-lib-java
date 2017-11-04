@@ -7,7 +7,10 @@ package com.t1t.t1c;
  */
 public interface IConfig {
     //Project specific
-    String APP_ENVIRONMENT = "t1c.environment";
-    String PROP_FILE_DATE = "date";
+    String PROP_BUILD_DATE = "date";
     String PROP_FILE_VERSION = "version";
+
+    //Lib specific
+    String LIB_ENVIRONMENT = "t1c.environment";
+    String LIB_GCL_CLIENT_URI = "t1c.uri";
 }

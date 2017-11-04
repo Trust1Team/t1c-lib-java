@@ -137,11 +137,11 @@
             <version>${version.typesafe.config}</version>
         </dependency>
         <!--Application specific-->
-        <!--    <dependency>
+            <dependency>
               <groupId>com.google.code.gson</groupId>
               <artifactId>gson</artifactId>
               <version>${version.gson}</version>
-            </dependency>-->
+            </dependency>
 
     </dependencies>
 
@@ -181,9 +181,9 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
+<!--            <properties>
                 <appconfig.file>application</appconfig.file>
-            </properties>
+            </properties>-->
         </profile>
     </profiles>
 </project>
