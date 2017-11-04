@@ -65,6 +65,9 @@
         <version.org.log4j>1.2.17</version.org.log4j>
         <!--Application specific-->
         <version.gson>2.8.2</version.gson>
+        <version.retrofit>2.3.0</version.retrofit>
+        <version.commons.lang>3.6</version.commons.lang>
+        <version.jackson>2.9.0</version.jackson>
     </properties>
 
     <dependencies>
@@ -137,11 +140,26 @@
             <version>${version.typesafe.config}</version>
         </dependency>
         <!--Application specific-->
-            <dependency>
-              <groupId>com.google.code.gson</groupId>
-              <artifactId>gson</artifactId>
-              <version>${version.gson}</version>
-            </dependency>
+        <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>${version.gson}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.commons.lang}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>${version.retrofit}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
 
     </dependencies>
 

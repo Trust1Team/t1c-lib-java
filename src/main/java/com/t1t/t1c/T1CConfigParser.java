@@ -4,6 +4,7 @@ import com.t1t.t1c.core.pojo.Environment;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,32 +20,37 @@ import java.util.Properties;
  * The following constructors are provided:
  * <ul>
  *     <li>Constructor using filePath (json config file)</li>
- *     <li>Constructor using ConfigObject (POJO)</li>
+ *     <li>Constructor using LibConfig (POJO)</li>
  * </ul>
  *
  */
 public class T1CConfigParser implements Serializable {
     private static Logger _LOG = LoggerFactory.getLogger(T1CConfigParser.class.getName());
-    private ConfigObject appConfig;
+    private LibConfig appConfig;
     private static Config config;
 
     //config by param - enriching with property file info
-    public T1CConfigParser(ConfigObject config){
+    public T1CConfigParser(LibConfig config){
         setAppConfig(config);
         printAppConfig();
     }
 
     //config by path param
     public T1CConfigParser(Path optionalPath){
-        ConfigObject configObj = new ConfigObject();
+        LibConfig configObj = new LibConfig();
         //resolve configuration
         if(optionalPath!=null && optionalPath.toFile().exists()){
             config = ConfigFactory.parseFile(optionalPath.toFile());
             this.appConfig.setEnvironment(getEnvironment());
+            this.appConfig.setGclClientURI(getGCLClientURI());
             setAppConfig(configObj);
             printAppConfig();
         }else throw ExceptionFactory.systemErrorException("T1C Client config file not found on: "+ optionalPath.toAbsolutePath());
     }
+
+
+    public Environment getEnvironment(){return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);}
+    public String getGCLClientURI(){return config.getString(IConfig.LIB_GCL_CLIENT_URI);}
 
     //read compiled property file
     private Optional<Properties> readProperties() {
@@ -56,11 +62,11 @@ public class T1CConfigParser implements Serializable {
         }else return Optional.empty();
     }
 
-    public ConfigObject getAppConfig() {
+    public LibConfig getAppConfig() {
         return appConfig;
     }
 
-    public void setAppConfig(ConfigObject appConfig) {
+    public void setAppConfig(LibConfig appConfig) {
         this.appConfig = appConfig;
         //resolve compiled properties
         Optional<Properties> optProps = readProperties();
@@ -72,13 +78,10 @@ public class T1CConfigParser implements Serializable {
      * @param optProperties
      */
     private void resolveProperties(Properties optProperties){
-        if(this.getAppConfig()==null)setAppConfig(new ConfigObject());
+        if(this.getAppConfig()==null)setAppConfig(new LibConfig());
         this.getAppConfig().setBuild(optProperties.getProperty(IConfig.PROP_BUILD_DATE));
         this.getAppConfig().setVersion(optProperties.getProperty(IConfig.PROP_FILE_VERSION));
     }
-
-    public Environment getEnvironment(){return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);}
-    public String getGCLClientURI(){return config.getString(IConfig.LIB_GCL_CLIENT_URI);}
 
     public void printAppConfig (){
         _LOG.debug("===== T1C Client configuration ==============================");
@@ -88,58 +91,12 @@ public class T1CConfigParser implements Serializable {
         _LOG.debug("GCL client URI: {}", appConfig.getGclClientURI());
         _LOG.debug("=============================================================");
     }
-}
 
-class ConfigObject {
-    private String version;
-    private String build;
-    // Custom properties
-    private Environment environment;
-    private String gclClientURI;
-
-    public ConfigObject() {}
-
-    public ConfigObject(Environment environment, String version, String build) {
-        this.environment = environment;
-        this.version = version;
-        this.build = build;
-    }
-
-    public Environment getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getBuild() {
-        return build;
-    }
-
-    public void setBuild(String build) {
-        this.build = build;
-    }
-
-    public String getGclClientURI() {return gclClientURI;}
-
-    public void setGclClientURI(String gclClientURI) {this.gclClientURI = gclClientURI;}
-
-    @Override
-    public String toString() {
-        return "ConfigObject{" +
-                "version='" + version + '\'' +
-                ", build='" + build + '\'' +
-                ", environment=" + environment +
-                ", gclClientURI='" + gclClientURI + '\'' +
-                '}';
+    /**
+     * Validates the configuration.
+     * You can add application startup validation to the method.
+     */
+    public void validateConfig (){
+        if(StringUtils.isEmpty(this.appConfig.getGclClientURI())) throw ExceptionFactory.configException("GCL URL not provided.");
     }
 }

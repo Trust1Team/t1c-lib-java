@@ -4,19 +4,7 @@ package com.t1t.t1c.exceptions;
  * Thrown when something unexpected happens.
  */
 public class SystemErrorException extends AbstractSystemException {
-    
-    private static final long serialVersionUID = 5590264580639703192L;
-    
-    /**
-     * Constructor.
-     */
-    public SystemErrorException() {
-    }
-    
-    /**
-     * Constructor.
-     * @param message the exception message
-     */
+    public SystemErrorException() {}
     public SystemErrorException(String message) {
         super(message);
     }

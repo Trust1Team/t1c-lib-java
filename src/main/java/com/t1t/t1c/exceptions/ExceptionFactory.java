@@ -9,16 +9,28 @@ public final class ExceptionFactory {
      * @param throwable
      * @return
      */
-    public static final SystemErrorException systemErrorException(Throwable throwable) {
-        return new SystemErrorException(throwable);
-    }
+    public static final SystemErrorException systemErrorException(Throwable throwable) {return new SystemErrorException(throwable);}
 
     /**
      * Creates an exception
      * @param message
      * @return
      */
-    public static final SystemErrorException systemErrorException(String message) {
-        return new SystemErrorException(message);
+    public static final SystemErrorException systemErrorException(String message) {return new SystemErrorException(message);}
+
+    /**
+     * GCL Client exception
+     * @param message
+     * @return
+     */
+    public static GCLClientException gclClientException(String message) {
+        return new GCLClientException(message);
     }
+
+    /**
+     * Client configuration exception.
+     * @param message
+     * @return
+     */
+    public static ConfigException configException(String message){return new ConfigException(message);}
 }
