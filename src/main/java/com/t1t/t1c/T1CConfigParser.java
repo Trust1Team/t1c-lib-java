@@ -42,7 +42,9 @@ public class T1CConfigParser implements Serializable {
         if(optionalPath!=null && optionalPath.toFile().exists()){
             config = ConfigFactory.parseFile(optionalPath.toFile());
             this.appConfig.setEnvironment(getEnvironment());
+            this.appConfig.setApikey(getConsmerApiKey());
             this.appConfig.setGclClientURI(getGCLClientURI());
+            this.appConfig.setDsURI(getDSClientURI());
             setAppConfig(configObj);
             printAppConfig();
         }else throw ExceptionFactory.systemErrorException("T1C Client config file not found on: "+ optionalPath.toAbsolutePath());
@@ -51,6 +53,8 @@ public class T1CConfigParser implements Serializable {
 
     public Environment getEnvironment(){return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);}
     public String getGCLClientURI(){return config.getString(IConfig.LIB_GCL_CLIENT_URI);}
+    public String getConsmerApiKey() {return config.getString(IConfig.LIB_API_KEY);}
+    public String getDSClientURI(){return config.getString(IConfig.LIB_DS_CLIENT_URI);}
 
     //read compiled property file
     private Optional<Properties> readProperties() {
@@ -88,13 +92,15 @@ public class T1CConfigParser implements Serializable {
         _LOG.debug("Build: {}", appConfig.getBuild());
         _LOG.debug("Version: {}", appConfig.getVersion());
         _LOG.debug("Environment: {}", appConfig.getEnvironment());
+        _LOG.debug("Consumer api-key: {}", appConfig.getApikey());
         _LOG.debug("GCL client URI: {}", appConfig.getGclClientURI());
+        _LOG.debug("DS client URI: {}", appConfig.getDsURI());
         _LOG.debug("=============================================================");
     }
 
     /**
      * Validates the configuration.
-     * You can add application startup validation to the method.
+     * You can add application startup validation to the method and force validation after instantiation.
      */
     public void validateConfig (){
         if(StringUtils.isEmpty(this.appConfig.getGclClientURI())) throw ExceptionFactory.configException("GCL URL not provided.");

@@ -12,5 +12,7 @@ public interface IConfig {
 
     //Lib specific
     String LIB_ENVIRONMENT = "t1c.environment";
-    String LIB_GCL_CLIENT_URI = "t1c.uri";
+    String LIB_API_KEY = "t1c.apikey";
+    String LIB_GCL_CLIENT_URI = "t1c.gcl_uri";
+    String LIB_DS_CLIENT_URI = "t1c.ds_uri";
 }

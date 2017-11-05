@@ -68,6 +68,8 @@
         <version.retrofit>2.3.0</version.retrofit>
         <version.commons.lang>3.6</version.commons.lang>
         <version.jackson>2.9.0</version.jackson>
+        <version.commons-lang>2.4</version.commons-lang>
+        <version.jackson-databind>2.0.0</version.jackson-databind>
     </properties>
 
     <dependencies>
@@ -141,11 +143,6 @@
         </dependency>
         <!--Application specific-->
         <dependency>
-          <groupId>com.google.code.gson</groupId>
-          <artifactId>gson</artifactId>
-          <version>${version.gson}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${version.commons.lang}</version>
@@ -160,7 +157,22 @@
             <artifactId>jackson-annotations</artifactId>
             <version>${version.jackson}</version>
         </dependency>
-
+        <!--jsonschema dependencies-->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${version.commons-lang}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson-databind}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${version.gson}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -176,6 +188,28 @@
             </resource>
         </resources>
         <plugins>
+            <plugin>
+                <!--See: https://github.com/joelittlejohn/jsonschema2pojo/wiki/Reference-->
+                <!--See: https://jsonschema.net/#/editor-->
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <addCompileSourceRoot>true</addCompileSourceRoot>
+                    <sourceDirectory>${basedir}/src/main/resources/schemas</sourceDirectory>
+                    <targetPackage>com.t1t.t1c.gcl.model</targetPackage>
+                    <sourceType>jsonschema</sourceType>
+                    <annotationStyle>gson</annotationStyle>
+                    <generateBuilders>true</generateBuilders>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -199,9 +233,9 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-<!--            <properties>
-                <appconfig.file>application</appconfig.file>
-            </properties>-->
+            <!--            <properties>
+                            <appconfig.file>application</appconfig.file>
+                        </properties>-->
         </profile>
     </profiles>
 </project>
