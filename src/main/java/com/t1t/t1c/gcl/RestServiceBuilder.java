@@ -54,6 +54,7 @@ public class RestServiceBuilder {
         }
     }
 
+    //TODO - GCL expose SSL certificate -> create ticket
     private static SSLContext getSSLConfig(TrustManagerFactory trustManagerFactory) throws CertificateException, IOException,
             KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         // Loading CAs from an InputStream
