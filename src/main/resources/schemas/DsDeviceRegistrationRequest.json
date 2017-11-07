@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "DsDeviceRegistrationRequest",
+  "properties": {
+    "managed": {
+      "type": "boolean"
+    },
+    "browser": {
+      "type": "object",
+      "$ref": "Browser.json"
+    },
+    "os": {
+      "type": "object",
+      "$ref": "Os.json"
+    },
+    "ua": {
+      "type": "string"
+    },
+    "uuid": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "activated": {
+      "type": "boolean"
+    },
+    "manufacturer": {
+      "type": "string"
+    }
+  }
+}

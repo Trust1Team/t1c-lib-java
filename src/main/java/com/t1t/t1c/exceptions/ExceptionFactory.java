@@ -6,20 +6,27 @@ package com.t1t.t1c.exceptions;
 public final class ExceptionFactory {
     /**
      * Creates an exception
+     *
      * @param throwable
      * @return
      */
-    public static final SystemErrorException systemErrorException(Throwable throwable) {return new SystemErrorException(throwable);}
+    public static final SystemErrorException systemErrorException(Throwable throwable) {
+        return new SystemErrorException(throwable);
+    }
 
     /**
      * Creates an exception
+     *
      * @param message
      * @return
      */
-    public static final SystemErrorException systemErrorException(String message) {return new SystemErrorException(message);}
+    public static final SystemErrorException systemErrorException(String message) {
+        return new SystemErrorException(message);
+    }
 
     /**
      * GCL Client exception
+     *
      * @param message
      * @return
      */
@@ -29,8 +36,11 @@ public final class ExceptionFactory {
 
     /**
      * Client configuration exception.
+     *
      * @param message
      * @return
      */
-    public static ConfigException configException(String message){return new ConfigException(message);}
+    public static ConfigException configException(String message) {
+        return new ConfigException(message);
+    }
 }

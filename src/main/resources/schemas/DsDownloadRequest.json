@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "DsDownloadRequest",
+  "properties": {
+    "os": {
+      "type": "object",
+      "$ref": "Os.json"
+    },
+    "browser": {
+      "type": "object",
+      "$ref": "Browser.json"
+    },
+    "ua": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    }
+  }
+}
