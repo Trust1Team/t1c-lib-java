@@ -2,7 +2,10 @@ package com.t1t.t1c.gcl;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.ds.DsClient;
-import com.t1t.t1c.rest.*;
+import com.t1t.t1c.rest.DsRestClient;
+import com.t1t.t1c.rest.GclAdminRestClient;
+import com.t1t.t1c.rest.GclRestClient;
+import com.t1t.t1c.rest.RestServiceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +20,8 @@ public class GclService {
     private static DsClient dsService;
 
     public GclService(LibConfig config) {
-        gclClient = RestServiceBuilder.getGCLService(config,GclRestClient.class);
-        gclAdminClient = RestServiceBuilder.getGCLAdminService(config,GclAdminRestClient.class);
-        dsService = new DsClient(config, RestServiceBuilder.getDSService(config,DsRestClient.class));
+        gclClient = RestServiceBuilder.getGCLService(config, GclRestClient.class);
+        gclAdminClient = RestServiceBuilder.getGCLAdminService(config, GclAdminRestClient.class);
+        dsService = new DsClient(config, RestServiceBuilder.getDSService(config, DsRestClient.class));
     }
 }

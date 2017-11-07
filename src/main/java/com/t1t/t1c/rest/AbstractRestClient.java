@@ -17,31 +17,28 @@ public abstract class AbstractRestClient {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractRestClient.class);
 
-    protected  <T> T executeCall(Call<T> call) {
+    protected <T> T executeCall(Call<T> call) {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
                 return response.body();
-            }
-            else {
+            } else {
                 if (!response.isSuccessful()) {
                     if (response.errorBody() != null && StringUtils.isNotBlank(response.errorBody().string())) {
                         log.error("Something went wrong: {}", response.errorBody().string());
-                    }
-                    else if (response.raw() != null){
+                    } else if (response.raw() != null) {
                         log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
                     }
                 }
                 return null;
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             log.error("Error executing request: ", ex);
             return null;
         }
     }
 
-    protected  <T> T returnData(Call<T1cResponse<T>> call) {
+    protected <T> T returnData(Call<T1cResponse<T>> call) {
         if (call != null) {
             T1cResponse<T> response = executeCall(call);
             if (response != null && response.getSuccess() == null ? false : response.getSuccess()) {

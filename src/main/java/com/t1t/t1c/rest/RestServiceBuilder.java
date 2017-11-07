@@ -9,8 +9,9 @@ import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import retrofit2.Retrofit.*;
+import retrofit2.Retrofit.Builder;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -35,20 +36,29 @@ public class RestServiceBuilder {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
 
-    public static <T> T getGCLService(LibConfig config, Class<T> iFace) {return getService(config.getGclClientUri(), iFace, null, null, true);}
-    public static <T> T getGCLAdminService (LibConfig config, Class<T> iFace) {return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);}
-    public static <T> T getDSService(LibConfig config, Class<T> iFace) {return getService(config.getDsUri(), iFace, config.getApiKey(), config.getJwt(), false);}
+    public static <T> T getGCLService(LibConfig config, Class<T> iFace) {
+        return getService(config.getGclClientUri(), iFace, null, null, true);
+    }
 
-    private static  <T> T getService(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
+    public static <T> T getGCLAdminService(LibConfig config, Class<T> iFace) {
+        return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);
+    }
+
+    public static <T> T getDSService(LibConfig config, Class<T> iFace) {
+        return getService(config.getDsUri(), iFace, config.getApiKey(), config.getJwt(), false);
+    }
+
+    private static <T> T getService(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
         try {
-            if (StringUtils.isBlank(uri)) {throw ExceptionFactory.configException("GCL URI not provided.");}
+            if (StringUtils.isBlank(uri)) {
+                throw ExceptionFactory.configException("GCL URI not provided.");
+            }
             Builder retrofitBuilder = new Builder()
                     .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(uri);
             return retrofitBuilder.build().create(iFace);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             _LOG.error("Error creating client: ", ex);
             throw ExceptionFactory.gclClientException("Error creating client: " + ex.getMessage());
         }
@@ -65,7 +75,7 @@ public class RestServiceBuilder {
         }
         // Creating a KeyStore containing our trusted CAs
         String keyStoreType = KeyStore.getDefaultType();
-        KeyStore keyStore   = KeyStore.getInstance(keyStoreType);
+        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
         keyStore.load(null, null);
         keyStore.setCertificateEntry("ca", ca);
         // Creating a TrustManager that trusts the CAs in our KeyStore.
@@ -99,8 +109,7 @@ public class RestServiceBuilder {
                     if (jwtPresent) {
                         if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
                             requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                        }
-                        else {
+                        } else {
                             requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
                         }
                     }

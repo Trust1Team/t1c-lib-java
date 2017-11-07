@@ -13,7 +13,9 @@ public class GCLClientException extends RuntimeException {
         super(message);
     }
 
-    public GCLClientException(String message, Throwable cause) {super(message, cause);}
+    public GCLClientException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     public GCLClientException(Throwable cause) {
         super(cause);

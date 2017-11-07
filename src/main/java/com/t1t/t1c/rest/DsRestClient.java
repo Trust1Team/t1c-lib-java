@@ -4,9 +4,6 @@ import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
 import retrofit2.http.*;
 
-import java.io.IOException;
-import java.io.Serializable;
-
 /**
  * Created by michallispashidis on 04/11/2017.
  */

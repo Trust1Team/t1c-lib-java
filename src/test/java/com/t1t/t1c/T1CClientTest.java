@@ -9,31 +9,27 @@ import junit.framework.TestSuite;
  * TODO
  */
 public class T1CClientTest
-    extends TestCase
-{
+        extends TestCase {
     /**
      * Create the test case
      *
      * @param testName name of the test case
      */
-    public T1CClientTest(String testName )
-    {
-        super( testName );
+    public T1CClientTest(String testName) {
+        super(testName);
     }
 
     /**
      * @return the suite of tests being tested
      */
-    public static Test suite()
-    {
-        return new TestSuite( T1CClientTest.class );
+    public static Test suite() {
+        return new TestSuite(T1CClientTest.class);
     }
 
     /**
      * Rigourous Test :-)
      */
-    public void testApp()
-    {
-        assertTrue( true );
+    public void testApp() {
+        assertTrue(true);
     }
 }

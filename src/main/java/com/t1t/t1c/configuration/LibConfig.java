@@ -22,7 +22,8 @@ public class LibConfig {
     // Dynamic properties
     private String jwt;
 
-    public LibConfig() {}
+    public LibConfig() {
+    }
 
     public LibConfig(Environment environment, String version, String build) {
         this.environment = environment;

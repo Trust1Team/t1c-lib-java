@@ -1,9 +1,5 @@
 package com.t1t.t1c.utils;
 
-import com.sun.jndi.toolkit.url.Uri;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017

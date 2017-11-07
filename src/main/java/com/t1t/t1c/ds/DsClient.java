@@ -36,6 +36,7 @@ public class DsClient extends AbstractRestClient {
     public DsDeviceResponse getDevice(String deviceId) {
         return executeCall(httpClient.getDevice(deviceId));
     }
+
     public String getJWT() {
         DsToken token = executeCall(httpClient.getJWT());
         return token == null ? null : token.getToken();
