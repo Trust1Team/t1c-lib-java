@@ -30,12 +30,12 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
     }
 
     @Override
-    public DsInfoResponse getInfo() {
+    public DsInfo getInfo() {
         return executeCall(getHttpClient().getInfo());
     }
 
     @Override
-    public DsDeviceResponse getDevice(String deviceId) {
+    public DsDevice getDevice(String deviceId) {
         return executeCall(getHttpClient().getDevice(deviceId));
     }
 
@@ -53,13 +53,13 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
 
     @Override
     public String getPubKey() {
-        DsPublicKeyResponse publicKeyResponse = executeCall(getHttpClient().getPubKey());
+        DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey());
         return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
     }
 
     @Override
     public String getDownloadLink(DsDownloadRequest request) {
-        DsDownloadResponse clientResponse = executeCall(getHttpClient().getDownloadLink(request));
+        DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
         if (clientResponse != null && StringUtils.isNotBlank(clientResponse.getPath())) {
             return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
         }

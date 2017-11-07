@@ -10,6 +10,10 @@
       "type": "object",
       "$ref": "Browser.json"
     },
+    "java": {
+      "type": "object",
+      "$ref": "Java.json"
+    },
     "os": {
       "type": "object",
       "$ref": "Os.json"

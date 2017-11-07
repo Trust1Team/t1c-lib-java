@@ -17,4 +17,5 @@ public interface IConfig {
     String LIB_GATEWAY_URI = "t1c.gateway_uri";
     String LIB_DS_CONTEXT_PATH = "t1c.ds_context_path";
     String LIB_DS_DOWNLOAD_CONTEXT_PATH = "t1c.ds_download_context_path";
+    String LIB_DEFAULT_POLLING_INTERVAL = "t1c.default_polling_interval";
 }

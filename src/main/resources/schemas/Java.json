@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "Java",
+  "properties": {
+    "version": {
+      "type": "string"
+    },
+    "specificationVersion": {
+      "type": "string"
+    }
+  }
+}

@@ -1,9 +1,9 @@
 package com.t1t.t1c.gcl;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.model.rest.GclContainerResponse;
-import com.t1t.t1c.model.rest.GclReaderResponse;
-import com.t1t.t1c.model.rest.GclStatusResponse;
+import com.t1t.t1c.model.rest.GclContainer;
+import com.t1t.t1c.model.rest.GclReader;
+import com.t1t.t1c.model.rest.GclStatus;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.GclRestClient;
 import org.slf4j.Logger;
@@ -32,32 +32,32 @@ public class GclClient extends AbstractRestClient<GclRestClient> implements IGcl
     }
 
     @Override
-    public GclStatusResponse getInfo() {
+    public GclStatus getInfo() {
         return returnData(getHttpClient().getV1Status());
     }
 
     @Override
-    public List<GclContainerResponse> getContainers() {
+    public List<GclContainer> getContainers() {
         return returnData(getHttpClient().getCointainers());
     }
 
     @Override
-    public GclReaderResponse getReader(String readerId) {
+    public GclReader getReader(String readerId) {
         return returnData(getHttpClient().getCardReader(readerId));
     }
 
     @Override
-    public List<GclReaderResponse> getReaders() {
+    public List<GclReader> getReaders() {
         return returnData(getHttpClient().getCardReaders());
     }
 
     @Override
-    public List<GclReaderResponse> getReadersWithInsertedCard() {
+    public List<GclReader> getReadersWithInsertedCard() {
         return returnData(getHttpClient().getCardInsertedReaders(true));
     }
 
     @Override
-    public List<GclReaderResponse> getReadersWithoutInsertedCard() {
+    public List<GclReader> getReadersWithoutInsertedCard() {
         return returnData(getHttpClient().getCardInsertedReaders(false));
     }
 }

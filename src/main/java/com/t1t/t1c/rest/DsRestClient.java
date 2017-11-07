@@ -10,10 +10,10 @@ import retrofit2.http.*;
 public interface DsRestClient {
 
     @GET("system/status")
-    Call<DsInfoResponse> getInfo();
+    Call<DsInfo> getInfo();
 
     @GET("devices/{deviceId}")
-    Call<DsDeviceResponse> getDevice(@Path("deviceId") String deviceId);
+    Call<DsDevice> getDevice(@Path("deviceId") String deviceId);
 
     @GET("security/jwt/issue")
     Call<DsToken> getJWT();
@@ -22,10 +22,10 @@ public interface DsRestClient {
     Call<DsToken> refreshJWT(@Body DsTokenRefreshRequest request);
 
     @GET("security/keys/public")
-    Call<DsPublicKeyResponse> getPubKey();
+    Call<DsPublicKey> getPubKey();
 
     @POST("download/gcl")
-    Call<DsDownloadResponse> getDownloadLink(@Body DsDownloadRequest request);
+    Call<DsDownloadPath> getDownloadLink(@Body DsDownloadRequest request);
 
     @PUT("devices/{deviceId}")
     Call<DsToken> register(@Path("deviceId") String deviceId, @Body DsDeviceRegistrationRequest request);

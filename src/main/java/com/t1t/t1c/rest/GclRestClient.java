@@ -1,9 +1,9 @@
 package com.t1t.t1c.rest;
 
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclContainerResponse;
-import com.t1t.t1c.model.rest.GclReaderResponse;
-import com.t1t.t1c.model.rest.GclStatusResponse;
+import com.t1t.t1c.model.rest.GclContainer;
+import com.t1t.t1c.model.rest.GclReader;
+import com.t1t.t1c.model.rest.GclStatus;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -18,21 +18,21 @@ import java.util.List;
 public interface GclRestClient {
 
     @GET("/v1")
-    Call<T1cResponse<GclStatusResponse>> getV1Status();
+    Call<T1cResponse<GclStatus>> getV1Status();
 
     @GET("/v2")
-    Call<T1cResponse<GclStatusResponse>> getV2Status();
+    Call<T1cResponse<GclStatus>> getV2Status();
 
     @GET("card-readers")
-    Call<T1cResponse<List<GclReaderResponse>>> getCardReaders();
+    Call<T1cResponse<List<GclReader>>> getCardReaders();
 
     @GET("card-readers")
-    Call<T1cResponse<List<GclReaderResponse>>> getCardInsertedReaders(@Query("card-inserted") boolean cardInserted);
+    Call<T1cResponse<List<GclReader>>> getCardInsertedReaders(@Query("card-inserted") boolean cardInserted);
 
     @GET("card-readers/{readerId}")
-    Call<T1cResponse<GclReaderResponse>> getCardReader(@Path("readerId") String readerId);
+    Call<T1cResponse<GclReader>> getCardReader(@Path("readerId") String readerId);
 
     @GET("plugins")
-    Call<T1cResponse<List<GclContainerResponse>>> getCointainers();
+    Call<T1cResponse<List<GclContainer>>> getCointainers();
 
 }

@@ -1,9 +1,9 @@
 package com.t1t.t1c.ds;
 
+import com.t1t.t1c.model.rest.DsDevice;
 import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
-import com.t1t.t1c.model.rest.DsDeviceResponse;
 import com.t1t.t1c.model.rest.DsDownloadRequest;
-import com.t1t.t1c.model.rest.DsInfoResponse;
+import com.t1t.t1c.model.rest.DsInfo;
 
 /**
  * @author Guillaume Vandecasteele
@@ -12,9 +12,9 @@ import com.t1t.t1c.model.rest.DsInfoResponse;
 public interface IDsClient {
     String getUrl();
 
-    DsInfoResponse getInfo();
+    DsInfo getInfo();
 
-    DsDeviceResponse getDevice(String deviceId);
+    DsDevice getDevice(String deviceId);
 
     String getJWT();
 

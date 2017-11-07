@@ -44,6 +44,7 @@ public class T1cConfigParser implements Serializable {
             this.appConfig.setGatewayUri(getGatewayUri());
             this.appConfig.setDsContextPath(getDsContextPath());
             this.appConfig.setDsDownloadContextPath(getDsDownloadContextPath());
+            this.appConfig.setDefaultPollingInterval(getDefaultPollingInterval());
             setAppConfig(configObj);
             printAppConfig();
         } else
@@ -64,7 +65,7 @@ public class T1cConfigParser implements Serializable {
     }
 
     public String getGatewayUri() {
-        return config.getString(IConfig.LIB_DS_CONTEXT_PATH);
+        return config.getString(IConfig.LIB_GATEWAY_URI);
     }
 
     public String getDsContextPath() {
@@ -73,6 +74,10 @@ public class T1cConfigParser implements Serializable {
 
     public String getDsDownloadContextPath() {
         return config.getString(IConfig.LIB_DS_DOWNLOAD_CONTEXT_PATH);
+    }
+
+    public Integer getDefaultPollingInterval() {
+        return config.getInt(IConfig.LIB_DEFAULT_POLLING_INTERVAL);
     }
 
     //read compiled property file
@@ -120,6 +125,7 @@ public class T1cConfigParser implements Serializable {
         _LOG.debug("Consumer api-key: {}", appConfig.getApiKey());
         _LOG.debug("GCL client URI: {}", appConfig.getGclClientUri());
         _LOG.debug("DS client URI: {}", appConfig.getDsUri());
+        _LOG.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingInterval());
         _LOG.debug("=============================================================");
     }
 

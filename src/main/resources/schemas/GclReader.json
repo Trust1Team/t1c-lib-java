@@ -5,7 +5,7 @@
   "properties": {
     "card": {
       "type": "object",
-      "$ref": "GclCardResponse.json"
+      "$ref": "GclCard.json"
     },
     "id": {
       "type": "string"

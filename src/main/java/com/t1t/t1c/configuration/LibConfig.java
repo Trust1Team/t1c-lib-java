@@ -19,6 +19,7 @@ public class LibConfig {
     private String dsDownloadUri;
     private String dsUri;
     private String apiKey;
+    private Integer defaultPollingInterval = 30;
     // Dynamic properties
     private String jwt;
 
@@ -101,6 +102,14 @@ public class LibConfig {
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
+    }
+
+    public Integer getDefaultPollingInterval() {
+        return defaultPollingInterval;
+    }
+
+    public void setDefaultPollingInterval(Integer defaultPollingInterval) {
+        this.defaultPollingInterval = defaultPollingInterval;
     }
 
     public String getDsUri() {

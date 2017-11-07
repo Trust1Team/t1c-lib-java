@@ -60,6 +60,7 @@ public abstract class AbstractRestClient<R> {
 
     protected boolean isCallSuccessful(T1cResponse response) {
         if (response != null && response.getSuccess() != null) {
+            log.debug("Response data: {}", response.getData());
             return response.getSuccess();
         }
         return false;

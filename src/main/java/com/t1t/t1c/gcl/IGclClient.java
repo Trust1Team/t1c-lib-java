@@ -1,8 +1,8 @@
 package com.t1t.t1c.gcl;
 
-import com.t1t.t1c.model.rest.GclContainerResponse;
-import com.t1t.t1c.model.rest.GclReaderResponse;
-import com.t1t.t1c.model.rest.GclStatusResponse;
+import com.t1t.t1c.model.rest.GclContainer;
+import com.t1t.t1c.model.rest.GclReader;
+import com.t1t.t1c.model.rest.GclStatus;
 
 import java.util.List;
 
@@ -14,15 +14,15 @@ public interface IGclClient {
 
     String getUrl();
 
-    GclStatusResponse getInfo();
+    GclStatus getInfo();
 
-    List<GclContainerResponse> getContainers();
+    List<GclContainer> getContainers();
 
-    GclReaderResponse getReader(String readerId);
+    GclReader getReader(String readerId);
 
-    List<GclReaderResponse> getReaders();
+    List<GclReader> getReaders();
 
-    List<GclReaderResponse> getReadersWithInsertedCard();
+    List<GclReader> getReadersWithInsertedCard();
 
-    List<GclReaderResponse> getReadersWithoutInsertedCard();
+    List<GclReader> getReadersWithoutInsertedCard();
 }
