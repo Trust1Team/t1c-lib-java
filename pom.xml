@@ -47,8 +47,8 @@
         <!--General-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
         <version.compiler.plugin>3.1</version.compiler.plugin>
         <version.ear.plugin>3.0.2</version.ear.plugin>
         <buildNumber>${maven.build.timestamp}</buildNumber>
@@ -197,10 +197,11 @@
                 <configuration>
                     <addCompileSourceRoot>true</addCompileSourceRoot>
                     <sourceDirectory>${basedir}/src/main/resources/schemas</sourceDirectory>
-                    <targetPackage>com.t1t.t1c.gcl.model</targetPackage>
+                    <targetPackage>com.t1t.t1c.model.rest</targetPackage>
                     <sourceType>jsonschema</sourceType>
                     <annotationStyle>gson</annotationStyle>
                     <generateBuilders>true</generateBuilders>
+                    <useCommonsLang3>true</useCommonsLang3>
                 </configuration>
                 <executions>
                     <execution>
@@ -220,8 +221,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.compiler.plugin}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>

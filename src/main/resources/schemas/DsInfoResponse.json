@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "DsInfoResponse",
+  "properties": {
+    "configFile": {
+      "type": "string"
+    },
+    "build": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "environemnt": {
+      "type": "string"
+    },
+    "storageAppName": {
+      "type": "string"
+    },
+    "storageServiceAccount": {
+      "type": "string"
+    },
+    "storageCertPath": {
+      "type": "string"
+    },
+    "storageBucket": {
+      "type": "string"
+    },
+    "storageDownloadPrefix": {
+      "type": "string"
+    },
+    "fileOsx": {
+      "type": "string"
+    },
+    "fileWin32": {
+      "type": "string"
+    },
+    "fileWin64": {
+      "type": "string"
+    },
+    "fileDefaultVersion": {
+      "type": "string"
+    },
+    "securityEnabled": {
+      "type": "string"
+    },
+    "securityPrivateKeyAvailable": {
+      "type": "boolean"
+    }
+  }
+}

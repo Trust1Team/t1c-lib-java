@@ -1,6 +1,5 @@
-package com.t1t.t1c;
+package com.t1t.t1c.configuration;
 
-import com.t1t.t1c.core.pojo.Environment;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -12,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -24,27 +22,29 @@ import java.util.Properties;
  * </ul>
  *
  */
-public class T1CConfigParser implements Serializable {
-    private static Logger _LOG = LoggerFactory.getLogger(T1CConfigParser.class.getName());
+public class T1cConfigParser implements Serializable {
+    private static Logger _LOG = LoggerFactory.getLogger(T1cConfigParser.class.getName());
     private LibConfig appConfig;
     private static Config config;
 
     //config by param - enriching with property file info
-    public T1CConfigParser(LibConfig config){
+    public T1cConfigParser(LibConfig config){
         setAppConfig(config);
         printAppConfig();
     }
 
     //config by path param
-    public T1CConfigParser(Path optionalPath){
+    public T1cConfigParser(Path optionalPath){
         LibConfig configObj = new LibConfig();
         //resolve configuration
         if(optionalPath!=null && optionalPath.toFile().exists()){
             config = ConfigFactory.parseFile(optionalPath.toFile());
             this.appConfig.setEnvironment(getEnvironment());
-            this.appConfig.setApikey(getConsmerApiKey());
-            this.appConfig.setGclClientURI(getGCLClientURI());
-            this.appConfig.setDsURI(getDSClientURI());
+            this.appConfig.setApiKey(getConsmerApiKey());
+            this.appConfig.setGclClientUri(getGCLClientURI());
+            this.appConfig.setGatewayUri(getGatewayUri());
+            this.appConfig.setDsContextPath(getDsContextPath());
+            this.appConfig.setDsDownloadContextPath(getDsDownloadContextPath());
             setAppConfig(configObj);
             printAppConfig();
         }else throw ExceptionFactory.systemErrorException("T1C Client config file not found on: "+ optionalPath.toAbsolutePath());
@@ -54,16 +54,25 @@ public class T1CConfigParser implements Serializable {
     public Environment getEnvironment(){return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);}
     public String getGCLClientURI(){return config.getString(IConfig.LIB_GCL_CLIENT_URI);}
     public String getConsmerApiKey() {return config.getString(IConfig.LIB_API_KEY);}
-    public String getDSClientURI(){return config.getString(IConfig.LIB_DS_CLIENT_URI);}
+    public String getGatewayUri(){return config.getString(IConfig.LIB_DS_CONTEXT_PATH);}
+    public String getDsContextPath(){return config.getString(IConfig.LIB_DS_CONTEXT_PATH);}
+    public String getDsDownloadContextPath(){return config.getString(IConfig.LIB_DS_DOWNLOAD_CONTEXT_PATH);}
 
     //read compiled property file
-    private Optional<Properties> readProperties() {
+    private Properties readProperties() {
         InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties");
         Properties properties = new Properties();
         if(is!=null) {
-            try { properties.load(is);return Optional.of(properties); }
-            catch (IOException e) {ExceptionFactory.systemErrorException("T1C client properties can not be loaded: " + e.getMessage()); return Optional.empty();}
-        }else return Optional.empty();
+            try {
+                properties.load(is);
+                return properties;
+            }
+            catch (IOException e) {
+                throw ExceptionFactory.systemErrorException("T1C client properties can not be loaded: " + e.getMessage());
+            }
+        } else {
+            return properties;
+        }
     }
 
     public LibConfig getAppConfig() {
@@ -73,8 +82,7 @@ public class T1CConfigParser implements Serializable {
     public void setAppConfig(LibConfig appConfig) {
         this.appConfig = appConfig;
         //resolve compiled properties
-        Optional<Properties> optProps = readProperties();
-        if (optProps.isPresent()) resolveProperties(optProps.get()); else _LOG.debug("No property file found");
+        resolveProperties(readProperties());
     }
 
     /**
@@ -92,9 +100,9 @@ public class T1CConfigParser implements Serializable {
         _LOG.debug("Build: {}", appConfig.getBuild());
         _LOG.debug("Version: {}", appConfig.getVersion());
         _LOG.debug("Environment: {}", appConfig.getEnvironment());
-        _LOG.debug("Consumer api-key: {}", appConfig.getApikey());
-        _LOG.debug("GCL client URI: {}", appConfig.getGclClientURI());
-        _LOG.debug("DS client URI: {}", appConfig.getDsURI());
+        _LOG.debug("Consumer api-key: {}", appConfig.getApiKey());
+        _LOG.debug("GCL client URI: {}", appConfig.getGclClientUri());
+        _LOG.debug("DS client URI: {}", appConfig.getDsUri());
         _LOG.debug("=============================================================");
     }
 
@@ -103,6 +111,6 @@ public class T1CConfigParser implements Serializable {
      * You can add application startup validation to the method and force validation after instantiation.
      */
     public void validateConfig (){
-        if(StringUtils.isEmpty(this.appConfig.getGclClientURI())) throw ExceptionFactory.configException("GCL URL not provided.");
+        if(StringUtils.isEmpty(this.appConfig.getGclClientUri())) throw ExceptionFactory.configException("GCL URL not provided.");
     }
 }

@@ -1,6 +1,6 @@
-package com.t1t.t1c.gcl;
+package com.t1t.t1c.rest;
 
-import com.t1t.t1c.LibConfig;
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -35,15 +35,15 @@ public class RestServiceBuilder {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
 
-    public static <T> T getGCLService(LibConfig config, Class<T> iFace) {return getService(config.getGclClientURI(), iFace, null, null);}
-    public static <T> T getGCLAdminService (LibConfig config, Class<T> iFace) {return getService(config.getGclClientURI(), iFace, null, config.getJwt());}
-    public static <T> T getDSService(LibConfig config, Class<T> iFace) {return getService(config.getDsURI(), iFace, config.getApikey(), config.getJwt());}
+    public static <T> T getGCLService(LibConfig config, Class<T> iFace) {return getService(config.getGclClientUri(), iFace, null, null, true);}
+    public static <T> T getGCLAdminService (LibConfig config, Class<T> iFace) {return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);}
+    public static <T> T getDSService(LibConfig config, Class<T> iFace) {return getService(config.getDsUri(), iFace, config.getApiKey(), config.getJwt(), false);}
 
-    private static  <T> T getService(String uri, Class<T> iFace, String apikey, String jwt) {
+    private static  <T> T getService(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
         try {
             if (StringUtils.isBlank(uri)) {throw ExceptionFactory.configException("GCL URI not provided.");}
             Builder retrofitBuilder = new Builder()
-                    .client(gethttpClient(apikey, jwt, true))
+                    .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(uri);
             return retrofitBuilder.build().create(iFace);
