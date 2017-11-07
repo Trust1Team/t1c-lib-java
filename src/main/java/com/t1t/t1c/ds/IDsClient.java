@@ -1,6 +1,9 @@
 package com.t1t.t1c.ds;
 
-import com.t1t.t1c.model.rest.*;
+import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
+import com.t1t.t1c.model.rest.DsDeviceResponse;
+import com.t1t.t1c.model.rest.DsDownloadRequest;
+import com.t1t.t1c.model.rest.DsInfoResponse;
 
 /**
  * @author Guillaume Vandecasteele
@@ -15,7 +18,7 @@ public interface IDsClient {
 
     String getJWT();
 
-    String refreshJWT(DsToken token);
+    String refreshJWT(String token);
 
     String getPubKey();
 
