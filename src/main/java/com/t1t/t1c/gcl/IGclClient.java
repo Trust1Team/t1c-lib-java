@@ -1,6 +1,5 @@
 package com.t1t.t1c.gcl;
 
-import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainerResponse;
 import com.t1t.t1c.model.rest.GclReaderResponse;
 import com.t1t.t1c.model.rest.GclStatusResponse;

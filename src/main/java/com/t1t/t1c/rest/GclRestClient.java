@@ -1,13 +1,11 @@
 package com.t1t.t1c.rest;
 
-import com.google.gson.Gson;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclContainerResponse;
 import com.t1t.t1c.model.rest.GclReaderResponse;
 import com.t1t.t1c.model.rest.GclStatusResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
