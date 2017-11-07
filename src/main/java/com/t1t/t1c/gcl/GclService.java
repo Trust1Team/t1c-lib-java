@@ -13,13 +13,14 @@ import com.t1t.t1c.rest.RestServiceBuilder;
  * @since 2017
  */
 public class GclService {
-    private static GclAdminRestClient gclAdminClient;
+
     private static IGclClient gclClient;
+    private static IGclAdminClient gclAdminClient;
     private static IDsClient dsClient;
 
     public GclService(LibConfig config) {
-        gclAdminClient = RestServiceBuilder.getGCLAdminService(config, GclAdminRestClient.class);
         gclClient = new GclClient(config, RestServiceBuilder.getGCLService(config, GclRestClient.class));
+        gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGCLAdminService(config, GclAdminRestClient.class));
         dsClient = new DsClient(config, RestServiceBuilder.getDSService(config, DsRestClient.class));
     }
 
@@ -29,5 +30,9 @@ public class GclService {
 
     public static IGclClient getGclClient() {
         return gclClient;
+    }
+
+    public static IGclAdminClient getGclAdminClient() {
+        return gclAdminClient;
     }
 }
