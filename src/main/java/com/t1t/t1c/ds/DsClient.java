@@ -13,60 +13,68 @@ import org.slf4j.LoggerFactory;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class DsClient extends AbstractRestClient {
+public class DsClient extends AbstractRestClient<DsRestClient> implements IDsClient {
 
     private static final Logger log = LoggerFactory.getLogger(DsClient.class);
 
-    private DsRestClient httpClient;
     private LibConfig config;
 
     public DsClient(LibConfig config, DsRestClient httpClient) {
+        super(httpClient);
         this.config = config;
-        this.httpClient = httpClient;
     }
 
+    @Override
     public String getUrl() {
         return config.getDsUri();
     }
 
+    @Override
     public DsInfoResponse getInfo() {
-        return executeCall(httpClient.getInfo());
+        return executeCall(getHttpClient().getInfo());
     }
 
+    @Override
     public DsDeviceResponse getDevice(String deviceId) {
-        return executeCall(httpClient.getDevice(deviceId));
+        return executeCall(getHttpClient().getDevice(deviceId));
     }
 
+    @Override
     public String getJWT() {
-        DsToken token = executeCall(httpClient.getJWT());
+        DsToken token = executeCall(getHttpClient().getJWT());
         return token == null ? null : token.getToken();
     }
 
+    @Override
     public String refreshJWT(DsToken token) {
-        DsToken refreshedToken = executeCall(httpClient.refreshJWT(token));
+        DsToken refreshedToken = executeCall(getHttpClient().refreshJWT(token));
         return refreshedToken == null ? null : refreshedToken.getToken();
     }
 
+    @Override
     public String getPubKey() {
-        DsPublicKeyResponse publicKeyResponse = executeCall(httpClient.getPubKey());
+        DsPublicKeyResponse publicKeyResponse = executeCall(getHttpClient().getPubKey());
         return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
     }
 
+    @Override
     public String getDownloadLink(DsDownloadRequest request) {
-        DsDownloadResponse clientResponse = executeCall(httpClient.getDownloadLink(request));
+        DsDownloadResponse clientResponse = executeCall(getHttpClient().getDownloadLink(request));
         if (clientResponse != null && StringUtils.isNotBlank(clientResponse.getPath())) {
             return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
         }
         return null;
     }
 
+    @Override
     public String register(String deviceId, DsDeviceRegistrationRequest request) {
-        DsToken token = executeCall(httpClient.register(deviceId, request));
+        DsToken token = executeCall(getHttpClient().register(deviceId, request));
         return token == null ? null : token.getToken();
     }
 
+    @Override
     public String sync(String deviceId, DsDeviceRegistrationRequest request) {
-        DsToken token = executeCall(httpClient.register(deviceId, request));
+        DsToken token = executeCall(getHttpClient().register(deviceId, request));
         return token == null ? null : token.getToken();
     }
 }

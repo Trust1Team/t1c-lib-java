@@ -13,9 +13,19 @@ import java.io.IOException;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public abstract class AbstractRestClient {
+public abstract class AbstractRestClient<R> {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractRestClient.class);
+
+    private R httpClient;
+
+    protected AbstractRestClient(R httpClient) {
+        this.httpClient = httpClient;
+    }
+
+    protected R getHttpClient() {
+        return httpClient;
+    }
 
     protected <T> T executeCall(Call<T> call) {
         try {
@@ -41,11 +51,18 @@ public abstract class AbstractRestClient {
     protected <T> T returnData(Call<T1cResponse<T>> call) {
         if (call != null) {
             T1cResponse<T> response = executeCall(call);
-            if (response != null && response.getSuccess() == null ? false : response.getSuccess()) {
+            if (isCallSuccessful(response)) {
                 return response.getData();
             }
         }
         return null;
+    }
+
+    protected boolean isCallSuccessful(T1cResponse response) {
+        if (response != null && response.getSuccess() != null) {
+            return response.getSuccess();
+        }
+        return false;
     }
 
 }

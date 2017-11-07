@@ -14,14 +14,21 @@ import org.slf4j.LoggerFactory;
  * @since 2017
  */
 public class GclService {
-    private static final Logger _LOG = LoggerFactory.getLogger(GclService.class);
-    private static GclRestClient gclClient;
     private static GclAdminRestClient gclAdminClient;
-    private static DsClient dsService;
+    private static IGclClient gclClient;
+    private static IDsClient dsClient;
 
     public GclService(LibConfig config) {
-        gclClient = RestServiceBuilder.getGCLService(config, GclRestClient.class);
         gclAdminClient = RestServiceBuilder.getGCLAdminService(config, GclAdminRestClient.class);
-        dsService = new DsClient(config, RestServiceBuilder.getDSService(config, DsRestClient.class));
+        gclClient = new GclClient(config, RestServiceBuilder.getGCLService(config, GclRestClient.class));
+        dsClient = new DsClient(config, RestServiceBuilder.getDSService(config, DsRestClient.class));
+    }
+
+    public static IDsClient getDsClient() {
+        return dsClient;
+    }
+
+    public static IGclClient getGclClient() {
+        return gclClient;
     }
 }
