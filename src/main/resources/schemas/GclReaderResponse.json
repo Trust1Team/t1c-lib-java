@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "GclReaderResponse",
+  "properties": {
+    "card": {
+      "type": "object",
+      "$ref": "GclCardResponse.json"
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "pinpad": {
+      "type": "boolean"
+    }
+  }
+}
