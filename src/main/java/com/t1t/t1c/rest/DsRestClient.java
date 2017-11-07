@@ -19,7 +19,7 @@ public interface DsRestClient {
     Call<DsToken> getJWT();
 
     @POST("security/jwt/refresh")
-    Call<DsToken> refreshJWT(@Body DsToken token);
+    Call<DsToken> refreshJWT(@Body DsTokenRefreshRequest request);
 
     @GET("security/keys/public")
     Call<DsPublicKeyResponse> getPubKey();

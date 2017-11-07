@@ -46,8 +46,8 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
     }
 
     @Override
-    public String refreshJWT(DsToken token) {
-        DsToken refreshedToken = executeCall(getHttpClient().refreshJWT(token));
+    public String refreshJWT(String token) {
+        DsToken refreshedToken = executeCall(getHttpClient().refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token)));
         return refreshedToken == null ? null : refreshedToken.getToken();
     }
 
