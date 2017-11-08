@@ -1,6 +1,9 @@
 package com.t1t.t1c.gcl;
 
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.GclAdminClientException;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.GclAdminRestClient;
@@ -23,18 +26,35 @@ public class GclAdminClient extends AbstractRestClient<GclAdminRestClient> imple
     }
 
     @Override
-    public boolean activate() {
-        return isCallSuccessful(executeCall(getHttpClient().activate()));
+    public String getUrl() {
+        return config.getDsUri();
     }
 
     @Override
-    public String getPublicKey() {
-        return returnData(getHttpClient().getPublicKey());
+    public boolean activate() throws GclAdminClientException {
+        try {
+            return isCallSuccessful(executeCall(getHttpClient().activate()));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclAdminClientException("Could not activate GCL", ex);
+        }
     }
 
     @Override
-    public boolean setPublicKey(String publicKey) {
+    public String getPublicKey() throws GclAdminClientException {
+        try {
+            return returnData(getHttpClient().getPublicKey());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
+        }
+    }
+
+    @Override
+    public boolean setPublicKey(String publicKey) throws GclAdminClientException {
         GclUpdatePublicKeyRequest request = new GclUpdatePublicKeyRequest().withCertificate(publicKey);
-        return isCallSuccessful(executeCall(getHttpClient().setPublicKey(request)));
+        try {
+            return isCallSuccessful(executeCall(getHttpClient().setPublicKey(request)));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclAdminClientException("Could not set GCL public key", ex);
+        }
     }
 }

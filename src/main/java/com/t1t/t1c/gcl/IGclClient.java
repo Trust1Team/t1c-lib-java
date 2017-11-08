@@ -1,5 +1,6 @@
 package com.t1t.t1c.gcl;
 
+import com.t1t.t1c.exceptions.GclClientException;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
@@ -14,15 +15,15 @@ public interface IGclClient {
 
     String getUrl();
 
-    GclStatus getInfo();
+    GclStatus getInfo() throws GclClientException;
 
-    List<GclContainer> getContainers();
+    List<GclContainer> getContainers() throws GclClientException;
 
-    GclReader getReader(String readerId);
+    GclReader getReader(String readerId) throws GclClientException;
 
-    List<GclReader> getReaders();
+    List<GclReader> getReaders() throws GclClientException;
 
-    List<GclReader> getReadersWithInsertedCard();
+    List<GclReader> getReadersWithInsertedCard() throws GclClientException;
 
-    List<GclReader> getReadersWithoutInsertedCard();
+    List<GclReader> getReadersWithoutInsertedCard() throws GclClientException;
 }

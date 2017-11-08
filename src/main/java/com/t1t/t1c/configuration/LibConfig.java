@@ -10,6 +10,7 @@ public class LibConfig {
 
     private String version;
     private String build;
+    private Boolean tokenCompatible;
     // Custom properties
     private Environment environment;
     private String gclClientUri;
@@ -46,6 +47,14 @@ public class LibConfig {
 
     public void setBuild(String build) {
         this.build = build;
+    }
+
+    public Boolean getTokenCompatible() {
+        return tokenCompatible;
+    }
+
+    public void setTokenCompatible(Boolean tokenCompatible) {
+        this.tokenCompatible = tokenCompatible;
     }
 
     public Environment getEnvironment() {
@@ -102,6 +111,11 @@ public class LibConfig {
 
     public void setJwt(String jwt) {
         this.jwt = jwt;
+    }
+
+    public LibConfig withJwt(String jwt) {
+        setJwt(jwt);
+        return this;
     }
 
     public Integer getDefaultPollingInterval() {

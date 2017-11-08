@@ -3,8 +3,6 @@ package com.t1t.t1c.core;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.gcl.GclService;
-import com.t1t.t1c.gcl.IGclClient;
-import com.t1t.t1c.model.rest.GclCard;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
@@ -25,33 +23,38 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    protected boolean activate() {
+    public boolean activate() {
         return GclService.getGclAdminClient().activate();
     }
 
     @Override
-    protected String getPubKey() {
+    public String getPubKey() {
         return GclService.getGclAdminClient().getPublicKey();
     }
 
     @Override
-    protected GclStatus getInfo() {
+    public void setPubKey(String publicKey) {
+        GclService.getGclAdminClient().setPublicKey(publicKey);
+    }
+
+    @Override
+    public GclStatus getInfo() {
         return GclService.getGclClient().getInfo();
     }
 
     @Override
-    protected List<GclContainer> getContainers() {
+    public List<GclContainer> getContainers() {
         return GclService.getGclClient().getContainers();
     }
 
     @Override
-    protected GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException {
+    public GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException {
         List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds);
         return readers.get(0);
     }
 
     @Override
-    protected List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException {
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException {
         List<GclReader> readers = new ArrayList<>();
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers)) {
@@ -67,7 +70,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    protected List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException {
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException {
         List<GclReader> readers = new ArrayList<>();
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers)) {
@@ -83,27 +86,22 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    protected GclReader getReader(String readerId) {
+    public GclReader getReader(String readerId) {
         return GclService.getGclClient().getReader(readerId);
     }
 
     @Override
-    protected List<GclReader> getReaders() {
+    public List<GclReader> getReaders() {
         return GclService.getGclClient().getReaders();
     }
 
     @Override
-    protected List<GclReader> getReadersWithoutInsertedCard() {
+    public List<GclReader> getReadersWithoutInsertedCard() {
         return GclService.getGclClient().getReadersWithoutInsertedCard();
     }
 
     @Override
-    protected void setPubKey(String publicKey) {
-        GclService.getGclAdminClient().setPublicKey(publicKey);
-    }
-
-    @Override
-    protected String getUrl() {
+    public String getUrl() {
         return config.getGclClientUri();
     }
 

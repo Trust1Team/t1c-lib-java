@@ -1,6 +1,9 @@
 package com.t1t.t1c.ds;
 
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.exceptions.DsClientException;
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.DsRestClient;
@@ -30,51 +33,78 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
     }
 
     @Override
-    public DsInfo getInfo() {
-        return executeCall(getHttpClient().getInfo());
-    }
-
-    @Override
-    public DsDevice getDevice(String deviceId) {
-        return executeCall(getHttpClient().getDevice(deviceId));
-    }
-
-    @Override
-    public String getJWT() {
-        DsToken token = executeCall(getHttpClient().getJWT());
-        return token == null ? null : token.getToken();
-    }
-
-    @Override
-    public String refreshJWT(String token) {
-        DsToken refreshedToken = executeCall(getHttpClient().refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token)));
-        return refreshedToken == null ? null : refreshedToken.getToken();
-    }
-
-    @Override
-    public String getPubKey() {
-        DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey());
-        return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
-    }
-
-    @Override
-    public String getDownloadLink(DsDownloadRequest request) {
-        DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
-        if (clientResponse != null && StringUtils.isNotBlank(clientResponse.getPath())) {
-            return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
+    public DsInfo getInfo() throws DsClientException {
+        try {
+            return executeCall(getHttpClient().getInfo());
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
         }
-        return null;
     }
 
     @Override
-    public String register(String deviceId, DsDeviceRegistrationRequest request) {
-        DsToken token = executeCall(getHttpClient().register(deviceId, request));
-        return token == null ? null : token.getToken();
+    public DsDevice getDevice(String deviceId) throws DsClientException {
+        try {
+            return executeCall(getHttpClient().getDevice(deviceId));
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve device info from Distribution Service", ex);
+        }
     }
 
     @Override
-    public String sync(String deviceId, DsDeviceRegistrationRequest request) {
-        DsToken token = executeCall(getHttpClient().register(deviceId, request));
-        return token == null ? null : token.getToken();
+    public String getJWT() throws DsClientException {
+        try {
+            return executeCall(getHttpClient().getJWT()).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve JWT from Distribution Service", ex);
+        }
+    }
+
+    @Override
+    public String refreshJWT(String token) throws DsClientException {
+        try {
+            return executeCall(getHttpClient().refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token))).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not refresh JWT on Distribution Service", ex);
+        }
+    }
+
+    @Override
+    public String getPubKey() throws DsClientException {
+        try {
+            DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey());
+            return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve public key from Distribution Service", ex);
+        }
+    }
+
+    @Override
+    public String getDownloadLink(DsDownloadRequest request) throws DsClientException {
+        try {
+            DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
+            if (StringUtils.isNotBlank(clientResponse.getPath())) {
+                return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
+            } else return null;
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
+        }
+    }
+
+    @Override
+    public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+        try {
+            return executeCall(getHttpClient().register(deviceId, request)).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
+        }
+    }
+
+    @Override
+    public String sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+        try {
+            return executeCall(getHttpClient().register(deviceId, request)).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not sync device with Distribution Service", ex);
+        }
     }
 }

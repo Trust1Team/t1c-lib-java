@@ -6,7 +6,7 @@ package com.t1t.t1c.exceptions;
  * Base class for all consumer exceptions.  A consumer exception happens when the consumer
  * does something that is problematic, such as try to perform a faulty function.
  */
-public abstract class AbstractConsumerException extends AbstractException {
+public abstract class AbstractConsumerException extends AbstractRuntimeException {
     /**
      * Constructor.
      */

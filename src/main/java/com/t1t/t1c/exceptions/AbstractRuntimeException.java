@@ -6,14 +6,14 @@ package com.t1t.t1c.exceptions;
  * <p>
  * Base class for all T1C errors coming out of the REST layer.
  */
-public abstract class AbstractException extends Exception {
+public abstract class AbstractRuntimeException extends RuntimeException {
 
     private transient String serverStack;
 
     /**
      * Constructor.
      */
-    public AbstractException() {
+    public AbstractRuntimeException() {
     }
 
     /**
@@ -21,7 +21,7 @@ public abstract class AbstractException extends Exception {
      *
      * @param message the exception message
      */
-    public AbstractException(String message) {
+    public AbstractRuntimeException(String message) {
         super(message);
     }
 
@@ -30,7 +30,7 @@ public abstract class AbstractException extends Exception {
      *
      * @param cause the exception cause
      */
-    public AbstractException(Throwable cause) {
+    public AbstractRuntimeException(Throwable cause) {
         super(cause);
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractException extends Exception {
      * @param message the exception message
      * @param cause   the exception cause
      */
-    public AbstractException(String message, Throwable cause) {
+    public AbstractRuntimeException(String message, Throwable cause) {
         super(message, cause);
     }
 

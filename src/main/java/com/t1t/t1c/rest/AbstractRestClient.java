@@ -1,5 +1,7 @@
 package com.t1t.t1c.rest;
 
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,28 +29,36 @@ public abstract class AbstractRestClient<R> {
         return httpClient;
     }
 
-    protected <T> T executeCall(Call<T> call) {
+    protected <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
+                log.debug("Response data: {}", response.body());
                 return response.body();
             } else {
-                if (!response.isSuccessful()) {
-                    if (response.errorBody() != null && StringUtils.isNotBlank(response.errorBody().string())) {
-                        log.error("Something went wrong: {}", response.errorBody().string());
-                    } else if (response.raw() != null) {
-                        log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
-                    }
+                Integer httpCode = null;
+                StringBuilder message = new StringBuilder();
+                if (response.errorBody() != null && StringUtils.isNotBlank(response.errorBody().string())) {
+                    log.error("Something went wrong: {}", response.errorBody().string());
+                    message.append(response.errorBody().string());
                 }
-                return null;
+                if (response.raw() != null) {
+                    log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
+                    httpCode = response.raw().code();
+                    if (StringUtils.isNotBlank(message.toString())) {
+                        message.append(" - ");
+                    }
+                    message.append(response.raw().message());
+                }
+                throw ExceptionFactory.restException(message.toString(), httpCode);
             }
         } catch (IOException ex) {
             log.error("Error executing request: ", ex);
-            return null;
+            throw ExceptionFactory.restException(ex);
         }
     }
 
-    protected <T> T returnData(Call<T1cResponse<T>> call) {
+    protected <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
         if (call != null) {
             T1cResponse<T> response = executeCall(call);
             if (isCallSuccessful(response)) {
@@ -60,10 +70,8 @@ public abstract class AbstractRestClient<R> {
 
     protected boolean isCallSuccessful(T1cResponse response) {
         if (response != null && response.getSuccess() != null) {
-            log.debug("Response data: {}", response.getData());
             return response.getSuccess();
         }
         return false;
     }
-
 }

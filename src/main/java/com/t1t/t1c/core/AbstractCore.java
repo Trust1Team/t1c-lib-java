@@ -23,24 +23,35 @@ public abstract class AbstractCore {
         this.config = config;
     }
 
-    protected PlatformInfo getPlatformInfo() {
+    public PlatformInfo getPlatformInfo() {
         return new PlatformInfo();
     }
 
-    protected String getVersion() {
+    public String getVersion() {
         return config.getVersion();
     }
 
-    protected abstract boolean activate();
-    protected abstract String getPubKey();
-    protected abstract GclStatus getInfo();
-    protected abstract List<GclContainer> getContainers();
-    protected abstract GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException;
-    protected abstract List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException;
-    protected abstract List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException;
-    protected abstract GclReader getReader(String readerId);
-    protected abstract List<GclReader> getReaders();
-    protected abstract List<GclReader> getReadersWithoutInsertedCard();
-    protected abstract void setPubKey(String publicKey);
-    protected abstract String getUrl();
+    public abstract boolean activate();
+
+    public abstract String getPubKey();
+
+    public abstract void setPubKey(String publicKey);
+
+    public abstract GclStatus getInfo();
+
+    public abstract List<GclContainer> getContainers();
+
+    public abstract GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException;
+
+    public abstract List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException;
+
+    public abstract List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException;
+
+    public abstract GclReader getReader(String readerId);
+
+    public abstract List<GclReader> getReaders();
+
+    public abstract List<GclReader> getReadersWithoutInsertedCard();
+
+    public abstract String getUrl();
 }

@@ -7,7 +7,7 @@ package com.t1t.t1c.exceptions;
  * because something went wrong on the server.  Examples might include an error
  * connecting to a backend storage system, running out of memory, etc.
  */
-public abstract class AbstractSystemException extends AbstractException {
+public abstract class AbstractSystemException extends AbstractRuntimeException {
     /**
      * Constructor.
      */

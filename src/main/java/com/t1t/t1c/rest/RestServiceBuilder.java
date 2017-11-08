@@ -41,7 +41,11 @@ public class RestServiceBuilder {
     }
 
     public static <T> T getGCLAdminService(LibConfig config, Class<T> iFace) {
-        return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);
+        if (config.getTokenCompatible()) {
+            return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);
+        } else {
+            return getService(config.getGclClientUri(), iFace, null, null, true);
+        }
     }
 
     public static <T> T getDSService(LibConfig config, Class<T> iFace) {
