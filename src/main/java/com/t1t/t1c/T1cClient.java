@@ -138,6 +138,5 @@ public class T1cClient {
     public IOcvClient getOcvClient() {
         throw new UnsupportedOperationException();
     }
-    }
 }
 
