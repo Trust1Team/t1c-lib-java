@@ -11,12 +11,12 @@ public class InitializationException extends AbstractSystemException {
     }
 
     @Override
-    public int getHttpCode() {
+    public Integer getHttpCode() {
         return ErrorCodes.HTTP_STATUS_CODE_SYSTEM_ERROR;
     }
 
     @Override
-    public int getErrorCode() {
+    public Integer getErrorCode() {
         return ErrorCodes.INITIALIZATION_ERROR;
     }
 

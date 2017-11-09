@@ -1,6 +1,7 @@
 package com.t1t.t1c.gcl;
 
 import com.t1t.t1c.exceptions.GclClientException;
+import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
@@ -26,4 +27,7 @@ public interface IGclClient {
     List<GclReader> getReadersWithInsertedCard() throws GclClientException;
 
     List<GclReader> getReadersWithoutInsertedCard() throws GclClientException;
+
+    boolean getConsent(GclConsent consent);
+
 }

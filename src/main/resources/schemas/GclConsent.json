@@ -1,13 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
-  "$id": "Java",
+  "$id": "GclConsent",
   "properties": {
-    "version": {
+    "title": {
       "type": "string"
     },
-    "specificationVersion": {
+    "text": {
       "type": "string"
+    },
+    "durationInDays": {
+      "type": "integer"
     }
   }
 }

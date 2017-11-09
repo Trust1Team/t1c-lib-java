@@ -8,15 +8,15 @@
     },
     "browser": {
       "type": "object",
-      "$ref": "Browser.json"
+      "$ref": "DsBrowser.json"
     },
     "java": {
       "type": "object",
-      "$ref": "Java.json"
+      "$ref": "DsJava.json"
     },
     "os": {
       "type": "object",
-      "$ref": "Os.json"
+      "$ref": "DsOs.json"
     },
     "ua": {
       "type": "string"

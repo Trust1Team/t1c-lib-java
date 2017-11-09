@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "GclT1cCertificate",
+  "properties": {
+    "base64": {
+      "type": "string"
+    },
+    "parsed": {
+      "type": "object"
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.t1t.t1c.rest;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.utils.UriUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -35,24 +36,29 @@ public class RestServiceBuilder {
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
+    private static final String CONTAINER_CONTEXT_PATH = "plugins/";
 
-    public static <T> T getGCLService(LibConfig config, Class<T> iFace) {
-        return getService(config.getGclClientUri(), iFace, null, null, true);
+    public static GclRestClient getGCLService(LibConfig config) {
+        return getService(config.getGclClientUri(), GclRestClient.class, null, null, true);
     }
 
-    public static <T> T getGCLAdminService(LibConfig config, Class<T> iFace) {
-        if (config.getTokenCompatible()) {
-            return getService(config.getGclClientUri(), iFace, null, config.getJwt(), true);
+    public static GclAdminRestClient getGCLAdminService(LibConfig config) {
+        if (config.isTokenCompatible()) {
+            return getService(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
         } else {
-            return getService(config.getGclClientUri(), iFace, null, null, true);
+            return getService(config.getGclClientUri(), GclAdminRestClient.class, null, null, true);
         }
     }
 
-    public static <T> T getDSService(LibConfig config, Class<T> iFace) {
-        return getService(config.getDsUri(), iFace, config.getApiKey(), config.getJwt(), false);
+    public static DsRestClient getDSService(LibConfig config) {
+        return getService(config.getDsUri(), DsRestClient.class, config.getApiKey(), config.getJwt(), false);
     }
 
-    private static <T> T getService(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
+    public static ContainerRestClient getContainerRestClient(LibConfig config) {
+        return getService(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH), ContainerRestClient.class, null, null, true);
+    }
+
+    public static <T> T getService(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
         try {
             if (StringUtils.isBlank(uri)) {
                 throw ExceptionFactory.configException("GCL URI not provided.");

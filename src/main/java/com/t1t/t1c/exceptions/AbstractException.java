@@ -61,12 +61,12 @@ public abstract class AbstractException extends Exception {
     /**
      * @return the httpCode
      */
-    public abstract int getHttpCode();
+    public abstract Integer getHttpCode();
 
     /**
      * @return the errorCode
      */
-    public abstract int getErrorCode();
+    public abstract Integer getErrorCode();
 
     /**
      * @return the moreInfo

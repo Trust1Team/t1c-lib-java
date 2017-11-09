@@ -6,10 +6,13 @@ package com.t1t.t1c.exceptions;
  */
 public class RestException extends AbstractException {
 
-    private int httpCode = 400;
+    private Integer httpCode = 400;
+    private String uri;
 
-    public RestException(String message, Integer httpCode) {
+    public RestException(String message, Integer httpCode, String uri) {
         super(message);
+        this.httpCode = httpCode;
+        this.uri = uri;
     }
 
     public RestException(Throwable cause) {
@@ -18,7 +21,7 @@ public class RestException extends AbstractException {
     }
 
     @Override
-    public final int getHttpCode() {
+    public final Integer getHttpCode() {
         return this.httpCode;
     }
 
@@ -28,8 +31,12 @@ public class RestException extends AbstractException {
         }
     }
 
+    public String getUri() {
+        return uri;
+    }
+
     @Override
-    public int getErrorCode() {
+    public Integer getErrorCode() {
         return ErrorCodes.REST_ERROR;
     }
 

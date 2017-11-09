@@ -4,6 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
@@ -46,7 +47,7 @@ public class GclClient extends AbstractRestClient<GclRestClient> implements IGcl
     @Override
     public List<GclContainer> getContainers() throws GclClientException {
         try {
-            return returnData(getHttpClient().getCointainers());
+            return returnData(getHttpClient().getContainers());
         } catch (RestException ex) {
             throw ExceptionFactory.gclClientException("Could not retrieve containers", ex);
         }
@@ -85,6 +86,15 @@ public class GclClient extends AbstractRestClient<GclRestClient> implements IGcl
             return returnData(getHttpClient().getCardInsertedReaders(false));
         } catch (RestException ex) {
             throw ExceptionFactory.gclClientException("Could not retrieve readers without inserted card", ex);
+        }
+    }
+
+    @Override
+    public boolean getConsent(GclConsent consent) {
+        try {
+            return isCallSuccessful(executeCall(getHttpClient().getConsent(consent)));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclClientException("Could not get consent from GCL", ex);
         }
     }
 }

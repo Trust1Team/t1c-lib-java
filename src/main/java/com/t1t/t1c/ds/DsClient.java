@@ -4,6 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.DsRestClient;
@@ -79,8 +80,13 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
     }
 
     @Override
-    public String getDownloadLink(DsDownloadRequest request) throws DsClientException {
+    public String getDownloadLink(PlatformInfo info) throws DsClientException {
         try {
+            DsDownloadRequest request = new DsDownloadRequest()
+                    .withOs(new DsOs()
+                            .withArchitecture(info.getOs().getArchitecture())
+                            .withName(info.getOs().getName())
+                            .withVersion(info.getOs().getVersion()));
             DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
                 return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());

@@ -5,11 +5,11 @@
   "properties": {
     "os": {
       "type": "object",
-      "$ref": "Os.json"
+      "$ref": "DsOs.json"
     },
     "browser": {
       "type": "object",
-      "$ref": "Browser.json"
+      "$ref": "DsBrowser.json"
     },
     "ua": {
       "type": "string"
