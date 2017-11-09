@@ -96,7 +96,6 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     @Override
     public abstract AllData getAllData(String... filterParams) throws GenericContainerException;
 
-    @Override
     public abstract AllCertificates getAllCertificates(String... filterParams) throws GenericContainerException;
 
     @Override
@@ -206,12 +205,6 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
         }
-    }
-
-
-    @Override
-    public Class getAllDataFormat() {
-        return type.getAllDataFormat();
     }
 
     //

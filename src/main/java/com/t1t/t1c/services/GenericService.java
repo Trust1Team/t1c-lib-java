@@ -33,16 +33,15 @@ public class GenericService implements IGenericService {
     }
 
     @Override
-    public <T extends GenericContainer> T getContainerFor(String readerId, ContainerType type, Class<T> containerIFace, String... pin) {
-        GenericContainer genericContainer = FactoryService.getGenericContainer(readerId, type, pin);
-        return containerIFace.cast(genericContainer);
-    }
-
-    @Override
     public AllData dumpData(String readerId, String pin, String... filterParams) {
         if (StringUtils.isNotEmpty(pin)) {
             return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams);
         } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams);
+    }
+
+    @Override
+    public AllData dumpData(String readerId, String... filterParams) {
+        return dumpData(readerId, null, filterParams);
     }
 
     @Override
@@ -117,7 +116,7 @@ public class GenericService implements IGenericService {
 
     @Override
     public boolean verifyPin(String readerId, String... pin) {
-        return false;
+        return FactoryService.getGenericContainer(readerId, pin).verifyPin(pin);
     }
 
     private void verifyAlgo(GclAuthenticateOrSignData data, GclCard card) {

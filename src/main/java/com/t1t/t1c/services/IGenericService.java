@@ -15,11 +15,11 @@ public interface IGenericService {
 
     ContainerType getContainerTypeFor(String readerId);
 
-    <T extends GenericContainer> T getContainerFor(String readerId, ContainerType type, Class<T> containerIFace, String... pin);
-
     String getDownloadLink();
 
     AllData dumpData(String readerId, String pin, String... filterParams);
+
+    AllData dumpData(String readerId, String... filterParams);
 
     List<GclReader> getAuthenticationCapableReaders();
 

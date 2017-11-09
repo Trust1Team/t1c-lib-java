@@ -22,13 +22,9 @@ public interface GenericContainer {
 
     AllData getAllData(String... filterParams) throws GenericContainerException;
 
-    AllCertificates getAllCertificates(String... filterParams) throws GenericContainerException;
-
     boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
 
     String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
 
     String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
-
-    Class getAllDataFormat();
 }
