@@ -14,7 +14,10 @@ import com.t1t.t1c.model.rest.GclLuxIdPicture;
 import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
@@ -55,9 +58,9 @@ public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer
     }
 
     @Override
-    public AllData getAllData(String... filterParams) throws LuxIdContainerException {
+    public AllData getAllData(List<String> filterParams) throws LuxIdContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin()));
@@ -68,9 +71,9 @@ public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer
     }
 
     @Override
-    public AllCertificates getAllCertificates(String... filterParams) throws LuxIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams) throws LuxIdContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin()));

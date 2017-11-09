@@ -12,6 +12,9 @@ import com.t1t.t1c.model.rest.GclBeIdAddress;
 import com.t1t.t1c.model.rest.GclBeIdRn;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.util.List;
 
 
 /**
@@ -54,9 +57,9 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     }
 
     @Override
-    public AllData getAllData(String... filterParams) throws BeIdContainerException {
+    public AllData getAllData(List<String> filterParams) throws BeIdContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId()));
@@ -67,9 +70,9 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     }
 
     @Override
-    public AllCertificates getAllCertificates(String... filterParams) throws BeIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams) throws BeIdContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId()));

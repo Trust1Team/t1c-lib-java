@@ -11,7 +11,10 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
@@ -35,9 +38,9 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public AllData getAllData(String... filterParams) throws LuxTrustContainerException {
+    public AllData getAllData(List<String> filterParams) throws LuxTrustContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin()));
@@ -48,9 +51,9 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public AllCertificates getAllCertificates(String... filterParams) throws LuxTrustContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams) throws LuxTrustContainerException {
         try {
-            if (filterParams.length > 0) {
+            if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams)));
             } else {
                 return returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin()));

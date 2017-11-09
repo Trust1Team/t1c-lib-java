@@ -18,7 +18,6 @@ import com.t1t.t1c.rest.ContainerRestClient;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -70,6 +69,16 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     }
 
     @Override
+    public List<String> getAllDataFilters() {
+        return type.getDataFilters();
+    }
+
+    @Override
+    public List<String> getAllCertificateFilters() {
+        return type.getCertificateFilters();
+    }
+
+    @Override
     public ContainerType getType() {
         return this.type;
     }
@@ -94,9 +103,9 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     }
 
     @Override
-    public abstract AllData getAllData(String... filterParams) throws GenericContainerException;
+    public abstract AllData getAllData(List<String> filterParams) throws GenericContainerException;
 
-    public abstract AllCertificates getAllCertificates(String... filterParams) throws GenericContainerException;
+    public abstract AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException;
 
     @Override
     public boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
@@ -211,10 +220,9 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     // Utility methods
     //
 
-    protected String createFilterParams(String... params) {
+    protected String createFilterParams(List<String> params) {
         StringBuilder sb = new StringBuilder();
-        List<String> filterParams = Arrays.asList(params);
-        Iterator it = filterParams.iterator();
+        Iterator it = params.iterator();
         while (it.hasNext()) {
             sb.append(it.next());
             if (it.hasNext()) {

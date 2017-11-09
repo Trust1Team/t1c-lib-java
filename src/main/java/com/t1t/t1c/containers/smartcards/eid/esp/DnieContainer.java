@@ -8,6 +8,8 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.rest.ContainerRestClient;
 
+import java.util.List;
+
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
@@ -19,12 +21,12 @@ public class DnieContainer extends AbstractContainer implements IDnieContainer {
     }
 
     @Override
-    public AllData getAllData(String... filterParams) throws GenericContainerException {
+    public AllData getAllData(List<String> filterParams) throws GenericContainerException {
         return null;
     }
 
     @Override
-    public AllCertificates getAllCertificates(String... filterParams) throws GenericContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException {
         return null;
     }
 }

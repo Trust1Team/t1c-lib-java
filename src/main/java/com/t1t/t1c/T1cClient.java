@@ -134,11 +134,11 @@ public class T1cClient {
         return genericService.getDownloadLink();
     }
 
-    public AllData dumpData(String readerId, String... filterParameters) {
+    public AllData dumpData(String readerId, List<String> filterParameters) {
         return dumpData(readerId, null, filterParameters);
     }
 
-    public AllData dumpData(String readerId, String pin, String... filterParameters) {
+    public AllData dumpData(String readerId, String pin, List<String> filterParameters) {
         return genericService.dumpData(readerId, pin, filterParameters);
     }
 

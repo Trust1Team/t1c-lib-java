@@ -20,18 +20,78 @@ import java.util.*;
  * @since 2017
  */
 public enum ContainerType {
-    AVENTRA("aventra", Collections.singletonList("Aventra"), IAventraContainer.class, null),
-    BEID("beid", Collections.singletonList("Belgium Electronic ID card"), IBeIdContainer.class, GclBeIdAllData.class),
-    DNIE("dnie", Collections.singletonList(""), IDnieContainer.class, null),
-    EMV("emv", Collections.singletonList("Mastercard"), IEmvContainer.class, null),
-    EST("esteid", Collections.singletonList("Estonian"), IBeIdContainer.class, null),
-    LUXID("luxeid", Collections.singletonList("Grand Duchy of Luxembourg / Identity card with LuxTrust certificate (eID)"), ILuxIdContainer.class, null),
-    LUXTRUST("luxtrust", Collections.singletonList("LuxTrust card"), ILuxTrustContainer.class, null),
-    MOBIB("mobib", Collections.singletonList("MOBIB"), IMobibContainer.class, null),
-    OBERTHUR("oberthur", Collections.singletonList("Oberthur"), IOberthurContainer.class, null),
-    OCRA("ocra", Collections.singletonList("Juridic Person's Token (PKI)"), IOcraContainer.class, null),
-    PIV("piv", Arrays.asList("PIV", "CIV"), IPivContainer.class, null),
-    PT("pteid", Collections.singletonList("Portuguese"), IPtEIdContainer.class, null);
+    AVENTRA("aventra",
+            Collections.singletonList("Aventra"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IAventraContainer.class,
+            null),
+    BEID("beid",
+            Collections.singletonList("Belgium Electronic ID card"),
+            Arrays.asList("address", "rn", "picture", "root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate"),
+            Arrays.asList("root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate"),
+            IBeIdContainer.class,
+            GclBeIdAllData.class),
+    DNIE("dnie",
+            Collections.singletonList(""),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IDnieContainer.class,
+            null),
+    EMV("emv",
+            Collections.singletonList("Mastercard"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IEmvContainer.class,
+            null),
+    EST("esteid",
+            Collections.singletonList("Estonian"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IBeIdContainer.class,
+            null),
+    LUXID("luxeid",
+            Collections.singletonList("Grand Duchy of Luxembourg / Identity card with LuxTrust certificate (eID)"),
+            Arrays.asList("authentication-certificate", "biometric", "non-repudiation-certificate", "picture", "root-certificates"),
+            Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
+            ILuxIdContainer.class,
+            null),
+    LUXTRUST("luxtrust",
+            Collections.singletonList("LuxTrust card"),
+            Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
+            Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
+            ILuxTrustContainer.class,
+            null),
+    MOBIB("mobib",
+            Collections.singletonList("MOBIB"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IMobibContainer.class,
+            null),
+    OBERTHUR("oberthur",
+            Collections.singletonList("Oberthur"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IOberthurContainer.class,
+            null),
+    OCRA("ocra",
+            Collections.singletonList("Juridic Person's Token (PKI)"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IOcraContainer.class,
+            null),
+    PIV("piv",
+            Arrays.asList("PIV", "CIV"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IPivContainer.class,
+            null),
+    PT("pteid",
+            Collections.singletonList("Portuguese"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IPtEIdContainer.class,
+            null);
 
     private static final Map<String, ContainerType> idMap;
     private static final Map<String, ContainerType> cardDescriptionMap;
@@ -49,12 +109,16 @@ public enum ContainerType {
 
     private String id;
     private List<String> cardDescriptions;
+    private List<String> dataFilters;
+    private List<String> certificateFilters;
     private Class containerClass;
     private Class allDataFormat;
 
-    ContainerType(String id, List<String> description, Class containerClass, Class allDataFormat) {
+    ContainerType(String id, List<String> descriptions, List<String> dataFilters, List<String> certificateFilters, Class containerClass, Class allDataFormat) {
         this.id = id;
-        this.cardDescriptions = description;
+        this.cardDescriptions = descriptions;
+        this.dataFilters = dataFilters;
+        this.certificateFilters = certificateFilters;
         this.containerClass = containerClass;
         this.allDataFormat = allDataFormat;
     }
@@ -80,6 +144,14 @@ public enum ContainerType {
 
     public List<String> getCardDescription() {
         return cardDescriptions;
+    }
+
+    public List<String> getDataFilters() {
+        return dataFilters;
+    }
+
+    public List<String> getCertificateFilters() {
+        return certificateFilters;
     }
 
     public Class getContainerClass() {

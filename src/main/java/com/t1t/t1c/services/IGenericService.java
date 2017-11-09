@@ -1,7 +1,6 @@
 package com.t1t.t1c.services;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclReader;
@@ -17,9 +16,9 @@ public interface IGenericService {
 
     String getDownloadLink();
 
-    AllData dumpData(String readerId, String pin, String... filterParams);
+    AllData dumpData(String readerId, String pin, List<String> filterParams);
 
-    AllData dumpData(String readerId, String... filterParams);
+    AllData dumpData(String readerId, List<String> filterParams);
 
     List<GclReader> getAuthenticationCapableReaders();
 
