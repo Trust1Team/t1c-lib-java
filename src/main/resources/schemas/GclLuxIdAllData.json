@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
+  "$id": "GclLuxIdAllData",
+  "properties": {
+    "authentication_certificate": {
+      "type": "object",
+      "$ref": "T1cCertificate.json"
+    },
+    "non_repudiation_certificate": {
+      "type": "object",
+      "$ref": "T1cCertificate.json"
+    },
+    "root_certificates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "T1cCertificate.json"
+      }
+    },
+    "biometric": {
+      "type": "object",
+      "$ref": "GclLuxIdBiometric.json"
+    },
+    "picture": {
+      "type": "object",
+      "$ref": "GclLuxIdPicture.json"
+    },
+    "signature_image": {
+      "type": "object",
+      "$ref": "GclLuxIdSignatureImage.json"
+    },
+    "signature_object": {
+      "type": "string"
+    }
+  }
+}

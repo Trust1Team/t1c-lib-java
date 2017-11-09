@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "GclLuxIdPicture",
+  "properties": {
+    "height": {
+      "type": "integer"
+    },
+    "image": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    }
+  }
+}
