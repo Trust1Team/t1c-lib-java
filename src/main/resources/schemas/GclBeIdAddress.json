@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "BeIdAddress",
+  "properties": {
+    "municipality": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "street_and_number": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "zipcode": {
+      "type": "string"
+    }
+  }
+}

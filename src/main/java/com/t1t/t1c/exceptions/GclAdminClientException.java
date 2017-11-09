@@ -6,20 +6,26 @@ package com.t1t.t1c.exceptions;
  */
 public class GclAdminClientException extends AbstractRuntimeException {
 
-    private int httpCode = 400;
+    private Integer httpCode = 400;
+    private String uri;
 
     public GclAdminClientException(String message, RestException cause) {
         super(message, cause);
         this.httpCode = cause.getHttpCode();
+        this.uri = cause.getUri();
     }
 
     @Override
-    public int getHttpCode() {
+    public Integer getHttpCode() {
         return httpCode;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
     @Override
-    public int getErrorCode() {
+    public Integer getErrorCode() {
         return ErrorCodes.GCL_ADMIN_REST_ERROR;
     }
 

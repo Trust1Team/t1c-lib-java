@@ -10,7 +10,7 @@ public class LibConfig {
 
     private String version;
     private String build;
-    private Boolean tokenCompatible;
+    private boolean tokenCompatible;
     // Custom properties
     private Environment environment;
     private String gclClientUri;
@@ -21,6 +21,7 @@ public class LibConfig {
     private String dsUri;
     private String apiKey;
     private Integer defaultPollingInterval = 30;
+    private boolean hardwarePinPadForced = false;
     // Dynamic properties
     private String jwt;
 
@@ -49,11 +50,11 @@ public class LibConfig {
         this.build = build;
     }
 
-    public Boolean getTokenCompatible() {
+    public boolean isTokenCompatible() {
         return tokenCompatible;
     }
 
-    public void setTokenCompatible(Boolean tokenCompatible) {
+    public void setTokenCompatible(boolean tokenCompatible) {
         this.tokenCompatible = tokenCompatible;
     }
 
@@ -126,6 +127,14 @@ public class LibConfig {
         this.defaultPollingInterval = defaultPollingInterval;
     }
 
+    public boolean isHardwarePinPadForced() {
+        return hardwarePinPadForced;
+    }
+
+    public void setHardwarePinPadForced(boolean hardwarePinPadForced) {
+        this.hardwarePinPadForced = hardwarePinPadForced;
+    }
+
     public String getDsUri() {
         if (StringUtils.isBlank(this.dsUri)) {
             if (StringUtils.isNoneBlank(this.gatewayUri, this.dsContextPath)) {
@@ -142,57 +151,5 @@ public class LibConfig {
             }
         }
         return this.dsDownloadUri;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LibConfig)) return false;
-
-        LibConfig libConfig = (LibConfig) o;
-
-        if (version != null ? !version.equals(libConfig.version) : libConfig.version != null) return false;
-        if (build != null ? !build.equals(libConfig.build) : libConfig.build != null) return false;
-        if (environment != libConfig.environment) return false;
-        if (gclClientUri != null ? !gclClientUri.equals(libConfig.gclClientUri) : libConfig.gclClientUri != null)
-            return false;
-        if (gatewayUri != null ? !gatewayUri.equals(libConfig.gatewayUri) : libConfig.gatewayUri != null) return false;
-        if (dsContextPath != null ? !dsContextPath.equals(libConfig.dsContextPath) : libConfig.dsContextPath != null)
-            return false;
-        if (dsDownloadContextPath != null ? !dsDownloadContextPath.equals(libConfig.dsDownloadContextPath) : libConfig.dsDownloadContextPath != null)
-            return false;
-        if (apiKey != null ? !apiKey.equals(libConfig.apiKey) : libConfig.apiKey != null) return false;
-        return jwt != null ? jwt.equals(libConfig.jwt) : libConfig.jwt == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = version != null ? version.hashCode() : 0;
-        result = 31 * result + (build != null ? build.hashCode() : 0);
-        result = 31 * result + (environment != null ? environment.hashCode() : 0);
-        result = 31 * result + (gclClientUri != null ? gclClientUri.hashCode() : 0);
-        result = 31 * result + (gatewayUri != null ? gatewayUri.hashCode() : 0);
-        result = 31 * result + (dsContextPath != null ? dsContextPath.hashCode() : 0);
-        result = 31 * result + (dsDownloadContextPath != null ? dsDownloadContextPath.hashCode() : 0);
-        result = 31 * result + (apiKey != null ? apiKey.hashCode() : 0);
-        result = 31 * result + (jwt != null ? jwt.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "LibConfig{" +
-                "version='" + version + '\'' +
-                ", build='" + build + '\'' +
-                ", environment=" + environment +
-                ", gclClientUri='" + gclClientUri + '\'' +
-                ", gatewayUri='" + gatewayUri + '\'' +
-                ", dsContextPath='" + dsContextPath + '\'' +
-                ", dsDownloadContextPath='" + dsDownloadContextPath + '\'' +
-                ", dsDownloadUri='" + dsDownloadUri + '\'' +
-                ", dsUri='" + dsUri + '\'' +
-                ", apiKey='" + apiKey + '\'' +
-                ", jwt='" + jwt + '\'' +
-                '}';
     }
 }

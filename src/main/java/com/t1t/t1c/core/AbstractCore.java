@@ -54,4 +54,6 @@ public abstract class AbstractCore {
     public abstract List<GclReader> getReadersWithoutInsertedCard();
 
     public abstract String getUrl();
+
+    public abstract boolean getConsent(String title, String codeWord, Integer durationInDays);
 }

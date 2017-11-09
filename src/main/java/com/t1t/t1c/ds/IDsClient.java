@@ -1,9 +1,9 @@
 package com.t1t.t1c.ds;
 
 import com.t1t.t1c.exceptions.DsClientException;
+import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.DsDevice;
 import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
-import com.t1t.t1c.model.rest.DsDownloadRequest;
 import com.t1t.t1c.model.rest.DsInfo;
 
 /**
@@ -23,7 +23,7 @@ public interface IDsClient {
 
     String getPubKey() throws DsClientException;
 
-    String getDownloadLink(DsDownloadRequest request) throws DsClientException;
+    String getDownloadLink(PlatformInfo info) throws DsClientException;
 
     String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
 

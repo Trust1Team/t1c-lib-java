@@ -1,13 +1,12 @@
 package com.t1t.t1c.rest;
 
 import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -33,6 +32,9 @@ public interface GclRestClient {
     Call<T1cResponse<GclReader>> getCardReader(@Path("readerId") String readerId);
 
     @GET("plugins")
-    Call<T1cResponse<List<GclContainer>>> getCointainers();
+    Call<T1cResponse<List<GclContainer>>> getContainers();
+
+    @POST("consent")
+    Call<T1cResponse<Object>> getConsent(@Body GclConsent consent);
 
 }

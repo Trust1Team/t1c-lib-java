@@ -12,12 +12,12 @@ public class ConfigException extends AbstractConsumerException {
     }
 
     @Override
-    public int getHttpCode() {
+    public Integer getHttpCode() {
         return 0;
     }
 
     @Override
-    public int getErrorCode() {
+    public Integer getErrorCode() {
         return 0;
     }
 

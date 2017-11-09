@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllCertificates"
+  ],
+  "$id": "BeIdAllCertificates",
+  "properties": {
+    "authentication_certificate": {
+      "type": "string"
+    },
+    "citizen_certificate": {
+      "type": "string"
+    },
+    "non_repudiation_certificate": {
+      "type": "string"
+    },
+    "root_certificate": {
+      "type": "string"
+    },
+    "rrn_certificate": {
+      "type": "string"
+    }
+  }
+}

@@ -1,12 +1,15 @@
 package com.t1t.t1c.core;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.gcl.GclService;
+import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,27 +27,27 @@ public class Core extends AbstractCore {
 
     @Override
     public boolean activate() {
-        return GclService.getGclAdminClient().activate();
+        return FactoryService.getGclAdminClient().activate();
     }
 
     @Override
     public String getPubKey() {
-        return GclService.getGclAdminClient().getPublicKey();
+        return FactoryService.getGclAdminClient().getPublicKey();
     }
 
     @Override
     public void setPubKey(String publicKey) {
-        GclService.getGclAdminClient().setPublicKey(publicKey);
+        FactoryService.getGclAdminClient().setPublicKey(publicKey);
     }
 
     @Override
     public GclStatus getInfo() {
-        return GclService.getGclClient().getInfo();
+        return FactoryService.getGclClient().getInfo();
     }
 
     @Override
     public List<GclContainer> getContainers() {
-        return GclService.getGclClient().getContainers();
+        return FactoryService.getGclClient().getContainers();
     }
 
     @Override
@@ -58,7 +61,7 @@ public class Core extends AbstractCore {
         List<GclReader> readers = new ArrayList<>();
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers)) {
-            readers = GclService.getGclClient().getReadersWithInsertedCard();
+            readers = FactoryService.getGclClient().getReadersWithInsertedCard();
             if (readers == null) {
                 throw ExceptionFactory.gclClientException("GCL not found");
             }
@@ -74,7 +77,7 @@ public class Core extends AbstractCore {
         List<GclReader> readers = new ArrayList<>();
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers)) {
-            readers = GclService.getGclClient().getReaders();
+            readers = FactoryService.getGclClient().getReaders();
             if (readers == null) {
                 throw ExceptionFactory.gclClientException("GCL not found");
             }
@@ -87,22 +90,29 @@ public class Core extends AbstractCore {
 
     @Override
     public GclReader getReader(String readerId) {
-        return GclService.getGclClient().getReader(readerId);
+        return FactoryService.getGclClient().getReader(readerId);
     }
 
     @Override
     public List<GclReader> getReaders() {
-        return GclService.getGclClient().getReaders();
+        return FactoryService.getGclClient().getReaders();
     }
 
     @Override
     public List<GclReader> getReadersWithoutInsertedCard() {
-        return GclService.getGclClient().getReadersWithoutInsertedCard();
+        return FactoryService.getGclClient().getReadersWithoutInsertedCard();
     }
 
     @Override
     public String getUrl() {
         return config.getGclClientUri();
+    }
+
+    @Override
+    public boolean getConsent(String title, String codeWord, Integer durationInDays) {
+        Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required");
+        return FactoryService.getGclClient().getConsent(new GclConsent().withTitle(title).withText(codeWord).withDurationInDays(durationInDays));
     }
 
     private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
