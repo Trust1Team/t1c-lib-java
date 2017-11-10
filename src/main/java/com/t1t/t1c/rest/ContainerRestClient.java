@@ -1,7 +1,5 @@
 package com.t1t.t1c.rest;
 
-import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
@@ -59,15 +57,6 @@ public interface ContainerRestClient {
     //
     // Generic methods with PIN query parameter
     //
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<AllData>> getSecuredAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<AllData>> getSecuredAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<AllCertificates>> getSecuredAllCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
     Call<T1cResponse<String>> getSecuredRootCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);

@@ -1,6 +1,7 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.agent.IAgent;
+import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.configuration.T1cConfigParser;
 import com.t1t.t1c.containers.ContainerType;
@@ -41,6 +42,7 @@ public class T1cClient {
     private LibConfig config;
     private Core core;
     private IGenericService genericService;
+
 
     public T1cClient(LibConfig config) {
         init(config, false);
@@ -134,8 +136,16 @@ public class T1cClient {
         return genericService.getDownloadLink();
     }
 
+    public AllData dumpData(String readerId) {
+        return genericService.dumpData(readerId, null, null);
+    }
+
     public AllData dumpData(String readerId, List<String> filterParameters) {
         return dumpData(readerId, null, filterParameters);
+    }
+
+    public AllData dumpData(String readerId, String pin) {
+        return genericService.dumpData(readerId, pin, null);
     }
 
     public AllData dumpData(String readerId, String pin, List<String> filterParameters) {
@@ -166,31 +176,6 @@ public class T1cClient {
         return genericService.verifyPin(readerId, pin);
     }
 
-    /*
-
-
-
-    public dumpData(readerId: string, data: OptionalPin, callback?: (error: RestException, data: DataResponse) => void) {
-        return GenericService.dumpData(this, readerId, data, callback);
-    }
-
-    public authenticate(readerId: string, data: AuthenticateOrSignData, callback?: (error: RestException, data: DataResponse) => void) {
-        return GenericService.authenticate(this, readerId, data, callback);
-    }
-
-    public readersCanSign(callback?: (error: RestException, data: CardReadersResponse) => void) {
-        return GenericService.signCapable(this, callback);
-    }
-    public sign(readerId: string, data: AuthenticateOrSignData, callback?: (error: RestException, data: DataResponse) => void) {
-        return GenericService.sign(this, readerId, data, callback);
-    }
-
-    public readersCanVerifyPin(callback?: (error: RestException, data: CardReadersResponse) => void) {
-        return GenericService.verifyPinCapable(this, callback);
-    }
-    public verifyPin(readerId: string, data: OptionalPin, callback?: (error: RestException, data: DataResponse) => void) {
-        return GenericService.verifyPin(this, readerId, data, callback);
-    }*/
     //
     // Initialization methods
     //
@@ -207,7 +192,7 @@ public class T1cClient {
         this.core = new Core(config);
         this.genericService = new GenericService();
 
-        if (!automatic) {
+        if (!automatic && !config.getEnvironment().equals(Environment.DEV)) {
             initSecurityContext();
             registerAndActivate();
         }

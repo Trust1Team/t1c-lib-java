@@ -41,11 +41,23 @@ public abstract class AbstractCore {
 
     public abstract List<GclContainer> getContainers();
 
+    public abstract GclReader pollCardInserted() throws InterruptedException;
+
     public abstract GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException;
+
+    public abstract GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException;
+
+    public abstract List<GclReader> pollReadersWithCards() throws InterruptedException;
+
+    public abstract List<GclReader> pollReaders() throws InterruptedException;
 
     public abstract List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException;
 
     public abstract List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException;
+
+    public abstract List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException;
+
+    public abstract List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException;
 
     public abstract GclReader getReader(String readerId);
 

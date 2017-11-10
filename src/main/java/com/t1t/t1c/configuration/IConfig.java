@@ -18,4 +18,5 @@ public interface IConfig {
     String LIB_DS_CONTEXT_PATH = "t1c.ds_context_path";
     String LIB_DS_DOWNLOAD_CONTEXT_PATH = "t1c.ds_download_context_path";
     String LIB_DEFAULT_POLLING_INTERVAL = "t1c.default_polling_interval";
+    String LIB_DEFAULT_POLLING_TIMEOUT = "t1c.default_polling_timeout";
 }

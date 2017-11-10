@@ -20,7 +20,8 @@ public class LibConfig {
     private String dsDownloadUri;
     private String dsUri;
     private String apiKey;
-    private Integer defaultPollingInterval = 30;
+    private Integer defaultPollingIntervalInSeconds = 2;
+    private Integer defaultPollingTimeoutInSeconds = 60;
     private boolean hardwarePinPadForced = false;
     // Dynamic properties
     private String jwt;
@@ -119,12 +120,20 @@ public class LibConfig {
         return this;
     }
 
-    public Integer getDefaultPollingInterval() {
-        return defaultPollingInterval;
+    public Integer getDefaultPollingIntervalInSeconds() {
+        return defaultPollingIntervalInSeconds;
     }
 
-    public void setDefaultPollingInterval(Integer defaultPollingInterval) {
-        this.defaultPollingInterval = defaultPollingInterval;
+    public void setDefaultPollingIntervalInSeconds(Integer defaultPollingIntervalInSeconds) {
+        this.defaultPollingIntervalInSeconds = defaultPollingIntervalInSeconds;
+    }
+
+    public Integer getDefaultPollingTimeoutInSeconds() {
+        return defaultPollingTimeoutInSeconds;
+    }
+
+    public void setDefaultPollingTimeoutInSeconds(Integer defaultPollingTimeoutInSeconds) {
+        this.defaultPollingTimeoutInSeconds = defaultPollingTimeoutInSeconds;
     }
 
     public boolean isHardwarePinPadForced() {

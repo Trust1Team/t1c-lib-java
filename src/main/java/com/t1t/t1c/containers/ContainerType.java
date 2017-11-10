@@ -142,7 +142,7 @@ public enum ContainerType {
         return id;
     }
 
-    public List<String> getCardDescription() {
+    public List<String> getCardDescriptions() {
         return cardDescriptions;
     }
 

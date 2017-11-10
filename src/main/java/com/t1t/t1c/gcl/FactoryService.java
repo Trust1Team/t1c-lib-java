@@ -48,7 +48,7 @@ public class FactoryService {
     public static IDsClient getDsClient() {
         if (dsClient == null) {
             checkConfigPresent();
-            dsClient = new DsClient(config, RestServiceBuilder.getDSService(config));
+            dsClient = new DsClient(config, RestServiceBuilder.getDsRestClient(config));
 
         }
         return dsClient;
@@ -57,7 +57,7 @@ public class FactoryService {
     public static IGclClient getGclClient() {
         if (gclClient == null) {
             checkConfigPresent();
-            gclClient = new GclClient(config, RestServiceBuilder.getGCLService(config));
+            gclClient = new GclClient(config, RestServiceBuilder.getGclRestClient(config));
 
         }
         return gclClient;
@@ -66,7 +66,7 @@ public class FactoryService {
     public static IGclAdminClient getGclAdminClient() {
         if (gclAdminClient == null) {
             checkConfigPresent();
-            gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGCLAdminService(config));
+            gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGclAdminRestClient(config));
         }
         return gclAdminClient;
     }
@@ -200,20 +200,31 @@ public class FactoryService {
 
     public static void setConfig(LibConfig config) {
         FactoryService.config = config;
-        gclClient = new GclClient(config, RestServiceBuilder.getGCLService(config));
-        gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGCLAdminService(config));
-        dsClient = new DsClient(config, RestServiceBuilder.getDSService(config));
-        containerRestClient = RestServiceBuilder.getContainerRestClient(config);
-        if (beIdContainer != null) {
-            beIdContainer = new BeIdContainer(config, beIdContainer.getReaderId(), getContainerRestClient());
-        }
-        if (luxTrustContainer != null) {
-            luxTrustContainer = new LuxTrustContainer(config, luxTrustContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
-        }
-        if (luxIdContainer != null) {
-            luxIdContainer = new LuxIdContainer(config, luxIdContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
+        if (config != null) {
+            gclClient = new GclClient(config, RestServiceBuilder.getGclRestClient(config));
+            gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGclAdminRestClient(config));
+            dsClient = new DsClient(config, RestServiceBuilder.getDsRestClient(config));
+            containerRestClient = RestServiceBuilder.getContainerRestClient(config);
+            if (beIdContainer != null) {
+                beIdContainer = new BeIdContainer(config, beIdContainer.getReaderId(), getContainerRestClient());
+            }
+            if (luxTrustContainer != null) {
+                luxTrustContainer = new LuxTrustContainer(config, luxTrustContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
+            }
+            if (luxIdContainer != null) {
+                luxIdContainer = new LuxIdContainer(config, luxIdContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
+            }
+        } else {
+            gclClient = null;
+            gclAdminClient = null;
+            dsClient = null;
+            containerRestClient = null;
+            beIdContainer = null;
+            luxTrustContainer = null;
+            luxIdContainer = null;
         }
     }
+
     // Utility methods
     //
     //

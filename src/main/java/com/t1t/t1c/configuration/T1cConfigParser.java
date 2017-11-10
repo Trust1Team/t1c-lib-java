@@ -44,7 +44,8 @@ public class T1cConfigParser implements Serializable {
             this.appConfig.setGatewayUri(getGatewayUri());
             this.appConfig.setDsContextPath(getDsContextPath());
             this.appConfig.setDsDownloadContextPath(getDsDownloadContextPath());
-            this.appConfig.setDefaultPollingInterval(getDefaultPollingInterval());
+            this.appConfig.setDefaultPollingIntervalInSeconds(getDefaultPollingIntervalInSeconds());
+            this.appConfig.setDefaultPollingTimeoutInSeconds(getDefaultPollingTimeoutInSeconds());
             setAppConfig(configObj);
             printAppConfig();
         } else
@@ -76,8 +77,12 @@ public class T1cConfigParser implements Serializable {
         return config.getString(IConfig.LIB_DS_DOWNLOAD_CONTEXT_PATH);
     }
 
-    public Integer getDefaultPollingInterval() {
+    public Integer getDefaultPollingIntervalInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_INTERVAL);
+    }
+
+    public Integer getDefaultPollingTimeoutInSeconds() {
+        return config.getInt(IConfig.LIB_DEFAULT_POLLING_TIMEOUT);
     }
 
     //read compiled property file
@@ -125,7 +130,8 @@ public class T1cConfigParser implements Serializable {
         _LOG.debug("Consumer api-key: {}", appConfig.getApiKey());
         _LOG.debug("GCL client URI: {}", appConfig.getGclClientUri());
         _LOG.debug("DS client URI: {}", appConfig.getDsUri());
-        _LOG.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingInterval());
+        _LOG.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
+        _LOG.debug("Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
         _LOG.debug("=============================================================");
     }
 
