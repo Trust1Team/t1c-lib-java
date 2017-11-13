@@ -344,6 +344,31 @@ public final class MockResponseFactory {
                         .withRootNonRepudiationCertificate(cert));
     }
 
+    public static T1cResponse<List<GclEmvApplication>> getEmvApplicationResponse() {
+        GclEmvApplication app = new GclEmvApplication().withAid("123").withName("name").withPriority(0);
+        return new T1cResponse<List<GclEmvApplication>>().withSuccess(true)
+                .withData(Arrays.asList(app, app));
+    }
+
+    public static T1cResponse<GclEmvApplicationData> getEmvAppDataResponse() {
+        GclEmvApplicationData appData = new GclEmvApplicationData().withCountry("Belgium").withCountryCode("BE").withEffectiveDate("1/1/2000").withExpirationDate("1/1/2100").withLanguage("FR").withName("name").withPan("pan");
+        return new T1cResponse<GclEmvApplicationData>().withSuccess(true).withData(appData);
+    }
+
+    public static T1cResponse<GclEmvAllData> getEmvAllDataResponse() {
+        GclEmvAllData data = new GclEmvAllData().withApplicationData(getEmvAppDataResponse().getData()).withApplications(getEmvApplicationResponse().getData());
+        return new T1cResponse<GclEmvAllData>().withSuccess(true).withData(data);
+    }
+
+    public static T1cResponse<GclEmvCertificate> getEmvCertResponse(GclEmvAidRequest request) {
+        GclEmvCertificate cert = new GclEmvCertificate().withData("data").withExponent("exponent").withRemainder("remainder");
+        return getResponse(cert);
+    }
+
+    private static <T> T1cResponse<T> getResponse(T data) {
+        return new T1cResponse<T>().withSuccess(true).withData(data);
+    }
+
     private static T1cCertificate getT1cCertificate() {
         return new T1cCertificate().withBase64(getCertificateResponse().getData());
     }

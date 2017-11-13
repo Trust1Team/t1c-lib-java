@@ -2,7 +2,6 @@ package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.rest.GclPtIdData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 

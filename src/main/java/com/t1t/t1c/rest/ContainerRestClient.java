@@ -5,6 +5,8 @@ import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
 import retrofit2.http.*;
 
+import java.util.List;
+
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
@@ -209,4 +211,26 @@ public interface ContainerRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
     Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    //
+    // EMV Container specific methods
+    //
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/applications")
+    Call<T1cResponse<List<GclEmvApplication>>> getEmvApplications(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/application-data")
+    Call<T1cResponse<GclEmvApplicationData>> getEmvApplicationData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/issuer-public-key-certificate")
+    Call<T1cResponse<GclEmvCertificate>> getEmvIssuerPublicKeyCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclEmvAidRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/icc-public-key-certificate")
+    Call<T1cResponse<GclEmvCertificate>> getEmvIccPublicKeyCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclEmvAidRequest request);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclEmvAllData>> getEmvAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclEmvAllData>> getEmvAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
 }

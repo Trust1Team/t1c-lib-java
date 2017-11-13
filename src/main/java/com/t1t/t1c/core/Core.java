@@ -38,14 +38,14 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public String getPubKey(DsPublicKeyEncoding encoding) {
-        return FactoryService.getGclAdminClient().getPublicKey(encoding);
-    }
-
-    @Override
     public void setPubKey(String publicKey) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(publicKey), "Public key must be provided");
         FactoryService.getGclAdminClient().setPublicKey(publicKey);
+    }
+
+    @Override
+    public String getPubKey(DsPublicKeyEncoding encoding) {
+        return FactoryService.getGclAdminClient().getPublicKey(encoding);
     }
 
     @Override

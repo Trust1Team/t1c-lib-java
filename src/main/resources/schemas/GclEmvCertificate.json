@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclEmvCertificate",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "string"
+    },
+    "exponent": {
+      "type": "string"
+    },
+    "remainder": {
+      "type": "string"
+    }
+  }
+}

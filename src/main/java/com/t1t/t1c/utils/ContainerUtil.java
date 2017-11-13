@@ -3,7 +3,6 @@ package com.t1t.t1c.utils;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.gcl.FactoryService;
 import com.t1t.t1c.model.rest.GclCard;
 import com.t1t.t1c.model.rest.GclContainer;
 import org.apache.commons.collections4.CollectionUtils;

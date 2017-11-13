@@ -6,6 +6,8 @@ import com.t1t.t1c.rest.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
+import java.util.List;
+
 import static com.t1t.t1c.MockResponseFactory.*;
 
 /**
@@ -298,5 +300,35 @@ public class MockContainerRestClient implements ContainerRestClient {
     @Override
     public Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(String containerId, String readerId, String filter) {
         return delegate.returningResponse(getPtIdAllCertificatesResponse()).getPtIdAllCertificates(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclEmvApplication>>> getEmvApplications(String containerId, String readerId) {
+        return delegate.returningResponse(getEmvApplicationResponse()).getEmvApplications(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclEmvApplicationData>> getEmvApplicationData(String containerId, String readerId) {
+        return delegate.returningResponse(getEmvAppDataResponse()).getEmvApplicationData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclEmvCertificate>> getEmvIssuerPublicKeyCertificate(String containerId, String readerId, GclEmvAidRequest request) {
+        return delegate.returningResponse(getEmvCertResponse(request)).getEmvIssuerPublicKeyCertificate(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<GclEmvCertificate>> getEmvIccPublicKeyCertificate(String containerId, String readerId, GclEmvAidRequest request) {
+        return delegate.returningResponse(getEmvCertResponse(request)).getEmvIccPublicKeyCertificate(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<GclEmvAllData>> getEmvAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getEmvAllDataResponse()).getEmvAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclEmvAllData>> getEmvAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getEmvAllDataResponse()).getEmvAllData(containerId, readerId, filter);
     }
 }

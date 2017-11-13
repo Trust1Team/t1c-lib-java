@@ -14,7 +14,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Guillaume Vandecasteele
@@ -28,7 +29,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-         luxIdContainer = getClient().getLuxIdContainer(ContainerType.LUXID.getId(), "1234");
+        luxIdContainer = getClient().getLuxIdContainer(ContainerType.LUXID.getId(), "1234");
     }
 
     @Test

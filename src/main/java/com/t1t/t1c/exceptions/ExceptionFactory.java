@@ -5,6 +5,7 @@ import com.t1t.t1c.containers.smartcards.eid.be.exceptions.BeIdContainerExceptio
 import com.t1t.t1c.containers.smartcards.eid.esp.exceptions.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
+import com.t1t.t1c.containers.smartcards.emv.exceptions.EmvContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -235,6 +236,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a DNIE container exception
+     *
      * @param message
      * @param cause
      * @return
@@ -247,6 +249,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a PT ID container exception
+     *
      * @param message
      * @param cause
      * @return
@@ -255,5 +258,18 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with PT ID container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new PtIdContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates an EMV container exception
+     *
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static EmvContainerException emvContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with EMV container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new EmvContainerException(errorMessage, cause);
     }
 }

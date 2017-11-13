@@ -9,10 +9,8 @@ import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
-import com.t1t.t1c.ds.DsClient;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.gcl.FactoryService;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
 import com.t1t.t1c.model.rest.GclReader;
@@ -27,7 +25,6 @@ import java.util.List;
 
 import static com.t1t.t1c.MockResponseFactory.getDownloadPath;
 import static org.junit.Assert.*;
-import static org.powermock.api.easymock.PowerMock.verifyAll;
 
 /**
  * @author Guillaume Vandecasteele
@@ -36,7 +33,7 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({RestServiceBuilder.class, FactoryService.class})
 public class T1cClientTest extends AbstractTestClass {
-    
+
     @Test
     public void testGetCore() throws Exception {
         Core core = getClient().getCore();
@@ -46,54 +43,54 @@ public class T1cClientTest extends AbstractTestClass {
     @Test
     public void testGetConfig() throws Exception {
         LibConfig conf = getClient().getConfig();
-        
+
         assertNotNull(conf);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAgent() throws Exception {
         getClient().getAgent();
-        
+
     }
 
     @Test
     public void testGetDsClient() throws Exception {
         IDsClient dsClient = getClient().getDsClient();
-        
+
         assertNotNull(dsClient);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetOcvClient() throws Exception {
         getClient().getOcvClient();
-        
+
     }
 
     @Test
     public void testGetGenericContainerFor() throws Exception {
         GenericContainer genericContainer = getClient().getGenericContainerFor(ContainerType.BEID.getId());
-        
+
         assertNotNull(genericContainer);
     }
 
     @Test
     public void testGetBeIdContainer() throws Exception {
         IBeIdContainer genericContainer = getClient().getBeIdContainer(ContainerType.BEID.getId());
-        
+
         assertNotNull(genericContainer);
     }
 
     @Test
     public void testGetLuxIdContainer() throws Exception {
         ILuxIdContainer genericContainer = getClient().getLuxIdContainer(ContainerType.LUXID.getId(), "123456");
-        
+
         assertNotNull(genericContainer);
     }
 
     @Test
     public void testGetLuxTrustContainer() throws Exception {
         ILuxTrustContainer genericContainer = getClient().getLuxTrustContainer(ContainerType.BEID.getId(), "123456");
-        
+
         assertNotNull(genericContainer);
     }
 
@@ -112,7 +109,7 @@ public class T1cClientTest extends AbstractTestClass {
     @Test(expected = UnsupportedOperationException.class)
     public void testGetEmvContainer() throws Exception {
         getClient().getEmvContainer(ContainerType.EMV.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -123,43 +120,43 @@ public class T1cClientTest extends AbstractTestClass {
     @Test(expected = UnsupportedOperationException.class)
     public void testGetOcraContainer() throws Exception {
         getClient().getOcraContainer((ContainerType.OCRA.getId()));
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAventraContainer() throws Exception {
         getClient().getAventraContainer(ContainerType.AVENTRA.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetOberthurContainer() throws Exception {
         getClient().getOberthurContainer(ContainerType.OBERTHUR.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetPivContainer() throws Exception {
         getClient().getPivContainer(ContainerType.PIV.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetSafenetContainer() throws Exception {
         getClient().getSafenetContainer(ContainerType.PIV.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetReaderContainer() throws Exception {
         getClient().getBelfiusContainer(ContainerType.READER_API.getId());
-        
+
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetBelfiusContainer() throws Exception {
         getClient().getBelfiusContainer(ContainerType.READER_API.getId());
-        
+
     }
 
     @Test

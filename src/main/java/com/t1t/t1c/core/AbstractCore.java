@@ -36,9 +36,9 @@ public abstract class AbstractCore {
 
     public abstract String getPubKey();
 
-    public abstract String getPubKey(DsPublicKeyEncoding encoding);
-
     public abstract void setPubKey(String publicKey);
+
+    public abstract String getPubKey(DsPublicKeyEncoding encoding);
 
     public abstract GclStatus getInfo();
 

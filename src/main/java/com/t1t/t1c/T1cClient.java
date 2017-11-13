@@ -1,7 +1,6 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.agent.IAgent;
-import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.configuration.T1cConfigParser;
 import com.t1t.t1c.containers.ContainerType;

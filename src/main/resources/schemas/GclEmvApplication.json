@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclEmvApplication",
+  "type": "object",
+  "properties": {
+    "aid": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "integer"
+    }
+  }
+}

@@ -7,9 +7,7 @@ import com.t1t.t1c.rest.GclAdminRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
-import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponseDer;
-import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponsePem;
-import static com.t1t.t1c.MockResponseFactory.getSuccessResponse;
+import static com.t1t.t1c.MockResponseFactory.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -37,8 +35,7 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
     public Call<T1cResponse<String>> getPublicKey(String encoding) {
         if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
             return getPublicKey();
-        }
-        else {
+        } else {
             return delegate.returningResponse(getPublicKeyResponsePem()).getPublicKey(encoding);
         }
     }

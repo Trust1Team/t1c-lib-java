@@ -1,11 +1,5 @@
 package com.t1t.t1c.integration;
 
-import com.t1t.t1c.T1cClient;
-import com.t1t.t1c.configuration.Environment;
-import com.t1t.t1c.configuration.LibConfig;
-import org.junit.After;
-import org.junit.Before;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017

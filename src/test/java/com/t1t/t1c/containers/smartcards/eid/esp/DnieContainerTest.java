@@ -16,7 +16,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Guillaume Vandecasteele

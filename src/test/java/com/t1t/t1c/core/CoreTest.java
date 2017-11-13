@@ -18,7 +18,6 @@ import java.util.List;
 
 import static com.t1t.t1c.MockResponseFactory.*;
 import static org.junit.Assert.*;
-import static org.powermock.api.easymock.PowerMock.verifyAll;
 
 /**
  * @author Guillaume Vandecasteele
@@ -30,7 +29,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testActivate() throws Exception {
         boolean result = getClient().getCore().activate();
-        
+
         assertTrue(result);
     }
 
@@ -47,21 +46,21 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testGetPubKey() throws Exception {
         String pubKey = getClient().getCore().getPubKey();
-        
+
         assertEquals(getPublicKeyResponseDer().getData(), pubKey);
     }
 
     @Test
     public void testSetPubKey() throws Exception {
         getClient().getCore().setPubKey(getPublicKeyResponseDer().getData());
-        
+
         // We don't expect any errors
     }
 
     @Test
     public void testGetInfo() throws Exception {
         GclStatus info = this.getClient().getCore().getInfo();
-        
+
         assertEquals(getGclV1Status().getData(), info);
     }
 
@@ -69,7 +68,7 @@ public class CoreTest extends AbstractTestClass {
     public void testGetContainers() throws Exception {
         List<GclReader> readers = this.getClient().getCore().getReaders();
         List<GclReader> expectedReaders = getAllReaders(true).getData();
-        
+
         assertNotNull(readers);
         assertEquals(expectedReaders.size(), readers.size());
         for (GclReader reader : expectedReaders) {
@@ -81,7 +80,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testPollCardInserted() throws Exception {
         GclReader reader = this.getClient().getCore().pollCardInserted();
-        
+
         assertNotNull(reader);
         assertNotNull(reader.getCard());
     }
@@ -89,7 +88,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testPollCardInsertedWithInterval() throws Exception {
         GclReader reader = this.getClient().getCore().pollCardInserted(5);
-        
+
         assertNotNull(reader);
         assertNotNull(reader.getCard());
     }
@@ -97,7 +96,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testPollCardInsertedWithIntervalAndDuration() throws Exception {
         GclReader reader = this.getClient().getCore().pollCardInserted(5, 1);
-        
+
         assertNotNull(reader);
         assertNotNull(reader.getCard());
     }
@@ -105,7 +104,7 @@ public class CoreTest extends AbstractTestClass {
     @Test(expected = IllegalArgumentException.class)
     public void testPollCardInsertedWithNegativeNumbers() throws Exception {
         GclReader reader = this.getClient().getCore().pollCardInserted(-5, -1);
-        
+
         assertNotNull(reader);
         assertNotNull(reader.getCard());
     }
@@ -114,7 +113,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithCards() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReadersWithCards();
         List<GclReader> expected = getAllReaders(false).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -126,7 +125,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithCardsWithInterval() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReadersWithCards(10);
         List<GclReader> expected = getAllReaders(false).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -138,7 +137,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithCardsWithIntervalAndDuration() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReadersWithCards(1, 1);
         List<GclReader> expected = getAllReaders(false).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -150,7 +149,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithCardsWithNegativeNumbers() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReadersWithCards(-1, -1);
         List<GclReader> expected = getAllReaders(false).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -162,7 +161,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReaders() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReaders();
         List<GclReader> expected = getAllReaders(true).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -174,7 +173,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithInterval() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReaders(15);
         List<GclReader> expected = getAllReaders(true).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -186,7 +185,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithIntervalAndDuration() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReaders(1, 1);
         List<GclReader> expected = getAllReaders(true).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -198,7 +197,7 @@ public class CoreTest extends AbstractTestClass {
     public void testPollReadersWithNegativeNumbers() throws Exception {
         List<GclReader> readers = this.getClient().getCore().pollReaders(-1, -1);
         List<GclReader> expected = getAllReaders(true).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -224,7 +223,7 @@ public class CoreTest extends AbstractTestClass {
     public void testGetReaders() throws Exception {
         List<GclReader> readers = this.getClient().getCore().getReaders();
         List<GclReader> expected = getAllReaders(true).getData();
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {
@@ -236,7 +235,7 @@ public class CoreTest extends AbstractTestClass {
     public void testGetReadersWithoutInsertedCard() throws Exception {
         List<GclReader> readers = this.getClient().getCore().getReadersWithoutInsertedCard();
         List<GclReader> expected = Collections.singletonList(getReaderWithCard(null));
-        
+
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
         for (GclReader reader : expected) {

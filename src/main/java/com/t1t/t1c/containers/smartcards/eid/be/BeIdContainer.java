@@ -13,7 +13,6 @@ import com.t1t.t1c.model.rest.GclBeIdRn;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 

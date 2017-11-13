@@ -1,15 +1,5 @@
 package com.t1t.t1c.integration;
 
-import com.t1t.t1c.model.rest.GclReader;
-import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017

@@ -14,7 +14,7 @@ import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
+import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
@@ -140,9 +140,9 @@ public class FactoryService {
     }
 
     public static IEmvContainer getEmvContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        checkConfigAndReaderIdPresent(readerId);
+        return new EmvContainer(config, readerId, getContainerRestClient());
     }
-    //TODO - EMV
 
     public static IMobibContainer getMobibContainer(String readerId) {
         throw new UnsupportedOperationException();

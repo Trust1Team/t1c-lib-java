@@ -1,0 +1,22 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclEmvAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
+  "type": "object",
+  "properties": {
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclEmvApplication.json"
+      }
+    },
+    "application_data": {
+      "type": "object",
+      "$ref": "GclEmvApplicationData.json"
+    }
+  }
+}
