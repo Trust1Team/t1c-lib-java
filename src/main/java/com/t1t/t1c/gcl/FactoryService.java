@@ -8,6 +8,7 @@ import com.t1t.t1c.containers.readerapi.IReaderApiContainer;
 import com.t1t.t1c.containers.remoteloading.belfius.IBelfiusContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.esp.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -44,6 +45,7 @@ public class FactoryService {
     private static IBeIdContainer beIdContainer;
     private static ILuxIdContainer luxIdContainer;
     private static ILuxTrustContainer luxTrustContainer;
+    private static IDnieContainer dnieContainer;
 
     public static IDsClient getDsClient() {
         if (dsClient == null) {
@@ -139,10 +141,12 @@ public class FactoryService {
     }
 
     public static IDnieContainer getDnieContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        if (dnieContainer == null) {
+            checkConfigAndReaderIdPresent(readerId);
+            dnieContainer = new DnieContainer(config, readerId, getContainerRestClient());
+        }
+        return dnieContainer;
     }
-
-    //TODO - DNIE
 
     public static IPtEIdContainer getPtIdContainer(String readerId) {
         throw new UnsupportedOperationException();
@@ -212,7 +216,10 @@ public class FactoryService {
                 luxTrustContainer = new LuxTrustContainer(config, luxTrustContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
             }
             if (luxIdContainer != null) {
-                luxIdContainer = new LuxIdContainer(config, luxIdContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
+                luxIdContainer = new LuxIdContainer(config, luxIdContainer.getReaderId(), getContainerRestClient(), luxIdContainer.getPin());
+            }
+            if (dnieContainer != null) {
+                dnieContainer = new DnieContainer(config, dnieContainer.getReaderId(), getContainerRestClient());
             }
         } else {
             gclClient = null;
@@ -222,6 +229,7 @@ public class FactoryService {
             beIdContainer = null;
             luxTrustContainer = null;
             luxIdContainer = null;
+            dnieContainer = null;
         }
     }
 

@@ -41,23 +41,23 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getRrnCertifcate(String containerId, String readerId) {
-        return delegate.returningResponse(getCertificateResponse()).getRrnCertifcate(containerId, readerId);
+    public Call<T1cResponse<String>> getRrnCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getRrnCertificate(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSigningCertifcate(String containerId, String readerId) {
-        return delegate.returningResponse(getCertificateResponse()).getSigningCertifcate(containerId, readerId);
+    public Call<T1cResponse<String>> getSigningCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getSigningCertificate(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<String>> getIssuerCertifcate(String containerId, String readerId) {
-        return delegate.returningResponse(getCertificateResponse()).getIssuerCertifcate(containerId, readerId);
+    public Call<T1cResponse<String>> getIssuerCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getIssuerCertificate(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<String>> getEncryptionCertifcate(String containerId, String readerId) {
-        return delegate.returningResponse(getCertificateResponse()).getEncryptionCertifcate(containerId, readerId);
+    public Call<T1cResponse<String>> getEncryptionCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getEncryptionCertificate(containerId, readerId);
     }
 
     @Override
@@ -101,23 +101,23 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredRrnCertifcate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredRrnCertifcate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getSecuredRrnCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSecuredRrnCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredSigningCertifcate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredSigningCertifcate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getSecuredSigningCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSecuredSigningCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredIssuerCertifcate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredIssuerCertifcate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getSecuredIssuerCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSecuredIssuerCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredEncryptionCertifcate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredEncryptionCertifcate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getSecuredEncryptionCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSecuredEncryptionCertificate(containerId, readerId, pin);
     }
 
     @Override
@@ -227,11 +227,46 @@ public class MockContainerRestClient implements ContainerRestClient {
 
     @Override
     public Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(String containerId, String readerId, String pin, String filter) {
-        return delegate.returningResponse(getLuxTrustAllCertsResponse()).getLuxTrustAllCertificates(containerId, readerId, pin);
+        return delegate.returningResponse(getLuxTrustAllCertsResponse()).getLuxTrustAllCertificates(containerId, readerId, pin, filter);
     }
 
     @Override
     public Call<T1cResponse<Object>> isLuxTrustActivated(String containerId, String readerId, String pin) {
         return delegate.returningResponse(getSuccessResponse()).isLuxTrustActivated(containerId, readerId, pin);
+    }
+
+    @Override
+    public Call<T1cResponse<GclDnieInfo>> getDnieInfo(String containerId, String readerId) {
+        return delegate.returningResponse(getDnieInfoResponse()).getDnieInfo(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclDnieAllData>> getDnieAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getDnieAllDataResponse()).getDnieAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclDnieAllData>> getDnieAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getDnieAllDataResponse()).getDnieAllData(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(String containerId, String readerId) {
+        return delegate.returningResponse(getDnieAllCertificatesResponse()).getDnieAllCertificates(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getDnieAllCertificatesResponse()).getDnieAllCertificates(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getIntermediateCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getIntermediateCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getSecuredIntermediateCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSecuredIntermediateCertificate(containerId, readerId, pin);
     }
 }

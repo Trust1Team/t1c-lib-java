@@ -7,6 +7,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
@@ -15,6 +16,7 @@ import com.t1t.t1c.model.rest.GclVerifyPinRequest;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +37,16 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
 
     protected AbstractContainer(LibConfig config, String readerId, ContainerType type, ContainerRestClient httpClient, String... pin) {
         super(httpClient);
-        if (!ContainerUtil.isContainerAvailable(type)) {
+        IGclClient gcl = FactoryService.getGclClient();
+        GclCard card = gcl.getReader(readerId).getCard();
+        if (card == null) {
+            throw ExceptionFactory.genericContainerException("No card inserted in reader");
+        }
+        this.type = ContainerUtil.determineContainer(card);
+        if (this.type != type) {
+            throw ExceptionFactory.genericContainerException("Requested container (" + this.type + ") does not match available container for card: " + type);
+        }
+        if (!ContainerUtil.isContainerAvailable(type, gcl.getContainers())) {
             throw ExceptionFactory.containerNotAvailableException(type);
         }
         this.readerId = readerId;
@@ -51,12 +62,13 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
         this.config = config;
         this.readerId = readerId;
         // when instantiating a generic container, we automatically pick the first suitable container type
-        GclCard card = FactoryService.getGclClient().getReader(readerId).getCard();
+        IGclClient gcl = FactoryService.getGclClient();
+        GclCard card = gcl.getReader(readerId).getCard();
         if (card == null) {
             throw ExceptionFactory.genericContainerException("No card inserted in reader");
         }
         this.type = ContainerUtil.determineContainer(card);
-        if (!ContainerUtil.isContainerAvailable(type)) {
+        if (!ContainerUtil.isContainerAvailable(type, gcl.getContainers())) {
             throw ExceptionFactory.containerNotAvailableException(type);
         }
         if (pin.length > 0) {
@@ -130,7 +142,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     @Override
     public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
         try {
-            if (StringUtils.isNotEmpty(pin)) {
+            if (StringUtils.isNotEmpty(this.pin)) {
                 return returnData(getHttpClient().authenticateSecured(type.getId(), readerId, pin, data));
             } else return returnData(getHttpClient().authenticate(type.getId(), readerId, data));
         } catch (RestException ex) {
@@ -197,9 +209,9 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     protected T1cCertificate getRrnCertificate(boolean parse) throws GenericContainerException {
         try {
             if (StringUtils.isNotEmpty(this.pin)) {
-                return createT1cCertificate(returnData(getHttpClient().getSecuredRrnCertifcate(getTypeId(), getReaderId(), getPin())), parse);
+                return createT1cCertificate(returnData(getHttpClient().getSecuredRrnCertificate(getTypeId(), getReaderId(), getPin())), parse);
             } else
-                return createT1cCertificate(returnData(getHttpClient().getRrnCertifcate(getTypeId(), getReaderId())), parse);
+                return createT1cCertificate(returnData(getHttpClient().getRrnCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
         }
@@ -208,9 +220,20 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     protected T1cCertificate getSigningCertificate(boolean parse) throws GenericContainerException {
         try {
             if (StringUtils.isNotEmpty(this.pin)) {
-                return createT1cCertificate(returnData(getHttpClient().getSecuredSigningCertifcate(getTypeId(), getReaderId(), getPin())), parse);
+                return createT1cCertificate(returnData(getHttpClient().getSecuredSigningCertificate(getTypeId(), getReaderId(), getPin())), parse);
             } else
-                return createT1cCertificate(returnData(getHttpClient().getSigningCertifcate(getTypeId(), getReaderId())), parse);
+                return createT1cCertificate(returnData(getHttpClient().getSigningCertificate(getTypeId(), getReaderId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
+        }
+    }
+
+    protected T1cCertificate getIntermediateCertificate(boolean parse) throws GenericContainerException {
+        try {
+            if (StringUtils.isNotEmpty(this.pin)) {
+                return createT1cCertificate(returnData(getHttpClient().getSecuredIntermediateCertificate(getTypeId(), getReaderId(), getPin())), parse);
+            } else
+                return createT1cCertificate(returnData(getHttpClient().getIntermediateCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
         }
@@ -235,7 +258,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     private T1cCertificate createT1cCertificate(String certificate, boolean parse) {
         T1cCertificate cert = new T1cCertificate().withBase64(certificate);
         if (parse) {
-            //TODO - parse certificate;
+            cert.setParsed(CertificateUtil.parseCertificate(certificate));
         }
         return cert;
     }

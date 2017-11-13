@@ -31,16 +31,19 @@ public interface ContainerRestClient {
     Call<T1cResponse<String>> getNonRepudiationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
-    Call<T1cResponse<String>> getRrnCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+    Call<T1cResponse<String>> getRrnCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/signing")
-    Call<T1cResponse<String>> getSigningCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+    Call<T1cResponse<String>> getSigningCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/issuer")
-    Call<T1cResponse<String>> getIssuerCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+    Call<T1cResponse<String>> getIssuerCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/encryption")
-    Call<T1cResponse<String>> getEncryptionCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+    Call<T1cResponse<String>> getEncryptionCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/intermediate")
+    Call<T1cResponse<String>> getIntermediateCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
     Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclVerifyPinRequest request);
@@ -71,16 +74,19 @@ public interface ContainerRestClient {
     Call<T1cResponse<String>> getSecuredNonRepudiationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
-    Call<T1cResponse<String>> getSecuredRrnCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getSecuredRrnCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/signing")
-    Call<T1cResponse<String>> getSecuredSigningCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getSecuredSigningCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/issuer")
-    Call<T1cResponse<String>> getSecuredIssuerCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getSecuredIssuerCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/encryption")
-    Call<T1cResponse<String>> getSecuredEncryptionCertifcate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getSecuredEncryptionCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/intermediate")
+    Call<T1cResponse<String>> getSecuredIntermediateCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
     Call<T1cResponse<Object>> verifyPinSecured(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclVerifyPinRequest request);
@@ -162,4 +168,23 @@ public interface ContainerRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/activate")
     Call<T1cResponse<Object>> isLuxTrustActivated(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+
+    //
+    // DNIE Container specific methods
+    //
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclDnieInfo>> getDnieInfo(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclDnieAllData>> getDnieAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclDnieAllData>> getDnieAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
+    Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
+    Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
 }

@@ -1,12 +1,14 @@
 package com.t1t.t1c.mock;
 
+import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.rest.GclAdminRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
-import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponse;
+import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponseDer;
+import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponsePem;
 import static com.t1t.t1c.MockResponseFactory.getSuccessResponse;
 
 /**
@@ -28,7 +30,17 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
 
     @Override
     public Call<T1cResponse<String>> getPublicKey() {
-        return delegate.returningResponse(getPublicKeyResponse()).getPublicKey();
+        return delegate.returningResponse(getPublicKeyResponseDer()).getPublicKey();
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getPublicKey(String encoding) {
+        if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
+            return getPublicKey();
+        }
+        else {
+            return delegate.returningResponse(getPublicKeyResponsePem()).getPublicKey(encoding);
+        }
     }
 
     @Override

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclDnieInfo",
+  "type": "object",
+  "properties": {
+    "firstLastName": {
+      "type": "string"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "idesp": {
+      "type": "string"
+    },
+    "number": {
+      "type": "string"
+    },
+    "secondLastName": {
+      "type": "string"
+    },
+    "serialNumber": {
+      "type": "string"
+    }
+  }
+}

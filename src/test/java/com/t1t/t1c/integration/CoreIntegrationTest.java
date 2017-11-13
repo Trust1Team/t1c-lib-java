@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class CoreIntegrationTest extends AbstractT1cClientIntegrationTest {
 
-    private static final Logger log = LoggerFactory.getLogger(CoreIntegrationTest.class);
+    /*private static final Logger log = LoggerFactory.getLogger(CoreIntegrationTest.class);
 
     @Test(timeout = 11000)
     public void pollWithoutInsertedReader() throws Exception {
@@ -52,6 +52,6 @@ public class CoreIntegrationTest extends AbstractT1cClientIntegrationTest {
     public void pollReaderWhileInsertingCard() throws Exception {
         GclReader reader = getClient().getCore().pollCardInserted();
         assertTrue(reader != null);
-    }
+    }*/
 
 }

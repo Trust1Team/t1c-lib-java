@@ -68,8 +68,20 @@ public abstract class AbstractTestClass {
         PowerMock.mockStatic(RestServiceBuilder.class);
 
         expect(RestServiceBuilder.getContainerRestClient(conf)).andReturn(containerRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(conf)).andReturn(containerRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(conf)).andReturn(containerRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(conf)).andReturn(containerRestClient);
+        expect(RestServiceBuilder.getDsRestClient(conf)).andReturn(dsRestClient);
+        expect(RestServiceBuilder.getDsRestClient(conf)).andReturn(dsRestClient);
+        expect(RestServiceBuilder.getDsRestClient(conf)).andReturn(dsRestClient);
         expect(RestServiceBuilder.getDsRestClient(conf)).andReturn(dsRestClient);
         expect(RestServiceBuilder.getGclAdminRestClient(conf)).andReturn(gclAdminRestClient);
+        expect(RestServiceBuilder.getGclAdminRestClient(conf)).andReturn(gclAdminRestClient);
+        expect(RestServiceBuilder.getGclAdminRestClient(conf)).andReturn(gclAdminRestClient);
+        expect(RestServiceBuilder.getGclAdminRestClient(conf)).andReturn(gclAdminRestClient);
+        expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
+        expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
+        expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
         expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
 
         replayAll();

@@ -24,10 +24,16 @@ public final class MockResponseFactory {
                 .withData(null);
     }
 
-    public static T1cResponse<String> getPublicKeyResponse() {
+    public static T1cResponse<String> getPublicKeyResponseDer() {
         return new T1cResponse<String>()
                 .withSuccess(true)
                 .withData("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB");
+    }
+
+    public static T1cResponse<String> getPublicKeyResponsePem() {
+        return new T1cResponse<String>()
+                .withSuccess(true)
+                .withData("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==");
     }
 
     public static T1cResponse<GclStatus> getGclV1Status() {
@@ -241,6 +247,36 @@ public final class MockResponseFactory {
                 .withData(new GclLuxTrustAllCertificates()
                         .withRootCertificates(Arrays.asList(cert, cert))
                         .withNonRepudiationCertificate(cert)
+                        .withAuthenticationCertificate(cert));
+    }
+
+    public static T1cResponse<GclDnieInfo> getDnieInfoResponse() {
+        return new T1cResponse<GclDnieInfo>().withSuccess(true)
+                .withData(new GclDnieInfo()
+                        .withFirstLastName("Doe")
+                        .withFirstName("John")
+                        .withSecondLastName("Doe")
+                        .withIdesp("IDesp")
+                        .withNumber("1234")
+                        .withSerialNumber("5678"));
+    }
+
+    public static T1cResponse<GclDnieAllData> getDnieAllDataResponse() {
+        String cert = getCertificateResponse().getData();
+        return new T1cResponse<GclDnieAllData>().withSuccess(true)
+                .withData(new GclDnieAllData()
+                        .withIntermediateCertificate(cert)
+                        .withSigningCertificate(cert)
+                        .withInfo(getDnieInfoResponse().getData())
+                        .withAuthenticationCertificate(cert));
+    }
+
+    public static T1cResponse<GclDnieAllCertificates> getDnieAllCertificatesResponse() {
+        String cert = getCertificateResponse().getData();
+        return new T1cResponse<GclDnieAllCertificates>().withSuccess(true)
+                .withData(new GclDnieAllCertificates()
+                        .withIntermediateCertificate(cert)
+                        .withSigningCertificate(cert)
                         .withAuthenticationCertificate(cert));
     }
 

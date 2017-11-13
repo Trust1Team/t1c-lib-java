@@ -26,9 +26,9 @@ public interface IGenericService {
 
     List<GclReader> getPinVerificationCapableReaders();
 
-    String authenticate(String readerId, GclAuthenticateOrSignData data);
+    String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin);
 
-    String sign(String readerId, GclAuthenticateOrSignData data);
+    String sign(String readerId, GclAuthenticateOrSignData data, String... pin);
 
     boolean verifyPin(String readerId, String... pin);
 }

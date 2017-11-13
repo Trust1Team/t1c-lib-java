@@ -3,6 +3,7 @@ package com.t1t.t1c.exceptions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.exceptions.BeIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
+import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -229,5 +230,17 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with LuxTrust container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new LuxTrustContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a DNIE container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static DnieContainerException dnieContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with LuxTrust container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new DnieContainerException(errorMessage, cause);
     }
 }

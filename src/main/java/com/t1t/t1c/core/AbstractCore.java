@@ -2,6 +2,7 @@ package com.t1t.t1c.core;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
@@ -34,6 +35,8 @@ public abstract class AbstractCore {
     public abstract boolean activate();
 
     public abstract String getPubKey();
+
+    public abstract String getPubKey(DsPublicKeyEncoding encoding);
 
     public abstract void setPubKey(String publicKey);
 

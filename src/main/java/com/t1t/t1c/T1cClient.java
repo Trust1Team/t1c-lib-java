@@ -164,12 +164,12 @@ public class T1cClient {
         return genericService.getPinVerificationCapableReaders();
     }
 
-    public String authenticate(String readerId, GclAuthenticateOrSignData data) {
-        return genericService.authenticate(readerId, data);
+    public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
+        return genericService.authenticate(readerId, data, pin);
     }
 
-    public String sign(String readerId, GclAuthenticateOrSignData data) {
-        return genericService.sign(readerId, data);
+    public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
+        return genericService.sign(readerId, data, pin);
     }
 
     public boolean verifyPin(String readerId, String... pin) {
@@ -192,7 +192,7 @@ public class T1cClient {
         this.core = new Core(config);
         this.genericService = new GenericService();
 
-        if (!automatic && !config.getEnvironment().equals(Environment.DEV)) {
+        if (!automatic) {
             initSecurityContext();
             registerAndActivate();
         }

@@ -12,7 +12,7 @@ import org.junit.Before;
  */
 public abstract class AbstractT1cClientIntegrationTest {
 
-    private T1cClient client;
+    /*private T1cClient client;
 
     protected T1cClient getClient() {
         return client;
@@ -36,5 +36,5 @@ public abstract class AbstractT1cClientIntegrationTest {
     @After
     public void cleanUp() {
         this.client = null;
-    }
+    }*/
 }
