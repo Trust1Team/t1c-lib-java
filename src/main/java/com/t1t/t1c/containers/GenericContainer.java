@@ -2,6 +2,7 @@ package com.t1t.t1c.containers;
 
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 
@@ -26,6 +27,8 @@ public interface GenericContainer {
     String getPin();
 
     AllData getAllData(List<String> filterParams) throws GenericContainerException;
+
+    AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException;
 
     boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
 

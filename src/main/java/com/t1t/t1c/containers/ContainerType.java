@@ -1,5 +1,6 @@
 package com.t1t.t1c.containers;
 
+import com.t1t.t1c.containers.remoteloading.belfius.IBelfiusContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
@@ -91,6 +92,12 @@ public enum ContainerType {
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
             IPtEIdContainer.class,
+            null),
+    READER_API("readerapi",
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            IBelfiusContainer.class,
             null);
 
     private static final Map<String, ContainerType> idMap;
@@ -142,7 +149,7 @@ public enum ContainerType {
         return id;
     }
 
-    public List<String> getCardDescription() {
+    public List<String> getCardDescriptions() {
         return cardDescriptions;
     }
 

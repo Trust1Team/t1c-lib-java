@@ -43,7 +43,7 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
             if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams)));
             } else {
-                return returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin()));
+                return returnData(getHttpClient().getDnieAllData(getTypeId(), getReaderId(), getPin()));
             }
         } catch (RestException ex) {
             throw ExceptionFactory.luxTrustContainerException("Could not retrieve all data from container", ex);

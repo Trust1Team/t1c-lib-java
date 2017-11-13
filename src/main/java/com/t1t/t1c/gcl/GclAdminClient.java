@@ -4,6 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.GclAdminRestClient;
@@ -43,6 +44,16 @@ public class GclAdminClient extends AbstractRestClient<GclAdminRestClient> imple
     public String getPublicKey() throws GclAdminClientException {
         try {
             return returnData(getHttpClient().getPublicKey());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
+        }
+    }
+
+    @Override
+    public String getPublicKey(DsPublicKeyEncoding encoding) throws GclAdminClientException {
+        if (encoding == null) return getPublicKey();
+        try {
+            return returnData(getHttpClient().getPublicKey(encoding.getQueryParamValue()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }

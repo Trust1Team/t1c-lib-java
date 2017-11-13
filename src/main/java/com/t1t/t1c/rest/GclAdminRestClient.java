@@ -3,10 +3,7 @@ package com.t1t.t1c.rest;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
+import retrofit2.http.*;
 
 /**
  * Created by michallispashidis on 04/11/2017.
@@ -18,6 +15,9 @@ public interface GclAdminRestClient {
 
     @GET("admin/certificate")
     Call<T1cResponse<String>> getPublicKey();
+
+    @GET("admin/certificate")
+    Call<T1cResponse<String>> getPublicKey(@Query("encoding") String encoding);
 
     @PUT("admin/certificate")
     Call<T1cResponse<Object>> setPublicKey(@Body GclUpdatePublicKeyRequest request);

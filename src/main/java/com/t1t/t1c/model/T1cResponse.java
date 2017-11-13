@@ -24,12 +24,22 @@ public class T1cResponse<T> implements Serializable {
         this.data = data;
     }
 
+    public T1cResponse<T> withData(T data) {
+        setData(data);
+        return this;
+    }
+
     public Boolean getSuccess() {
         return success;
     }
 
     public void setSuccess(Boolean success) {
         this.success = success;
+    }
+
+    public T1cResponse<T> withSuccess(Boolean success) {
+        setSuccess(success);
+        return this;
     }
 
     @Override

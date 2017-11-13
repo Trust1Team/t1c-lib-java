@@ -32,12 +32,11 @@ public final class ContainerUtil {
         throw ExceptionFactory.genericContainerException("Could not determine container for card");
     }
 
-    public static boolean isContainerAvailable(GclCard card) {
-        return isContainerAvailable(determineContainer(card));
+    public static boolean isContainerAvailable(GclCard card, List<GclContainer> availableContainers) {
+        return isContainerAvailable(determineContainer(card), availableContainers);
     }
 
-    public static boolean isContainerAvailable(ContainerType type) {
-        List<GclContainer> availableContainers = FactoryService.getGclClient().getContainers();
+    public static boolean isContainerAvailable(ContainerType type, List<GclContainer> availableContainers) {
         for (GclContainer container : availableContainers) {
             if (container.getId().equalsIgnoreCase(type.getId())) return true;
         }
