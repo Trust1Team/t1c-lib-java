@@ -2,8 +2,9 @@ package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.exceptions.BeIdContainerException;
+import com.t1t.t1c.containers.smartcards.eid.esp.exceptions.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.DnieContainerException;
+import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -239,8 +240,20 @@ public final class ExceptionFactory {
      * @return
      */
     public static DnieContainerException dnieContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with LuxTrust container";
+        String errorMessage = "Communication error with DNIE container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new DnieContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a PT ID container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static PtIdContainerException ptIdContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with PT ID container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new PtIdContainerException(errorMessage, cause);
     }
 }

@@ -8,9 +8,9 @@ import com.t1t.t1c.exceptions.RestException;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class DnieContainerException extends GenericContainerException {
+public class PtIdContainerException extends GenericContainerException {
 
-    public DnieContainerException(String message, RestException cause) {
+    public PtIdContainerException(String message, RestException cause) {
         super(message, cause);
     }
 

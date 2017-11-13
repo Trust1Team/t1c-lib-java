@@ -1,7 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.esp;
 
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.DnieContainerException;
+import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.model.rest.GclDnieInfo;
 import com.t1t.t1c.model.rest.T1cCertificate;
 
@@ -11,12 +11,12 @@ import com.t1t.t1c.model.rest.T1cCertificate;
  */
 public interface IDnieContainer extends GenericContainer {
 
-    GclDnieInfo getInfo() throws DnieContainerException;
+    GclDnieInfo getInfo() throws PtIdContainerException;
 
-    T1cCertificate getIntermediateCertificate(boolean parse) throws DnieContainerException;
+    T1cCertificate getIntermediateCertificate(boolean parse) throws PtIdContainerException;
 
-    T1cCertificate getAuthenticationCertificate(boolean parse) throws DnieContainerException;
+    T1cCertificate getAuthenticationCertificate(boolean parse) throws PtIdContainerException;
 
-    T1cCertificate getSigningCertificate(boolean parse) throws DnieContainerException;
+    T1cCertificate getSigningCertificate(boolean parse) throws PtIdContainerException;
 
 }

@@ -168,18 +168,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             } else
                 return createT1cCertificate(returnData(getHttpClient().getRootCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
-    }
-
-    protected T1cCertificate getCitizenCertificate(boolean parse) throws GenericContainerException {
-        try {
-            if (StringUtils.isNotEmpty(this.pin)) {
-                return createT1cCertificate(returnData(getHttpClient().getSecuredCitizenCertificate(getTypeId(), getReaderId(), getPin())), parse);
-            } else
-                return createT1cCertificate(returnData(getHttpClient().getCitizenCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve citizen certificate from container", ex);
+            throw ExceptionFactory.genericContainerException("Could not retrieve root certificate from container", ex);
         }
     }
 
@@ -191,7 +180,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             } else
                 return createT1cCertificate(returnData(getHttpClient().getAuthenticationCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve authentication certificate from container", ex);
+            throw ExceptionFactory.genericContainerException("Could not retrieve authentication certificate from container", ex);
         }
     }
 
@@ -202,18 +191,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             } else
                 return createT1cCertificate(returnData(getHttpClient().getNonRepudiationCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve authentication certificate from container", ex);
-        }
-    }
-
-    protected T1cCertificate getRrnCertificate(boolean parse) throws GenericContainerException {
-        try {
-            if (StringUtils.isNotEmpty(this.pin)) {
-                return createT1cCertificate(returnData(getHttpClient().getSecuredRrnCertificate(getTypeId(), getReaderId(), getPin())), parse);
-            } else
-                return createT1cCertificate(returnData(getHttpClient().getRrnCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
+            throw ExceptionFactory.genericContainerException("Could not retrieve authentication certificate from container", ex);
         }
     }
 
@@ -224,18 +202,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             } else
                 return createT1cCertificate(returnData(getHttpClient().getSigningCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
-        }
-    }
-
-    protected T1cCertificate getIntermediateCertificate(boolean parse) throws GenericContainerException {
-        try {
-            if (StringUtils.isNotEmpty(this.pin)) {
-                return createT1cCertificate(returnData(getHttpClient().getSecuredIntermediateCertificate(getTypeId(), getReaderId(), getPin())), parse);
-            } else
-                return createT1cCertificate(returnData(getHttpClient().getIntermediateCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
+            throw ExceptionFactory.genericContainerException("Could not retrieve RRN certificate from container", ex);
         }
     }
 
@@ -255,7 +222,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
         return sb.toString();
     }
 
-    private T1cCertificate createT1cCertificate(String certificate, boolean parse) {
+    protected T1cCertificate createT1cCertificate(String certificate, boolean parse) {
         T1cCertificate cert = new T1cCertificate().withBase64(certificate);
         if (parse) {
             cert.setParsed(CertificateUtil.parseCertificate(certificate));

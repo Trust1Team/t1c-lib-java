@@ -13,6 +13,8 @@ import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
@@ -42,10 +44,6 @@ public class FactoryService {
     private static IGclAdminClient gclAdminClient;
     private static IDsClient dsClient;
     private static ContainerRestClient containerRestClient;
-    private static IBeIdContainer beIdContainer;
-    private static ILuxIdContainer luxIdContainer;
-    private static ILuxTrustContainer luxTrustContainer;
-    private static IDnieContainer dnieContainer;
 
     public static IDsClient getDsClient() {
         if (dsClient == null) {
@@ -117,41 +115,29 @@ public class FactoryService {
     }
 
     public static IBeIdContainer getBeIdContainer(String readerId) {
-        if (beIdContainer == null) {
-            checkConfigAndReaderIdPresent(readerId);
-            beIdContainer = new BeIdContainer(config, readerId, getContainerRestClient());
-        }
-        return beIdContainer;
+        checkConfigAndReaderIdPresent(readerId);
+        return new BeIdContainer(config, readerId, getContainerRestClient());
     }
 
     public static ILuxIdContainer getLuxIdContainer(String readerId, String pin) {
-        if (luxIdContainer == null) {
-            checkConfigAndReaderIdPresent(readerId);
-            luxIdContainer = new LuxIdContainer(config, readerId, getContainerRestClient(), pin);
-        }
-        return luxIdContainer;
+        checkConfigAndReaderIdPresent(readerId);
+        return new LuxIdContainer(config, readerId, getContainerRestClient(), pin);
     }
 
     public static ILuxTrustContainer getLuxTrustContainer(String readerId, String pin) {
-        if (luxTrustContainer == null) {
-            checkConfigAndReaderIdPresent(readerId);
-            luxTrustContainer = new LuxTrustContainer(config, readerId, getContainerRestClient(), pin);
-        }
-        return luxTrustContainer;
+        checkConfigAndReaderIdPresent(readerId);
+        return new LuxTrustContainer(config, readerId, getContainerRestClient(), pin);
     }
 
     public static IDnieContainer getDnieContainer(String readerId) {
-        if (dnieContainer == null) {
-            checkConfigAndReaderIdPresent(readerId);
-            dnieContainer = new DnieContainer(config, readerId, getContainerRestClient());
-        }
-        return dnieContainer;
+        checkConfigAndReaderIdPresent(readerId);
+        return new DnieContainer(config, readerId, getContainerRestClient());
     }
 
     public static IPtEIdContainer getPtIdContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        checkConfigAndReaderIdPresent(readerId);
+        return new PtEIdContainer(config, readerId, getContainerRestClient());
     }
-    //TODO - PT
 
     public static IEmvContainer getEmvContainer(String readerId) {
         throw new UnsupportedOperationException();
@@ -209,27 +195,11 @@ public class FactoryService {
             gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGclAdminRestClient(config));
             dsClient = new DsClient(config, RestServiceBuilder.getDsRestClient(config));
             containerRestClient = RestServiceBuilder.getContainerRestClient(config);
-            if (beIdContainer != null) {
-                beIdContainer = new BeIdContainer(config, beIdContainer.getReaderId(), getContainerRestClient());
-            }
-            if (luxTrustContainer != null) {
-                luxTrustContainer = new LuxTrustContainer(config, luxTrustContainer.getReaderId(), getContainerRestClient(), luxTrustContainer.getPin());
-            }
-            if (luxIdContainer != null) {
-                luxIdContainer = new LuxIdContainer(config, luxIdContainer.getReaderId(), getContainerRestClient(), luxIdContainer.getPin());
-            }
-            if (dnieContainer != null) {
-                dnieContainer = new DnieContainer(config, dnieContainer.getReaderId(), getContainerRestClient());
-            }
         } else {
             gclClient = null;
             gclAdminClient = null;
             dsClient = null;
             containerRestClient = null;
-            beIdContainer = null;
-            luxTrustContainer = null;
-            luxIdContainer = null;
-            dnieContainer = null;
         }
     }
 

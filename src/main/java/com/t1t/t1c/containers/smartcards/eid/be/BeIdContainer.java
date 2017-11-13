@@ -13,6 +13,7 @@ import com.t1t.t1c.model.rest.GclBeIdRn;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -89,7 +90,11 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
 
     @Override
     public T1cCertificate getCitizenCertificate(boolean parse) throws BeIdContainerException {
-        return super.getCitizenCertificate(parse);
+        try {
+            return createT1cCertificate(returnData(getHttpClient().getCitizenCertificate(getTypeId(), getReaderId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.beIdContainerException("Could not retrieve citizen certificate from container", ex);
+        }
     }
 
     @Override
@@ -104,6 +109,10 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
 
     @Override
     public T1cCertificate getRrnCertificate(boolean parse) throws BeIdContainerException {
-        return super.getRrnCertificate(parse);
+        try {
+            return createT1cCertificate(returnData(getHttpClient().getRrnCertificate(getTypeId(), getReaderId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
+        }
     }
 }

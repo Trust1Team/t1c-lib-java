@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclPtIdData",
+  "type": "object",
+  "properties": {
+    "accidental_indications": {
+      "type": "string"
+    },
+    "civilian_number": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "date_of_birth": {
+      "type": "string"
+    },
+    "document_number": {
+      "type": "string"
+    },
+    "document_number_pan": {
+      "type": "string"
+    },
+    "document_type": {
+      "type": "string"
+    },
+    "document_version": {
+      "type": "string"
+    },
+    "gender": {
+      "type": "string"
+    },
+    "given_name_father": {
+      "type": "string"
+    },
+    "given_name_mother": {
+      "type": "string"
+    },
+    "health_no": {
+      "type": "string"
+    },
+    "height": {
+      "type": "string"
+    },
+    "issuing_entity": {
+      "type": "string"
+    },
+    "local_of_request": {
+      "type": "string"
+    },
+    "mrz1": {
+      "type": "string"
+    },
+    "mrz2": {
+      "type": "string"
+    },
+    "mrz3": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "social_security_no": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "surname_father": {
+      "type": "string"
+    },
+    "surname_mother": {
+      "type": "string"
+    },
+    "tax_no": {
+      "type": "string"
+    },
+    "validity_begin_date": {
+      "type": "string"
+    },
+    "validity_end_date": {
+      "type": "string"
+    }
+  }
+}

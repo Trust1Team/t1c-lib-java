@@ -3,9 +3,8 @@ package com.t1t.t1c.containers.smartcards.eid.esp;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.DnieContainerException;
+import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
@@ -27,7 +26,7 @@ public class DnieContainer extends AbstractContainer implements IDnieContainer {
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws DnieContainerException {
+    public AllData getAllData(List<String> filterParams) throws PtIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getDnieAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
@@ -40,7 +39,7 @@ public class DnieContainer extends AbstractContainer implements IDnieContainer {
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws DnieContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams) throws PtIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getDnieAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams)));
@@ -53,7 +52,7 @@ public class DnieContainer extends AbstractContainer implements IDnieContainer {
     }
 
     @Override
-    public GclDnieInfo getInfo() throws DnieContainerException {
+    public GclDnieInfo getInfo() throws PtIdContainerException {
         try {
             return returnData(getHttpClient().getDnieInfo(getTypeId(), getReaderId()));
         } catch (RestException ex) {
@@ -62,17 +61,21 @@ public class DnieContainer extends AbstractContainer implements IDnieContainer {
     }
 
     @Override
-    public T1cCertificate getIntermediateCertificate(boolean parse) throws DnieContainerException {
-        return super.getIntermediateCertificate(parse);
+    public T1cCertificate getIntermediateCertificate(boolean parse) throws PtIdContainerException {
+        try {
+            return createT1cCertificate(returnData(getHttpClient().getIntermediateCertificate(getTypeId(), getReaderId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.dnieContainerException("Could not retrieve intermediate certificate from container", ex);
+        }
     }
 
     @Override
-    public T1cCertificate getAuthenticationCertificate(boolean parse) throws DnieContainerException {
+    public T1cCertificate getAuthenticationCertificate(boolean parse) throws PtIdContainerException {
         return super.getAuthenticationCertificate(parse);
     }
 
     @Override
-    public T1cCertificate getSigningCertificate(boolean parse) throws DnieContainerException {
+    public T1cCertificate getSigningCertificate(boolean parse) throws PtIdContainerException {
         return super.getSigningCertificate(parse);
     }
 }

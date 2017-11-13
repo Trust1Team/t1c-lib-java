@@ -267,6 +267,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclDnieInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplication.json</sourcePath>
                     </sourcePaths>
                     <excludes></excludes>
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>

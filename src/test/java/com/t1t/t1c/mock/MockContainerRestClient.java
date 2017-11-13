@@ -101,11 +101,6 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredRrnCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredRrnCertificate(containerId, readerId, pin);
-    }
-
-    @Override
     public Call<T1cResponse<String>> getSecuredSigningCertificate(String containerId, String readerId, String pin) {
         return delegate.returningResponse(getCertificateResponse()).getSecuredSigningCertificate(containerId, readerId, pin);
     }
@@ -152,7 +147,7 @@ public class MockContainerRestClient implements ContainerRestClient {
 
     @Override
     public Call<T1cResponse<String>> getBeIdPicture(String containerId, String readerId) {
-        return delegate.returningResponse(getBeIdPictureResponse()).getBeIdPicture(containerId, readerId);
+        return delegate.returningResponse(getPictureResponse()).getBeIdPicture(containerId, readerId);
     }
 
     @Override
@@ -266,7 +261,42 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredIntermediateCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredIntermediateCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<GclPtIdData>> getPtIdData(String containerId, String readerId, boolean includePhoto) {
+        return delegate.returningResponse(getPtIdDataResponse(includePhoto)).getPtIdData(containerId, readerId, includePhoto);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getPtIdPhoto(String containerId, String readerId) {
+        return delegate.returningResponse(getPictureResponse()).getPtIdPhoto(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getRootAuthenticationCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getRootAuthenticationCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getRootNonRepudiationCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(getCertificateResponse()).getRootNonRepudiationCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAllData>> getPtIdAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getPtIdAllDataResponse()).getPtIdAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAllData>> getPtIdAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getPtIdAllDataResponse()).getPtIdAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(String containerId, String readerId) {
+        return delegate.returningResponse(getPtIdAllCertificatesResponse()).getPtIdAllCertificates(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getPtIdAllCertificatesResponse()).getPtIdAllCertificates(containerId, readerId);
     }
 }
