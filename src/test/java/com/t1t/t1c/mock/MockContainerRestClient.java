@@ -334,6 +334,36 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
+    public Call<T1cResponse<Boolean>> getMobibStatus(String containerId, String readerId) {
+        return delegate.returningResponse(getBooleanResponse()).getMobibStatus(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getMobibPicture(String containerId, String readerId) {
+        return delegate.returningResponse(getPictureResponse()).getMobibPicture(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibCardIssuing>> getMobibCardIssuing(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibCardIssuingResponse()).getMobibCardIssuing(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclMobibContract>>> getMobibContracts(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibContractResponse()).getMobibContracts(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibAllDataResponse()).getMobibAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getMobibAllDataResponse()).getMobibAllData(containerId, readerId, filter);
+    }
+
+    @Override
     public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId) {
         List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
         T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);

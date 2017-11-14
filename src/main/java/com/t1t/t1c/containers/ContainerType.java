@@ -135,7 +135,13 @@ public enum ContainerType {
     }
 
     public static ContainerType valueOfCardDescription(String description) {
-        return cardDescriptionMap.get(description);
+        String keyToUse = null;
+        for (String key : cardDescriptionMap.keySet()) {
+            if (description.contains(key)) {
+                keyToUse = key;
+            }
+        }
+        return cardDescriptionMap.get(keyToUse);
     }
 
     @Override

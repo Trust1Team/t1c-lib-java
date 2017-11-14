@@ -6,6 +6,8 @@ import com.t1t.t1c.containers.smartcards.eid.esp.exceptions.DnieContainerExcepti
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.containers.smartcards.emv.exceptions.EmvContainerException;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.mobib.exceptions.MobibContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import org.apache.commons.lang3.StringUtils;
 
@@ -271,6 +273,18 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with EMV container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new EmvContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a Mobib container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static MobibContainerException mobibContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with MOBIB container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new MobibContainerException(errorMessage, cause);
     }
 
     /**

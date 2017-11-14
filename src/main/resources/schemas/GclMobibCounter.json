@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclMobibCounter",
+  "type": "object",
+  "properties": {
+    "time": {
+      "type": "string"
+    },
+    "type": {
+      "type": "integer"
+    }
+  }
+}

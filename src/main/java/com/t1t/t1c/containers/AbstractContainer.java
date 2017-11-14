@@ -15,8 +15,8 @@ import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.ContainerRestClient;
 import com.t1t.t1c.services.FactoryService;
-import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
@@ -113,52 +113,65 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
 
     @Override
     public boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        pinEnforcementCheck(pin);
-        try {
-            if (pin.length > 0) {
-                Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                if (StringUtils.isNotEmpty(this.pin)) {
-                    return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin, new GclVerifyPinRequest().withPin(pin[0]))));
-                } else
-                    return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId, new GclVerifyPinRequest().withPin(pin[0]))));
-            } else {
-                if (StringUtils.isNotEmpty(this.pin)) {
-                    return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin)));
-                } else
-                    return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId)));
-            }
-        } catch (RestException ex) {
-            if (StringUtils.isNotEmpty(ex.getJsonError())) {
-                try {
-                    GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                    throw ExceptionFactory.verifyPinException(error.getDescription());
-                } catch (JsonSyntaxException e) {
-                    getLogger().error("Couldn't decode error message: ", e);
+        if (ContainerUtil.canVerifyPin(type)) {
+            pinEnforcementCheck(pin);
+            try {
+                if (pin.length > 0) {
+                    Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
+                    if (StringUtils.isNotEmpty(this.pin)) {
+                        return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin, new GclVerifyPinRequest().withPin(pin[0]))));
+                    } else
+                        return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId, new GclVerifyPinRequest().withPin(pin[0]))));
+                } else {
+                    if (StringUtils.isNotEmpty(this.pin)) {
+                        return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin)));
+                    } else
+                        return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId)));
                 }
+            } catch (RestException ex) {
+                if (StringUtils.isNotEmpty(ex.getJsonError())) {
+                    try {
+                        GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
+                        throw ExceptionFactory.verifyPinException(error.getDescription());
+                    } catch (JsonSyntaxException e) {
+                        getLogger().error("Couldn't decode error message: ", e);
+                    }
+                }
+                throw ExceptionFactory.genericContainerException("Could not verify pin with generic container", ex);
             }
-            throw ExceptionFactory.genericContainerException("Could not verify pin with generic container", ex);
+        } else {
+            throw ExceptionFactory.verifyPinException("Container does not support pin verification");
         }
     }
 
     @Override
     public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
-        try {
-            if (StringUtils.isNotEmpty(this.pin)) {
-                return returnData(getHttpClient().authenticateSecured(type.getId(), readerId, pin, data));
-            } else return returnData(getHttpClient().authenticate(type.getId(), readerId, data));
-        } catch (RestException ex) {
-            throw ExceptionFactory.genericContainerException("Could not authenticate with generic container", ex);
+        if (ContainerUtil.canAuthenticate(type)) {
+            try {
+                if (StringUtils.isNotEmpty(this.pin)) {
+                    return returnData(getHttpClient().authenticateSecured(type.getId(), readerId, pin, data));
+                } else return returnData(getHttpClient().authenticate(type.getId(), readerId, data));
+            } catch (RestException ex) {
+                throw ExceptionFactory.genericContainerException("Could not authenticate with generic container", ex);
+            }
+        }
+        else {
+            throw ExceptionFactory.authenticateException("Container does not support authenticate");
         }
     }
 
     @Override
     public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
-        try {
-            if (StringUtils.isNotEmpty(pin)) {
-                return returnData(getHttpClient().signSecured(type.getId(), readerId, pin, data));
-            } else return returnData(getHttpClient().sign(type.getId(), readerId, data));
-        } catch (RestException ex) {
-            throw ExceptionFactory.genericContainerException("Could not authenticate with generic container", ex);
+        if (ContainerUtil.canSign(type)) {
+            try {
+                if (StringUtils.isNotEmpty(pin)) {
+                    return returnData(getHttpClient().signSecured(type.getId(), readerId, pin, data));
+                } else return returnData(getHttpClient().sign(type.getId(), readerId, data));
+            } catch (RestException ex) {
+                throw ExceptionFactory.genericContainerException("Could not authenticate with generic container", ex);
+            }
+        } else {
+            throw ExceptionFactory.signingException("Container does not support signing");
         }
     }
 

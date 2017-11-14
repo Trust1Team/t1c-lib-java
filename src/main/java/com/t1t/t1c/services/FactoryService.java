@@ -17,6 +17,7 @@ import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.ISafenetContainer;
@@ -174,9 +175,8 @@ public final class FactoryService {
     }
 
     public static IMobibContainer getMobibContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        return new MobibContainer(readerId, getContainerRestClient());
     }
-    //TODO - MOBIB
 
     public static IOcraContainer getOcraContainer(String readerId) {
         throw new UnsupportedOperationException();

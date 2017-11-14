@@ -1,5 +1,6 @@
 package com.t1t.t1c;
 
+import com.google.gson.Gson;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;
@@ -14,6 +15,8 @@ import java.util.List;
  * @since 2017
  */
 public final class MockResponseFactory {
+
+    private static final Gson GSON = new Gson();
 
     private MockResponseFactory() {
     }
@@ -363,6 +366,160 @@ public final class MockResponseFactory {
     public static T1cResponse<GclEmvCertificate> getEmvCertResponse(GclEmvAidRequest request) {
         GclEmvCertificate cert = new GclEmvCertificate().withData("data").withExponent("exponent").withRemainder("remainder");
         return getResponse(cert);
+    }
+
+    public static T1cResponse<Boolean> getBooleanResponse() {
+        return getResponse(true);
+    }
+
+    public static T1cResponse<GclMobibCardIssuing> getMobibCardIssuingResponse() {
+        String json = "{\n" +
+                "\"card_expiration_date\": \"2016-01-31\",\n" +
+                "\"card_holder_birth_date\": \"1964-07-23\",\n" +
+                "\"card_holder_end_date\": \"2016-01-31\",\n" +
+                "\"card_holder_id\": \"6060575401800002365\",\n" +
+                "\"card_holder_name\": \"MIAO- ERH WANG LIU \",\n" +
+                "\"card_holder_start_date\": \"2012-02-11\",\n" +
+                "\"card_revalidation_date\": \"2012-02-10\",\n" +
+                "\"card_type\": 1,\n" +
+                "\"company_id\": 18,\n" +
+                "\"gender\": 1,\n" +
+                "\"language\": 2,\n" +
+                "\"version\": 1\n" +
+                "}";
+        return getResponse(GSON.fromJson(json, GclMobibCardIssuing.class));
+    }
+
+    public static T1cResponse<List<GclMobibContract>> getMobibContractResponse() {
+        String json = "{\n" +
+                "\"authenticator_kvc\": 17,\n" +
+                "\"authenticator_value\": 587,\n" +
+                "\"journey_interchanges_allowed\": false, \n" +
+                "\"passengers_max\": 7,\n" +
+                "\"period_journeys\": {\n" +
+                "\"max_number_of_trips\": 13,\n" +
+                "\"period\": 2\n" +
+                "},\n" +
+                "\"price_amount\": 500,\n" +
+                "\"provider\": 1,\n" +
+                "\"restrict_code\": 5,\n" +
+                "\"restrict_time\": 2,\n" +
+                "\"sale_date\": \"2014-03-06\",\n" +
+                "\"sale_sam_count\": 15,\n" +
+                "\"sale_sam_id\": 25,\n" +
+                "\"spatials\": [\n" +
+                "{\n" +
+                "\"type\": 7\n" +
+                "}\n" +
+                "],\n" +
+                "\"tariff\": {\n" +
+                "\"counter\": {\n" +
+                "\"time\": \"2017-02-21T06:20:00\",\n" +
+                "\"type\": 4\n" +
+                "},\n" +
+                "\"multimodal\": true,\n" +
+                "\"nameref\": 231\n" +
+                "},\n" +
+                "\"validity_duration\": {\n" +
+                "\"unit\": 2,\n" +
+                "\"value\": 7\n" +
+                "},\n" +
+                "\"validity_start_date\": \"2014-03-06\",\n" +
+                "\"vehicle_class_allowed\": 1,\n" +
+                "\"version\": 4\n" +
+                "}";
+        GclMobibContract contract = GSON.fromJson(json, GclMobibContract.class);
+        List<GclMobibContract> contracts = Arrays.asList(contract, contract);
+        return getResponse(contracts);
+    }
+
+    public static T1cResponse<GclMobibAllData> getMobibAllDataResponse() {
+        String json = "{\n" +
+                "\"active\": true,\n" +
+                "\"card-issuing\": {\n" +
+                "\"card_expiration_date\": \"2016-01-31\",\n" +
+                "\"card_holder_birth_date\": \"1964-07-23\",\n" +
+                "\"card_holder_end_date\": \"2016-01-31\",\n" +
+                "\"card_holder_id\": \"6060575401800002365\",\n" +
+                "\"card_holder_name\": \"MIAO- ERH WANG LIU \",\n" +
+                "\"card_holder_start_date\": \"2012-02-11\",\n" +
+                "\"card_revalidation_date\": \"2012-02-10\",\n" +
+                "\"card_type\": 1,\n" +
+                "\"company_id\": 18,\n" +
+                "\"gender\": 1,\n" +
+                "\"language\": 2,\n" +
+                "\"version\": 1\n" +
+                "},\n" +
+                "\"contracts\": [\n" +
+                "{\n" +
+                "\"authenticator_kvc\": 17,\n" +
+                "\"authenticator_value\": 587,\n" +
+                "\"journey_interchanges_allowed\": false,\n" +
+                "\"passengers_max\": 7,\n" +
+                "\"period_journeys\": {\n" +
+                "\"max_number_of_trips\": 13,\n" +
+                "\"period\": 2\n" +
+                "},\n" +
+                "\"price_amount\": 500,\n" +
+                "\"provider\": 1,\n" +
+                "\"restrict_code\": 5,\n" +
+                "\"restrict_time\": 2,\n" +
+                "\"sale_date\": \"2014-03-06\",\n" +
+                "\"sale_sam_count\": 15,\n" +
+                "\"sale_sam_id\": 25,\n" +
+                "\"spatials\": [\n" +
+                "{\n" +
+                "\"type\": 7\n" +
+                "}\n" +
+                "],\n" +
+                "\"tariff\": {\n" +
+                "\"counter\": {\n" +
+                "\"time\": \"2017-02-21T06:20:00\",\n" +
+                "\"type\": 4\n" +
+                "},\n" +
+                "\"multimodal\": true,\n" +
+                "\"nameref\": 231\n" +
+                "},\n" +
+                "\"validity_duration\": {\n" +
+                "\"unit\": 2,\n" +
+                "\"value\": 7\n" +
+                "},\n" +
+                "\"validity_start_date\": \"2014-03-06\",\n" +
+                "\"vehicle_class_allowed\": 1,\n" +
+                "\"version\": 4\n" +
+                "},\n" +
+                "{\n" +
+                "\"authenticator_kvc\": 18,\n" +
+                "\"authenticator_value\": 588,\n" +
+                "\"journey_interchanges_allowed\": false,\n" +
+                "\"passengers_max\": 7,\n" +
+                "\"price_amount\": 1000,\n" +
+                "\"provider\": 1,\n" +
+                "\"sale_date\": \"2017-02-06\",\n" +
+                "\"sale_sam_count\": 1,\n" +
+                "\"sale_sam_id\": 2,\n" +
+                "\"spatials\": [\n" +
+                "{\n" +
+                "\"type\": 0\n" +
+                "}\n" +
+                "],\n" +
+                "\"tariff\": {\n" +
+                "\"counter\": {\n" +
+                "\"journeys\": \"4\",\n" +
+                "\"type\": 5\n" +
+                "},\n" +
+                "\"multimodal\": true,\n" +
+                "\"nameref\": 2\n" +
+                "},\n" +
+                "\"validity_start_date\": \"2017-02-06\",\n" +
+                "\"vehicle_class_allowed\": 1,\n" +
+                "\"version\": 4\n" +
+                "}\n" +
+                "\n" +
+                "],\n" +
+                "\"picture\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\"\n" +
+                "}";
+        return getResponse(GSON.fromJson(json, GclMobibAllData.class));
     }
 
     private static <T> T1cResponse<T> getResponse(T data) {

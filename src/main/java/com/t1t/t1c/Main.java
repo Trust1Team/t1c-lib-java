@@ -1,5 +1,6 @@
 package com.t1t.t1c;
 
+import com.google.gson.Gson;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.model.rest.GclReader;
@@ -25,7 +26,7 @@ public class Main {
         conf.setDefaultPollingTimeoutInSeconds(10);
         T1cClient client = new T1cClient(conf);
         GclReader reader = client.getCore().pollCardInserted();
-        client.verifyPin(reader.getId(), "8123");
+        System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));
         T1cClient t1cClient = new T1cClient(conf);
         IOcvClient ocvClient = t1cClient.getOcvClient();

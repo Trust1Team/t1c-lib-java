@@ -56,7 +56,8 @@ public abstract class AbstractRestClient<U> {
                             message.append(response.errorBody().string());
                         }
                     }
-                } else if (response.raw() != null) {
+                }
+                if (response.raw() != null) {
                     log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
                     httpCode = response.raw().code();
                     if (StringUtils.isNotBlank(message.toString())) {
