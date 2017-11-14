@@ -1,4 +1,4 @@
-package com.t1t.t1c.gcl;
+package com.t1t.t1c.services;
 
 import com.t1t.t1c.agent.IAgent;
 import com.t1t.t1c.configuration.LibConfig;
@@ -27,9 +27,13 @@ import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
 import com.t1t.t1c.ds.DsClient;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.gcl.GclAdminClient;
+import com.t1t.t1c.gcl.GclClient;
+import com.t1t.t1c.gcl.IGclAdminClient;
+import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.ocv.IOcvClient;
-import com.t1t.t1c.rest.ContainerRestClient;
-import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.ocv.OcvClient;
+import com.t1t.t1c.rest.*;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,18 +41,22 @@ import org.apache.commons.lang3.StringUtils;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class FactoryService {
+public final class FactoryService {
 
     private static LibConfig config;
     private static IGclClient gclClient;
     private static IGclAdminClient gclAdminClient;
     private static IDsClient dsClient;
     private static ContainerRestClient containerRestClient;
+    private static IOcvClient ocvClient;
+
+    private FactoryService() {
+    }
 
     public static IDsClient getDsClient() {
         if (dsClient == null) {
             checkConfigPresent();
-            dsClient = new DsClient(config, RestServiceBuilder.getDsRestClient(config));
+            dsClient = new DsClient(getDsRestClient());
 
         }
         return dsClient;
@@ -57,7 +65,7 @@ public class FactoryService {
     public static IGclClient getGclClient() {
         if (gclClient == null) {
             checkConfigPresent();
-            gclClient = new GclClient(config, RestServiceBuilder.getGclRestClient(config));
+            gclClient = new GclClient(getGclRestClient());
 
         }
         return gclClient;
@@ -66,14 +74,33 @@ public class FactoryService {
     public static IGclAdminClient getGclAdminClient() {
         if (gclAdminClient == null) {
             checkConfigPresent();
-            gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGclAdminRestClient(config));
+            gclAdminClient = new GclAdminClient(getGclAdminRestClient());
         }
         return gclAdminClient;
     }
 
-    //TODO - implement OCV
     public static IOcvClient getOcvClient() {
-        throw new UnsupportedOperationException();
+        if (ocvClient == null) {
+            checkConfigPresent();
+            ocvClient = new OcvClient(getOcvRestClient());
+        }
+        return ocvClient;
+    }
+
+    public static GclAdminRestClient getGclAdminRestClient() {
+        return RestServiceBuilder.getGclAdminRestClient(config);
+    }
+
+    public static GclRestClient getGclRestClient() {
+        return RestServiceBuilder.getGclRestClient(config);
+    }
+
+    public static DsRestClient getDsRestClient() {
+        return RestServiceBuilder.getDsRestClient(config);
+    }
+
+    public static OcvRestClient getOcvRestClient() {
+        return RestServiceBuilder.getOcvRestClient(config);
     }
 
     //TODO - implement Citrix
@@ -109,39 +136,41 @@ public class FactoryService {
                 return getOberthurContainer(readerId);
             case PIV:
                 return getPivContainer(readerId);
+            case READER_API:
+                return getReaderContainer(readerId);
             default:
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("No container for type found");
         }
     }
 
     public static IBeIdContainer getBeIdContainer(String readerId) {
         checkConfigAndReaderIdPresent(readerId);
-        return new BeIdContainer(config, readerId, getContainerRestClient());
+        return new BeIdContainer(readerId, getContainerRestClient());
     }
 
     public static ILuxIdContainer getLuxIdContainer(String readerId, String pin) {
         checkConfigAndReaderIdPresent(readerId);
-        return new LuxIdContainer(config, readerId, getContainerRestClient(), pin);
+        return new LuxIdContainer(readerId, getContainerRestClient(), pin);
     }
 
     public static ILuxTrustContainer getLuxTrustContainer(String readerId, String pin) {
         checkConfigAndReaderIdPresent(readerId);
-        return new LuxTrustContainer(config, readerId, getContainerRestClient(), pin);
+        return new LuxTrustContainer(readerId, getContainerRestClient(), pin);
     }
 
     public static IDnieContainer getDnieContainer(String readerId) {
         checkConfigAndReaderIdPresent(readerId);
-        return new DnieContainer(config, readerId, getContainerRestClient());
+        return new DnieContainer(readerId, getContainerRestClient());
     }
 
     public static IPtEIdContainer getPtIdContainer(String readerId) {
         checkConfigAndReaderIdPresent(readerId);
-        return new PtEIdContainer(config, readerId, getContainerRestClient());
+        return new PtEIdContainer(readerId, getContainerRestClient());
     }
 
     public static IEmvContainer getEmvContainer(String readerId) {
         checkConfigAndReaderIdPresent(readerId);
-        return new EmvContainer(config, readerId, getContainerRestClient());
+        return new EmvContainer(readerId, getContainerRestClient());
     }
 
     public static IMobibContainer getMobibContainer(String readerId) {
@@ -191,20 +220,22 @@ public class FactoryService {
     public static void setConfig(LibConfig config) {
         FactoryService.config = config;
         if (config != null) {
-            gclClient = new GclClient(config, RestServiceBuilder.getGclRestClient(config));
-            gclAdminClient = new GclAdminClient(config, RestServiceBuilder.getGclAdminRestClient(config));
-            dsClient = new DsClient(config, RestServiceBuilder.getDsRestClient(config));
+            gclClient = new GclClient(RestServiceBuilder.getGclRestClient(config));
+            gclAdminClient = new GclAdminClient(RestServiceBuilder.getGclAdminRestClient(config));
+            dsClient = new DsClient(RestServiceBuilder.getDsRestClient(config));
+            ocvClient = new OcvClient(RestServiceBuilder.getOcvRestClient(config));
             containerRestClient = RestServiceBuilder.getContainerRestClient(config);
         } else {
             gclClient = null;
             gclAdminClient = null;
             dsClient = null;
+            ocvClient = null;
             containerRestClient = null;
         }
     }
 
-    // Utility methods
     //
+    // Utility methods
     //
 
     public static ContainerRestClient getContainerRestClient() {

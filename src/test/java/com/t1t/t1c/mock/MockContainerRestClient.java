@@ -6,6 +6,7 @@ import com.t1t.t1c.rest.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.t1t.t1c.MockResponseFactory.*;
@@ -330,5 +331,19 @@ public class MockContainerRestClient implements ContainerRestClient {
     @Override
     public Call<T1cResponse<GclEmvAllData>> getEmvAllData(String containerId, String readerId, String filter) {
         return delegate.returningResponse(getEmvAllDataResponse()).getEmvAllData(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId) {
+        List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
+        T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);
+        return delegate.returningResponse(response).getRootCertificates(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<List<String>>> getSecuredRootCertificates(String containerId, String readerId, String pin) {
+        List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
+        T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);
+        return delegate.returningResponse(response).getSecuredRootCertificates(containerId, readerId, pin);
     }
 }

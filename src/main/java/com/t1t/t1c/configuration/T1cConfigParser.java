@@ -43,7 +43,7 @@ public class T1cConfigParser implements Serializable {
             this.appConfig.setGclClientUri(getGCLClientURI());
             this.appConfig.setGatewayUri(getGatewayUri());
             this.appConfig.setDsContextPath(getDsContextPath());
-            this.appConfig.setDsDownloadContextPath(getDsDownloadContextPath());
+            this.appConfig.setOcvContexPath(getOcvContextPath());
             this.appConfig.setDefaultPollingIntervalInSeconds(getDefaultPollingIntervalInSeconds());
             this.appConfig.setDefaultPollingTimeoutInSeconds(getDefaultPollingTimeoutInSeconds());
             setAppConfig(configObj);
@@ -73,8 +73,8 @@ public class T1cConfigParser implements Serializable {
         return config.getString(IConfig.LIB_DS_CONTEXT_PATH);
     }
 
-    public String getDsDownloadContextPath() {
-        return config.getString(IConfig.LIB_DS_DOWNLOAD_CONTEXT_PATH);
+    public String getOcvContextPath() {
+        return config.getString(IConfig.LIB_OCV_CONTEXT_PATH);
     }
 
     public Integer getDefaultPollingIntervalInSeconds() {

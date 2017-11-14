@@ -2,11 +2,10 @@ package com.t1t.t1c.core;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,21 +25,12 @@ import static org.junit.Assert.*;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({RestServiceBuilder.class, FactoryService.class})
 public class CoreTest extends AbstractTestClass {
+
     @Test
     public void testActivate() throws Exception {
         boolean result = getClient().getCore().activate();
 
         assertTrue(result);
-    }
-
-    @Test
-    public void testGetPubKeyWithEncodingParam() throws Exception {
-        String defaultKey = getClient().getCore().getPubKey();
-        String derExpected = getPublicKeyResponseDer().getData();
-        String der = getClient().getCore().getPubKey(DsPublicKeyEncoding.DER);
-        String pem = getClient().getCore().getPubKey(DsPublicKeyEncoding.PEM);
-        assertEquals(der, defaultKey);
-        assertNotEquals(der, pem);
     }
 
     @Test
@@ -254,5 +244,17 @@ public class CoreTest extends AbstractTestClass {
     public void testGetConsent() throws Exception {
         boolean consented = this.getClient().getCore().getConsent("Title", "CodeWord", 5);
         assertTrue(consented);
+    }
+
+    @Test
+    public void testGetReadersWithCard() throws Exception {
+        List<GclReader> readers = this.getClient().getCore().getReadersWithInsertedCard();
+        List<GclReader> expected = getAllReaders(false).getData();
+
+        assertTrue(CollectionUtils.isNotEmpty(readers));
+        assertEquals(expected.size(), readers.size());
+        for (GclReader reader : expected) {
+            assertTrue(readers.contains(reader));
+        }
     }
 }

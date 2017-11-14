@@ -23,6 +23,9 @@ public interface ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
     Call<T1cResponse<String>> getRootCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
+    Call<T1cResponse<List<String>>> getRootCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/citizen")
     Call<T1cResponse<String>> getCitizenCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
@@ -59,6 +62,9 @@ public interface ContainerRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
     Call<T1cResponse<String>> getSecuredRootCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
+    Call<T1cResponse<List<String>>> getSecuredRootCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/citizen")
     Call<T1cResponse<String>> getSecuredCitizenCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);

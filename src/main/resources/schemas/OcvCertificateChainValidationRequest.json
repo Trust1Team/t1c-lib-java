@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "OcvCertificateChainValidationRequest",
+  "type": "object",
+  "properties": {
+    "certificateChain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "OcvCertificate.json"
+      }
+    }
+  }
+}

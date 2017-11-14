@@ -1,9 +1,10 @@
 package com.t1t.t1c.services;
 
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.PlatformInfo;
@@ -34,10 +35,15 @@ public class GenericService implements IGenericService {
     }
 
     @Override
+    public GenericContainer getGenericContainerFor(String readerId) {
+        return FactoryService.getGenericContainer(readerId);
+    }
+
+    @Override
     public AllData dumpData(String readerId, String pin, List<String> filterParams) {
         if (StringUtils.isNotEmpty(pin)) {
-            return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams);
-        } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams);
+            return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams, true);
+        } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams, true);
     }
 
     @Override
@@ -122,7 +128,7 @@ public class GenericService implements IGenericService {
     }
 
     @Override
-    public boolean verifyPin(String readerId, String... pin) {
+    public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
         return FactoryService.getGenericContainer(readerId, pin).verifyPin(pin);
     }
 

@@ -2,11 +2,10 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
-import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
-import com.t1t.t1c.model.rest.GclLuxTrustAllData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,34 +35,33 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void isLuxTrustActivated() throws Exception {
-        assertTrue(luxTrustContainer.isLuxTrustActivated());
+        assertTrue(luxTrustContainer.isActivated());
     }
 
     @Test
     public void getAllData() throws Exception {
         List<String> filters = luxTrustContainer.getAllDataFilters();
-        GclLuxTrustAllData data = (GclLuxTrustAllData) luxTrustContainer.getAllData(filters);
+        LuxTrustAllData data = (LuxTrustAllData) luxTrustContainer.getAllData(filters);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
-        assertNotNull(data.getNonRepudiationCertificate());
+        assertNotNull(data.getSigningCertificate());
         assertNotNull(data.getRootCertificates());
     }
 
     @Test
     public void getAllCertificates() throws Exception {
         List<String> filters = luxTrustContainer.getAllCertificateFilters();
-        GclLuxTrustAllCertificates data = (GclLuxTrustAllCertificates) luxTrustContainer.getAllCertificates(filters);
+        LuxTrustAllCertificates data = (LuxTrustAllCertificates) luxTrustContainer.getAllCertificates(filters);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
-        assertNotNull(data.getNonRepudiationCertificate());
+        assertNotNull(data.getSigningCertificate());
         assertNotNull(data.getRootCertificates());
     }
 
     @Test
-    public void getRootCertificate() throws Exception {
-        T1cCertificate cert = luxTrustContainer.getRootCertificate(true);
-        assertTrue(StringUtils.isNotEmpty(cert.getBase64()));
-        assertNotNull(cert.getParsed());
+    public void getRootCertificates() throws Exception {
+        List<T1cCertificate> cert = luxTrustContainer.getRootCertificates(true);
+        assertTrue(CollectionUtils.isNotEmpty(cert));
     }
 
     @Test

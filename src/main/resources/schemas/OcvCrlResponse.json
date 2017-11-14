@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "OcvOcspResponse",
+  "type": "object",
+  "properties": {
+    "productionDate": {
+      "type": "string"
+    },
+    "issuerCertificate": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "crlLocations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "signatureAlgorithm": {
+      "type": "string"
+    },
+    "status": {
+      "type": "boolean"
+    }
+  }
+}

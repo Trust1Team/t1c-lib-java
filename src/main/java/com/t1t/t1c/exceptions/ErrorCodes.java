@@ -41,6 +41,7 @@ public final class ErrorCodes {
     public static final int DNIE_CONTAINER_REST_ERROR                   = 2008;
     public static final int PT_CONTAINER_REST_ERROR                     = 2009;
     public static final int EMV_CONTAINER_REST_ERROR                    = 2010;
+    public static final int OCV_REST_ERROR                              = 2011;
 
     public static final String REST_ERROR_INFO                          = "restError";
 

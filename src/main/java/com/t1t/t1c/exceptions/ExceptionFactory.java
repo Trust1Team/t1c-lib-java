@@ -135,8 +135,8 @@ public final class ExceptionFactory {
      * @param httpCode
      * @return
      */
-    public static RestException restException(String message, Integer httpCode, String uri) {
-        return new RestException(message, httpCode, uri);
+    public static RestException restException(String message, Integer httpCode, String uri, String jsonError) {
+        return new RestException(message, httpCode, uri, jsonError);
     }
 
     /**
@@ -271,5 +271,18 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with EMV container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new EmvContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates an OCV exception
+     *
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static OcvClientException ocvException(String message, RestException cause) {
+        String errorMessage = "Communication error with OCV";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new OcvClientException(errorMessage, cause);
     }
 }

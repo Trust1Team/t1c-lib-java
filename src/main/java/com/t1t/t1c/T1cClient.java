@@ -21,170 +21,257 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.ocv.IOcvClient;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.services.GenericService;
 import com.t1t.t1c.services.IGenericService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.List;
 
 /**
  * Created by michallispashidis on 02/11/2017.
  */
-public class T1cClient {
+public class T1cClient implements IT1cClient {
 
-    private LibConfig config;
+    private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
+
     private Core core;
     private IGenericService genericService;
 
 
     public T1cClient(LibConfig config) {
-        init(config, false);
+        init(config, null, false);
     }
 
+    public T1cClient(Path toConfigurationFile) {
+        init(null, toConfigurationFile, false);
+    }
+
+    @Override
     public Core getCore() {
         return this.core;
     }
 
-    public LibConfig getConfig() {
-        return config;
+    @Override
+    public IGenericService getGenericService() {
+        return genericService;
     }
 
+    @Override
+    public LibConfig getConfig() {
+        return FactoryService.getConfig();
+    }
+
+    @Override
     public IAgent getAgent() {
         return FactoryService.getAgent();
     }
 
+    @Override
     public IDsClient getDsClient() {
         return FactoryService.getDsClient();
     }
 
+    @Override
     public IOcvClient getOcvClient() {
         return FactoryService.getOcvClient();
     }
 
+    @Override
     public GenericContainer getGenericContainerFor(String readerId) {
-        return FactoryService.getGenericContainer(readerId);
+        return genericService.getGenericContainerFor(readerId);
     }
 
+    @Override
     public IBeIdContainer getBeIdContainer(String readerId) {
         return FactoryService.getBeIdContainer(readerId);
     }
 
+    @Override
     public ILuxIdContainer getLuxIdContainer(String readerId, String pin) {
         return FactoryService.getLuxIdContainer(readerId, pin);
     }
 
+    @Override
     public ILuxTrustContainer getLuxTrustContainer(String readerId, String pin) {
         return FactoryService.getLuxTrustContainer(readerId, pin);
     }
 
+    @Override
     public IDnieContainer getDnieContainer(String readerId) {
         return FactoryService.getDnieContainer(readerId);
     }
 
+    @Override
     public IPtEIdContainer getPtIdContainer(String readerId) {
         return FactoryService.getPtIdContainer(readerId);
     }
 
+    @Override
     public IEmvContainer getEmvContainer(String readerId) {
         return FactoryService.getEmvContainer(readerId);
     }
 
+    @Override
     public IMobibContainer getMobibContainer(String readerId) {
         return FactoryService.getMobibContainer(readerId);
     }
 
+    @Override
     public IOcraContainer getOcraContainer(String readerId) {
         return FactoryService.getOcraContainer(readerId);
     }
 
+    @Override
     public IAventraContainer getAventraContainer(String readerId) {
         return FactoryService.getAventraContainer(readerId);
     }
 
+    @Override
     public IOberthurContainer getOberthurContainer(String readerId) {
         return FactoryService.getOberthurContainer(readerId);
     }
 
+    @Override
     public IPivContainer getPivContainer(String readerId) {
         return FactoryService.getPivContainer(readerId);
     }
 
+    @Override
     public ISafenetContainer getSafenetContainer(String readerId) {
         return FactoryService.getSafenetContainer(readerId);
     }
 
+    @Override
     public IReaderApiContainer getReaderContainer(String readerId) {
         return FactoryService.getReaderContainer(readerId);
     }
 
+    @Override
     public IBelfiusContainer getBelfiusContainer(String readerId) {
         return FactoryService.getBelfiusContainer(readerId);
     }
 
+    @Override
     public ContainerType getContainerFor(String readerId) {
         return genericService.getContainerTypeFor(readerId);
     }
 
+    @Override
     public String getDownloadLink() {
         return genericService.getDownloadLink();
     }
 
+    @Override
     public AllData dumpData(String readerId) {
         return genericService.dumpData(readerId, null, null);
     }
 
+    @Override
     public AllData dumpData(String readerId, List<String> filterParameters) {
         return dumpData(readerId, null, filterParameters);
     }
 
+    @Override
     public AllData dumpData(String readerId, String pin) {
         return genericService.dumpData(readerId, pin, null);
     }
 
+    @Override
     public AllData dumpData(String readerId, String pin, List<String> filterParameters) {
         return genericService.dumpData(readerId, pin, filterParameters);
     }
 
-    public List<GclReader> readersCanAuthenticate() {
+    @Override
+    public List<GclReader> getAuthenticateCapableReaders() {
         return genericService.getAuthenticationCapableReaders();
     }
 
-    public List<GclReader> readersCanSign() {
+    @Override
+    public List<GclReader> getSignCapableReaders() {
         return genericService.getSignCapableReaders();
     }
 
-    public List<GclReader> readersCanVerifyPin() {
+    @Override
+    public List<GclReader> getPinVerificationCapableReaders() {
         return genericService.getPinVerificationCapableReaders();
     }
 
+    @Override
     public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
         return genericService.authenticate(readerId, data, pin);
     }
 
+    @Override
     public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
         return genericService.sign(readerId, data, pin);
     }
 
-    public boolean verifyPin(String readerId, String... pin) {
+    @Override
+    public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
         return genericService.verifyPin(readerId, pin);
+    }
+
+    @Override
+    public String exchangeApiKeyForToken() {
+        String jwt = null;
+        try {
+            jwt = getDsClient().getJWT();
+        } catch (DsClientException ex) {
+            log.error("Exception happened during JWT exchange: ", ex);
+        }
+        if (StringUtils.isNotEmpty(jwt)) {
+            LibConfig conf = getConfig();
+            conf.setJwt(jwt);
+            FactoryService.setConfig(conf);
+        }
+        return jwt;
+    }
+
+    @Override
+    public String refreshJwt() {
+        LibConfig conf = getConfig();
+        String jwt = null;
+        try {
+            if (StringUtils.isNotEmpty(conf.getJwt())) {
+                jwt = getDsClient().refreshJWT(conf.getJwt());
+            } else {
+                jwt = getDsClient().getJWT();
+            }
+        } catch (DsClientException ex) {
+            log.error("Error happened during JWT refresh: ", ex);
+        }
+        if (StringUtils.isNotEmpty(jwt)) {
+            conf.setJwt(jwt);
+            FactoryService.setConfig(conf);
+        }
+        return jwt;
     }
 
     //
     // Initialization methods
     //
 
-    private void init(LibConfig config, boolean automatic) {
-        T1cConfigParser clientConfig = new T1cConfigParser(config);
-        if (clientConfig.getAppConfig() == null) {
+    private void init(LibConfig config, Path toConfigurationFile, boolean automatic) {
+        T1cConfigParser clientConfig = null;
+        if (config != null) {
+            clientConfig = new T1cConfigParser(config);
+        } else if (toConfigurationFile != null) {
+            clientConfig = new T1cConfigParser(toConfigurationFile);
+        }
+        if (clientConfig == null || clientConfig.getAppConfig() == null) {
             if (config == null) throw ExceptionFactory.initializationException("Could not initialize config");
         }
-        this.config = config;
 
         FactoryService.setConfig(config);
 
@@ -195,7 +282,6 @@ public class T1cClient {
             initSecurityContext();
             registerAndActivate();
         }
-
     }
 
     /**
@@ -203,7 +289,7 @@ public class T1cClient {
      */
     private void initSecurityContext() {
         if (StringUtils.isBlank(core.getPubKey())) {
-            String publicKey = FactoryService.getDsClient().getPubKey();
+            String publicKey = FactoryService.getDsClient().getPublicKey();
             if (!FactoryService.getGclAdminClient().setPublicKey(publicKey)) {
                 throw ExceptionFactory.initializationException("Could not set GCL public key");
             }
@@ -216,6 +302,7 @@ public class T1cClient {
     private void registerAndActivate() {
         GclStatus gclInfo = core.getInfo();
         PlatformInfo platformInfo = core.getPlatformInfo();
+        LibConfig config = FactoryService.getConfig();
         config.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
         FactoryService.setConfig(config);
 

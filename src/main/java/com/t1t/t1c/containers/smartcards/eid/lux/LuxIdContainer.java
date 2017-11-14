@@ -1,7 +1,6 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.google.common.base.Preconditions;
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
@@ -16,6 +15,8 @@ import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -25,9 +26,16 @@ import java.util.List;
  */
 public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer {
 
-    public LuxIdContainer(LibConfig config, String readerId, ContainerRestClient httpClient, String pin) {
-        super(config, readerId, ContainerType.LUXID, httpClient, pin);
+    private static final Logger log = LoggerFactory.getLogger(LuxIdContainer.class);
+
+    public LuxIdContainer(String readerId, ContainerRestClient httpClient, String pin) {
+        super(readerId, ContainerType.LUXID, httpClient, pin);
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN is required for Lux ID container");
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
     @Override
@@ -58,12 +66,12 @@ public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws LuxIdContainerException {
+    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws LuxIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams)));
+                return new LuxIdAllData(returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin()));
+                return new LuxIdAllData(returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.luxIdContainerException("Could not retrieve all data from container", ex);
@@ -71,12 +79,12 @@ public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws LuxIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws LuxIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams)));
+                return new LuxIdAllCertificates(returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin()));
+                return new LuxIdAllCertificates(returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.luxIdContainerException("Could not retrieve all data from container", ex);
@@ -84,8 +92,8 @@ public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer
     }
 
     @Override
-    public T1cCertificate getRootCertificate(boolean parse) throws LuxIdContainerException {
-        return super.getRootCertificate(parse);
+    public List<T1cCertificate> getRootCertificates(boolean parse) throws LuxIdContainerException {
+        return super.getRootCertificates(parse);
     }
 
     @Override

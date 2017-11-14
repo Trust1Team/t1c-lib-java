@@ -177,7 +177,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclLuxIdAllData> getLuxIdAllDataResponse() {
-        T1cCertificate cert = getT1cCertificate();
+        String cert = getT1cCertificate().getBase64();
         return new T1cResponse<GclLuxIdAllData>().withSuccess(true)
                 .withData(new GclLuxIdAllData()
                         .withAuthenticationCertificate(cert)
@@ -224,7 +224,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclLuxIdAllCertificates> getLuxIdAllCertsResponse() {
-        T1cCertificate cert = getT1cCertificate();
+        String cert = getT1cCertificate().getBase64();
         return new T1cResponse<GclLuxIdAllCertificates>().withSuccess(true)
                 .withData(new GclLuxIdAllCertificates()
                         .withRootCertificates(Arrays.asList(cert, cert))
@@ -237,7 +237,7 @@ public final class MockResponseFactory {
         return new T1cResponse<GclLuxTrustAllData>().withSuccess(true)
                 .withData(new GclLuxTrustAllData()
                         .withRootCertificates(Arrays.asList(cert, cert))
-                        .withNonRepudiationCertificate(cert)
+                        .withSigningCertificate(cert)
                         .withAuthenticationCertificate(cert));
     }
 
@@ -246,7 +246,7 @@ public final class MockResponseFactory {
         return new T1cResponse<GclLuxTrustAllCertificates>().withSuccess(true)
                 .withData(new GclLuxTrustAllCertificates()
                         .withRootCertificates(Arrays.asList(cert, cert))
-                        .withNonRepudiationCertificate(cert)
+                        .withSigningCertificate(cert)
                         .withAuthenticationCertificate(cert));
     }
 

@@ -2,9 +2,11 @@ package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
-import com.t1t.t1c.model.rest.*;
+import com.t1t.t1c.model.rest.GclBeIdAddress;
+import com.t1t.t1c.model.rest.GclBeIdRn;
+import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,13 +55,13 @@ public class BeIdContainerTest extends AbstractTestClass {
     @Test
     public void getAllData() throws Exception {
         List<String> filters = beIdContainer.getAllDataFilters();
-        GclBeIdAllData allData = (GclBeIdAllData) beIdContainer.getAllData(filters);
+        BeIdAllData allData = (BeIdAllData) beIdContainer.getAllData(filters);
         assertNotNull(allData);
-        assertTrue(StringUtils.isNotEmpty(allData.getAuthenticationCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allData.getRootCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allData.getCitizenCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allData.getNonRepudiationCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allData.getRrnCertificate()));
+        assertTrue(StringUtils.isNotEmpty(allData.getAuthenticationCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allData.getRootCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allData.getCitizenCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allData.getNonRepudiationCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allData.getRrnCertificate().getBase64()));
         assertTrue(StringUtils.isNotEmpty(allData.getPicture()));
         assertNotNull(allData.getRn());
         assertNotNull(allData.getAddress());
@@ -68,13 +70,13 @@ public class BeIdContainerTest extends AbstractTestClass {
     @Test
     public void getAllCertificates() throws Exception {
         List<String> filters = beIdContainer.getAllCertificateFilters();
-        GclBeIDAllCertificates allCerts = (GclBeIDAllCertificates) beIdContainer.getAllCertificates(filters);
+        BeIdAllCertificates allCerts = (BeIdAllCertificates) beIdContainer.getAllCertificates(filters);
         assertNotNull(allCerts);
-        assertTrue(StringUtils.isNotEmpty(allCerts.getAuthenticationCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allCerts.getRootCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allCerts.getCitizenCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allCerts.getNonRepudiationCertificate()));
-        assertTrue(StringUtils.isNotEmpty(allCerts.getRrnCertificate()));
+        assertTrue(StringUtils.isNotEmpty(allCerts.getAuthenticationCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allCerts.getRootCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allCerts.getCitizenCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allCerts.getNonRepudiationCertificate().getBase64()));
+        assertTrue(StringUtils.isNotEmpty(allCerts.getRrnCertificate().getBase64()));
     }
 
     @Test

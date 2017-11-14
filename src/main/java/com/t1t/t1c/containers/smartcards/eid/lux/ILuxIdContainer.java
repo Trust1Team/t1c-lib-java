@@ -7,6 +7,8 @@ import com.t1t.t1c.model.rest.GclLuxIdPicture;
 import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
 import com.t1t.t1c.model.rest.T1cCertificate;
 
+import java.util.List;
+
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
@@ -19,7 +21,7 @@ public interface ILuxIdContainer extends GenericContainer {
 
     GclLuxIdSignatureImage getSignatureImage() throws LuxIdContainerException;
 
-    T1cCertificate getRootCertificate(boolean parse) throws LuxIdContainerException;
+    List<T1cCertificate> getRootCertificates(boolean parse) throws LuxIdContainerException;
 
     T1cCertificate getAuthenticationCertificate(boolean parse) throws LuxIdContainerException;
 

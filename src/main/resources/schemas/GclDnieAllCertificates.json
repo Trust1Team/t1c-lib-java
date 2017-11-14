@@ -2,9 +2,6 @@
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclDnieAllCertificates",
-  "javaInterfaces": [
-    "com.t1t.t1c.model.AllCertificates"
-  ],
   "type": "object",
   "properties": {
     "authentication_certificate": {

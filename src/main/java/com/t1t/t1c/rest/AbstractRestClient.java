@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.Error;
 import okhttp3.MediaType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,6 +31,10 @@ public abstract class AbstractRestClient<U> {
         return httpClient;
     }
 
+    protected final void setHttpClient(U httpClient) {
+        this.httpClient = httpClient;
+    }
+
     protected final <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();
@@ -42,12 +45,11 @@ public abstract class AbstractRestClient<U> {
                 Integer httpCode = null;
                 String url = null;
                 StringBuilder message = new StringBuilder();
+                String jsonError = null;
                 if (response.errorBody() != null) {
                     boolean isJson = MediaType.parse("application/json").equals(response.errorBody().contentType());
                     if (isJson) {
-                        Error errorResponse = new Gson().fromJson(response.errorBody().source().readUtf8(), Error.class);
-                        log.error("Something went wrong: {}", errorResponse.getMessage());
-                        message.append(errorResponse.getMessage());
+                        jsonError = response.errorBody().source().readUtf8();
                     } else {
                         if (StringUtils.isNotBlank(response.errorBody().string())) {
                             log.error("Something went wrong: {}", response.errorBody().string());
@@ -65,7 +67,7 @@ public abstract class AbstractRestClient<U> {
                         url = response.raw().request().url().toString();
                     }
                 }
-                throw ExceptionFactory.restException(message.toString(), httpCode, url);
+                throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
         } catch (IOException ex) {
             log.error("Error executing request: ", ex);

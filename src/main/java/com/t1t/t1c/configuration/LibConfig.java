@@ -16,9 +16,9 @@ public class LibConfig {
     private String gclClientUri;
     private String gatewayUri;
     private String dsContextPath;
-    private String dsDownloadContextPath;
-    private String dsDownloadUri;
     private String dsUri;
+    private String ocvContexPath;
+    private String ocvUri;
     private String apiKey;
     private Integer defaultPollingIntervalInSeconds = 2;
     private Integer defaultPollingTimeoutInSeconds = 60;
@@ -39,7 +39,7 @@ public class LibConfig {
         return version;
     }
 
-    public void setVersion(String version) {
+    void setVersion(String version) {
         this.version = version;
     }
 
@@ -47,7 +47,7 @@ public class LibConfig {
         return build;
     }
 
-    public void setBuild(String build) {
+    void setBuild(String build) {
         this.build = build;
     }
 
@@ -91,12 +91,12 @@ public class LibConfig {
         this.dsContextPath = dsContextPath;
     }
 
-    public String getDsDownloadContextPath() {
-        return dsDownloadContextPath;
+    public String getOcvContexPath() {
+        return ocvContexPath;
     }
 
-    public void setDsDownloadContextPath(String dsDownloadContextPath) {
-        this.dsDownloadContextPath = dsDownloadContextPath;
+    public void setOcvContexPath(String ocvContexPath) {
+        this.ocvContexPath = ocvContexPath;
     }
 
     public String getApiKey() {
@@ -153,12 +153,16 @@ public class LibConfig {
         return this.dsUri;
     }
 
-    public String getDsDownloadUri() {
-        if (StringUtils.isBlank(this.dsDownloadUri)) {
-            if (StringUtils.isNoneBlank(this.gatewayUri, this.dsDownloadContextPath)) {
-                this.dsDownloadUri = UriUtils.uriFinalSlashAppender(this.gatewayUri) + UriUtils.uriFinalSlashAppender(UriUtils.uriLeadingSlashRemover(this.dsDownloadContextPath));
+    public String getOcvUri() {
+        if (StringUtils.isBlank(this.ocvUri)) {
+            if (StringUtils.isNoneBlank(this.gatewayUri, this.ocvContexPath)) {
+                this.ocvUri = UriUtils.uriFinalSlashAppender(this.gatewayUri) + UriUtils.uriFinalSlashAppender(UriUtils.uriLeadingSlashRemover(this.ocvContexPath));
             }
         }
-        return this.dsDownloadUri;
+        return this.ocvUri;
+    }
+
+    public void setOcvUri(String ocvUri) {
+        this.ocvUri = ocvUri;
     }
 }

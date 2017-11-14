@@ -2,10 +2,10 @@ package com.t1t.t1c.containers.smartcards.emv;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
 import com.t1t.t1c.model.rest.GclEmvAllData;
 import com.t1t.t1c.model.rest.GclEmvApplication;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -46,7 +46,7 @@ public class EmvContainerTest extends AbstractTestClass {
 
     @Test(expected = UnsupportedOperationException.class)
     public void getAllCertificates() throws Exception {
-        container.getAllCertificates(Collections.EMPTY_LIST);
+        container.getAllCertificates(new ArrayList<String>());
     }
 
     @Test
