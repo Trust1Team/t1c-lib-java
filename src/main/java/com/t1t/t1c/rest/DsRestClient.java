@@ -1,5 +1,6 @@
 package com.t1t.t1c.rest;
 
+import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -22,7 +23,7 @@ public interface DsRestClient {
     Call<DsToken> refreshJWT(@Body DsTokenRefreshRequest request);
 
     @GET("security/keys/public")
-    Call<DsPublicKey> getPubKey();
+    Call<DsPublicKey> getPubKey(@Query("encoding") String encoding);
 
     @POST("download/gcl")
     Call<DsDownloadPath> getDownloadLink(@Body DsDownloadRequest request);

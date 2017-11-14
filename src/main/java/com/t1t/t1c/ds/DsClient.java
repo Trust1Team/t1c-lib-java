@@ -3,11 +3,14 @@ package com.t1t.t1c.ds;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.DsRestClient;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.utils.UriUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -21,16 +24,13 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
 
     private static final Logger log = LoggerFactory.getLogger(DsClient.class);
 
-    private LibConfig config;
-
-    public DsClient(LibConfig config, DsRestClient httpClient) {
+    public DsClient(DsRestClient httpClient) {
         super(httpClient);
-        this.config = config;
     }
 
     @Override
     public String getUrl() {
-        return config.getDsUri();
+        return FactoryService.getConfig().getDsUri();
     }
 
     @Override
@@ -70,12 +70,24 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
     }
 
     @Override
-    public String getPubKey() throws DsClientException {
+    public String getPublicKey() throws DsClientException {
+        return getPublicKey(null);
+    }
+
+    @Override
+    public String getPublicKey(DsPublicKeyEncoding encoding) throws DsClientException {
+        String encodingParam;
+        if (encoding == null) {
+            encodingParam = null;
+        }
+        else {
+            encodingParam = encoding.getQueryParamValue();
+        }
         try {
-            DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey());
+            DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey(encodingParam));
             return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
         } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not retrieve public key from Distribution Service", ex);
+            throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }
     }
 
@@ -89,7 +101,7 @@ public class DsClient extends AbstractRestClient<DsRestClient> implements IDsCli
                             .withVersion(info.getOs().getVersion()));
             DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return UriUtils.uriFinalSlashAppender(config.getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
+                return UriUtils.uriFinalSlashAppender(FactoryService.getConfig().getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
             } else return null;
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);

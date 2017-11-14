@@ -26,7 +26,11 @@ public interface GenericContainer {
 
     String getPin();
 
+    AllData getAllData() throws GenericContainerException;
+
     AllData getAllData(List<String> filterParams) throws GenericContainerException;
+
+    AllCertificates getAllCertificates() throws GenericContainerException;
 
     AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException;
 

@@ -6,7 +6,7 @@ import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
@@ -20,6 +20,7 @@ import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,12 +31,11 @@ import java.util.List;
  */
 public abstract class AbstractContainer extends AbstractRestClient<ContainerRestClient> implements GenericContainer {
 
-    private LibConfig config;
     private String readerId;
     private ContainerType type;
     private String pin;
 
-    protected AbstractContainer(LibConfig config, String readerId, ContainerType type, ContainerRestClient httpClient, String... pin) {
+    protected AbstractContainer(String readerId, ContainerType type, ContainerRestClient httpClient, String... pin) {
         super(httpClient);
         IGclClient gcl = FactoryService.getGclClient();
         GclCard card = gcl.getReader(readerId).getCard();
@@ -50,34 +50,14 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             throw ExceptionFactory.containerNotAvailableException(type);
         }
         this.readerId = readerId;
-        this.config = config;
         this.type = type;
         if (pin.length > 0) {
             this.pin = pin[0];
         }
     }
 
-    public AbstractContainer(LibConfig config, String readerId, ContainerRestClient httpClient, String... pin) {
-        super(httpClient);
-        this.config = config;
-        this.readerId = readerId;
-        // when instantiating a generic container, we automatically pick the first suitable container type
-        IGclClient gcl = FactoryService.getGclClient();
-        GclCard card = gcl.getReader(readerId).getCard();
-        if (card == null) {
-            throw ExceptionFactory.genericContainerException("No card inserted in reader");
-        }
-        this.type = ContainerUtil.determineContainer(card);
-        if (!ContainerUtil.isContainerAvailable(type, gcl.getContainers())) {
-            throw ExceptionFactory.containerNotAvailableException(type);
-        }
-        if (pin.length > 0) {
-            this.pin = pin[0];
-        }
-    }
-
     protected LibConfig getConfig() {
-        return this.config;
+        return FactoryService.getConfig();
     }
 
     @Override
@@ -115,7 +95,17 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     }
 
     @Override
+    public AllData getAllData() throws GenericContainerException {
+        return getAllData(new ArrayList<String>());
+    }
+
+    @Override
     public abstract AllData getAllData(List<String> filterParams) throws GenericContainerException;
+
+    @Override
+    public AllCertificates getAllCertificates() throws GenericContainerException {
+        return getAllCertificates(new ArrayList<String>());
+    }
 
     public abstract AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException;
 
@@ -233,7 +223,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     private void pinEnforcementCheck(String... pin) {
         boolean pinPresent = pin.length > 0 && StringUtils.isNotBlank(pin[0]);
         boolean hardwarePinPadPresent = FactoryService.getGclClient().getReader(readerId).getPinpad();
-        if (config.isHardwarePinPadForced()) {
+        if (FactoryService.getConfig().isHardwarePinPadForced()) {
             if (hardwarePinPadPresent) {
                 if (pinPresent) {
                     throw ExceptionFactory.verifyPinException("Strict PIN-pad enforcement is enabled. This request was sent with a PIN, but the reader has a PIN-pad.");

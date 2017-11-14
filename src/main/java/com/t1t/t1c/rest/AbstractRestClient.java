@@ -32,6 +32,10 @@ public abstract class AbstractRestClient<U> {
         return httpClient;
     }
 
+    protected final void setHttpClient(U httpClient) {
+        this.httpClient = httpClient;
+    }
+
     protected final <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();

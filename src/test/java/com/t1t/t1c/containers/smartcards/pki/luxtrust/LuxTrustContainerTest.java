@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
 import com.t1t.t1c.model.rest.GclLuxTrustAllData;
 import com.t1t.t1c.model.rest.T1cCertificate;

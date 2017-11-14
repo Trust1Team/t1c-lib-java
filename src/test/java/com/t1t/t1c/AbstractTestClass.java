@@ -2,12 +2,12 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.gcl.FactoryService;
 import com.t1t.t1c.mock.MockContainerRestClient;
 import com.t1t.t1c.mock.MockDsRestClient;
 import com.t1t.t1c.mock.MockGclRestAdminClient;
 import com.t1t.t1c.mock.MockGclRestClient;
 import com.t1t.t1c.rest.*;
+import com.t1t.t1c.services.FactoryService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -49,9 +49,7 @@ public abstract class AbstractTestClass {
     public void init() {
 
         LibConfig conf = new LibConfig();
-        conf.setVersion("0.0.1-SNAPSHOT");
         conf.setEnvironment(Environment.DEV);
-        conf.setDsDownloadContextPath("/trust1team/gclds-file/v1");
         conf.setGatewayUri("https://accapim.t1t.be");
         conf.setGclClientUri("https://localhost:10443/v1/");
         conf.setDsContextPath("/trust1team/gclds/v1/");

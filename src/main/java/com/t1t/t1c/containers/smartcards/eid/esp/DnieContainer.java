@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class DnieContainer extends AbstractContainer implements IDnieContainer {
 
-    public DnieContainer(LibConfig config, String readerId, ContainerRestClient httpClient) {
-        super(config, readerId, ContainerType.DNIE, httpClient);
+    public DnieContainer(String readerId, ContainerRestClient httpClient) {
+        super(readerId, ContainerType.DNIE, httpClient);
     }
 
     @Override

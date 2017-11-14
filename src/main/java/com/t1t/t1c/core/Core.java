@@ -3,7 +3,7 @@ package com.t1t.t1c.core;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
@@ -11,6 +11,8 @@ import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
  * Created by michallispashidis on 31/10/2017.
  */
 public class Core extends AbstractCore {
+
+    private static final Logger log = LoggerFactory.getLogger(Core.class);
 
     private static final int DEFAULT_POLLING_INTERVAL = 5;
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
@@ -45,7 +49,7 @@ public class Core extends AbstractCore {
 
     @Override
     public String getPubKey(DsPublicKeyEncoding encoding) {
-        return FactoryService.getGclAdminClient().getPublicKey(encoding);
+        return FactoryService.getGclAdminClient().getPublicKey();
     }
 
     @Override
@@ -59,43 +63,43 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclReader pollCardInserted() throws InterruptedException {
+    public GclReader pollCardInserted() {
         return pollCardInserted(null, null);
     }
 
     @Override
-    public GclReader pollCardInserted(Integer pollIntervalInSeconds) throws InterruptedException {
+    public GclReader pollCardInserted(Integer pollIntervalInSeconds) {
         return pollCardInserted(pollIntervalInSeconds, null);
     }
 
     @Override
-    public GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException {
+    public GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) {
         List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds, pollTimeoutInSeconds);
         return CollectionUtils.isNotEmpty(readers) ? readers.get(0) : null;
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards() throws InterruptedException {
+    public List<GclReader> pollReadersWithCards() {
         return pollReadersWithCards(null, null);
     }
 
     @Override
-    public List<GclReader> pollReaders() throws InterruptedException {
+    public List<GclReader> pollReaders() {
         return pollReaders(null, null);
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws InterruptedException {
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) {
         return pollReadersWithCards(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws InterruptedException {
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) {
         return pollReaders(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException {
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) {
         List<GclReader> readers = new ArrayList<>();
         int totalTime = 0;
         int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
@@ -106,15 +110,20 @@ public class Core extends AbstractCore {
                 throw ExceptionFactory.gclClientException("GCL not found");
             }
             if (readers.isEmpty()) {
-                Thread.sleep(pollInterval);
-                totalTime += pollInterval;
+                try {
+                    Thread.sleep(pollInterval);
+                    totalTime += pollInterval;
+                } catch (InterruptedException ex) {
+                    log.error("Thread sleep interrupted: ", ex);
+                    break;
+                }
             }
         }
         return readers;
     }
 
     @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws InterruptedException {
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) {
         List<GclReader> readers = new ArrayList<>();
         int totalTime = 0;
         int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
@@ -125,8 +134,13 @@ public class Core extends AbstractCore {
                 throw ExceptionFactory.gclClientException("GCL not found");
             }
             if (readers.isEmpty()) {
-                Thread.sleep(pollInterval);
-                totalTime += pollInterval;
+                try {
+                    Thread.sleep(pollInterval);
+                    totalTime += pollInterval;
+                } catch (InterruptedException ex) {
+                    log.error("Thread sleep interrupted: ", ex);
+                    break;
+                }
             }
         }
         return readers;
@@ -146,6 +160,11 @@ public class Core extends AbstractCore {
     @Override
     public List<GclReader> getReadersWithoutInsertedCard() {
         return FactoryService.getGclClient().getReadersWithoutInsertedCard();
+    }
+
+    @Override
+    public List<GclReader> getReadersWithInsertedCard() {
+        return FactoryService.getGclClient().getReadersWithInsertedCard();
     }
 
     @Override

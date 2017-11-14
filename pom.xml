@@ -73,6 +73,7 @@
         <version.commons.collections>4.1</version.commons.collections>
         <version.jackson-databind>2.0.0</version.jackson-databind>
         <version.commons.codec>1.10</version.commons.codec>
+        <version.jose4j>0.6.2</version.jose4j>
         <!-- Guava versions above 20.0 require java 1.8 -->
         <version.guava>20.0</version.guava>
     </properties>
@@ -195,6 +196,11 @@
             <artifactId>commons-codec</artifactId>
             <version>${version.commons.codec}</version>
         </dependency>
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>${version.jose4j}</version>
+        </dependency>
         <!--jsonschema dependencies-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -275,6 +281,14 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvCertificate.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificate.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvOcspResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCrlResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json</sourcePath>
                     </sourcePaths>
                     <excludes></excludes>
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>

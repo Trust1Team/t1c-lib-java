@@ -2,7 +2,7 @@ package com.t1t.t1c.core;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.gcl.FactoryService;
+import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
@@ -254,5 +254,17 @@ public class CoreTest extends AbstractTestClass {
     public void testGetConsent() throws Exception {
         boolean consented = this.getClient().getCore().getConsent("Title", "CodeWord", 5);
         assertTrue(consented);
+    }
+
+    @Test
+    public void testGetReadersWithCard() throws Exception {
+        List<GclReader> readers = this.getClient().getCore().getReadersWithInsertedCard();
+        List<GclReader> expected = getAllReaders(false).getData();
+
+        assertTrue(CollectionUtils.isNotEmpty(readers));
+        assertEquals(expected.size(), readers.size());
+        for (GclReader reader : expected) {
+            assertTrue(readers.contains(reader));
+        }
     }
 }

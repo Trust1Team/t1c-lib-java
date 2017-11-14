@@ -23,8 +23,8 @@ import java.util.List;
 public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer {
 
 
-    public PtEIdContainer(LibConfig config, String readerId, ContainerRestClient httpClient) {
-        super(config, readerId, ContainerType.PT, httpClient);
+    public PtEIdContainer(String readerId, ContainerRestClient httpClient) {
+        super(readerId, ContainerType.PT, httpClient);
     }
 
     @Override

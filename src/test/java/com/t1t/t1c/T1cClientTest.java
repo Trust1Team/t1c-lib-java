@@ -10,11 +10,11 @@ import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
-import com.t1t.t1c.gcl.FactoryService;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -184,19 +184,19 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testReadersCanAuthenticate() throws Exception {
-        List<GclReader> readersThatCanAuthenticate = getClient().readersCanAuthenticate();
+        List<GclReader> readersThatCanAuthenticate = getClient().getAuthenticateCapableReaders();
         assertEquals(10, readersThatCanAuthenticate.size());
     }
 
     @Test
     public void testReadersCanSign() throws Exception {
-        List<GclReader> readersThatCanSign = getClient().readersCanAuthenticate();
+        List<GclReader> readersThatCanSign = getClient().getAuthenticateCapableReaders();
         assertEquals(10, readersThatCanSign.size());
     }
 
     @Test
     public void testReadersCanVerifyPin() throws Exception {
-        List<GclReader> readersThatCanVerifyPin = getClient().readersCanVerifyPin();
+        List<GclReader> readersThatCanVerifyPin = getClient().getPinVerificationCapableReaders();
         assertEquals(11, readersThatCanVerifyPin.size());
     }
 

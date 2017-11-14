@@ -25,8 +25,8 @@ import java.util.List;
  */
 public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer {
 
-    public LuxIdContainer(LibConfig config, String readerId, ContainerRestClient httpClient, String pin) {
-        super(config, readerId, ContainerType.LUXID, httpClient, pin);
+    public LuxIdContainer(String readerId, ContainerRestClient httpClient, String pin) {
+        super(readerId, ContainerType.LUXID, httpClient, pin);
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN is required for Lux ID container");
     }
 

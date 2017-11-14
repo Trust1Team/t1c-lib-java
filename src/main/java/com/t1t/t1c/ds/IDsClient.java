@@ -1,6 +1,8 @@
 package com.t1t.t1c.ds;
 
 import com.t1t.t1c.exceptions.DsClientException;
+import com.t1t.t1c.exceptions.GclAdminClientException;
+import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.DsDevice;
 import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
@@ -21,7 +23,9 @@ public interface IDsClient {
 
     String refreshJWT(String token) throws DsClientException;
 
-    String getPubKey() throws DsClientException;
+    String getPublicKey() throws DsClientException;
+
+    String getPublicKey(DsPublicKeyEncoding encoding) throws DsClientException;
 
     String getDownloadLink(PlatformInfo info) throws DsClientException;
 

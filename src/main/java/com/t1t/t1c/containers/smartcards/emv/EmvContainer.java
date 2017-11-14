@@ -24,8 +24,8 @@ import java.util.List;
  */
 public class EmvContainer extends AbstractContainer implements IEmvContainer {
 
-    public EmvContainer(LibConfig config, String readerId, ContainerRestClient httpClient) {
-        super(config, readerId, ContainerType.EMV, httpClient);
+    public EmvContainer(String readerId, ContainerRestClient httpClient) {
+        super(readerId, ContainerType.EMV, httpClient);
     }
 
     @Override

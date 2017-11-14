@@ -30,13 +30,15 @@ import java.security.cert.CertificateFactory;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class RestServiceBuilder {
+public final class RestServiceBuilder {
 
     private static final Logger _LOG = LoggerFactory.getLogger(RestServiceBuilder.class);
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String CONTAINER_CONTEXT_PATH = "plugins/";
+
+    private RestServiceBuilder() {}
 
     public static GclRestClient getGclRestClient(LibConfig config) {
         return getClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
@@ -51,17 +53,21 @@ public class RestServiceBuilder {
     }
 
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), config.getJwt(), false);
+        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null, false);
     }
 
     public static ContainerRestClient getContainerRestClient(LibConfig config) {
         return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH), ContainerRestClient.class, null, null, true);
     }
 
+    public static OcvRestClient getOcvRestClient(LibConfig config) {
+        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), null, false);
+    }
+
     private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
         try {
             if (StringUtils.isBlank(uri)) {
-                throw ExceptionFactory.configException("GCL URI not provided.");
+                throw ExceptionFactory.configException("Base URI not provided.");
             }
             Builder retrofitBuilder = new Builder()
                     .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
@@ -134,5 +140,4 @@ public class RestServiceBuilder {
         String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
         return TrustManagerFactory.getInstance(tmfAlgorithm);
     }
-
 }

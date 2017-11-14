@@ -16,9 +16,6 @@ public interface GclAdminRestClient {
     @GET("admin/certificate")
     Call<T1cResponse<String>> getPublicKey();
 
-    @GET("admin/certificate")
-    Call<T1cResponse<String>> getPublicKey(@Query("encoding") String encoding);
-
     @PUT("admin/certificate")
     Call<T1cResponse<Object>> setPublicKey(@Body GclUpdatePublicKeyRequest request);
 }

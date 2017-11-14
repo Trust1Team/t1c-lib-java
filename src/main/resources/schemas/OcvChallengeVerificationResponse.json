@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "OcvChallengeVerificationResponse",
+  "type": "object",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    },
+    "digestAlgorithm": {
+      "type": "string"
+    },
+    "hash": {
+      "type": "string"
+    }
+  }
+}

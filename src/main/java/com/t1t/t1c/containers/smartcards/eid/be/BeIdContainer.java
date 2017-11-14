@@ -23,8 +23,8 @@ import java.util.List;
  */
 public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
 
-    public BeIdContainer(LibConfig config, String readerId, ContainerRestClient httpClient) {
-        super(config, readerId, ContainerType.BEID, httpClient);
+    public BeIdContainer(String readerId, ContainerRestClient httpClient) {
+        super(readerId, ContainerType.BEID, httpClient);
     }
 
     @Override

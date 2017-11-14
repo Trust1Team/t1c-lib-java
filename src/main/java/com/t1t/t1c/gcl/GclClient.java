@@ -10,6 +10,7 @@ import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.GclRestClient;
+import com.t1t.t1c.services.FactoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,16 +24,13 @@ public class GclClient extends AbstractRestClient<GclRestClient> implements IGcl
 
     private static final Logger log = LoggerFactory.getLogger(GclClient.class);
 
-    private LibConfig config;
-
-    protected GclClient(LibConfig config, GclRestClient httpClient) {
+    public GclClient(GclRestClient httpClient) {
         super(httpClient);
-        this.config = config;
     }
 
     @Override
     public String getUrl() {
-        return config.getGclClientUri();
+        return FactoryService.getConfig().getGclClientUri();
     }
 
     @Override

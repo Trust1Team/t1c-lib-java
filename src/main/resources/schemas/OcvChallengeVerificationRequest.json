@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "OcvChallengeVerificationRequest",
+  "type": "object",
+  "properties": {
+    "base64Certificate": {
+      "type": "string"
+    },
+    "digestAlgorithm": {
+      "type": "string"
+    },
+    "base64Signature": {
+      "type": "string"
+    },
+    "hash": {
+      "type": "string"
+    }
+  }
+}

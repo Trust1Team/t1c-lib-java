@@ -32,15 +32,6 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getPublicKey(String encoding) {
-        if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
-            return getPublicKey();
-        } else {
-            return delegate.returningResponse(getPublicKeyResponsePem()).getPublicKey(encoding);
-        }
-    }
-
-    @Override
     public Call<T1cResponse<Object>> setPublicKey(GclUpdatePublicKeyRequest request) {
         return delegate.returningResponse(getSuccessResponse()).activate();
     }

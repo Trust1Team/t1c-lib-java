@@ -15,7 +15,5 @@ public interface IGclAdminClient {
 
     String getPublicKey() throws GclAdminClientException;
 
-    String getPublicKey(DsPublicKeyEncoding encoding) throws GclAdminClientException;
-
     boolean setPublicKey(String publicKey) throws GclAdminClientException;
 }

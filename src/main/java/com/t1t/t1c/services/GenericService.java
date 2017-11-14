@@ -1,9 +1,9 @@
 package com.t1t.t1c.services;
 
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
-import com.t1t.t1c.gcl.FactoryService;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.PlatformInfo;
@@ -31,6 +31,11 @@ public class GenericService implements IGenericService {
     @Override
     public ContainerType getContainerTypeFor(String readerId) {
         return ContainerUtil.determineContainer(FactoryService.getGclClient().getReader(readerId).getCard());
+    }
+
+    @Override
+    public GenericContainer getGenericContainerFor(String readerId) {
+        return FactoryService.getGenericContainer(readerId);
     }
 
     @Override

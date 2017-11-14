@@ -23,8 +23,8 @@ import java.util.List;
 public class LuxTrustContainer extends AbstractContainer implements ILuxTrustContainer {
 
 
-    public LuxTrustContainer(LibConfig config, String readerId, ContainerRestClient httpClient, String pin) {
-        super(config, readerId, ContainerType.LUXTRUST, httpClient, pin);
+    public LuxTrustContainer(String readerId, ContainerRestClient httpClient, String pin) {
+        super(readerId, ContainerType.LUXTRUST, httpClient, pin);
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN is required for LuxTrust Container");
     }
 
