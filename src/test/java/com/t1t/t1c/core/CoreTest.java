@@ -2,7 +2,6 @@ package com.t1t.t1c.core;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -26,21 +25,12 @@ import static org.junit.Assert.*;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({RestServiceBuilder.class, FactoryService.class})
 public class CoreTest extends AbstractTestClass {
+
     @Test
     public void testActivate() throws Exception {
         boolean result = getClient().getCore().activate();
 
         assertTrue(result);
-    }
-
-    @Test
-    public void testGetPubKeyWithEncodingParam() throws Exception {
-        String defaultKey = getClient().getCore().getPubKey();
-        String derExpected = getPublicKeyResponseDer().getData();
-        String der = getClient().getCore().getPubKey(DsPublicKeyEncoding.DER);
-        String pem = getClient().getCore().getPubKey(DsPublicKeyEncoding.PEM);
-        assertEquals(der, defaultKey);
-        assertNotEquals(der, pem);
     }
 
     @Test

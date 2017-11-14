@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LuxTrustAllData implements AllData {
-    
+
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
     private List<T1cCertificate> rootCertificates;

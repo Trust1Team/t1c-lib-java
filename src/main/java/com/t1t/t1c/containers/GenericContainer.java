@@ -4,7 +4,6 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public interface GenericContainer {
 
     AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException;
 
-    PinVerificationResponse verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
+    boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
 
     String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
 

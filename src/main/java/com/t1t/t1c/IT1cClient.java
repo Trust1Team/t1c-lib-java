@@ -20,8 +20,8 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.ocv.IOcvClient;
@@ -99,7 +99,7 @@ public interface IT1cClient {
 
     String sign(String readerId, GclAuthenticateOrSignData data, String... pin);
 
-    PinVerificationResponse verifyPin(String readerId, String... pin);
+    boolean verifyPin(String readerId, String... pin) throws VerifyPinException;
 
     String exchangeApiKeyForToken();
 

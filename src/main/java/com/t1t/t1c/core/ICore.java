@@ -1,6 +1,5 @@
 package com.t1t.t1c.core;
 
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
@@ -23,8 +22,6 @@ public interface ICore {
     String getPubKey();
 
     void setPubKey(String publicKey);
-
-    String getPubKey(DsPublicKeyEncoding encoding);
 
     GclStatus getInfo();
 

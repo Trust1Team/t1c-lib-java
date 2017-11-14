@@ -1,21 +1,15 @@
 package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
-import com.t1t.t1c.model.rest.GclLuxTrustAllData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.List;
 
 public class LuxTrustAllCertificates implements AllCertificates {
-    
+
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
     private List<T1cCertificate> rootCertificates;

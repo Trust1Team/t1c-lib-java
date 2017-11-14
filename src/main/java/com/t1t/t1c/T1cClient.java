@@ -23,8 +23,8 @@ import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.ocv.IOcvClient;
@@ -218,7 +218,7 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public PinVerificationResponse verifyPin(String readerId, String... pin) {
+    public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
         return genericService.verifyPin(readerId, pin);
     }
 

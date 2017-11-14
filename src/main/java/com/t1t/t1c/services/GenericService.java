@@ -4,9 +4,9 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclCard;
@@ -128,7 +128,7 @@ public class GenericService implements IGenericService {
     }
 
     @Override
-    public PinVerificationResponse verifyPin(String readerId, String... pin) {
+    public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
         return FactoryService.getGenericContainer(readerId, pin).verifyPin(pin);
     }
 

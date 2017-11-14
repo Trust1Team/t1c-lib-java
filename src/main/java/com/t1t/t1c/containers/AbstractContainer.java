@@ -11,7 +11,6 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.AbstractRestClient;
 import com.t1t.t1c.rest.ContainerRestClient;
@@ -113,26 +112,26 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
     public abstract AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException;
 
     @Override
-    public PinVerificationResponse verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+    public boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
         pinEnforcementCheck(pin);
         try {
             if (pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
                 if (StringUtils.isNotEmpty(this.pin)) {
-                    return new PinVerificationResponse().withSuccess(isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin, new GclVerifyPinRequest().withPin(pin[0])))));
+                    return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin, new GclVerifyPinRequest().withPin(pin[0]))));
                 } else
-                    return new PinVerificationResponse().withSuccess(isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId, new GclVerifyPinRequest().withPin(pin[0])))));
+                    return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId, new GclVerifyPinRequest().withPin(pin[0]))));
             } else {
                 if (StringUtils.isNotEmpty(this.pin)) {
-                    return new PinVerificationResponse().withSuccess(isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin))));
+                    return isCallSuccessful(executeCall(getHttpClient().verifyPinSecured(type.getId(), readerId, this.pin)));
                 } else
-                    return new PinVerificationResponse().withSuccess(isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId))));
+                    return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId)));
             }
         } catch (RestException ex) {
             if (StringUtils.isNotEmpty(ex.getJsonError())) {
                 try {
                     GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                    return new PinVerificationResponse().withSuccess(false).withMessage(error.getDescription());
+                    throw ExceptionFactory.verifyPinException(error.getDescription());
                 } catch (JsonSyntaxException e) {
                     getLogger().error("Couldn't decode error message: ", e);
                 }

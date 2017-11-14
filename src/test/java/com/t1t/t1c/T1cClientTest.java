@@ -3,16 +3,16 @@ package com.t1t.t1c;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
+import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
-import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.model.rest.GclBeIdAllData;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.services.FactoryService;
@@ -61,7 +61,7 @@ public class T1cClientTest extends AbstractTestClass {
         assertNotNull(dsClient);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test()
     public void testGetOcvClient() throws Exception {
         getClient().getOcvClient();
 
@@ -90,27 +90,29 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetLuxTrustContainer() throws Exception {
-        ILuxTrustContainer genericContainer = getClient().getLuxTrustContainer(ContainerType.BEID.getId(), "123456");
+        ILuxTrustContainer genericContainer = getClient().getLuxTrustContainer(ContainerType.LUXTRUST.getId(), "123456");
 
         assertNotNull(genericContainer);
     }
 
+    @Test
     public void testGetDnieContainer() throws Exception {
         IDnieContainer genericContainer = getClient().getDnieContainer(ContainerType.DNIE.getId());
 
         assertNotNull(genericContainer);
     }
 
+    @Test
     public void testGetPtIdContainer() throws Exception {
-        IPtEIdContainer genericContainer = getClient().getPtIdContainer(ContainerType.DNIE.getId());
+        IPtEIdContainer genericContainer = getClient().getPtIdContainer(ContainerType.PT.getId());
 
         assertNotNull(genericContainer);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test()
     public void testGetEmvContainer() throws Exception {
-        getClient().getEmvContainer(ContainerType.EMV.getId());
-
+        IEmvContainer container = getClient().getEmvContainer(ContainerType.EMV.getId());
+        assertNotNull(container);
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -179,7 +181,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testDumpData() throws Exception {
-        GclBeIdAllData allData = (GclBeIdAllData) getClient().dumpData(ContainerType.BEID.getId());
+        BeIdAllData allData = (BeIdAllData) getClient().dumpData(ContainerType.BEID.getId());
         assertNotNull(allData);
     }
 
@@ -217,8 +219,8 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testVerifyPin() throws Exception {
-        PinVerificationResponse verified = getClient().verifyPin(ContainerType.LUXID.getId(), "1234");
-        assertTrue(verified.isSuccess());
+        boolean verified = getClient().verifyPin(ContainerType.LUXID.getId(), "1234");
+        assertTrue(verified);
     }
 
 }

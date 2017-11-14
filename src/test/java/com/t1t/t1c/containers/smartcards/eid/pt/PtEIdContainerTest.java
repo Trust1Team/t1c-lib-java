@@ -2,8 +2,6 @@ package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.model.rest.GclPtIdAllCertificates;
-import com.t1t.t1c.model.rest.GclPtIdAllData;
 import com.t1t.t1c.model.rest.GclPtIdData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -17,7 +15,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Guillaume Vandecasteele
@@ -37,7 +36,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
     @Test
     public void getAllData() throws Exception {
         List<String> filters = ptEIdContainer.getAllDataFilters();
-        GclPtIdAllData data = (GclPtIdAllData) ptEIdContainer.getAllData(filters);
+        PtIdAllData data = (PtIdAllData) ptEIdContainer.getAllData(filters);
         assertNotNull(data);
         assertNotNull(data.getNonRepudiationCertificate());
         assertNotNull(data.getAuthenticationCertificate());
@@ -50,7 +49,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
     @Test
     public void getAllCertificates() throws Exception {
         List<String> filters = ptEIdContainer.getAllCertificateFilters();
-        GclPtIdAllCertificates certs = (GclPtIdAllCertificates) ptEIdContainer.getAllCertificates(filters);
+        PtIdAllCertificates certs = (PtIdAllCertificates) ptEIdContainer.getAllCertificates(filters);
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
         assertNotNull(certs.getRootCertificate());
@@ -70,7 +69,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
     public void getIdDataWithOutPhoto() throws Exception {
         GclPtIdData data = ptEIdContainer.getIdData();
         assertNotNull(data);
-        assertNull(data.getPhoto());
+        assertNotNull(data.getPhoto());
     }
 
     @Test

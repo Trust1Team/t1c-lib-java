@@ -3,7 +3,6 @@ package com.t1t.t1c.core;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
@@ -45,11 +44,6 @@ public class Core extends AbstractCore {
     public void setPubKey(String publicKey) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(publicKey), "Public key must be provided");
         FactoryService.getGclAdminClient().setPublicKey(publicKey);
-    }
-
-    @Override
-    public String getPubKey(DsPublicKeyEncoding encoding) {
-        return FactoryService.getGclAdminClient().getPublicKey();
     }
 
     @Override
