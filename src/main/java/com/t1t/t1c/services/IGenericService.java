@@ -3,6 +3,7 @@ package com.t1t.t1c.services;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclReader;
 
@@ -33,5 +34,5 @@ public interface IGenericService {
 
     String sign(String readerId, GclAuthenticateOrSignData data, String... pin);
 
-    boolean verifyPin(String readerId, String... pin);
+    PinVerificationResponse verifyPin(String readerId, String... pin);
 }

@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -15,6 +14,8 @@ import com.t1t.t1c.model.rest.GclEmvCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -24,12 +25,19 @@ import java.util.List;
  */
 public class EmvContainer extends AbstractContainer implements IEmvContainer {
 
+    private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
+
     public EmvContainer(String readerId, ContainerRestClient httpClient) {
         super(readerId, ContainerType.EMV, httpClient);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws GenericContainerException {
+    protected Logger getLogger() {
+        return log;
+    }
+
+    @Override
+    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
                 return returnData(getHttpClient().getEmvAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
@@ -42,7 +50,7 @@ public class EmvContainer extends AbstractContainer implements IEmvContainer {
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
         throw new UnsupportedOperationException("This container does not provide a list of all of its certificates");
     }
 

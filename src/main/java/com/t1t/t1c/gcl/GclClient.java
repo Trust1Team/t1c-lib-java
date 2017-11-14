@@ -1,6 +1,5 @@
 package com.t1t.t1c.gcl;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
 import com.t1t.t1c.exceptions.RestException;

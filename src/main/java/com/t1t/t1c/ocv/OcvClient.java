@@ -58,7 +58,6 @@ public class OcvClient extends AbstractRestClient<OcvRestClient> implements IOcv
             } catch (RestException ex) {
                 throw ExceptionFactory.ocvException("Could not validate certificate chain", ex);
             }
-        }
-        else return null;
+        } else return null;
     }
 }

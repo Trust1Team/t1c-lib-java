@@ -2,11 +2,11 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.services.FactoryService;
 import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
 import com.t1t.t1c.model.rest.GclLuxTrustAllData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.services.FactoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void isLuxTrustActivated() throws Exception {
-        assertTrue(luxTrustContainer.isLuxTrustActivated());
+        assertTrue(luxTrustContainer.isActivated());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
         GclLuxTrustAllData data = (GclLuxTrustAllData) luxTrustContainer.getAllData(filters);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
-        assertNotNull(data.getNonRepudiationCertificate());
+        assertNotNull(data.getSigningCertificate());
         assertNotNull(data.getRootCertificates());
     }
 
@@ -55,7 +55,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
         GclLuxTrustAllCertificates data = (GclLuxTrustAllCertificates) luxTrustContainer.getAllCertificates(filters);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
-        assertNotNull(data.getNonRepudiationCertificate());
+        assertNotNull(data.getSigningCertificate());
         assertNotNull(data.getRootCertificates());
     }
 

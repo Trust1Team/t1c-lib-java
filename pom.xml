@@ -282,13 +282,18 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificate.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvOcspResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCrlResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
                     </sourcePaths>
                     <excludes></excludes>
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>

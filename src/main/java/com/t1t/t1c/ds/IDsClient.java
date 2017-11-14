@@ -1,7 +1,6 @@
 package com.t1t.t1c.ds;
 
 import com.t1t.t1c.exceptions.DsClientException;
-import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.DsDevice;

@@ -6,6 +6,7 @@ import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclCard;
@@ -41,8 +42,8 @@ public class GenericService implements IGenericService {
     @Override
     public AllData dumpData(String readerId, String pin, List<String> filterParams) {
         if (StringUtils.isNotEmpty(pin)) {
-            return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams);
-        } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams);
+            return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams, true);
+        } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams, true);
     }
 
     @Override
@@ -127,7 +128,7 @@ public class GenericService implements IGenericService {
     }
 
     @Override
-    public boolean verifyPin(String readerId, String... pin) {
+    public PinVerificationResponse verifyPin(String readerId, String... pin) {
         return FactoryService.getGenericContainer(readerId, pin).verifyPin(pin);
     }
 

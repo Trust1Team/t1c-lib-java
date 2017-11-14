@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.exceptions.BeIdContainerException;
@@ -12,7 +11,10 @@ import com.t1t.t1c.model.rest.GclBeIdAddress;
 import com.t1t.t1c.model.rest.GclBeIdRn;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -23,8 +25,15 @@ import java.util.List;
  */
 public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
 
+    private static final Logger log = LoggerFactory.getLogger(BeIdContainer.class);
+
     public BeIdContainer(String readerId, ContainerRestClient httpClient) {
         super(readerId, ContainerType.BEID, httpClient);
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return log;
     }
 
     @Override
@@ -57,12 +66,12 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws BeIdContainerException {
+    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws BeIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
+                return new BeIdAllData(returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId()));
+                return new BeIdAllData(returnData(getHttpClient().getBeIdAllData(getType().getId(), getReaderId())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve all data from container", ex);
@@ -70,12 +79,12 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws BeIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws BeIdContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams)));
+                return new BeIdAllCertificates(returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId()));
+                return new BeIdAllCertificates(returnData(getHttpClient().getBeIdAllCertificates(getType().getId(), getReaderId())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve all data from container", ex);
@@ -90,7 +99,7 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     @Override
     public T1cCertificate getCitizenCertificate(boolean parse) throws BeIdContainerException {
         try {
-            return createT1cCertificate(returnData(getHttpClient().getCitizenCertificate(getTypeId(), getReaderId())), parse);
+            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getCitizenCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve citizen certificate from container", ex);
         }
@@ -109,7 +118,7 @@ public class BeIdContainer extends AbstractContainer implements IBeIdContainer {
     @Override
     public T1cCertificate getRrnCertificate(boolean parse) throws BeIdContainerException {
         try {
-            return createT1cCertificate(returnData(getHttpClient().getRrnCertificate(getTypeId(), getReaderId())), parse);
+            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getRrnCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("Could not retrieve RRN certificate from container", ex);
         }

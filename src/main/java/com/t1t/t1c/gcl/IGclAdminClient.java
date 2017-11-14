@@ -1,7 +1,6 @@
 package com.t1t.t1c.gcl;
 
 import com.t1t.t1c.exceptions.GclAdminClientException;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 
 /**
  * @author Guillaume Vandecasteele

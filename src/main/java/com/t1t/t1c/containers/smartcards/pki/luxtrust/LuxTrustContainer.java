@@ -1,9 +1,9 @@
 package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.google.common.base.Preconditions;
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -13,6 +13,8 @@ import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ import java.util.List;
  */
 public class LuxTrustContainer extends AbstractContainer implements ILuxTrustContainer {
 
+    private static final Logger log = LoggerFactory.getLogger(LuxTrustContainer.class);
+
 
     public LuxTrustContainer(String readerId, ContainerRestClient httpClient, String pin) {
         super(readerId, ContainerType.LUXTRUST, httpClient, pin);
@@ -29,7 +33,12 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public boolean isLuxTrustActivated() throws LuxTrustContainerException {
+    protected Logger getLogger() {
+        return log;
+    }
+
+    @Override
+    public boolean isActivated() throws LuxTrustContainerException {
         try {
             return isCallSuccessful(executeCall(getHttpClient().isLuxTrustActivated(getTypeId(), getReaderId(), getPin())));
         } catch (RestException ex) {
@@ -38,12 +47,12 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws LuxTrustContainerException {
+    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws LuxTrustContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams)));
+                return new LuxTrustAllData(returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getDnieAllData(getTypeId(), getReaderId(), getPin()));
+                return new LuxTrustAllData(returnData(getHttpClient().getLuxTrustAllData(getTypeId(), getReaderId(), getPin())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.luxTrustContainerException("Could not retrieve all data from container", ex);
@@ -51,12 +60,12 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws LuxTrustContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws LuxTrustContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams)));
+                return new LuxTrustAllCertificates(returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin()));
+                return new LuxTrustAllCertificates(returnData(getHttpClient().getLuxTrustAllCertificates(getTypeId(), getReaderId(), getPin())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.luxTrustContainerException("Could not retrieve all data from container", ex);
@@ -64,8 +73,8 @@ public class LuxTrustContainer extends AbstractContainer implements ILuxTrustCon
     }
 
     @Override
-    public T1cCertificate getRootCertificate(boolean parse) throws LuxTrustContainerException {
-        return super.getRootCertificate(parse);
+    public List<T1cCertificate> getRootCertificates(boolean parse) throws LuxTrustContainerException {
+        return super.getRootCertificates(parse);
     }
 
     @Override

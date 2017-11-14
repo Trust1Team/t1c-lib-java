@@ -3,7 +3,10 @@ package com.t1t.t1c.rest;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import retrofit2.Call;
-import retrofit2.http.*;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 /**
  * Created by michallispashidis on 04/11/2017.

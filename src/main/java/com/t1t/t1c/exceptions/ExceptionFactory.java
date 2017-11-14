@@ -135,8 +135,8 @@ public final class ExceptionFactory {
      * @param httpCode
      * @return
      */
-    public static RestException restException(String message, Integer httpCode, String uri) {
-        return new RestException(message, httpCode, uri);
+    public static RestException restException(String message, Integer httpCode, String uri, String jsonError) {
+        return new RestException(message, httpCode, uri, jsonError);
     }
 
     /**
@@ -275,6 +275,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates an OCV exception
+     *
      * @param message
      * @param cause
      * @return

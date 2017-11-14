@@ -24,6 +24,7 @@ import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.ocv.IOcvClient;
@@ -49,7 +50,7 @@ public class T1cClient implements IT1cClient {
 
 
     public T1cClient(LibConfig config) {
-        init(config, null,false);
+        init(config, null, false);
     }
 
     public T1cClient(Path toConfigurationFile) {
@@ -217,7 +218,7 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public boolean verifyPin(String readerId, String... pin) {
+    public PinVerificationResponse verifyPin(String readerId, String... pin) {
         return genericService.verifyPin(readerId, pin);
     }
 
@@ -265,8 +266,7 @@ public class T1cClient implements IT1cClient {
         T1cConfigParser clientConfig = null;
         if (config != null) {
             clientConfig = new T1cConfigParser(config);
-        }
-        else if (toConfigurationFile != null) {
+        } else if (toConfigurationFile != null) {
             clientConfig = new T1cConfigParser(toConfigurationFile);
         }
         if (clientConfig == null || clientConfig.getAppConfig() == null) {

@@ -99,10 +99,6 @@ public class LibConfig {
         this.ocvContexPath = ocvContexPath;
     }
 
-    public void setOcvUri(String ocvUri) {
-        this.ocvUri = ocvUri;
-    }
-
     public String getApiKey() {
         return apiKey;
     }
@@ -164,5 +160,9 @@ public class LibConfig {
             }
         }
         return this.ocvUri;
+    }
+
+    public void setOcvUri(String ocvUri) {
+        this.ocvUri = ocvUri;
     }
 }

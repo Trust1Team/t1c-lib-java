@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
@@ -12,7 +11,10 @@ import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclPtIdData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -22,18 +24,24 @@ import java.util.List;
  */
 public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer {
 
+    private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
     public PtEIdContainer(String readerId, ContainerRestClient httpClient) {
         super(readerId, ContainerType.PT, httpClient);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams) throws GenericContainerException {
+    protected Logger getLogger() {
+        return log;
+    }
+
+    @Override
+    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
+                return new PtIdAllData(returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId()));
+                return new PtIdAllData(returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.ptIdContainerException("Could not retrieve all data from container", ex);
@@ -41,12 +49,12 @@ public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams) throws GenericContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
         try {
             if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams)));
+                return new PtIdAllCertificates(returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
             } else {
-                return returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId()));
+                return new PtIdAllCertificates(returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId())), parseCertificates);
             }
         } catch (RestException ex) {
             throw ExceptionFactory.ptIdContainerException("Could not retrieve all data from container", ex);
@@ -80,7 +88,7 @@ public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer
     @Override
     public T1cCertificate getRootAuthenticationCertificate(boolean parse) throws PtIdContainerException {
         try {
-            return createT1cCertificate(returnData(getHttpClient().getRootAuthenticationCertificate(getTypeId(), getReaderId())), parse);
+            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getRootAuthenticationCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.ptIdContainerException("Could not retrieve authentication certificate from container", ex);
         }
@@ -89,7 +97,7 @@ public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer
     @Override
     public T1cCertificate getRootNonRepudiationCertificate(boolean parse) throws PtIdContainerException {
         try {
-            return createT1cCertificate(returnData(getHttpClient().getRootNonRepudiationCertificate(getTypeId(), getReaderId())), parse);
+            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getRootNonRepudiationCertificate(getTypeId(), getReaderId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.ptIdContainerException("Could not retrieve authentication certificate from container", ex);
         }

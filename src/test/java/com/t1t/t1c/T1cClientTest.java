@@ -10,6 +10,7 @@ import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.model.PinVerificationResponse;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
 import com.t1t.t1c.model.rest.GclReader;
@@ -216,8 +217,8 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testVerifyPin() throws Exception {
-        boolean verified = getClient().verifyPin(ContainerType.LUXID.getId(), "1234");
-        assertTrue(verified);
+        PinVerificationResponse verified = getClient().verifyPin(ContainerType.LUXID.getId(), "1234");
+        assertTrue(verified.isSuccess());
     }
 
 }

@@ -8,11 +8,13 @@ public class RestException extends AbstractException {
 
     private Integer httpCode = 400;
     private String uri;
+    private String jsonError;
 
-    public RestException(String message, Integer httpCode, String uri) {
+    public RestException(String message, Integer httpCode, String uri, String jsonError) {
         super(message);
         this.httpCode = httpCode;
         this.uri = uri;
+        this.jsonError = jsonError;
     }
 
     public RestException(Throwable cause) {
@@ -33,6 +35,10 @@ public class RestException extends AbstractException {
 
     public String getUri() {
         return uri;
+    }
+
+    public String getJsonError() {
+        return jsonError;
     }
 
     @Override

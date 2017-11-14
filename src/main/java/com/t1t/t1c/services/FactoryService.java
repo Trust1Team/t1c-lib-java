@@ -50,7 +50,8 @@ public final class FactoryService {
     private static ContainerRestClient containerRestClient;
     private static IOcvClient ocvClient;
 
-    private FactoryService() {}
+    private FactoryService() {
+    }
 
     public static IDsClient getDsClient() {
         if (dsClient == null) {

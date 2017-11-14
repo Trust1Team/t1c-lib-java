@@ -38,7 +38,8 @@ public final class RestServiceBuilder {
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String CONTAINER_CONTEXT_PATH = "plugins/";
 
-    private RestServiceBuilder() {}
+    private RestServiceBuilder() {
+    }
 
     public static GclRestClient getGclRestClient(LibConfig config) {
         return getClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
