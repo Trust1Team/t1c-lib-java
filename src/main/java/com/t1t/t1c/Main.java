@@ -2,6 +2,7 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.rest.GclReader;
 
 /**
@@ -25,7 +26,12 @@ public class Main {
         conf.setDefaultPollingTimeoutInSeconds(10);
         T1cClient client = new T1cClient(conf);
         GclReader reader = client.getCore().pollCardInserted();
-        client.verifyPin(reader.getId(), "8123");
+        try {
+            client.verifyPin(reader.getId(), "8123");
+        }
+        catch (VerifyPinException ex) {
+            System.out.println("Retries left: " + ex.getRetriesLeft());
+        }
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));
         T1cClient t1cClient = new T1cClient(conf);
         IOcvClient ocvClient = t1cClient.getOcvClient();

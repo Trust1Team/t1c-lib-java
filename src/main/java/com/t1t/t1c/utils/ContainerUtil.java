@@ -42,4 +42,25 @@ public final class ContainerUtil {
         return false;
     }
 
+    public static Integer getPinVerificationRetriesLeftFor(Integer code) {
+        if (code != null) {
+            switch (code) {
+                case 111:
+                    return 1;
+                case 112:
+                    return 3;
+                case 103:
+                    return 2;
+                case 104:
+                    return 1;
+                case 105:
+                    return 0;
+                default:
+                    log.warn("GCL error code does not match known PIN retries codes: ", code);
+                    return null;
+            }
+        } else {
+            return null;
+        }
+    }
 }

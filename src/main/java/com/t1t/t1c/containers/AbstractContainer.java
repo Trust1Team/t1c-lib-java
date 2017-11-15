@@ -131,7 +131,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
             if (StringUtils.isNotEmpty(ex.getJsonError())) {
                 try {
                     GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                    throw ExceptionFactory.verifyPinException(error.getDescription());
+                    throw ExceptionFactory.verifyPinException(error);
                 } catch (JsonSyntaxException e) {
                     getLogger().error("Couldn't decode error message: ", e);
                 }
