@@ -261,4 +261,20 @@ public interface ContainerRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclMobibAllData>> getMobibAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    //
+    // OCRA Container specific methods
+    //
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclOcraAllData>> getOcraAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclOcraAllData>> getOcraAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/challenge")
+    Call<T1cResponse<String>> ocraChallenge(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclOcraChallengeData request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/challenge")
+    Call<T1cResponse<String>> getOcraReadCounter(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclVerifyPinRequest request);
 }

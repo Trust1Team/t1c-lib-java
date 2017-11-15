@@ -129,14 +129,7 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
                         return isCallSuccessful(executeCall(getHttpClient().verifyPin(type.getId(), readerId)));
                 }
             } catch (RestException ex) {
-                if (StringUtils.isNotEmpty(ex.getJsonError())) {
-                    try {
-                        GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                        throw ExceptionFactory.verifyPinException(error.getDescription());
-                    } catch (JsonSyntaxException e) {
-                        getLogger().error("Couldn't decode error message: ", e);
-                    }
-                }
+                checkPinExceptionMessage(ex);
                 throw ExceptionFactory.genericContainerException("Could not verify pin with generic container", ex);
             }
         } else {
@@ -261,6 +254,17 @@ public abstract class AbstractContainer extends AbstractRestClient<ContainerRest
         } else {
             if (!hardwarePinPadPresent && !pinPresent) {
                 throw ExceptionFactory.verifyPinException("The request was sent without a PIN, but the reader doest not have a PIN-pad");
+            }
+        }
+    }
+
+    protected void checkPinExceptionMessage(RestException ex) {
+        if (StringUtils.isNotEmpty(ex.getJsonError())) {
+            try {
+                GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
+                throw ExceptionFactory.verifyPinException(error.getDescription());
+            } catch (JsonSyntaxException e) {
+                getLogger().error("Couldn't decode error message: ", e);
             }
         }
     }

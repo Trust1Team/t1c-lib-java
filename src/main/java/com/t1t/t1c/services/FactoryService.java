@@ -19,6 +19,7 @@ import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
+import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.ISafenetContainer;
 import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
@@ -106,7 +107,7 @@ public final class FactoryService {
 
     //TODO - implement Citrix
     public static IAgent getAgent() {
-        throw new UnsupportedOperationException();
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
 
     public static GenericContainer getGenericContainer(String readerId, String... pin) {
@@ -140,7 +141,7 @@ public final class FactoryService {
             case READER_API:
                 return getReaderContainer(readerId);
             default:
-                throw new UnsupportedOperationException("No container for type found");
+                throw ExceptionFactory.unsupportedOperationException("No container for type found");
         }
     }
 
@@ -179,39 +180,39 @@ public final class FactoryService {
     }
 
     public static IOcraContainer getOcraContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        return new OcraContainer(readerId, getContainerRestClient());
     }
-    //TODO - OCRA
 
-    public static IAventraContainer getAventraContainer(String readerId) {
-        throw new UnsupportedOperationException();
-    }
     //TODO - AVENTRA
+    public static IAventraContainer getAventraContainer(String readerId) {
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
+    }
+
 
     public static IOberthurContainer getOberthurContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        //TODO - OBERTHUR
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
-    //TODO - OBERTHUR
 
     public static IPivContainer getPivContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        //TODO - PIV
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
-    //TODO - PIV
 
     public static ISafenetContainer getSafenetContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        //TODO - SAFENET
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
-    //TODO - SAFENET
 
     public static IReaderApiContainer getReaderContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        //TODO - READERAPI
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
-    //TODO - READERAPI
 
     public static IBelfiusContainer getBelfiusContainer(String readerId) {
-        throw new UnsupportedOperationException();
+        //TODO - BELFIUS
+        throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
-    //TODO - BELFIUS
 
     public static LibConfig getConfig() {
         return config;

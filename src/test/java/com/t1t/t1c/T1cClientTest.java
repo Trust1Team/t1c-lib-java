@@ -10,6 +10,7 @@ import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
+import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
@@ -122,10 +123,10 @@ public class T1cClientTest extends AbstractTestClass {
         assertNotNull(container);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testGetOcraContainer() throws Exception {
-        getClient().getOcraContainer((ContainerType.OCRA.getId()));
-
+        IOcraContainer container = getClient().getOcraContainer((ContainerType.OCRA.getId()));
+        assertNotNull(container);
     }
 
     @Test(expected = UnsupportedOperationException.class)

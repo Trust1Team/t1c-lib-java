@@ -522,6 +522,14 @@ public final class MockResponseFactory {
         return getResponse(GSON.fromJson(json, GclMobibAllData.class));
     }
 
+    public static T1cResponse<GclOcraAllData> getGclOcraAllDataResponse() {
+        return getResponse(new GclOcraAllData().withCounter("Data Counter"));
+    }
+
+    public static T1cResponse<String> getStringResponse() {
+        return getResponse("This is a String response");
+    }
+
     private static <T> T1cResponse<T> getResponse(T data) {
         return new T1cResponse<T>().withSuccess(true).withData(data);
     }

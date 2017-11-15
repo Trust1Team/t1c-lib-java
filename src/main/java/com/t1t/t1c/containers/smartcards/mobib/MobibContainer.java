@@ -49,7 +49,7 @@ public class MobibContainer extends AbstractContainer implements IMobibContainer
 
     @Override
     public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        throw new UnsupportedOperationException("MOBIB Container does not provide certificates");
+        throw ExceptionFactory.unsupportedOperationException("MOBIB Container does not provide certificates");
     }
 
     @Override

@@ -364,6 +364,26 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
+    public Call<T1cResponse<GclOcraAllData>> getOcraAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getGclOcraAllDataResponse()).getOcraAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclOcraAllData>> getOcraAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getGclOcraAllDataResponse()).getOcraAllData(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> ocraChallenge(String containerId, String readerId, GclOcraChallengeData request) {
+        return delegate.returningResponse(getStringResponse()).ocraChallenge(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getOcraReadCounter(String containerId, String readerId, GclVerifyPinRequest request) {
+        return delegate.returningResponse(getStringResponse()).getOcraReadCounter(containerId, readerId, request);
+    }
+
+    @Override
     public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId) {
         List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
         T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);
