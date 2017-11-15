@@ -291,6 +291,9 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclMobibAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json
                         </sourcePath>

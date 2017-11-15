@@ -314,6 +314,8 @@ public final class MockResponseFactory {
                     reader = reader.withCard(new GclCard().withAtr("3BDB9600801F030031C064B0F310000F900088").withDescription(type.getCardDescriptions()));
                 case PT:
                     reader = reader.withCard(new GclCard().withAtr("3B7D95000080318065B08311----83009000").withDescription(type.getCardDescriptions()));
+                case SAFENET:
+                    reader = reader.withCard(new GclCard().withAtr("SAFENET").withDescription(type.getCardDescriptions()));
             }
         }
         return reader;
@@ -528,6 +530,44 @@ public final class MockResponseFactory {
 
     public static T1cResponse<String> getStringResponse() {
         return getResponse("This is a String response");
+    }
+
+    public static T1cResponse<List<String>> getStringListResponse() {
+        return getResponse(Arrays.asList("This is a String response", "This is a second String response"));
+    }
+
+    public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
+        String json = "{\n" +
+                "\"cryptoki_version\": \"2.20\",\n" +
+                "\"manufacturer_id\": \"SafeNet, Inc.\",\n" +
+                "\"flags\": 7,\n" +
+                "\"library_description\": \"SafeNet eToken PKCS#11\",\n" +
+                "\"library_version\": \"9.1\"\n" +
+                "}";
+        return getResponse(GSON.fromJson(json, GclSafeNetInfo.class));
+    }
+
+    public static T1cResponse<List<GclSafeNetSlot>> getSafeNetSlotsResponse(Boolean tokenPresent) {
+        List<GclSafeNetSlot> slots = new ArrayList<>();
+        String jsonWithToken = "{\n" +
+                "\"slot_id\": 0,\n" +
+                "\"description\": \"SafeNet eToken 5100\",\n" +
+                "\"flags\": 7,\n" +
+                "\"hardware_version\": \"2.0\",\n" +
+                "\"firmware_version\": \"0.0\"\n" +
+                "}";
+        if (tokenPresent == null || !tokenPresent) {
+            String jsonWithoutToken = "{\n" +
+                    "\"slot_id\": 1,\n" +
+                    "\"description\": \"\",\n" +
+                    "\"flags\": 2,\n" +
+                    "\"hardware_version\": \"2.0\",\n" +
+                    "\"firmware_version\": \"0.0\"\n" +
+                    "}";
+            slots.add(GSON.fromJson(jsonWithoutToken, GclSafeNetSlot.class));
+        }
+        slots.add(GSON.fromJson(jsonWithToken, GclSafeNetSlot.class));
+        return getResponse(slots);
     }
 
     private static <T> T1cResponse<T> getResponse(T data) {

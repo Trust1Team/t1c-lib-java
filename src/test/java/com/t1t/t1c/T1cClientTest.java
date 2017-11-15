@@ -11,6 +11,7 @@ import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
@@ -132,37 +133,32 @@ public class T1cClientTest extends AbstractTestClass {
     @Test(expected = UnsupportedOperationException.class)
     public void testGetAventraContainer() throws Exception {
         getClient().getAventraContainer(ContainerType.AVENTRA.getId());
-
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetOberthurContainer() throws Exception {
         getClient().getOberthurContainer(ContainerType.OBERTHUR.getId());
-
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetPivContainer() throws Exception {
         getClient().getPivContainer(ContainerType.PIV.getId());
-
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testGetSafenetContainer() throws Exception {
-        getClient().getSafenetContainer(ContainerType.PIV.getId());
-
+        ISafeNetContainer container = getClient().getSafeNetContainer(ContainerType.SAFENET.getId());
+        assertNotNull(container);
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetReaderContainer() throws Exception {
         getClient().getBelfiusContainer(ContainerType.READER_API.getId());
-
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testGetBelfiusContainer() throws Exception {
         getClient().getBelfiusContainer(ContainerType.READER_API.getId());
-
     }
 
     @Test

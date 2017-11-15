@@ -9,9 +9,11 @@ import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
+import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
 
 import java.util.*;
@@ -98,7 +100,13 @@ public enum ContainerType {
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
             IBelfiusContainer.class,
-            null);
+            null),
+    SAFENET("safenet",
+            Collections.singletonList("SafeNet"),
+            Collections.EMPTY_LIST,
+            Collections.EMPTY_LIST,
+            ISafeNetContainer.class,
+            AllData.class);
 
     private static final Map<String, ContainerType> idMap;
     private static final Map<String, ContainerType> cardDescriptionMap;

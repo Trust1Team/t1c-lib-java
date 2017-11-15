@@ -21,7 +21,9 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.ISafenetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
@@ -140,6 +142,8 @@ public final class FactoryService {
                 return getPivContainer(readerId);
             case READER_API:
                 return getReaderContainer(readerId);
+            case SAFENET:
+                return getSafeNetContainer(readerId);
             default:
                 throw ExceptionFactory.unsupportedOperationException("No container for type found");
         }
@@ -183,8 +187,8 @@ public final class FactoryService {
         return new OcraContainer(readerId, getContainerRestClient());
     }
 
-    //TODO - AVENTRA
     public static IAventraContainer getAventraContainer(String readerId) {
+        //TODO - AVENTRA
         throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
 
@@ -199,9 +203,15 @@ public final class FactoryService {
         throw ExceptionFactory.unsupportedOperationException("Unsupported");
     }
 
-    public static ISafenetContainer getSafenetContainer(String readerId) {
-        //TODO - SAFENET
-        throw ExceptionFactory.unsupportedOperationException("Unsupported");
+    public static ISafeNetContainer getSafeNetContainer(String readerId) {
+        return getSafeNetContainer(readerId, null);
+    }
+
+    public static ISafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration) {
+        if (configuration == null) {
+            configuration = new SafeNetContainerConfiguration();
+        }
+        return new SafeNetContainer(readerId, getContainerRestClient(), configuration);
     }
 
     public static IReaderApiContainer getReaderContainer(String readerId) {

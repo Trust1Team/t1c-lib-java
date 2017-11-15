@@ -3,7 +3,9 @@ package com.t1t.t1c;
 import com.google.gson.Gson;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.model.rest.GclReader;
+import com.t1t.t1c.model.rest.GclSafeNetRequest;
 
 /**
  * @author Guillaume Vandecasteele
@@ -17,7 +19,7 @@ public class Main {
         //conf.setVersion("0.0.1-SNAPSHOT");
         conf.setEnvironment(Environment.DEV);
         //conf.setDsDownloadContextPath("/trust1team/gclds-file/v1");
-        conf.setGatewayUri("https://accapim.t1t.be");
+        /*conf.setGatewayUri("https://accapim.t1t.be");
         conf.setGclClientUri("https://localhost:10443/v1/");
         conf.setDsContextPath("/trust1team/gclds/v1");
         conf.setApiKey("7de3b216-ade2-4391-b2e2-86b80bac4d7d");
@@ -27,6 +29,9 @@ public class Main {
         T1cClient client = new T1cClient(conf);
         GclReader reader = client.getCore().pollCardInserted();
         System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
+        */
+        SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
+        System.out.println(new Gson().toJson(new GclSafeNetRequest().withModule(config.getMac().toString())));
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));
         T1cClient t1cClient = new T1cClient(conf);
         IOcvClient ocvClient = t1cClient.getOcvClient();
