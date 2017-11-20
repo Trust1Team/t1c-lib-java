@@ -50,11 +50,11 @@ public class T1cClient implements IT1cClient {
 
 
     public T1cClient(LibConfig config) {
-        init(config, null, false);
+        init(config, null);
     }
 
     public T1cClient(Path toConfigurationFile) {
-        init(null, toConfigurationFile, false);
+        init(null, toConfigurationFile);
     }
 
     @Override
@@ -262,7 +262,7 @@ public class T1cClient implements IT1cClient {
     // Initialization methods
     //
 
-    private void init(LibConfig config, Path toConfigurationFile, boolean automatic) {
+    private void init(LibConfig config, Path toConfigurationFile) {
         T1cConfigParser clientConfig = null;
         if (config != null) {
             clientConfig = new T1cConfigParser(config);
@@ -278,7 +278,8 @@ public class T1cClient implements IT1cClient {
         this.core = new Core(config);
         this.genericService = new GenericService();
 
-        if (!automatic) {
+        //initialize public key for instance and register towards DS
+        if (StringUtils.isNotEmpty(config.getApiKey())) {
             initSecurityContext();
             registerAndActivate();
         }
@@ -325,7 +326,7 @@ public class T1cClient implements IT1cClient {
         if (!gclInfo.getActivated()) {
             String token = FactoryService.getDsClient().register(gclInfo.getUid(), registration);
             if (StringUtils.isNotBlank(token)) {
-                config = config.withJwt(token);
+                config.setJwt(token);
                 FactoryService.setConfig(config);
             }
             boolean activated = core.activate();

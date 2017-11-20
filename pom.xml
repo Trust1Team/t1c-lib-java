@@ -338,4 +338,24 @@
                         </properties>-->
         </profile>
     </profiles>
+
+    <!--Repositories -->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <url>https://repo.t1t.be/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <!-- repository to deploy to JAVA -->
+    <distributionManagement>
+        <repository>
+            <id>Releases</id>
+            <url>https://repo.t1t.be/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <url>https://repo.t1t.be/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

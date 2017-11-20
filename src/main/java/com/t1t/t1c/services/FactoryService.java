@@ -50,8 +50,7 @@ public final class FactoryService {
     private static ContainerRestClient containerRestClient;
     private static IOcvClient ocvClient;
 
-    private FactoryService() {
-    }
+    private FactoryService() { }
 
     public static IDsClient getDsClient() {
         if (dsClient == null) {
@@ -213,9 +212,7 @@ public final class FactoryService {
     }
     //TODO - BELFIUS
 
-    public static LibConfig getConfig() {
-        return config;
-    }
+    public static LibConfig getConfig() { return config; }
 
     public static void setConfig(LibConfig config) {
         FactoryService.config = config;

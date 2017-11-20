@@ -51,10 +51,9 @@ public abstract class AbstractTestClass {
 
         LibConfig conf = new LibConfig();
         conf.setEnvironment(Environment.DEV);
-        conf.setGatewayUri("https://accapim.t1t.be");
         conf.setGclClientUri("https://localhost:10443/v1/");
         conf.setDsContextPath("/trust1team/gclds/v1/");
-        conf.setOcvContexPath("/trust1team/ocv-api/v1");
+        conf.setOcvContextPath("/trust1team/ocv-api/v1");
         conf.setApiKey("7de3b216-ade2-4391-b2e2-86b80bac4d7d");
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);

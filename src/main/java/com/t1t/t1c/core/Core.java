@@ -23,9 +23,6 @@ public class Core extends AbstractCore {
 
     private static final Logger log = LoggerFactory.getLogger(Core.class);
 
-    private static final int DEFAULT_POLLING_INTERVAL = 5;
-    private static final int DEFAULT_POLLING_TIMEOUT = 30;
-
     public Core(LibConfig config) {
         super(config);
     }

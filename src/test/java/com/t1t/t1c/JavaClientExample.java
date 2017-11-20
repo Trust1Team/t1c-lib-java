@@ -4,26 +4,38 @@ import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.model.rest.GclReader;
 
+import java.net.URI;
+
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class Main {
+public class JavaClientExample {
+    /*Keys*/
+    private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
+    /*Uris*/
+    private static final String URI_GATEWAY = "https://accapim.t1t.be";
+    private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
+    /*Context paths*/
+    private static final String CONTEXT_DS = "/trust1team/gclds/v1";
+    private static final String CONTEXT_OCV = "/trust1team/ocv-api/v1";
 
     public static void main(String[] args) {
-
+        /*Config*/
         LibConfig conf = new LibConfig();
-        //conf.setVersion("0.0.1-SNAPSHOT");
         conf.setEnvironment(Environment.DEV);
-        //conf.setDsDownloadContextPath("/trust1team/gclds-file/v1");
-        conf.setGatewayUri("https://accapim.t1t.be");
-        conf.setGclClientUri("https://localhost:10443/v1/");
-        conf.setDsContextPath("/trust1team/gclds/v1");
-        conf.setApiKey("7de3b216-ade2-4391-b2e2-86b80bac4d7d");
-        conf.setOcvContexPath("/trust1team/ocv-api/v1");
+        conf.setDsUri(URI_GATEWAY);
+        conf.setOcvUri(URI_GATEWAY);
+        conf.setGclClientUri(URI_T1C_GCL);
+        conf.setDsContextPath(CONTEXT_DS);
+        conf.setApiKey(API_KEY);
+        conf.setOcvContextPath(CONTEXT_OCV);
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);
+
+        /*Instantiate client*/
         T1cClient client = new T1cClient(conf);
+
         GclReader reader = client.getCore().pollCardInserted();
         client.verifyPin(reader.getId(), "8123");
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));

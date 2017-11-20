@@ -6,7 +6,10 @@ package com.t1t.t1c.utils;
  */
 public final class UriUtils {
 
-    private UriUtils() {
+    private UriUtils() { }
+
+    public static String constructURI(String uri, String contextPath) {
+        return uriFinalSlashAppender(uri) + uriLeadingSlashRemover(contextPath);
     }
 
     public static String uriFinalSlashAppender(String uri) {

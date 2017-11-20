@@ -38,8 +38,7 @@ public final class RestServiceBuilder {
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String CONTAINER_CONTEXT_PATH = "plugins/";
 
-    private RestServiceBuilder() {
-    }
+    private RestServiceBuilder() {}
 
     public static GclRestClient getGclRestClient(LibConfig config) {
         return getClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
@@ -103,7 +102,7 @@ public final class RestServiceBuilder {
         return sslContext;
     }
 
-    public static OkHttpClient gethttpClient(final String apikey, final String jwt, boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt, boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         if (setSslConfig) {
