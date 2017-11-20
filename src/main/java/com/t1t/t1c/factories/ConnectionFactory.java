@@ -37,7 +37,6 @@ public final class ConnectionFactory {
     private IGclClient gclClient;
     private IGclAdminClient gclAdminClient;
     private IDsClient dsClient;
-    private ContainerRestClient containerRestClient;
     private IOcvClient ocvClient;
 
     public ConnectionFactory(LibConfig config) {
@@ -54,15 +53,14 @@ public final class ConnectionFactory {
 
     public <V extends GenericContainer, U extends ContainerRestClient> V getContainer(String readerId, Class<V> containerClazz, Class<U> clientClazz, String... pin) throws GenericContainerException {
         try {
-            Constructor ctor = null;
-            ctor = containerClazz.getClass().getDeclaredConstructor(String.class, ContainerRestClient.class, String.class);
+            Constructor ctor = containerClazz.getClass().getDeclaredConstructor(String.class, ContainerRestClient.class, String.class);
             return (V)ctor.newInstance(readerId, RestServiceBuilder.getContainerRestClient(config,clientClazz),getPin(pin));
         } catch (NoSuchMethodException|IllegalAccessException|InstantiationException|InvocationTargetException e) {
             throw ExceptionFactory.genericContainerException(e.getMessage());
         }
     }
 
-    public GenericContainer getGenericContainer(String readerId, ContainerType type, String... pin) {
+    private GenericContainer getGenericContainer(String readerId, ContainerType type, String... pin) {
         switch (type) {
             case BEID:
                 return new BeIdContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclBeidClient.class));
