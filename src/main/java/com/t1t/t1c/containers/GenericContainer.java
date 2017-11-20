@@ -30,9 +30,13 @@ public interface GenericContainer {
 
     AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException;
 
+    AllData getAllData(boolean... parseCertificates) throws GenericContainerException;
+
     AllCertificates getAllCertificates() throws GenericContainerException;
 
     AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException;
+
+    AllCertificates getAllCertificates(boolean... parseCertificates) throws GenericContainerException;
 
     boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
 

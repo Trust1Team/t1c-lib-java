@@ -51,7 +51,7 @@ public class EmvContainer extends AbstractContainer implements IEmvContainer {
 
     @Override
     public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        throw new UnsupportedOperationException("This container does not provide a list of all of its certificates");
+        throw ExceptionFactory.unsupportedOperationException("This container does not provide a list of all of its certificates");
     }
 
     @Override

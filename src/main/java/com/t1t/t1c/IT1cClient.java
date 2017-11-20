@@ -14,7 +14,8 @@ import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.ISafenetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
@@ -71,7 +72,9 @@ public interface IT1cClient {
 
     IPivContainer getPivContainer(String readerId);
 
-    ISafenetContainer getSafenetContainer(String readerId);
+    ISafeNetContainer getSafeNetContainer(String readerId);
+
+    ISafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration);
 
     IReaderApiContainer getReaderContainer(String readerId);
 

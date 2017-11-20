@@ -3,10 +3,7 @@ package com.t1t.t1c.rest;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.utils.UriUtils;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +22,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author Guillaume Vandecasteele
@@ -97,7 +96,7 @@ public final class RestServiceBuilder {
         // Creating a TrustManager that trusts the CAs in our KeyStore.
         trustManagerFactory.init(keyStore);
         // Creating an SSLSocketFactory that uses our TrustManager
-        SSLContext sslContext = SSLContext.getInstance("TLS");
+        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
         return sslContext;
     }
@@ -109,6 +108,8 @@ public final class RestServiceBuilder {
             TrustManagerFactory tmf = getTrustManagerFactory();
             SSLContext context = getSSLConfig(tmf);
             okHttpBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) tmf.getTrustManagers()[0]);
+        } else {
+            okHttpBuilder.sslSocketFactory(new TLSSocketFactory());
         }
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);

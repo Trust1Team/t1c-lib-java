@@ -15,7 +15,8 @@ import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.ISafenetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
@@ -148,8 +149,13 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public ISafenetContainer getSafenetContainer(String readerId) {
-        return FactoryService.getSafenetContainer(readerId);
+    public ISafeNetContainer getSafeNetContainer(String readerId) {
+        return FactoryService.getSafeNetContainer(readerId);
+    }
+
+    @Override
+    public ISafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration) {
+        return FactoryService.getSafeNetContainer(readerId, configuration);
     }
 
     @Override

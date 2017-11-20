@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclMobibCardIssuing",
+  "type": "object",
+  "properties": {
+    "card_expiration_date": {
+      "type": "string"
+    },
+    "card_holder_birth_date": {
+      "type": "string"
+    },
+    "card_holder_end_date": {
+      "type": "string"
+    },
+    "card_holder_id": {
+      "type": "string"
+    },
+    "card_holder_name": {
+      "type": "string"
+    },
+    "card_holder_start_date": {
+      "type": "string"
+    },
+    "card_revalidation_date": {
+      "type": "string"
+    },
+    "card_type": {
+      "type": "integer"
+    },
+    "company_id": {
+      "type": "integer"
+    },
+    "gender": {
+      "type": "integer"
+    },
+    "language": {
+      "type": "integer"
+    },
+    "version": {
+      "type": "integer"
+    }
+  }
+}

@@ -6,7 +6,13 @@ import com.t1t.t1c.containers.smartcards.eid.esp.exceptions.DnieContainerExcepti
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.containers.smartcards.emv.exceptions.EmvContainerException;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.mobib.exceptions.MobibContainerException;
+import com.t1t.t1c.containers.smartcards.ocra.exceptions.OcraContainerException;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
+import com.t1t.t1c.model.rest.GclError;
+import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -191,6 +197,21 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a verify PIN exception
+     *
+     * @param error
+     * @return
+     */
+    public static VerifyPinException verifyPinException(GclError error) {
+        if (error != null) {
+            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode()));
+        }
+        else {
+            return verifyPinException("No error message present, cannot determine cause");
+        }
+    }
+
+    /**
      * Creates an authentication exception
      *
      * @param message
@@ -274,6 +295,34 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a Mobib container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static MobibContainerException mobibContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with MOBIB container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new MobibContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates an OCRA container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static OcraContainerException ocraContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with MOBIB container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new OcraContainerException(errorMessage, cause);
+    }
+
+    public static UnsupportedOperationException unsupportedOperationException(String message) {
+        return new UnsupportedOperationException(message);
+    }
+
+    /**
      * Creates an OCV exception
      *
      * @param message
@@ -284,5 +333,26 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with OCV";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new OcvClientException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a SafeNet container exception
+     * @param message
+     * @return
+     */
+    public static SafeNetContainerException safeNetContainerException(String message) {
+        return new SafeNetContainerException(message);
+    }
+
+    /**
+     * Creates a SafeNet container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static SafeNetContainerException safeNetContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with SafeNet Container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new SafeNetContainerException(errorMessage, cause);
     }
 }

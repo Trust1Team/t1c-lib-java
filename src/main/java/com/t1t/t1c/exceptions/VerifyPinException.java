@@ -6,8 +6,19 @@ package com.t1t.t1c.exceptions;
  */
 public class VerifyPinException extends AbstractRuntimeException {
 
+    private Integer retriesLeft;
+
     public VerifyPinException(String message) {
         super(message);
+    }
+
+    public VerifyPinException(String message, Integer retriesLeft) {
+        super(message);
+        this.retriesLeft = retriesLeft;
+    }
+
+    public Integer getRetriesLeft() {
+        return retriesLeft;
     }
 
     @Override

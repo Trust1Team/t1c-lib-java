@@ -61,40 +61,40 @@ public interface ContainerRestClient {
     //
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
-    Call<T1cResponse<String>> getSecuredRootCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getRootCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
-    Call<T1cResponse<List<String>>> getSecuredRootCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<List<String>>> getRootCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/citizen")
-    Call<T1cResponse<String>> getSecuredCitizenCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getCitizenCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/authentication")
-    Call<T1cResponse<String>> getSecuredAuthenticationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getAuthenticationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/non-repudiation")
-    Call<T1cResponse<String>> getSecuredNonRepudiationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getNonRepudiationCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/signing")
-    Call<T1cResponse<String>> getSecuredSigningCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getSigningCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/issuer")
-    Call<T1cResponse<String>> getSecuredIssuerCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getIssuerCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/encryption")
-    Call<T1cResponse<String>> getSecuredEncryptionCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<String>> getEncryptionCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
-    Call<T1cResponse<Object>> verifyPinSecured(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclVerifyPinRequest request);
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclVerifyPinRequest request);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
-    Call<T1cResponse<Object>> verifyPinSecured(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
-    Call<T1cResponse<String>> authenticateSecured(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclAuthenticateOrSignData request);
+    Call<T1cResponse<String>> authenticate(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclAuthenticateOrSignData request);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
-    Call<T1cResponse<String>> signSecured(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclAuthenticateOrSignData request);
+    Call<T1cResponse<String>> sign(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclAuthenticateOrSignData request);
 
     //
     // BE ID Container specific methods
@@ -239,4 +239,55 @@ public interface ContainerRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclEmvAllData>> getEmvAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    //
+    // MOBIB Container specific methods
+    //
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/status")
+    Call<T1cResponse<Boolean>> getMobibStatus(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/picture")
+    Call<T1cResponse<String>> getMobibPicture(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/card-issuing")
+    Call<T1cResponse<GclMobibCardIssuing>> getMobibCardIssuing(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/contracts")
+    Call<T1cResponse<List<GclMobibContract>>> getMobibContracts(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclMobibAllData>> getMobibAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclMobibAllData>> getMobibAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    //
+    // OCRA Container specific methods
+    //
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclOcraAllData>> getOcraAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
+    Call<T1cResponse<GclOcraAllData>> getOcraAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/challenge")
+    Call<T1cResponse<String>> ocraChallenge(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclOcraChallengeData request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/challenge")
+    Call<T1cResponse<String>> getOcraReadCounter(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclVerifyPinRequest request);
+
+    //
+    // SafeNet Container specific methods
+    //
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
+    Call<T1cResponse<List<String>>> getSafeNetCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclSafeNetRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/info")
+    Call<T1cResponse<GclSafeNetInfo>> getSafeNetInfo(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclSafeNetRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/slots")
+    Call<T1cResponse<List<GclSafeNetSlot>>> getSafeNetSlots(@Path("containerId") String containerId, @Path("readerId") String readerId, @Body GclSafeNetRequest request, @Query("token-present") Boolean tokenPresent);
 }

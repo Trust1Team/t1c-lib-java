@@ -1,0 +1,69 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclMobibContract",
+  "type": "object",
+  "properties": {
+    "authenticator_kvc": {
+      "type": "integer"
+    },
+    "authenticator_value": {
+      "type": "integer"
+    },
+    "journey_interchanges_allowed": {
+      "type": "boolean"
+    },
+    "passengers_max": {
+      "type": "integer"
+    },
+    "period_journeys": {
+      "type": "object",
+      "$ref": "GclMobibPeriodJourneys.json"
+    },
+    "price_amount": {
+      "type": "integer"
+    },
+    "provider": {
+      "type": "integer"
+    },
+    "restrict_code": {
+      "type": "integer"
+    },
+    "restrict_time": {
+      "type": "integer"
+    },
+    "sale_date": {
+      "type": "string"
+    },
+    "sale_sam_count": {
+      "type": "integer"
+    },
+    "sale_sam_id": {
+      "type": "integer"
+    },
+    "spatials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclMobibSpatial.json"
+      }
+    },
+    "tariff": {
+      "type": "object",
+      "$ref": "GclMobibTariff.json"
+    },
+    "validity_duration": {
+      "type": "object",
+      "$ref": "GclMobibValidityDuration.json"
+    },
+    "validity_start_date": {
+      "type": "string"
+    },
+    "vehicle_class_allowed": {
+      "type": "integer"
+    },
+    "version": {
+      "type": "integer"
+    }
+  }
+}

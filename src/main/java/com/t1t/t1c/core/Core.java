@@ -172,11 +172,11 @@ public class Core extends AbstractCore {
 
     private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
         Preconditions.checkArgument(pollIntervalInSeconds == null || pollIntervalInSeconds > 0, "Polling interval must be greater than 0");
-        return 1000 * (pollIntervalInSeconds != null ? pollIntervalInSeconds : config.getDefaultPollingIntervalInSeconds() != null ? config.getDefaultPollingIntervalInSeconds() : DEFAULT_POLLING_INTERVAL);
+        return 1000 * config.getDefaultPollingTimeoutInSeconds();
     }
 
     private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
         Preconditions.checkArgument(pollTimeoutInSeconds == null || (pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60), "Polling timout must be a value between 0 & 60");
-        return 1000 * (pollTimeoutInSeconds != null ? pollTimeoutInSeconds : config.getDefaultPollingIntervalInSeconds() != null ? config.getDefaultPollingTimeoutInSeconds() : DEFAULT_POLLING_TIMEOUT);
+        return 1000 * config.getDefaultPollingTimeoutInSeconds();
     }
 }

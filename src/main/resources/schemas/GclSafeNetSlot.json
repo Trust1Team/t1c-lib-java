@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclSafeNetSlot",
+  "type": "object",
+  "properties": {
+    "slot_id": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "string"
+    },
+    "flags": {
+      "type": "integer"
+    },
+    "hardware_version": {
+      "type": "string"
+    },
+    "firmware_version": {
+      "type": "string"
+    }
+  }
+}

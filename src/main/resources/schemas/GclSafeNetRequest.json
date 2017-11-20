@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclSafeNetRequest",
+  "type": "object",
+  "properties": {
+    "module": {
+      "type": "string"
+    },
+    "slot_id": {
+      "type": "integer"
+    },
+    "pin": {
+      "type": "string"
+    }
+  }
+}
