@@ -11,6 +11,8 @@ import com.t1t.t1c.containers.smartcards.mobib.exceptions.MobibContainerExceptio
 import com.t1t.t1c.containers.smartcards.ocra.exceptions.OcraContainerException;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
+import com.t1t.t1c.model.rest.GclError;
+import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -192,6 +194,21 @@ public final class ExceptionFactory {
      */
     public static VerifyPinException verifyPinException(String message) {
         return new VerifyPinException(message);
+    }
+
+    /**
+     * Creates a verify PIN exception
+     *
+     * @param error
+     * @return
+     */
+    public static VerifyPinException verifyPinException(GclError error) {
+        if (error != null) {
+            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode()));
+        }
+        else {
+            return verifyPinException("No error message present, cannot determine cause");
+        }
     }
 
     /**

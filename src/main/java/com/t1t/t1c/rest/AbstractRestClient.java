@@ -71,6 +71,7 @@ public abstract class AbstractRestClient<U> {
                 throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
         } catch (IOException ex) {
+            ex.printStackTrace();
             log.error("Error executing request: ", ex);
             throw ExceptionFactory.restException(ex);
         }
