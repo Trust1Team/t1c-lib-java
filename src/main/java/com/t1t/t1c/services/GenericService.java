@@ -5,6 +5,7 @@ import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclClientException;
 import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.PlatformInfo;
@@ -30,19 +31,19 @@ public class GenericService implements IGenericService {
 
     @Override
     public ContainerType getContainerTypeFor(String readerId) {
-        return ContainerUtil.determineContainer(FactoryService.getGclClient().getReader(readerId).getCard());
+        return ContainerUtil.determineContainer(ConnectionFactory.getGclClient().getReader(readerId).getCard());
     }
 
     @Override
     public GenericContainer getGenericContainerFor(String readerId) {
-        return FactoryService.getGenericContainer(readerId);
+        return ConnectionFactory.getGenericContainer(readerId);
     }
 
     @Override
     public AllData dumpData(String readerId, String pin, List<String> filterParams) {
         if (StringUtils.isNotEmpty(pin)) {
-            return FactoryService.getGenericContainer(readerId, pin).getAllData(filterParams, true);
-        } else return FactoryService.getGenericContainer(readerId).getAllData(filterParams, true);
+            return ConnectionFactory.getGenericContainer(readerId, pin).getAllData(filterParams, true);
+        } else return ConnectionFactory.getGenericContainer(readerId).getAllData(filterParams, true);
     }
 
     @Override
@@ -52,13 +53,13 @@ public class GenericService implements IGenericService {
 
     @Override
     public String getDownloadLink() {
-        return FactoryService.getDsClient().getDownloadLink(new PlatformInfo());
+        return ConnectionFactory.getDsClient().getDownloadLink(new PlatformInfo());
     }
 
     @Override
     public List<GclReader> getAuthenticationCapableReaders() {
         List<GclReader> returnValue = new ArrayList<>();
-        IGclClient gcl = FactoryService.getGclClient();
+        IGclClient gcl = ConnectionFactory.getGclClient();
         List<GclContainer> availableContainers = gcl.getContainers();
         try {
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
@@ -75,7 +76,7 @@ public class GenericService implements IGenericService {
     @Override
     public List<GclReader> getSignCapableReaders() {
         List<GclReader> returnValue = new ArrayList<>();
-        IGclClient gcl = FactoryService.getGclClient();
+        IGclClient gcl = ConnectionFactory.getGclClient();
         List<GclContainer> availableContainers = gcl.getContainers();
         try {
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
@@ -92,7 +93,7 @@ public class GenericService implements IGenericService {
     @Override
     public List<GclReader> getPinVerificationCapableReaders() {
         List<GclReader> returnValue = new ArrayList<>();
-        IGclClient gcl = FactoryService.getGclClient();
+        IGclClient gcl = ConnectionFactory.getGclClient();
         try {
             List<GclContainer> availableContainers = gcl.getContainers();
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
@@ -108,27 +109,27 @@ public class GenericService implements IGenericService {
 
     @Override
     public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
-        GclCard card = FactoryService.getGclClient().getReader(readerId).getCard();
+        GclCard card = ConnectionFactory.getGclClient().getReader(readerId).getCard();
         verifyAlgo(data, card);
         if (!ContainerUtil.canSign(card)) {
             throw ExceptionFactory.signingException("Card does not support signing");
         }
-        return FactoryService.getGenericContainer(readerId, pin).sign(data);
+        return ConnectionFactory.getGenericContainer(readerId, pin).sign(data);
     }
 
     @Override
     public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
-        GclCard card = FactoryService.getGclClient().getReader(readerId).getCard();
+        GclCard card = ConnectionFactory.getGclClient().getReader(readerId).getCard();
         verifyAlgo(data, card);
         if (!ContainerUtil.canAuthenticate(card)) {
             throw ExceptionFactory.authenticateException("Card does not support authentication");
         }
-        return FactoryService.getGenericContainer(readerId, pin).authenticate(data);
+        return ConnectionFactory.getGenericContainer(readerId, pin).authenticate(data);
     }
 
     @Override
     public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
-        return FactoryService.getGenericContainer(readerId, pin).verifyPin(pin);
+        return ConnectionFactory.getGenericContainer(readerId, pin).verifyPin(pin);
     }
 
     private void verifyAlgo(GclAuthenticateOrSignData data, GclCard card) {

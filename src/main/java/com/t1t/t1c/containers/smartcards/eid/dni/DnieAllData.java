@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.eid.esp;
+package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclDnieAllData;

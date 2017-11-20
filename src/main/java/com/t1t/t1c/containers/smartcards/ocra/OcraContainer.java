@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.ocra;
 
-import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.ocra.exceptions.OcraContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;

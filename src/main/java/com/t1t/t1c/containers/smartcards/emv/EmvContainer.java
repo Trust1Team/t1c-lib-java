@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
-import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;

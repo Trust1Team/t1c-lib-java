@@ -6,7 +6,7 @@ import com.t1t.t1c.model.rest.GclMobibAllData;
 import com.t1t.t1c.model.rest.GclMobibCardIssuing;
 import com.t1t.t1c.model.rest.GclMobibContract;
 import com.t1t.t1c.rest.RestServiceBuilder;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -24,7 +24,7 @@ import static org.junit.Assert.*;
  * @since 2017
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestServiceBuilder.class, FactoryService.class})
+@PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class MobibContainerTest extends AbstractTestClass {
 
     private IMobibContainer container;

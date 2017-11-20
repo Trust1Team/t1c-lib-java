@@ -68,43 +68,27 @@ public class T1cConfigParser implements Serializable {
     public Environment getEnvironment() {
         return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);
     }
-
     public String getGCLClientURI() {
         return config.getString(IConfig.LIB_GCL_CLIENT_URI);
     }
-
     public String getConsmerApiKey() {
         return config.getString(IConfig.LIB_API_KEY);
     }
-
-    public String getGatewayUri() {
-        return config.getString(IConfig.LIB_GATEWAY_URI);
-    }
-
+    public String getGatewayUri() { return config.getString(IConfig.LIB_GATEWAY_URI); }
     public String getDsContextPath() {
         return config.getString(IConfig.LIB_DS_CONTEXT_PATH);
     }
-
-    public String getOcvContextPath() {
-        return config.getString(IConfig.LIB_OCV_CONTEXT_PATH);
-    }
-
+    public String getOcvContextPath() { return config.getString(IConfig.LIB_OCV_CONTEXT_PATH); }
     public Integer getDefaultPollingIntervalInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_INTERVAL);
     }
-
     public Integer getDefaultPollingTimeoutInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_TIMEOUT);
     }
-
     public LibConfig getAppConfig() {
         return appConfig;
     }
-
-    public void setAppConfig(LibConfig appConfig) {
-        this.appConfig = appConfig;
-        resolveProperties(readProperties());
-    }
+    public void setAppConfig(LibConfig appConfig) { this.appConfig = appConfig;resolveProperties(readProperties()); }
 
     /**
      * Resolves compile time properties and adds them to the app config.

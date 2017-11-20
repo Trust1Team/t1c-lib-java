@@ -6,9 +6,9 @@ import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
-import com.t1t.t1c.rest.AbstractRestClient;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.GclAdminRestClient;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.rest.RestExecutor;
 import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.NumericDate;
@@ -23,24 +23,26 @@ import org.slf4j.LoggerFactory;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class GclAdminClient extends AbstractRestClient<GclAdminRestClient> implements IGclAdminClient {
-
+public class GclAdminClient implements IGclAdminClient {
     private static final Logger log = LoggerFactory.getLogger(GclAdminClient.class);
+    private GclAdminRestClient gclAdminRestClient;
+    private LibConfig config;
 
-    public GclAdminClient(GclAdminRestClient httpClient) {
-        super(httpClient);
+    public GclAdminClient(GclAdminRestClient gclAdminRestClient, LibConfig config) {
+        this.gclAdminRestClient = gclAdminRestClient;
+        this.config = config;
     }
 
     @Override
     public String getUrl() {
-        return FactoryService.getConfig().getDsUri();
+        return config.getDsUri();
     }
 
     @Override
-    public boolean activate() throws GclAdminClientException {
+    public Boolean activate() throws GclAdminClientException {
         checkJwtValidity();
         try {
-            return isCallSuccessful(executeCall(getHttpClient().activate()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not activate GCL", ex);
         }
@@ -50,25 +52,25 @@ public class GclAdminClient extends AbstractRestClient<GclAdminRestClient> imple
     public String getPublicKey() throws GclAdminClientException {
         checkJwtValidity();
         try {
-            return returnData(getHttpClient().getPublicKey());
+            return RestExecutor.returnData(RestExecutor.executeCall(gclAdminRestClient.getPublicKey());
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }
     }
 
     @Override
-    public boolean setPublicKey(String publicKey) throws GclAdminClientException {
+    public Boolean setPublicKey(String publicKey) throws GclAdminClientException {
         checkJwtValidity();
         GclUpdatePublicKeyRequest request = new GclUpdatePublicKeyRequest().withCertificate(publicKey);
         try {
-            return isCallSuccessful(executeCall(getHttpClient().setPublicKey(request)));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(request)));
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not set GCL public key", ex);
         }
     }
 
+    //TODO
     private void checkJwtValidity() {
-        LibConfig config = FactoryService.getConfig();
         if (config.getEnvironment() != Environment.DEV) {
             JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
             String jwt = config.getJwt();
@@ -78,28 +80,28 @@ public class GclAdminClient extends AbstractRestClient<GclAdminRestClient> imple
                     NumericDate refreshTreshold = NumericDate.now();
                     refreshTreshold.addSeconds(-240);
                     if (context.getJwtClaims().getExpirationTime().isOnOrAfter(refreshTreshold)) {
-                        jwt = FactoryService.getDsClient().refreshJWT(jwt);
+                        jwt = ConnectionFactory.getDsClient().refreshJWT(jwt);
                         if (StringUtils.isNotEmpty(jwt)) {
                             config.setJwt(jwt);
-                            FactoryService.setConfig(config);
-                            setHttpClient(FactoryService.getGclAdminRestClient());
+                            ConnectionFactory.setConfig(config);
+                            setHttpClient(ConnectionFactory.getGclAdminRestClient());
                         }
                     }
                 } catch (InvalidJwtException | MalformedClaimException ex) {
                     log.error("Token invalid: ", ex);
-                    jwt = FactoryService.getDsClient().getJWT();
+                    jwt = ConnectionFactory.getDsClient().getJWT();
                     if (StringUtils.isNotEmpty(jwt)) {
                         config.setJwt(jwt);
-                        FactoryService.setConfig(config);
-                        setHttpClient(FactoryService.getGclAdminRestClient());
+                        ConnectionFactory.setConfig(config);
+                        setHttpClient(ConnectionFactory.getGclAdminRestClient());
                     }
                 }
             } else {
-                jwt = FactoryService.getDsClient().getJWT();
+                jwt = ConnectionFactory.getDsClient().getJWT();
                 if (StringUtils.isNotEmpty(jwt)) {
                     config.setJwt(jwt);
-                    FactoryService.setConfig(config);
-                    setHttpClient(FactoryService.getGclAdminRestClient());
+                    ConnectionFactory.setConfig(config);
+                    setHttpClient(ConnectionFactory.getGclAdminRestClient());
                 }
             }
         }

@@ -5,7 +5,7 @@ import com.t1t.t1c.exceptions.OcvClientException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.rest.AbstractRestClient;
+import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.rest.OcvRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class OcvClient extends AbstractRestClient<OcvRestClient> implements IOcvClient {
+public class OcvClient extends RestExecutor<OcvRestClient> implements IOcvClient {
 
     private static final Logger log = LoggerFactory.getLogger(OcvClient.class);
 

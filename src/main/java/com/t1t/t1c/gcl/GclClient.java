@@ -7,9 +7,8 @@ import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.rest.AbstractRestClient;
+import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.rest.GclRestClient;
-import com.t1t.t1c.services.FactoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +18,12 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class GclClient extends AbstractRestClient<GclRestClient> implements IGclClient {
+public class GclClient extends RestExecutor<GclRestClient> implements IGclClient {
 
     private static final Logger log = LoggerFactory.getLogger(GclClient.class);
 
     public GclClient(GclRestClient httpClient) {
         super(httpClient);
-    }
-
-    @Override
-    public String getUrl() {
-        return FactoryService.getConfig().getGclClientUri();
     }
 
     @Override

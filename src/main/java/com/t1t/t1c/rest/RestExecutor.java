@@ -17,25 +17,10 @@ import java.io.IOException;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public abstract class AbstractRestClient<U> {
+public class RestExecutor {
+    private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
-    private static final Logger log = LoggerFactory.getLogger(AbstractRestClient.class);
-
-    private U httpClient;
-
-    protected AbstractRestClient(U httpClient) {
-        this.httpClient = httpClient;
-    }
-
-    protected final U getHttpClient() {
-        return httpClient;
-    }
-
-    protected final void setHttpClient(U httpClient) {
-        this.httpClient = httpClient;
-    }
-
-    protected final <T> T executeCall(Call<T> call) throws RestException {
+    public static final <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
@@ -77,7 +62,7 @@ public abstract class AbstractRestClient<U> {
         }
     }
 
-    protected final <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
+    public static <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
         if (call != null) {
             T1cResponse<T> response = executeCall(call);
             if (isCallSuccessful(response)) {
@@ -87,7 +72,7 @@ public abstract class AbstractRestClient<U> {
         return null;
     }
 
-    protected final boolean isCallSuccessful(T1cResponse response) {
+    public static final boolean isCallSuccessful(T1cResponse response) {
         if (response != null && response.getSuccess() != null) {
             return response.getSuccess();
         }

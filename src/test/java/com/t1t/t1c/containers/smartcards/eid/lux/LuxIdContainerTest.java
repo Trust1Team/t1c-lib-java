@@ -7,7 +7,7 @@ import com.t1t.t1c.model.rest.GclLuxIdPicture;
 import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
  * @since 2017
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestServiceBuilder.class, FactoryService.class})
+@PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class LuxIdContainerTest extends AbstractTestClass {
 
     private ILuxIdContainer luxIdContainer;

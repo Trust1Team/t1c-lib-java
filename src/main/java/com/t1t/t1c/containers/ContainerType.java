@@ -1,8 +1,7 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.containers.remoteloading.belfius.IBelfiusContainer;
-import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;

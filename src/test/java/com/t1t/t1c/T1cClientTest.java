@@ -4,8 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
-import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.IDnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
@@ -18,7 +17,7 @@ import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.rest.RestServiceBuilder;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,7 +34,7 @@ import static org.junit.Assert.*;
  * @since 2017
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestServiceBuilder.class, FactoryService.class})
+@PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class T1cClientTest extends AbstractTestClass {
 
     @Test

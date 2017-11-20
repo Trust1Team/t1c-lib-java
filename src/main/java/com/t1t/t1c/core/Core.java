@@ -1,56 +1,64 @@
 package com.t1t.t1c.core;
 
 import com.google.common.base.Preconditions;
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.model.rest.GclConsent;
+import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by michallispashidis on 31/10/2017.
+ * @Author Michallis Pashidis
+ * @Since 2017
  */
 public class Core extends AbstractCore {
-
     private static final Logger log = LoggerFactory.getLogger(Core.class);
-
-    public Core(LibConfig config) {
-        super(config);
+    private ConnectionFactory connFactory;
+    public Core(ConnectionFactory connFactory) {
+        this.connFactory = connFactory;
     }
 
     @Override
-    public boolean activate() {
-        return FactoryService.getGclAdminClient().activate();
+    public PlatformInfo getPlatformInfo() {
+        return new PlatformInfo();
+    }
+
+    @Override
+    public String getVersion() {
+        return connFactory.getConfig().getVersion();
+    }
+
+    @Override
+    public Boolean activate() {
+        return connFactory.getGclAdminClient().activate();
     }
 
     @Override
     public String getPubKey() {
-        return FactoryService.getGclAdminClient().getPublicKey();
+        return connFactory.getGclAdminClient().getPublicKey();
     }
 
     @Override
     public void setPubKey(String publicKey) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(publicKey), "Public key must be provided");
-        FactoryService.getGclAdminClient().setPublicKey(publicKey);
+        connFactory.getGclAdminClient().setPublicKey(publicKey);
     }
 
     @Override
     public GclStatus getInfo() {
-        return FactoryService.getGclClient().getInfo();
+        return connFactory.getGclClient().getInfo();
     }
 
     @Override
     public List<GclContainer> getContainers() {
-        return FactoryService.getGclClient().getContainers();
+        return connFactory.getGclClient().getContainers();
     }
 
     @Override
@@ -96,19 +104,7 @@ public class Core extends AbstractCore {
         int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
-            readers = FactoryService.getGclClient().getReadersWithInsertedCard();
-            if (readers == null) {
-                throw ExceptionFactory.gclClientException("GCL not found");
-            }
-            if (readers.isEmpty()) {
-                try {
-                    Thread.sleep(pollInterval);
-                    totalTime += pollInterval;
-                } catch (InterruptedException ex) {
-                    log.error("Thread sleep interrupted: ", ex);
-                    break;
-                }
-            }
+            readers = connFactory.getGclClient().getReadersWithInsertedCard();
         }
         return readers;
     }
@@ -120,7 +116,7 @@ public class Core extends AbstractCore {
         int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
-            readers = FactoryService.getGclClient().getReaders();
+            readers = connFactory.getGclClient().getReaders();
             if (readers == null) {
                 throw ExceptionFactory.gclClientException("GCL not found");
             }
@@ -140,43 +136,36 @@ public class Core extends AbstractCore {
     @Override
     public GclReader getReader(String readerId) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
-        return FactoryService.getGclClient().getReader(readerId);
+        return connFactory.getGclClient().getReader(readerId);
     }
 
     @Override
     public List<GclReader> getReaders() {
-        return FactoryService.getGclClient().getReaders();
+        return connFactory.getGclClient().getReaders();
     }
 
     @Override
     public List<GclReader> getReadersWithoutInsertedCard() {
-        return FactoryService.getGclClient().getReadersWithoutInsertedCard();
+        return connFactory.getGclClient().getReadersWithoutInsertedCard();
     }
 
     @Override
     public List<GclReader> getReadersWithInsertedCard() {
-        return FactoryService.getGclClient().getReadersWithInsertedCard();
+        return connFactory.getGclClient().getReadersWithInsertedCard();
     }
 
     @Override
     public String getUrl() {
-        return config.getGclClientUri();
-    }
-
-    @Override
-    public boolean getConsent(String title, String codeWord, Integer durationInDays) {
-        Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
-        Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
-        return FactoryService.getGclClient().getConsent(new GclConsent().withTitle(title).withText(codeWord).withDurationInDays(durationInDays));
+        return connFactory.getConfig().getGclClientUri();
     }
 
     private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
         Preconditions.checkArgument(pollIntervalInSeconds == null || pollIntervalInSeconds > 0, "Polling interval must be greater than 0");
-        return 1000 * config.getDefaultPollingTimeoutInSeconds();
+        return 1000 * connFactory.getConfig().getDefaultPollingTimeoutInSeconds();
     }
 
     private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
         Preconditions.checkArgument(pollTimeoutInSeconds == null || (pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60), "Polling timout must be a value between 0 & 60");
-        return 1000 * config.getDefaultPollingTimeoutInSeconds();
+        return 1000 * connFactory.getConfig().getDefaultPollingTimeoutInSeconds();
     }
 }

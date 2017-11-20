@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclInfo",
+  "type": "object",
+  "properties": {
+    "data": {
+      "$id": "/properties/data",
+      "type": "object",
+      "properties": {
+        "activated": {
+          "$id": "/properties/data/properties/activated",
+          "type": "boolean"
+        },
+        "arch": {
+          "$id": "/properties/data/properties/arch",
+          "type": "string"
+        },
+        "managed": {
+          "$id": "/properties/data/properties/managed",
+          "type": "boolean"
+        },
+        "os": {
+          "$id": "/properties/data/properties/os",
+          "type": "string"
+        },
+        "uid": {
+          "$id": "/properties/data/properties/uid",
+          "type": "string"
+        },
+        "version": {
+          "$id": "/properties/data/properties/version",
+          "type": "string"
+        }
+      }
+    },
+    "success": {
+      "$id": "/properties/success",
+      "type": "boolean"
+    }
+  }
+}

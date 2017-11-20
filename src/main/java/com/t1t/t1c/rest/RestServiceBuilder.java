@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -22,20 +21,19 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
- * @author Guillaume Vandecasteele
+ * @author Guillaume Vandecasteele, Michallis
  * @since 2017
  */
 public final class RestServiceBuilder {
+    private static final Logger log = LoggerFactory.getLogger(RestServiceBuilder.class);
 
-    private static final Logger _LOG = LoggerFactory.getLogger(RestServiceBuilder.class);
+    /* Headers */
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
-    private static final String CONTAINER_CONTEXT_PATH = "plugins/";
+
 
     private RestServiceBuilder() {}
 
@@ -55,8 +53,8 @@ public final class RestServiceBuilder {
         return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null, false);
     }
 
-    public static ContainerRestClient getContainerRestClient(LibConfig config) {
-        return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH), ContainerRestClient.class, null, null, true);
+    public static <U extends ContainerRestClient> U getContainerRestClient(LibConfig config, Class<U> clazz) {
+        return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null, true);
     }
 
     public static OcvRestClient getOcvRestClient(LibConfig config) {
@@ -74,12 +72,12 @@ public final class RestServiceBuilder {
                     .baseUrl(uri);
             return retrofitBuilder.build().create(iFace);
         } catch (Exception ex) {
-            _LOG.error("Error creating client: ", ex);
+            log.error("Error creating client: ", ex);
             throw ExceptionFactory.gclClientException("Error creating client: " + ex.getMessage());
         }
     }
 
-    //TODO - GCL expose SSL certificate -> create ticket
+    //TODO - GCL expose SSL certificate -> check with Jonas
     private static SSLContext getSSLConfig(TrustManagerFactory trustManagerFactory) throws CertificateException, IOException,
             KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         // Loading CAs from an InputStream
@@ -101,9 +99,8 @@ public final class RestServiceBuilder {
         return sslContext;
     }
 
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt, boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt, final Boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-
         if (setSslConfig) {
             TrustManagerFactory tmf = getTrustManagerFactory();
             SSLContext context = getSSLConfig(tmf);

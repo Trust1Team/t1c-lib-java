@@ -2,11 +2,10 @@ package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.exceptions.BeIdContainerException;
-import com.t1t.t1c.containers.smartcards.eid.esp.exceptions.DnieContainerException;
+import com.t1t.t1c.containers.smartcards.eid.dni.exceptions.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
 import com.t1t.t1c.containers.smartcards.emv.exceptions.EmvContainerException;
-import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.mobib.exceptions.MobibContainerException;
 import com.t1t.t1c.containers.smartcards.ocra.exceptions.OcraContainerException;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;

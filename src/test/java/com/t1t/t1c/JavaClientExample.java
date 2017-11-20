@@ -7,8 +7,6 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfigur
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclSafeNetRequest;
 
-import java.net.URI;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
@@ -41,7 +39,6 @@ public class JavaClientExample {
 
         GclReader reader = client.getCore().pollCardInserted();
         System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
-        */
         SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
         System.out.println(new Gson().toJson(new GclSafeNetRequest().withModule(config.getMac().toString())));
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));

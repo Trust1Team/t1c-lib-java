@@ -13,6 +13,7 @@ import java.util.List;
  */
 public interface ContainerRestClient {
 
+    String CONTAINER_CONTEXT_PATH = "plugins/";
     String CERTIFICATES_PATH = "/certificates";
     String CONTAINER_AND_READER_CONTEXT_PATH = "{containerId}/{readerId}";
 
@@ -95,100 +96,6 @@ public interface ContainerRestClient {
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
     Call<T1cResponse<String>> sign(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Body GclAuthenticateOrSignData request);
-
-    //
-    // BE ID Container specific methods
-    //
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/rn")
-    Call<T1cResponse<GclBeIdRn>> getRnData(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
-    Call<T1cResponse<GclBeIdAddress>> getBeIdAddress(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/picture")
-    Call<T1cResponse<String>> getBeIdPicture(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/rrn")
-    Call<T1cResponse<String>> getRrnCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclBeIdAllData>> getBeIdAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclBeIdAllData>> getBeIdAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclBeIDAllCertificates>> getBeIdAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclBeIDAllCertificates>> getBeIdAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
-
-    //
-    // Lux ID Container specific methods
-    //
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxIdAllData>> getLuxIdAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxIdAllData>> getLuxIdAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxIdAllCertificates>> getLuxIdAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxIdAllCertificates>> getLuxIdAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/biometric")
-    Call<T1cResponse<GclLuxIdBiometric>> getLuxIdBiometric(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/picture")
-    Call<T1cResponse<GclLuxIdPicture>> getLuxIdPicture(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/signature-image")
-    Call<T1cResponse<GclLuxIdSignatureImage>> getLuxIdSignatureImage(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    //
-    // LuxTrust Container specific methods
-    //
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/activate")
-    Call<T1cResponse<Object>> isLuxTrustActivated(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
-
-    //
-    // DNIE Container specific methods
-    //
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/info")
-    Call<T1cResponse<GclDnieInfo>> getDnieInfo(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclDnieAllData>> getDnieAllData(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclDnieAllData>> getDnieAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclDnieAllCertificates>> getDnieAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("filter") String filter);
-
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/intermediate")
-    Call<T1cResponse<String>> getIntermediateCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
     //
     // PT ID Container specific methods

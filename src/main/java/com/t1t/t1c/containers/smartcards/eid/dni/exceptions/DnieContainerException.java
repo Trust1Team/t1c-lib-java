@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.eid.esp.exceptions;
+package com.t1t.t1c.containers.smartcards.eid.dni.exceptions;
 
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.GenericContainerException;

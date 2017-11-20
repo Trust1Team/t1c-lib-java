@@ -4,7 +4,7 @@ import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.mock.*;
 import com.t1t.t1c.rest.*;
-import com.t1t.t1c.services.FactoryService;
+import com.t1t.t1c.factories.ConnectionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import static org.powermock.api.easymock.PowerMock.replayAll;
  * @since 2017
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({RestServiceBuilder.class, FactoryService.class})
+@PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 @PowerMockIgnore("javax.net.ssl.*")
 public abstract class AbstractTestClass {
 

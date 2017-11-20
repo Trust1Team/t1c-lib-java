@@ -1,8 +1,8 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.google.common.base.Preconditions;
-import com.t1t.t1c.containers.AbstractContainer;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class LuxIdContainer extends AbstractContainer implements ILuxIdContainer {
+public class LuxIdContainer extends GenericContainer<LuxIdContainer> {
 
     private static final Logger log = LoggerFactory.getLogger(LuxIdContainer.class);
 
