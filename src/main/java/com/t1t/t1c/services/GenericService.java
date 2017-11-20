@@ -12,7 +12,6 @@ import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclCard;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.utils.CardUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -63,7 +62,7 @@ public class GenericService implements IGenericService {
         List<GclContainer> availableContainers = gcl.getContainers();
         try {
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
-                if (CardUtil.canAuthenticate(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
+                if (ContainerUtil.canAuthenticate(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
                     returnValue.add(reader);
                 }
             }
@@ -80,7 +79,7 @@ public class GenericService implements IGenericService {
         List<GclContainer> availableContainers = gcl.getContainers();
         try {
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
-                if (CardUtil.canSign(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
+                if (ContainerUtil.canSign(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
                     returnValue.add(reader);
                 }
             }
@@ -97,7 +96,7 @@ public class GenericService implements IGenericService {
         try {
             List<GclContainer> availableContainers = gcl.getContainers();
             for (GclReader reader : gcl.getReadersWithInsertedCard()) {
-                if (CardUtil.canVerifyPin(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
+                if (ContainerUtil.canVerifyPin(reader.getCard()) && ContainerUtil.isContainerAvailable(reader.getCard(), availableContainers)) {
                     returnValue.add(reader);
                 }
             }
@@ -111,7 +110,7 @@ public class GenericService implements IGenericService {
     public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
         GclCard card = FactoryService.getGclClient().getReader(readerId).getCard();
         verifyAlgo(data, card);
-        if (!CardUtil.canSign(card)) {
+        if (!ContainerUtil.canSign(card)) {
             throw ExceptionFactory.signingException("Card does not support signing");
         }
         return FactoryService.getGenericContainer(readerId, pin).sign(data);
@@ -121,7 +120,7 @@ public class GenericService implements IGenericService {
     public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
         GclCard card = FactoryService.getGclClient().getReader(readerId).getCard();
         verifyAlgo(data, card);
-        if (!CardUtil.canAuthenticate(card)) {
+        if (!ContainerUtil.canAuthenticate(card)) {
             throw ExceptionFactory.authenticateException("Card does not support authentication");
         }
         return FactoryService.getGenericContainer(readerId, pin).authenticate(data);
@@ -134,7 +133,7 @@ public class GenericService implements IGenericService {
 
     private void verifyAlgo(GclAuthenticateOrSignData data, GclCard card) {
         if (StringUtils.isBlank(data.getAlgorithmReference())) {
-            String algo = CardUtil.determineDefaultAlgorithm(card);
+            String algo = ContainerUtil.determineDefaultAlgorithm(card);
             if (algo == null) {
                 throw ExceptionFactory.authenticateException("No algorithm for authentication available");
             }

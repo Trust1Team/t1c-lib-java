@@ -19,7 +19,101 @@ public final class ContainerUtil {
 
     private static final Logger log = LoggerFactory.getLogger(ContainerUtil.class);
 
+    private static final String SHA_256 = "sha256";
+
     private ContainerUtil() {
+    }
+
+    public static boolean canAuthenticate(ContainerType type) {
+        switch (type) {
+            case BEID:
+            case LUXID:
+            case LUXTRUST:
+            case DNIE:
+            case PT:
+            case EST:
+            case AVENTRA:
+            case OBERTHUR:
+            case PIV:
+                return true;
+            case OCRA:
+            case EMV:
+            case MOBIB:
+            default:
+                return false;
+        }
+    }
+
+    public static boolean canAuthenticate(GclCard card) {
+        Preconditions.checkNotNull(card, "Card info must be provided");
+        return canAuthenticate(determineContainer(card));
+    }
+
+    public static boolean canSign(ContainerType type) {
+        switch (type) {
+            case BEID:
+            case LUXID:
+            case LUXTRUST:
+            case DNIE:
+            case PT:
+            case EST:
+            case AVENTRA:
+            case OBERTHUR:
+            case PIV:
+                return true;
+            case OCRA:
+            case EMV:
+            case MOBIB:
+            default:
+                return false;
+        }
+    }
+
+    public static boolean canSign(GclCard card) {
+        Preconditions.checkNotNull(card, "Card info must be provided");
+        return canSign(determineContainer(card));
+    }
+
+    public static boolean canVerifyPin(ContainerType type) {
+        switch (type) {
+            case BEID:
+            case LUXID:
+            case LUXTRUST:
+            case DNIE:
+            case PT:
+            case EST:
+            case AVENTRA:
+            case OBERTHUR:
+            case PIV:
+            case OCRA:
+            case EMV:
+                return true;
+            case MOBIB:
+            default:
+                return false;
+        }
+    }
+
+    public static boolean canVerifyPin(GclCard card) {
+        Preconditions.checkNotNull(card, "Card info must be provided");
+        return canVerifyPin(determineContainer(card));
+    }
+
+    public static String determineDefaultAlgorithm(GclCard card) {
+        Preconditions.checkNotNull(card, "Card info must be provided");
+        switch (determineContainer(card)) {
+            case AVENTRA:
+            case BEID:
+            case DNIE:
+            case OBERTHUR:
+            case PIV:
+            case LUXID:
+            case LUXTRUST:
+            case PT:
+                return SHA_256;
+            default:
+                return null;
+        }
     }
 
     public static ContainerType determineContainer(GclCard card) {

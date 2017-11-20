@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclSafeNetInfo",
+  "type": "object",
+  "properties": {
+    "cryptoki_version": {
+      "type": "string"
+    },
+    "manufacturer_id": {
+      "type": "string"
+    },
+    "flags": {
+      "type": "integer"
+    },
+    "library_description": {
+      "type": "string"
+    },
+    "library_version": {
+      "type": "string"
+    }
+  }
+}

@@ -281,6 +281,19 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvCertificate.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibSpatial.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCardIssuing.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibValidityDuration.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibPeriodJourneys.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCounter.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibTariff.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibContract.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json
                         </sourcePath>

@@ -84,58 +84,58 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredRootCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredRootCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getRootCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getRootCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredCitizenCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredCitizenCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getCitizenCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getCitizenCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredAuthenticationCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredAuthenticationCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getAuthenticationCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getAuthenticationCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredNonRepudiationCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredNonRepudiationCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getNonRepudiationCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getNonRepudiationCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredSigningCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredSigningCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getSigningCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getSigningCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredIssuerCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredIssuerCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getIssuerCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getIssuerCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> getSecuredEncryptionCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getCertificateResponse()).getSecuredEncryptionCertificate(containerId, readerId, pin);
+    public Call<T1cResponse<String>> getEncryptionCertificate(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getCertificateResponse()).getEncryptionCertificate(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPinSecured(String containerId, String readerId, String pin, GclVerifyPinRequest request) {
-        return delegate.returningResponse(getSuccessResponse()).verifyPinSecured(containerId, readerId, pin, request);
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin, GclVerifyPinRequest request) {
+        return delegate.returningResponse(getSuccessResponse()).verifyPin(containerId, readerId, pin, request);
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPinSecured(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(getSuccessResponse()).verifyPinSecured(containerId, readerId, pin);
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin) {
+        return delegate.returningResponse(getSuccessResponse()).verifyPin(containerId, readerId, pin);
     }
 
     @Override
-    public Call<T1cResponse<String>> authenticateSecured(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
-        return delegate.returningResponse(getSignedHashResponse()).authenticateSecured(containerId, readerId, pin, request);
+    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(getSignedHashResponse()).authenticate(containerId, readerId, pin, request);
     }
 
     @Override
-    public Call<T1cResponse<String>> signSecured(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
-        return delegate.returningResponse(getSignedHashResponse()).signSecured(containerId, readerId, pin, request);
+    public Call<T1cResponse<String>> sign(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(getSignedHashResponse()).sign(containerId, readerId, pin, request);
     }
 
     @Override
@@ -334,6 +334,71 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
+    public Call<T1cResponse<Boolean>> getMobibStatus(String containerId, String readerId) {
+        return delegate.returningResponse(getBooleanResponse()).getMobibStatus(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getMobibPicture(String containerId, String readerId) {
+        return delegate.returningResponse(getPictureResponse()).getMobibPicture(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibCardIssuing>> getMobibCardIssuing(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibCardIssuingResponse()).getMobibCardIssuing(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclMobibContract>>> getMobibContracts(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibContractResponse()).getMobibContracts(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getMobibAllDataResponse()).getMobibAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getMobibAllDataResponse()).getMobibAllData(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<GclOcraAllData>> getOcraAllData(String containerId, String readerId) {
+        return delegate.returningResponse(getGclOcraAllDataResponse()).getOcraAllData(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<GclOcraAllData>> getOcraAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(getGclOcraAllDataResponse()).getOcraAllData(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> ocraChallenge(String containerId, String readerId, GclOcraChallengeData request) {
+        return delegate.returningResponse(getStringResponse()).ocraChallenge(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getOcraReadCounter(String containerId, String readerId, GclVerifyPinRequest request) {
+        return delegate.returningResponse(getStringResponse()).getOcraReadCounter(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<List<String>>> getSafeNetCertificates(String containerId, String readerId, GclSafeNetRequest request) {
+        return delegate.returningResponse(getStringListResponse()).getSafeNetCertificates(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<GclSafeNetInfo>> getSafeNetInfo(String containerId, String readerId, GclSafeNetRequest request) {
+        return delegate.returningResponse(getSafeNetInfoResponse()).getSafeNetInfo(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclSafeNetSlot>>> getSafeNetSlots(String containerId, String readerId, GclSafeNetRequest request, Boolean tokenPresent) {
+        return delegate.returningResponse(getSafeNetSlotsResponse(tokenPresent)).getSafeNetSlots(containerId, readerId, request, tokenPresent);
+    }
+
+    @Override
     public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId) {
         List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
         T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);
@@ -341,9 +406,9 @@ public class MockContainerRestClient implements ContainerRestClient {
     }
 
     @Override
-    public Call<T1cResponse<List<String>>> getSecuredRootCertificates(String containerId, String readerId, String pin) {
+    public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId, String pin) {
         List<String> certs = Arrays.asList(getCertificateResponse().getData(), getCertificateResponse().getData());
         T1cResponse<List<String>> response = new T1cResponse<List<String>>().withSuccess(true).withData(certs);
-        return delegate.returningResponse(response).getSecuredRootCertificates(containerId, readerId, pin);
+        return delegate.returningResponse(response).getRootCertificates(containerId, readerId, pin);
     }
 }
