@@ -7,7 +7,6 @@ import com.t1t.t1c.exceptions.GclAdminClientException;
  * @since 2017
  */
 public interface IGclAdminClient {
-    String getUrl();
     Boolean activate() throws GclAdminClientException;
     String getPublicKey() throws GclAdminClientException;
     Boolean setPublicKey(String publicKey) throws GclAdminClientException;

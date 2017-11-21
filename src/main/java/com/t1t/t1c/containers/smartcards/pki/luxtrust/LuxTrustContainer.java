@@ -2,6 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.exceptions.LuxTrustContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -20,7 +21,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class LuxTrustContainer extends AbstractContainer implements ILuxTrustContainer {
+public class LuxTrustContainer extends GenericContainer<LuxTrustContainer> {
 
     private static final Logger log = LoggerFactory.getLogger(LuxTrustContainer.class);
 

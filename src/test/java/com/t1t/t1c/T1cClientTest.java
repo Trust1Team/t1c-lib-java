@@ -10,8 +10,6 @@ import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;

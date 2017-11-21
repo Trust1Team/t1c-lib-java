@@ -13,7 +13,7 @@ import retrofit2.http.Query;
  * @Since 2017
  * Specific GCL interface for Luxembourg ID Container
  */
-public interface GclLuxIdClient extends ContainerRestClient{
+public interface GclLuxIdRestClient extends ContainerRestClient{
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclLuxIdAllData>> getLuxIdAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 

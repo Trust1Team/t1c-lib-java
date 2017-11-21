@@ -1,107 +1,122 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeidClient;
-import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
-import com.t1t.t1c.containers.smartcards.eid.dni.GclDniClient;
-import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdClient;
-import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustClient;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
-import com.t1t.t1c.ds.DsClient;
-import com.t1t.t1c.ds.IDsClient;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.gcl.GclAdminClient;
-import com.t1t.t1c.gcl.GclClient;
-import com.t1t.t1c.gcl.IGclAdminClient;
-import com.t1t.t1c.gcl.IGclClient;
-import com.t1t.t1c.ocv.IOcvClient;
-import com.t1t.t1c.ocv.OcvClient;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeidRestClient;
+import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
+import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;
+import com.t1t.t1c.containers.smartcards.eid.pt.GclPtRestClient;
+import com.t1t.t1c.containers.smartcards.emv.GclEmvRestClient;
+import com.t1t.t1c.containers.smartcards.mobib.GclMobibRestClient;
+import com.t1t.t1c.containers.smartcards.ocra.GclOcraRestClient;
+import com.t1t.t1c.containers.smartcards.piv.GclPivRestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafenetRestClient;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
+import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
 import com.t1t.t1c.rest.*;
-import com.t1t.t1c.utils.ContainerUtil;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
  * @since 2017
+ *
+ * Factory to establish connection instances.
  */
 public final class ConnectionFactory {
-
+    /*Config*/
     private LibConfig config;
-    private IGclClient gclClient;
-    private IGclAdminClient gclAdminClient;
-    private IDsClient dsClient;
-    private IOcvClient ocvClient;
+    /*General connections*/
+    private GclRestClient gclRestClient;
+    private GclAdminRestClient gclAdminRestClient;
+    private DsRestClient dsRestClient;
+    private OcvRestClient ocvRestClient;
+
+    /*Container connections*/
+    private GclBeidRestClient gclBeidRestClient;
+    private GclLuxIdRestClient gclLuxIdRestClient;
+    private GclLuxTrustRestClient gclLuxTrustRestClient;
+    private GclDniRestClient gclDniRestClient;
+    private GclPtRestClient gclPtRestClient;
+    private GclEmvRestClient gclEmvRestClient;
+    private GclMobibRestClient gclMobibRestClient;
+    private GclOcraRestClient gclOcraRestClient;
+    private GclPivRestClient gclPivRestClient;
+    private GclSafenetRestClient gclSafenetRestClient;
+    private GclAventraRestClient gclAventraRestClient;
+    private GclOberthurRestClient gclOberthurRestClient;
 
     public ConnectionFactory(LibConfig config) {
         this.config = config;
-        this.dsClient = new DsClient(RestServiceBuilder.getDsRestClient(config));
-        this.gclClient = new GclClient(RestServiceBuilder.getGclRestClient(config));
-        this.gclAdminClient = new GclAdminClient(RestServiceBuilder.getGclAdminRestClient(config),config);
-        this.ocvClient = new OcvClient(RestServiceBuilder.getOcvRestClient(config));
+        resetConnections();
     }
 
-    public GenericContainer getGenericContainer(String readerId, String... pin) {
-        return getGenericContainer(readerId, ContainerUtil.determineContainer(gclClient.getReader(readerId).getCard()), pin);
+    private void resetConnections(){
+        //global connections
+        this.dsRestClient = RestServiceBuilder.getDsRestClient(config);
+        this.gclRestClient = RestServiceBuilder.getGclRestClient(config);
+        this.gclAdminRestClient = RestServiceBuilder.getGclAdminRestClient(config);
+        this.ocvRestClient = RestServiceBuilder.getOcvRestClient(config);
+        //container specific connections
+        this.gclBeidRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeidRestClient.class);
+        this.gclLuxIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxIdRestClient.class);
+        this.gclLuxTrustRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxTrustRestClient.class);
+        this.gclDniRestClient = RestServiceBuilder.getContainerRestClient(config,GclDniRestClient.class);
+        this.gclPtRestClient = RestServiceBuilder.getContainerRestClient(config,GclPtRestClient.class);
+        this.gclEmvRestClient = RestServiceBuilder.getContainerRestClient(config,GclEmvRestClient.class);
+        this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config,GclMobibRestClient.class);
+        this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config,GclOcraRestClient.class);
+        this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config,GclPivRestClient.class);
+        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config,GclSafenetRestClient.class);
+        this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config,GclAventraRestClient.class);
+        this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config,GclOberthurRestClient.class);
     }
-
-    public <V extends GenericContainer, U extends ContainerRestClient> V getContainer(String readerId, Class<V> containerClazz, Class<U> clientClazz, String... pin) throws GenericContainerException {
-        try {
-            Constructor ctor = containerClazz.getClass().getDeclaredConstructor(String.class, ContainerRestClient.class, String.class);
-            return (V)ctor.newInstance(readerId, RestServiceBuilder.getContainerRestClient(config,clientClazz),getPin(pin));
-        } catch (NoSuchMethodException|IllegalAccessException|InstantiationException|InvocationTargetException e) {
-            throw ExceptionFactory.genericContainerException(e.getMessage());
-        }
-    }
-
-    private GenericContainer getGenericContainer(String readerId, ContainerType type, String... pin) {
-        switch (type) {
-            case BEID:
-                return new BeIdContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclBeidClient.class));
-            case LUXID:
-                return new LuxIdContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclLuxIdClient.class), getPin(pin));
-            case LUXTRUST:
-                return new LuxTrustContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclLuxTrustClient.class), getPin(pin));
-            case DNIE:
-                return new DnieContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclDniClient.class));
-                //TODO
-/*            case EMV:
-                return getEmvContainer(readerId);
-            case PT:
-                return getPtIdContainer(readerId);
-            case MOBIB:
-                return getMobibContainer(readerId);
-            case OCRA:
-                return getOcraContainer(readerId);
-            case AVENTRA:
-                return getAventraContainer(readerId);
-            case OBERTHUR:
-                return getOberthurContainer(readerId);
-            case PIV:
-                return getPivContainer(readerId);
-            case READER_API:
-                return getReaderContainer(readerId);
-            case SAFENET:
-                return getSafeNetContainer(readerId);*/
-            default:
-                throw ExceptionFactory.unsupportedOperationException("No container for type found");
-        }
-    }
-
-    //TODO implement pin constraint in safe way
-    private static String getPin(String... pin) { return (pin.length==0)? "" : pin[0]; }
 
     /*Getters*/
-    public IGclClient getGclClient() { return gclClient; }
-    public IGclAdminClient getGclAdminClient() { return gclAdminClient; }
-    public IDsClient getDsClient() { return dsClient; }
-    public IOcvClient getOcvClient() { return ocvClient; }
+    public GclRestClient getGclRestClient() {
+        return gclRestClient;
+    }
+    public GclAdminRestClient getGclAdminRestClient() {
+        return gclAdminRestClient;
+    }
+    public DsRestClient getDsRestClient() { return dsRestClient; }
+    public OcvRestClient getOcvRestClient() {
+        return ocvRestClient;
+    }
+    public GclBeidRestClient getGclBeidRestClient() {
+        return gclBeidRestClient;
+    }
+    public GclLuxIdRestClient getGclLuxIdRestClient() {
+        return gclLuxIdRestClient;
+    }
+    public GclLuxTrustRestClient getGclLuxTrustRestClient() {
+        return gclLuxTrustRestClient;
+    }
+    public GclDniRestClient getGclDniRestClient() {
+        return gclDniRestClient;
+    }
+    public GclPtRestClient getGclPtRestClient() {
+        return gclPtRestClient;
+    }
+    public GclEmvRestClient getGclEmvRestClient() {
+        return gclEmvRestClient;
+    }
+    public GclMobibRestClient getGclMobibRestClient() {
+        return gclMobibRestClient;
+    }
+    public GclOcraRestClient getGclOcraRestClient() {
+        return gclOcraRestClient;
+    }
+    public GclPivRestClient getGclPivRestClient() {
+        return gclPivRestClient;
+    }
+    public GclSafenetRestClient getGclSafenetRestClient() {
+        return gclSafenetRestClient;
+    }
+    public GclAventraRestClient getGclAventraRestClient() {
+        return gclAventraRestClient;
+    }
+    public GclOberthurRestClient getGclOberthurRestClient() {
+        return gclOberthurRestClient;
+    }
     public LibConfig getConfig() { return config; }
     public void setConfig(LibConfig config) { this.config = config; }
 }

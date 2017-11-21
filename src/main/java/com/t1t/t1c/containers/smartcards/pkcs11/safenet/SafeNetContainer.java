@@ -2,6 +2,7 @@ package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -22,10 +23,10 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * @author Guillaume Vandecasteele
- * @since 2017
+ * @Author Michallis Pashidis
+ * @Since 2017
  */
-public class SafeNetContainer extends AbstractContainer implements ISafeNetContainer {
+public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
 
     private SafeNetContainerConfiguration safeNetConfig;
     private String module;

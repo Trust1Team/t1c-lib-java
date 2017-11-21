@@ -34,11 +34,6 @@ public class GclAdminClient implements IGclAdminClient {
     }
 
     @Override
-    public String getUrl() {
-        return config.getDsUri();
-    }
-
-    @Override
     public Boolean activate() throws GclAdminClientException {
         checkJwtValidity();
         try {

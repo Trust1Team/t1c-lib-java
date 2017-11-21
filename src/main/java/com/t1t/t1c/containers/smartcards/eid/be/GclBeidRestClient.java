@@ -16,7 +16,7 @@ import retrofit2.http.Query;
  * @Since 2017
  * Specific GCL interface for Belgian eID Container
  */
-public interface GclBeidClient extends ContainerRestClient {
+public interface GclBeidRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/rn")
     Call<T1cResponse<GclBeIdRn>> getRnData(@Path("containerId") String containerId, @Path("readerId") String readerId);
 

@@ -1,25 +1,23 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.readerapi.IReaderApiContainer;
+import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.dni.IDnieContainer;
-import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
-import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
-import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
-import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
-import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
+import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
+import com.t1t.t1c.containers.smartcards.piv.PivContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
-import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
+import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
-import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.Core;
 import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.ocv.IOcvClient;
 
@@ -30,29 +28,30 @@ import java.util.List;
  * @since 2017
  */
 public interface IT1cClient {
+    /*General*/
     Core getCore();
-    LibConfig getConfig();
+    ConnectionFactory getConnectionFactory();
 
     /*Clients*/
     IDsClient getDsClient();
     IOcvClient getOcvClient();
 
     /*Containers*/
-    List<GenericContainer> getGenericContainer(String readerId);
+    GenericContainer getGenericContainer(String readerId);
     BeIdContainer getBeIdContainer(String readerId);
     LuxIdContainer getLuxIdContainer(String readerId, String pin);
     LuxTrustContainer getLuxTrustContainer(String readerId, String pin);
-/*    IDnieContainer getDnieContainer(String readerId);
-    IEmvContainer getEmvContainer(String readerId);
-    IMobibContainer getMobibContainer(String readerId);
-    IOcraContainer getOcraContainer(String readerId);
-    IAventraContainer getAventraContainer(String readerId);
-    IOberthurContainer getOberthurContainer(String readerId);
-    IPivContainer getPivContainer(String readerId);
-    IPtEIdContainer getPtIdContainer(String readerId);
-    ISafeNetContainer getSafeNetContainer(String readerId);
-    ISafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration);
-    IReaderApiContainer getReaderContainer(String readerId);*/
+    DnieContainer getDnieContainer(String readerId);
+    EmvContainer getEmvContainer(String readerId);
+    MobibContainer getMobibContainer(String readerId);
+    OcraContainer getOcraContainer(String readerId);
+    AventraContainer getAventraContainer(String readerId);
+    OberthurContainer getOberthurContainer(String readerId);
+    PivContainer getPivContainer(String readerId);
+    PtEIdContainer getPtIdContainer(String readerId);
+    SafeNetContainer getSafeNetContainer(String readerId);
+    SafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration);
+    ReaderApiContainer getReaderContainer(String readerId);
 
     /*DS Functionality*/
     String getDownloadLink();

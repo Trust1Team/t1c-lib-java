@@ -7,6 +7,8 @@ import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.rest.GclAdminRestClient;
+import com.t1t.t1c.rest.GclRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,9 +22,11 @@ import java.util.List;
  */
 public class Core extends AbstractCore {
     private static final Logger log = LoggerFactory.getLogger(Core.class);
-    private ConnectionFactory connFactory;
-    public Core(ConnectionFactory connFactory) {
-        this.connFactory = connFactory;
+    private GclRestClient gclRestClient;
+    private GclAdminRestClient gclAdminRestClient;
+    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient) {
+        this.gclAdminRestClient = gclAdminRestClient;
+        this.gclRestClient = gclRestClient;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class Core extends AbstractCore {
 
     @Override
     public String getVersion() {
-        return connFactory.getConfig().getVersion();
+        return null;
     }
 
     @Override

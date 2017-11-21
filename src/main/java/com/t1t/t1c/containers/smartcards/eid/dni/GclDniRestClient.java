@@ -13,9 +13,9 @@ import retrofit2.http.Query;
 /**
  * @Author Michallis Pashidis
  * @Since 2017
- * Specific GCL interface for Spanish DNI Container
+ * Specific GCL interface for Spanish DNIe Container
  */
-public interface GclDniClient extends ContainerRestClient{
+public interface GclDniRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/info")
     Call<T1cResponse<GclDnieInfo>> getDnieInfo(@Path("containerId") String containerId, @Path("readerId") String readerId);
 
@@ -33,4 +33,5 @@ public interface GclDniClient extends ContainerRestClient{
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/intermediate")
     Call<T1cResponse<String>> getIntermediateCertificate(@Path("containerId") String containerId, @Path("readerId") String readerId);
+
 }

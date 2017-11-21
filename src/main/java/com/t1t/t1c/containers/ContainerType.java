@@ -7,11 +7,9 @@ import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
-import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
-import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
+import com.t1t.t1c.containers.smartcards.piv.PivContainer;
+import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
 
@@ -26,7 +24,7 @@ public enum ContainerType {
             Collections.singletonList("Aventra"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IAventraContainer.class,
+            AventraContainer.class,
             null),
     BEID("beid",
             Collections.singletonList("Belgium Electronic ID card"),
@@ -74,7 +72,7 @@ public enum ContainerType {
             Collections.singletonList("Oberthur"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IOberthurContainer.class,
+            OberthurContainer.class,
             null),
     OCRA("ocra",
             Collections.singletonList("Juridic Person's Token (PKI)"),
@@ -86,7 +84,7 @@ public enum ContainerType {
             Arrays.asList("PIV", "CIV"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IPivContainer.class,
+            PivContainer.class,
             null),
     PT("pteid",
             Collections.singletonList("Portuguese"),

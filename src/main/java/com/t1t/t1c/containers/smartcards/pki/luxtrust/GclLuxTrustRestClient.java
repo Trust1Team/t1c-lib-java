@@ -14,7 +14,7 @@ import retrofit2.http.Query;
  * @Since 2017
  * Specific GCL interface for LuxTrust Token Container
  */
-public interface GclLuxTrustClient extends ContainerRestClient{
+public interface GclLuxTrustRestClient extends ContainerRestClient{
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
 
