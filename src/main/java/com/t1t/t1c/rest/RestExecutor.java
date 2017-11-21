@@ -19,7 +19,7 @@ import java.io.IOException;
 public class RestExecutor {
     private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
-    public static final <T> T executeCall(Call<T> call) throws RestException {
+    public static final synchronized  <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
@@ -60,7 +60,7 @@ public class RestExecutor {
         }
     }
 
-    public static <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
+    public static synchronized <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
         if (call != null) {
             T1cResponse<T> response = executeCall(call);
             if (isCallSuccessful(response)) {
@@ -70,7 +70,7 @@ public class RestExecutor {
         return null;
     }
 
-    public static final boolean isCallSuccessful(T1cResponse response) {
+    public static boolean isCallSuccessful(T1cResponse response) {
         if (response != null && response.getSuccess() != null) {
             return response.getSuccess();
         }

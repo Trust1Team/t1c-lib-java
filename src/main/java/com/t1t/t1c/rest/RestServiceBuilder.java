@@ -58,11 +58,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        if (config.isTokenCompatible()) {
-            return getClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
-        } else {
-            return getClient(config.getGclClientUri(), GclAdminRestClient.class, null, null, true);
-        }
+        return getClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
     }
 
     /**

@@ -61,28 +61,10 @@ public class T1cClient implements IT1cClient {
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
     private ConnectionFactory connFactory;
     /*General clients*/
-    private IGclClient gclClient;
-    private IGclAdminClient gclAdminClient;
     private IDsClient dsClient;
     private IOcvClient ocvClient;
     /*Core and container clients*/
     private ICore core;
-    private IGenericService genericService;
-    private BeIdContainer beidContainer;
-    private DnieContainer dnieContainer;
-    private LuxIdContainer luxIdContainer;
-    private PtEIdContainer ptEIdContainer;
-    private EmvContainer emvContainer;
-    private MobibContainer mobibContainer;
-    private OcraContainer ocraContainer;
-    private PivContainer pivContainer;
-    private SafeNetContainer safeNetContainer;
-    private AventraContainer aventraContainer;
-    private LuxTrustContainer luxTrustContainer;
-    private OberthurContainer oberthurContainer;
-    /*Functional containers*/
-    private RemoteLoadingContainer remoteLoadingContainer;
-    private ReaderApiContainer readerApiContainer;
 
     /*Constructors*/
     public T1cClient(LibConfig config) {
@@ -118,10 +100,8 @@ public class T1cClient implements IT1cClient {
         resetDs();
         resetOcv();
 
-        // Set container clients
-
         // Set generic service
-        this.genericService = new GenericService(); //TODO implement generic service
+        //this.genericService = new GenericService(); //TODO implement generic service
 
         // Initialize public key for instance and register towards DS
         if (StringUtils.isEmpty(config.getApiKey())) return;

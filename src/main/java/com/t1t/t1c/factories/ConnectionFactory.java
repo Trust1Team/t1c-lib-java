@@ -122,5 +122,5 @@ public final class ConnectionFactory {
         return gclOberthurRestClient;
     }
     public LibConfig getConfig() { return config; }
-    public void setConfig(LibConfig config) { this.config = config; }
+    public void setConfig(LibConfig config) { this.config = config; resetConnections(); }
 }

@@ -11,6 +11,10 @@ import java.util.List;
 /**
  * @author Guillaume Vandecasteele, Michallis
  * @since 2017
+ *
+ * Virtual container.
+ *
+ * //TODO
  */
 public abstract class GenericContainer<T extends GenericContainer> implements GclContainer{
     /*Properties*/
