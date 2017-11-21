@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.emv;
 
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.*;
 

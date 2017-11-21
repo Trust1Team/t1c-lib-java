@@ -6,7 +6,6 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.RestExecutor;
-import com.t1t.t1c.rest.OcvRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

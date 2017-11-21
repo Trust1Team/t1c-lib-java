@@ -30,6 +30,48 @@ public class GenericService implements IGenericService {
     private static final Logger log = LoggerFactory.getLogger(GenericService.class);
 
     @Override
+    public List<ContainerType> getEligibleContainersTypesFor(String readerId) {
+        return null;
+    }
+
+    @Override
+    public List<GenericContainer> getGenericContainersFor(String readerId) {
+        return null;
+    }
+
+    @Override
+    public GenericContainer getGenericContainerFor(String readerId) {
+        return null;
+    }
+
+    @Override
+    public AllData dumpData(String readerId, String pin, List<String> filterParams) {
+        return null;
+    }
+
+    @Override
+    public AllData dumpData(String readerId, List<String> filterParams) {
+        return null;
+    }
+
+    @Override
+    public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
+        return null;
+    }
+
+    @Override
+    public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
+        return null;
+    }
+
+    @Override
+    public Boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
+        return null;
+    }
+
+
+
+/*    @Override
     public ContainerType getContainerTypeFor(String readerId) {
         return ContainerUtil.determineContainer(ConnectionFactory.getGclClient().getReader(readerId).getCard());
     }
@@ -140,5 +182,5 @@ public class GenericService implements IGenericService {
             }
             data.setAlgorithmReference(algo);
         }
-    }
+    }*/
 }

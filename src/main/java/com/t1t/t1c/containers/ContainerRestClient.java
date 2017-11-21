@@ -1,4 +1,4 @@
-package com.t1t.t1c.rest;
+package com.t1t.t1c.containers;
 
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;

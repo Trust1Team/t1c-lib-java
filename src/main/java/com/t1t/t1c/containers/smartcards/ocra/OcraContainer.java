@@ -9,7 +9,7 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclOcraChallengeData;
 import com.t1t.t1c.model.rest.GclVerifyPinRequest;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 
 import java.util.List;
 

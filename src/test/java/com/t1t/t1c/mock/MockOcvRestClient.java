@@ -1,7 +1,7 @@
 package com.t1t.t1c.mock;
 
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.rest.OcvRestClient;
+import com.t1t.t1c.ocv.OcvRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 

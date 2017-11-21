@@ -4,7 +4,7 @@ import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclPtIdAllCertificates;
 import com.t1t.t1c.model.rest.GclPtIdAllData;
 import com.t1t.t1c.model.rest.GclPtIdData;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

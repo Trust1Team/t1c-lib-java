@@ -13,6 +13,10 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafenetRestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
+import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclRestClient;
+import com.t1t.t1c.ds.DsRestClient;
+import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.rest.*;
 
 /**

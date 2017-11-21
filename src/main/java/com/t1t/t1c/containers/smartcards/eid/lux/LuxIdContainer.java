@@ -12,7 +12,7 @@ import com.t1t.t1c.model.rest.GclLuxIdBiometric;
 import com.t1t.t1c.model.rest.GclLuxIdPicture;
 import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
 import com.t1t.t1c.model.rest.T1cCertificate;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

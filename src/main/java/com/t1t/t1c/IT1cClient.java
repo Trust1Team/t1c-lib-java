@@ -2,6 +2,7 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -51,13 +52,14 @@ public interface IT1cClient {
     PtEIdContainer getPtIdContainer(String readerId);
     SafeNetContainer getSafeNetContainer(String readerId);
     SafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration);
-    ReaderApiContainer getReaderContainer(String readerId);
+
+    /*Functional containers*/
+    RemoteLoadingContainer getRemoteLoadingContainer(String readerId);
+    ReaderApiContainer getReaderApiContainer();
 
     /*DS Functionality*/
     String getDownloadLink();
     List<GclReader> getAuthenticateCapableReaders();
     List<GclReader> getSignCapableReaders();
     List<GclReader> getPinVerificationCapableReaders();
-    String exchangeApiKeyForToken();
-    String refreshJwt();
 }

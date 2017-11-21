@@ -4,7 +4,7 @@ import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclMobibAllData;
 import com.t1t.t1c.model.rest.GclMobibCardIssuing;
 import com.t1t.t1c.model.rest.GclMobibContract;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

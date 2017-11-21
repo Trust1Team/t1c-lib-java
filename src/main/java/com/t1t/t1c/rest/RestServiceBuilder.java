@@ -1,7 +1,12 @@
 package com.t1t.t1c.rest;
 
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclRestClient;
+import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.utils.UriUtils;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
@@ -68,7 +73,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getDsUri(),config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null, false);
     }
 
     /**
@@ -91,7 +96,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getOcvUri(),config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null, false);
     }
 
     /**

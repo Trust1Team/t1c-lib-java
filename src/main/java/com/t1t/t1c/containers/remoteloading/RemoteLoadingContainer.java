@@ -1,14 +1,15 @@
-package com.t1t.t1c.containers.readerapi;
+package com.t1t.t1c.containers.remoteloading;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.FunctionalContainer;
+
 /**
- * @author Guillaume Vandecasteele
- * @since 2017
+ * @Author Michallis Pashidis
+ * @Since 2017
  */
-public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer> {
+public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingContainer> {
     @Override
-    protected ReaderApiContainer createInstance() {
+    protected RemoteLoadingContainer createInstance() {
         return null;
     }
 

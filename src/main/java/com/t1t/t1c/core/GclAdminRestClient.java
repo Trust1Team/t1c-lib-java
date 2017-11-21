@@ -1,4 +1,4 @@
-package com.t1t.t1c.rest;
+package com.t1t.t1c.core;
 
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
@@ -15,9 +15,6 @@ public interface GclAdminRestClient {
 
     @POST("admin/activate")
     Call<T1cResponse<Object>> activate();
-
-    @GET("admin/certificate")
-    Call<T1cResponse<String>> getPublicKey();
 
     @PUT("admin/certificate")
     Call<T1cResponse<Object>> setPublicKey(@Body GclUpdatePublicKeyRequest request);

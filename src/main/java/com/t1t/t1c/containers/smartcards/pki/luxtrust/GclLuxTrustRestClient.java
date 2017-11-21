@@ -3,7 +3,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
 import com.t1t.t1c.model.rest.GclLuxTrustAllData;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

@@ -10,7 +10,7 @@ import com.t1t.t1c.model.rest.GclEmvAidRequest;
 import com.t1t.t1c.model.rest.GclEmvApplication;
 import com.t1t.t1c.model.rest.GclEmvApplicationData;
 import com.t1t.t1c.model.rest.GclEmvCertificate;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

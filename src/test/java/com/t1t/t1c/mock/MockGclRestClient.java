@@ -5,7 +5,7 @@ import com.t1t.t1c.model.rest.GclConsent;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.rest.GclRestClient;
+import com.t1t.t1c.core.GclRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 

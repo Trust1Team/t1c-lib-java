@@ -1,5 +1,6 @@
 package com.t1t.t1c.ds;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -7,8 +8,6 @@ import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.RestExecutor;
-import com.t1t.t1c.rest.DsRestClient;
-import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.utils.UriUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,32 +17,27 @@ import org.slf4j.LoggerFactory;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
-
+public class DsClient implements IDsClient {
     private static final Logger log = LoggerFactory.getLogger(DsClient.class);
+    private DsRestClient dsRestClient;
+    private LibConfig config;
 
-    public DsClient(DsRestClient httpClient) {
-        super(httpClient);
-    }
-
-    @Override
-    public String getUrl() {
-        return ConnectionFactory.getConfig().getDsUri();
+    public DsClient(DsRestClient dsRestClient, LibConfig config) {
+        this.dsRestClient = dsRestClient;
+        this.config = config;
     }
 
     @Override
     public DsInfo getInfo() throws DsClientException {
         try {
-            return executeCall(getHttpClient().getInfo());
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
-        }
+            return RestExecutor.executeCall(dsRestClient.getInfo());
+        } catch (RestException ex) { throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex); }
     }
 
     @Override
     public DsDevice getDevice(String deviceId) throws DsClientException {
         try {
-            return executeCall(getHttpClient().getDevice(deviceId));
+            return RestExecutor.executeCall(dsRestClient.getDevice(deviceId));
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve device info from Distribution Service", ex);
         }
@@ -52,7 +46,7 @@ public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
     @Override
     public String getJWT() throws DsClientException {
         try {
-            return executeCall(getHttpClient().getJWT()).getToken();
+            return RestExecutor.executeCall(dsRestClient.getJWT()).getToken();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve JWT from Distribution Service", ex);
         }
@@ -61,7 +55,7 @@ public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
     @Override
     public String refreshJWT(String token) throws DsClientException {
         try {
-            return executeCall(getHttpClient().refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token))).getToken();
+            return RestExecutor.executeCall(dsRestClient.refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token))).getToken();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not refresh JWT on Distribution Service", ex);
         }
@@ -81,11 +75,16 @@ public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
             encodingParam = encoding.getQueryParamValue();
         }
         try {
-            DsPublicKey publicKeyResponse = executeCall(getHttpClient().getPubKey(encodingParam));
+            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(encodingParam));
             return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }
+    }
+
+    @Override
+    public String getDownloadLink() throws DsClientException {
+        return getDownloadLink(null);
     }
 
     @Override
@@ -96,9 +95,9 @@ public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
                             .withArchitecture(info.getOs().getArchitecture())
                             .withName(info.getOs().getName())
                             .withVersion(info.getOs().getVersion()));
-            DsDownloadPath clientResponse = executeCall(getHttpClient().getDownloadLink(request));
+            DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request));
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return UriUtils.uriFinalSlashAppender(ConnectionFactory.getConfig().getGatewayUri()) + UriUtils.uriLeadingSlashRemover(clientResponse.getPath());
+                return UriUtils.constructURI(config.getDsUri(),clientResponse.getPath());
             } else return null;
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
@@ -108,18 +107,9 @@ public class DsClient extends RestExecutor<DsRestClient> implements IDsClient {
     @Override
     public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
-            return executeCall(getHttpClient().register(deviceId, request)).getToken();
+            return RestExecutor.executeCall(dsRestClient.register(deviceId, request)).getToken();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
-        }
-    }
-
-    @Override
-    public String sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
-        try {
-            return executeCall(getHttpClient().register(deviceId, request)).getToken();
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not sync device with Distribution Service", ex);
         }
     }
 }

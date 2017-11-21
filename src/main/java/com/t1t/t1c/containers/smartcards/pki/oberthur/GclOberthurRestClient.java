@@ -1,6 +1,6 @@
 package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 /**
  * @Author Michallis Pashidis
  * @Since 2017

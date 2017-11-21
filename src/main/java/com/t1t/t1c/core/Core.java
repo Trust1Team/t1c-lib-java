@@ -1,16 +1,22 @@
 package com.t1t.t1c.core;
 
 import com.google.common.base.Preconditions;
+import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.factories.ConnectionFactory;
-import com.t1t.t1c.rest.GclAdminRestClient;
-import com.t1t.t1c.rest.GclRestClient;
+import com.t1t.t1c.rest.RestExecutor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.NumericDate;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+import org.jose4j.jwt.consumer.JwtConsumer;
+import org.jose4j.jwt.consumer.JwtConsumerBuilder;
+import org.jose4j.jwt.consumer.JwtContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
@@ -36,7 +42,7 @@ public class Core extends AbstractCore {
 
     @Override
     public String getVersion() {
-        return null;
+        RestExecutor.executeCall(gclRestClient.getV1Status());
     }
 
     @Override
@@ -171,5 +177,43 @@ public class Core extends AbstractCore {
     private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
         Preconditions.checkArgument(pollTimeoutInSeconds == null || (pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60), "Polling timout must be a value between 0 & 60");
         return 1000 * connFactory.getConfig().getDefaultPollingTimeoutInSeconds();
+    }
+
+    //TODO
+    private void checkJwtValidity() {
+        if (config.getEnvironment() != Environment.DEV) {
+            JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
+            String jwt = config.getJwt();
+            if (StringUtils.isNotEmpty(jwt)) {
+                try {
+                    JwtContext context = consumer.process(jwt);
+                    NumericDate refreshTreshold = NumericDate.now();
+                    refreshTreshold.addSeconds(-240);
+                    if (context.getJwtClaims().getExpirationTime().isOnOrAfter(refreshTreshold)) {
+                        jwt = ConnectionFactory.getDsClient().refreshJWT(jwt);
+                        if (StringUtils.isNotEmpty(jwt)) {
+                            config.setJwt(jwt);
+                            ConnectionFactory.setConfig(config);
+                            setHttpClient(ConnectionFactory.getGclAdminRestClient());
+                        }
+                    }
+                } catch (InvalidJwtException | MalformedClaimException ex) {
+                    log.error("Token invalid: ", ex);
+                    jwt = ConnectionFactory.getDsClient().getJWT();
+                    if (StringUtils.isNotEmpty(jwt)) {
+                        config.setJwt(jwt);
+                        ConnectionFactory.setConfig(config);
+                        setHttpClient(ConnectionFactory.getGclAdminRestClient());
+                    }
+                }
+            } else {
+                jwt = ConnectionFactory.getDsClient().getJWT();
+                if (StringUtils.isNotEmpty(jwt)) {
+                    config.setJwt(jwt);
+                    ConnectionFactory.setConfig(config);
+                    setHttpClient(ConnectionFactory.getGclAdminRestClient());
+                }
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclOcraAllData;
 import com.t1t.t1c.model.rest.GclOcraChallengeData;
 import com.t1t.t1c.model.rest.GclVerifyPinRequest;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.*;
 

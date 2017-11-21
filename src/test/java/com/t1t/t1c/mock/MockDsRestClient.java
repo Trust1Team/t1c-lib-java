@@ -2,7 +2,7 @@ package com.t1t.t1c.mock;
 
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.rest.DsRestClient;
+import com.t1t.t1c.ds.DsRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 

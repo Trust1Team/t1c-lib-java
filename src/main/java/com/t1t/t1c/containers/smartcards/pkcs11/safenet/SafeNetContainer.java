@@ -13,7 +13,7 @@ import com.t1t.t1c.model.rest.GclSafeNetInfo;
 import com.t1t.t1c.model.rest.GclSafeNetRequest;
 import com.t1t.t1c.model.rest.GclSafeNetSlot;
 import com.t1t.t1c.model.rest.T1cCertificate;
-import com.t1t.t1c.rest.ContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;

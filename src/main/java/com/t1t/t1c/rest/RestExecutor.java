@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
 import retrofit2.Response;
-
 import java.io.IOException;
 
 /**
@@ -56,8 +55,7 @@ public class RestExecutor {
                 throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
-            log.error("Error executing request: ", ex);
+            log.error("Error executing request: ", ex.getMessage());
             throw ExceptionFactory.restException(ex);
         }
     }
