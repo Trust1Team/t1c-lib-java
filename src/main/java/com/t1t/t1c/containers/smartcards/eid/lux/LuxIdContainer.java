@@ -1,19 +1,13 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
-import com.google.common.base.Preconditions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclLuxIdBiometric;
-import com.t1t.t1c.model.rest.GclLuxIdPicture;
-import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,82 +20,81 @@ import java.util.List;
 public class LuxIdContainer extends GenericContainer<LuxIdContainer> {
 
     private static final Logger log = LoggerFactory.getLogger(LuxIdContainer.class);
+    private GclLuxIdRestClient client;
 
-    public LuxIdContainer(String readerId, ContainerRestClient httpClient, String pin) {
-        super(readerId, ContainerType.LUXID, httpClient, pin);
-        Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN is required for Lux ID container");
+    public LuxIdContainer(String readerId, GclLuxIdRestClient gclLuxIdRestClient, String pin) {
+        this.readerId = readerId;
+        this.client = gclLuxIdRestClient;
+        this.pin = pin;
     }
 
     @Override
-    protected Logger getLogger() {
-        return log;
+    protected LuxIdContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+        return null;
     }
 
     @Override
-    public GclLuxIdBiometric getBiometric() throws LuxIdContainerException {
-        try {
-            return returnData(getHttpClient().getLuxIdBiometric(getTypeId(), getReaderId(), getPin()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve biometrics from container", ex);
-        }
+    protected List<String> getAllDataFilters() {
+        return null;
     }
 
     @Override
-    public GclLuxIdPicture getPicture() throws LuxIdContainerException {
-        try {
-            return returnData(getHttpClient().getLuxIdPicture(getTypeId(), getReaderId(), getPin()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve picture from container", ex);
-        }
+    protected List<String> getAllCertificateFilters() {
+        return null;
     }
 
     @Override
-    public GclLuxIdSignatureImage getSignatureImage() throws LuxIdContainerException {
-        try {
-            return returnData(getHttpClient().getLuxIdSignatureImage(getTypeId(), getReaderId(), getPin()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve signature image from container", ex);
-        }
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws LuxIdContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new LuxIdAllData(returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new LuxIdAllData(returnData(getHttpClient().getLuxIdAllData(getType().getId(), getReaderId(), getPin())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve all data from container", ex);
-        }
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws LuxIdContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new LuxIdAllCertificates(returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new LuxIdAllCertificates(returnData(getHttpClient().getLuxIdAllCertificates(getType().getId(), getReaderId(), getPin())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve all data from container", ex);
-        }
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public List<T1cCertificate> getRootCertificates(boolean parse) throws LuxIdContainerException {
-        return super.getRootCertificates(parse);
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getAuthenticationCertificate(boolean parse) throws LuxIdContainerException {
-        return super.getAuthenticationCertificate(parse);
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getNonRepudiationCertificate(boolean parse) throws LuxIdContainerException {
-        return super.getNonRepudiationCertificate(parse);
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
+    }
+
+    @Override
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
+        return null;
     }
 }

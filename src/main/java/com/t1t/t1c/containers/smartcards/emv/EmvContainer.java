@@ -23,6 +23,11 @@ import java.util.List;
  */
 public class EmvContainer extends GenericContainer<EmvContainer> {
     private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
+    private GclEmvRestClient client;
+    public EmvContainer(String readerId, GclEmvRestClient gclEmvRestClient){
+        this.readerId = readerId;
+        this.client = gclEmvRestClient;
+    }
 
     @Override
     protected EmvContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {

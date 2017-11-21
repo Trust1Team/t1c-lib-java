@@ -19,6 +19,12 @@ import java.util.List;
  */
 public class DnieContainer extends GenericContainer<DnieContainer> {
     private static final Logger log = LoggerFactory.getLogger(DnieContainer.class);
+    private GclDniRestClient client;
+
+    public DnieContainer (String readerId, GclDniRestClient gclDniRestClient) {
+        this.readerId = readerId;
+        this.client = gclDniRestClient;
+    }
 
     @Override
     protected DnieContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {

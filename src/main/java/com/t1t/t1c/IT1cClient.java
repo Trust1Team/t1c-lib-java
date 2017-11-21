@@ -17,6 +17,7 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.Core;
+import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.rest.GclReader;
@@ -30,7 +31,7 @@ import java.util.List;
  */
 public interface IT1cClient {
     /*General*/
-    Core getCore();
+    ICore getCore();
     ConnectionFactory getConnectionFactory();
 
     /*Clients*/

@@ -20,7 +20,13 @@ import java.util.List;
 public class LuxTrustContainer extends GenericContainer<LuxTrustContainer> {
 
     private static final Logger log = LoggerFactory.getLogger(LuxTrustContainer.class);
+    private GclLuxTrustRestClient client;
 
+    public LuxTrustContainer(String readerId, GclLuxTrustRestClient gclLuxTrustRestClient, String pin) {
+        this.readerId = readerId;
+        this.client = gclLuxTrustRestClient;
+        this.pin = pin;
+    }
 
     @Override
     protected LuxTrustContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {

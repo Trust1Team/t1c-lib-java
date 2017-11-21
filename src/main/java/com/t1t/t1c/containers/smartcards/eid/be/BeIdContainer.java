@@ -20,8 +20,12 @@ import java.util.List;
  */
 public class BeIdContainer extends GenericContainer<BeIdContainer> {
     private static final Logger log = LoggerFactory.getLogger(BeIdContainer.class);
-    private ContainerRestClient containerRestClient;
-    public BeIdContainer(String readerId, ContainerRestClient httpClient) { }
+    private GclBeidRestClient client;
+
+    public BeIdContainer(String readerId, GclBeidRestClient gclBeidRestClient) {
+        this.readerId = readerId;
+        this.client = gclBeidRestClient;
+    }
 
     /*Dynamic instance creation*/
     @Override

@@ -13,6 +13,9 @@ import java.util.List;
  * @since 2017
  */
 public abstract class GenericContainer<T extends GenericContainer> implements GclContainer{
+    /*Properties*/
+    protected String readerId;
+    protected transient String pin;
     /*Instantiation*/
     public GenericContainer() {}
     public GenericContainer(String readerId, ContainerRestClient httpClient, String pin) { createInstance(readerId, httpClient, pin); }
