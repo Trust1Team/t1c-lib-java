@@ -30,72 +30,68 @@ public class BeIdContainer extends GenericContainer<BeIdContainer> {
     }
 
     @Override
+    protected List<String> getAllDataFilters() {
+        return null;
+    }
+
+    @Override
+    protected List<String> getAllCertificateFilters() {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
+    }
+
+    @Override
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+
+    @Override
     public ContainerType getType() {
         return null;
     }
 
     @Override
-    public List<String> getAllDataFilters() {
-        return null;
-    }
-
-    @Override
-    public List<String> getAllCertificateFilters() {
-        return null;
-    }
-
-    @Override
     public String getTypeId() {
-        return null;
-    }
-
-    @Override
-    public String getReaderId() {
-        return null;
-    }
-
-    @Override
-    public AllData getAllData() throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public AllData getAllData(boolean... parseCertificates) throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public AllCertificates getAllCertificates() throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(boolean... parseCertificates) throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        return null;
-    }
-
-    @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
-        return null;
-    }
-
-    @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
         return null;
     }
 }

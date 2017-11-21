@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions;
+package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.GenericContainerException;

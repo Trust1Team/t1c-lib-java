@@ -3,7 +3,6 @@ package com.t1t.t1c.containers.smartcards.eid.esp;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieAllData;
-import com.t1t.t1c.containers.smartcards.eid.dni.IDnieContainer;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;

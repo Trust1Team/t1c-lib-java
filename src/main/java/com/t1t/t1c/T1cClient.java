@@ -34,7 +34,7 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.factories.ConnectionFactory;
-import com.t1t.t1c.rest.RestServiceBuilder;
+import com.t1t.t1c.ocv.OcvClient;
 import com.t1t.t1c.services.GenericService;
 import com.t1t.t1c.services.IGenericService;
 import com.t1t.t1c.utils.ContainerUtil;
@@ -42,7 +42,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * @Author Michallis Pashidis
@@ -105,8 +104,7 @@ public class T1cClient implements IT1cClient {
         /*Instantiate connection objects*/
         connFactory = new ConnectionFactory(config);
         /*Intantiate GCL core communication*/
-        resetCore();
-        resetDs();
+        resetCore();resetDs();resetOcv();
         this.genericService = new GenericService(); //TODO implement generic service
 
         //initialize public key for instance and register towards DS
@@ -119,10 +117,9 @@ public class T1cClient implements IT1cClient {
     /**
      * The core uses the gclRestClient and gclAdminRestClient.
      */
-    private void resetCore(){ this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient()); }
-
-    private void resetDs(){ this.dsClient = new DsClient()}
-
+    private void resetCore() { this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(),connFactory.getConfig()); }
+    private void resetDs() { this.dsClient = new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());}
+    private void resetOcv() { this.ocvClient = new OcvClient(connFactory.getOcvRestClient(), connFactory.getConfig());}
 
 
     public String exchangeApiKeyForToken() {
@@ -147,8 +144,8 @@ public class T1cClient implements IT1cClient {
      */
     private void initSecurityContext() {
         if (StringUtils.isBlank(core.getPubKey())) {
-            String publicKey = connFactory.getDsClient().getPublicKey();
-            if (!connFactory.getGclAdminClient().setPublicKey(publicKey)) {
+            String publicKey = dsClient.getPublicKey();
+            if (!core.setPubKey(publicKey);) {
                 throw ExceptionFactory.initializationException("Could not set GCL public key");
             }
         }

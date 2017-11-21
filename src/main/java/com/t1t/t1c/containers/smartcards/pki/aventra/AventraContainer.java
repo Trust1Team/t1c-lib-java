@@ -16,13 +16,9 @@ import java.util.List;
  * @since 2017
  */
 public class AventraContainer extends GenericContainer<AventraContainer> {
-    @Override
-    protected AventraContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
-        return null;
-    }
 
     @Override
-    protected ContainerType getType() {
+    protected AventraContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 
@@ -37,27 +33,17 @@ public class AventraContainer extends GenericContainer<AventraContainer> {
     }
 
     @Override
-    protected String getTypeId() {
-        return null;
-    }
-
-    @Override
-    protected String getReaderId() {
-        return null;
-    }
-
-    @Override
     protected AllData getAllData() throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllData getAllData(boolean... parseCertificates) throws GenericContainerException {
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
@@ -67,12 +53,12 @@ public class AventraContainer extends GenericContainer<AventraContainer> {
     }
 
     @Override
-    protected AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllCertificates getAllCertificates(boolean... parseCertificates) throws GenericContainerException {
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
@@ -88,6 +74,16 @@ public class AventraContainer extends GenericContainer<AventraContainer> {
 
     @Override
     protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
         return null;
     }
 }

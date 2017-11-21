@@ -1,14 +1,17 @@
 package com.t1t.t1c.containers;
 
-import com.t1t.t1c.containers.remoteloading.belfius.IBelfiusContainer;
-import com.t1t.t1c.containers.smartcards.eid.dni.IDnieContainer;
-import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
-import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
-import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
-import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
+import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
+import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
+import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
+import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclBeIdAllData;
@@ -30,43 +33,43 @@ public enum ContainerType {
             Collections.singletonList("Belgium Electronic ID card"),
             Arrays.asList("address", "rn", "picture", "root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate"),
             Arrays.asList("root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate"),
-            IBeIdContainer.class,
+            BeIdContainer.class,
             GclBeIdAllData.class),
     DNIE("dnie",
             Collections.singletonList(""),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IDnieContainer.class,
+            DnieContainer.class,
             null),
     EMV("emv",
             Collections.singletonList("Mastercard"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IEmvContainer.class,
+            EmvContainer.class,
             null),
     EST("esteid",
             Collections.singletonList("Estonian"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IBeIdContainer.class,
+            BeIdContainer.class,
             null),
     LUXID("luxeid",
             Collections.singletonList("Grand Duchy of Luxembourg / Identity card with LuxTrust certificate (eID)"),
             Arrays.asList("authentication-certificate", "biometric", "non-repudiation-certificate", "picture", "root-certificates"),
             Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
-            ILuxIdContainer.class,
+            LuxIdContainer.class,
             null),
     LUXTRUST("luxtrust",
             Collections.singletonList("LuxTrust card"),
             Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
             Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates"),
-            ILuxTrustContainer.class,
+            LuxTrustContainer.class,
             null),
     MOBIB("mobib",
             Collections.singletonList("MOBIB"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IMobibContainer.class,
+            MobibContainer.class,
             null),
     OBERTHUR("oberthur",
             Collections.singletonList("Oberthur"),
@@ -78,7 +81,7 @@ public enum ContainerType {
             Collections.singletonList("Juridic Person's Token (PKI)"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IOcraContainer.class,
+            OcraContainer.class,
             null),
     PIV("piv",
             Arrays.asList("PIV", "CIV"),
@@ -90,19 +93,19 @@ public enum ContainerType {
             Collections.singletonList("Portuguese"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IPtEIdContainer.class,
+            PtEIdContainer.class,
             null),
     READER_API("readerapi",
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            IBelfiusContainer.class,
+            ReaderApiContainer.class,
             null),
     SAFENET("safenet",
             Collections.singletonList("SafeNet"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            ISafeNetContainer.class,
+            SafeNetContainer.class,
             AllData.class);
 
     private static final Map<String, ContainerType> idMap;

@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.emv.exceptions;
+package com.t1t.t1c.containers.smartcards.emv;
 
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.GenericContainerException;

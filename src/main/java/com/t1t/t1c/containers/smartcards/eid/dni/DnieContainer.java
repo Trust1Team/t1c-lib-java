@@ -1,16 +1,13 @@
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclDnieInfo;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.containers.ContainerRestClient;
-import com.t1t.t1c.utils.CertificateUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,70 +17,76 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class DnieContainer extends AbstractContainer implements IDnieContainer {
-
+public class DnieContainer extends GenericContainer<DnieContainer> {
     private static final Logger log = LoggerFactory.getLogger(DnieContainer.class);
 
-    public DnieContainer(String readerId, ContainerRestClient httpClient) {
-        super(readerId, ContainerType.DNIE, httpClient);
+    @Override
+    protected DnieContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+        return null;
     }
 
     @Override
-    protected Logger getLogger() {
-        return log;
+    protected List<String> getAllDataFilters() {
+        return null;
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws PtIdContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new DnieAllData(returnData(getHttpClient().getDnieAllData(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new DnieAllData(returnData(getHttpClient().getDnieAllData(getType().getId(), getReaderId())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("Could not retrieve all data from container", ex);
-        }
+    protected List<String> getAllCertificateFilters() {
+        return null;
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws PtIdContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new DnieAllCertificates(returnData(getHttpClient().getDnieAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new DnieAllCertificates(returnData(getHttpClient().getDnieAllCertificates(getType().getId(), getReaderId())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("Could not retrieve all data from container", ex);
-        }
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclDnieInfo getInfo() throws PtIdContainerException {
-        try {
-            return returnData(getHttpClient().getDnieInfo(getTypeId(), getReaderId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("Could not retrieve info from container", ex);
-        }
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getIntermediateCertificate(boolean parse) throws PtIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getIntermediateCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("Could not retrieve intermediate certificate from container", ex);
-        }
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getAuthenticationCertificate(boolean parse) throws PtIdContainerException {
-        return super.getAuthenticationCertificate(parse);
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getSigningCertificate(boolean parse) throws PtIdContainerException {
-        return super.getSigningCertificate(parse);
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
+    }
+
+    @Override
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
+        return null;
     }
 }

@@ -1,15 +1,14 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclEmvAidRequest;
-import com.t1t.t1c.model.rest.GclEmvApplication;
-import com.t1t.t1c.model.rest.GclEmvApplicationData;
-import com.t1t.t1c.model.rest.GclEmvCertificate;
+import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,78 +21,76 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class EmvContainer extends AbstractContainer implements IEmvContainer {
-
+public class EmvContainer extends GenericContainer<EmvContainer> {
     private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
 
-    public EmvContainer(String readerId, ContainerRestClient httpClient) {
-        super(readerId, ContainerType.EMV, httpClient);
+    @Override
+    protected EmvContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+        return null;
     }
 
     @Override
-    protected Logger getLogger() {
-        return log;
+    protected List<String> getAllDataFilters() {
+        return null;
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return returnData(getHttpClient().getEmvAllData(getType().getId(), getReaderId(), createFilterParams(filterParams)));
-            } else {
-                return returnData(getHttpClient().getEmvAllData(getType().getId(), getReaderId()));
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("Could not retrieve all data from container", ex);
-        }
+    protected List<String> getAllCertificateFilters() {
+        return null;
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        throw ExceptionFactory.unsupportedOperationException("This container does not provide a list of all of its certificates");
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public List<GclEmvApplication> getApplications() {
-        try {
-            return returnData(getHttpClient().getEmvApplications(getTypeId(), getReaderId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("Could not retrieve list of applications from container", ex);
-        }
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclEmvApplicationData getApplicationData() {
-        try {
-            return returnData(getHttpClient().getEmvApplicationData(getTypeId(), getReaderId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("Could not retrieve application data from container", ex);
-        }
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclEmvCertificate getIccPublicKeyCertificate(String... aid) {
-        try {
-            return returnData(getHttpClient().getEmvIccPublicKeyCertificate(getTypeId(), getReaderId(), createAidRequest(aid)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("Could not retrieve ICC public key certificate from container", ex);
-        }
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclEmvCertificate getIssuerPublicKeyCertificate(String... aid) {
-        try {
-            return returnData(getHttpClient().getEmvIssuerPublicKeyCertificate(getTypeId(), getReaderId(), createAidRequest(aid)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("Could not retrieve issuer public key certificate from container", ex);
-        }
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
-    private GclEmvAidRequest createAidRequest(String... aid) {
-        GclEmvAidRequest request = null;
-        if (aid != null && aid.length > 0 && StringUtils.isNotEmpty(aid[0])) {
-            request = new GclEmvAidRequest().withAid(aid[0]);
-        }
-        return request;
+    @Override
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
+    }
+
+    @Override
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
+        return null;
     }
 }

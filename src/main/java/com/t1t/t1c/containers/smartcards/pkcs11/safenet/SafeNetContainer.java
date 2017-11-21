@@ -3,16 +3,13 @@ package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclSafeNetInfo;
-import com.t1t.t1c.model.rest.GclSafeNetRequest;
-import com.t1t.t1c.model.rest.GclSafeNetSlot;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -28,12 +25,82 @@ import java.util.List;
  */
 public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
 
-    private SafeNetContainerConfiguration safeNetConfig;
-    private String module;
+/*    private SafeNetContainerConfiguration safeNetConfig;
+    private String module;*/
 
     private static final Logger log = LoggerFactory.getLogger(SafeNetContainer.class);
 
-    public SafeNetContainer(String readerId, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
+    @Override
+    protected SafeNetContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+        return null;
+    }
+
+    @Override
+    protected List<String> getAllDataFilters() {
+        return null;
+    }
+
+    @Override
+    protected List<String> getAllCertificateFilters() {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
+    }
+
+    @Override
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
+    }
+
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
+        return null;
+    }
+
+/*    public SafeNetContainer(String readerId, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
         super(readerId, ContainerType.SAFENET, httpClient);
         if (configuration != null) {
             safeNetConfig = configuration;
@@ -57,73 +124,6 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
         else {
             throw ExceptionFactory.safeNetContainerException("SafeNet container configuration not set");
         }
-    }
+    }*/
 
-    @Override
-    protected Logger getLogger() {
-        return log;
-    }
-
-    @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        return new SafeNetAllData().withSlots(getSlots());
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        throw ExceptionFactory.unsupportedOperationException("SafeNet Container does not support generic certificate dump, use getCertificates(Integer slotId, String... pin) instead");
-    }
-
-    @Override
-    public List<T1cCertificate> getCertificates(Integer slotId, String... pin) throws SafeNetContainerException {
-        try {
-            return CertificateUtil.createT1cCertificates(returnData(getHttpClient().getSafeNetCertificates(getTypeId(), getReaderId(), getCertificateRequest(slotId, pin))));
-        } catch (RestException ex) {
-            checkPinExceptionMessage(ex);
-            throw ExceptionFactory.safeNetContainerException("Could not retrieve certificates", ex);
-        }
-    }
-
-    @Override
-    public GclSafeNetInfo getInfo() throws SafeNetContainerException {
-        try {
-            return returnData(getHttpClient().getSafeNetInfo(getTypeId(), getReaderId(), getRequest()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.safeNetContainerException("Could not retrieve info");
-        }
-    }
-
-    @Override
-    public List<GclSafeNetSlot> getSlots() throws SafeNetContainerException {
-        return getSlots(null);
-    }
-
-    @Override
-    public List<GclSafeNetSlot> getSlotsWithToken() throws SafeNetContainerException {
-        return getSlots(true);
-    }
-
-    private List<GclSafeNetSlot> getSlots(Boolean tokenPresent) throws SafeNetContainerException {
-        try {
-            return returnData(getHttpClient().getSafeNetSlots(getTypeId(), getReaderId(), getRequest(), tokenPresent));
-        } catch (RestException ex) {
-            throw ExceptionFactory.safeNetContainerException("Could not retrieve slots");
-        }
-    }
-
-    private GclSafeNetRequest getCertificateRequest(Integer slotId, String... pin) {
-        if (slotId == null) {
-            throw ExceptionFactory.safeNetContainerException("Slot ID must be specified");
-        }
-        GclSafeNetRequest request = getRequest().withSlotId(slotId);
-        pinEnforcementCheck(pin);
-        if (pin != null && pin.length > 0 && StringUtils.isNotEmpty(pin[0])) {
-            return request.withPin(pin[0]);
-        }
-        return request;
-    }
-
-    private GclSafeNetRequest getRequest() {
-        return new GclSafeNetRequest().withModule(this.module);
-    }
 }

@@ -3,7 +3,6 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.smartcards.eid.lux.exceptions.LuxIdContainerException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.AllCertificates;

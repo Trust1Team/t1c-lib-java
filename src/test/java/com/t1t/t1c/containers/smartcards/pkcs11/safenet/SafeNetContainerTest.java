@@ -2,7 +2,6 @@ package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.exceptions.SafeNetContainerException;
 import com.t1t.t1c.model.rest.GclSafeNetSlot;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;

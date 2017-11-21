@@ -1,12 +1,14 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.eid.pt.exceptions.PtIdContainerException;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclPtIdData;
 import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.containers.ContainerRestClient;
@@ -21,102 +23,76 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PtEIdContainer extends AbstractContainer implements IPtEIdContainer {
-
+public class PtEIdContainer extends GenericContainer<PtEIdContainer> {
     private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
-    public PtEIdContainer(String readerId, ContainerRestClient httpClient) {
-        super(readerId, ContainerType.PT, httpClient);
+    @Override
+    protected PtEIdContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+        return null;
     }
 
     @Override
-    protected Logger getLogger() {
-        return log;
+    protected List<String> getAllDataFilters() {
+        return null;
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new PtIdAllData(returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new PtIdAllData(returnData(getHttpClient().getPtIdAllData(getType().getId(), getReaderId())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve all data from container", ex);
-        }
+    protected List<String> getAllCertificateFilters() {
+        return null;
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, boolean... parseCertificates) throws GenericContainerException {
-        try {
-            if (CollectionUtils.isNotEmpty(filterParams)) {
-                return new PtIdAllCertificates(returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId(), createFilterParams(filterParams))), parseCertificates);
-            } else {
-                return new PtIdAllCertificates(returnData(getHttpClient().getPtIdAllCertificates(getType().getId(), getReaderId())), parseCertificates);
-            }
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve all data from container", ex);
-        }
+    protected AllData getAllData() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclPtIdData getIdData() throws PtIdContainerException {
-        return getPtIdData(true);
+    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public GclPtIdData getIdDataWithOutPhoto() throws PtIdContainerException {
-        return getPtIdData(false);
+    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public String getPhoto() throws PtIdContainerException {
-        try {
-            return returnData(getHttpClient().getPtIdPhoto(getTypeId(), getReaderId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve ID data from container", ex);
-        }
+    protected AllCertificates getAllCertificates() throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getRootCertificate(boolean parse) throws PtIdContainerException {
-        return super.getRootCertificate(parse);
+    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getRootAuthenticationCertificate(boolean parse) throws PtIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getRootAuthenticationCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve authentication certificate from container", ex);
-        }
+    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getRootNonRepudiationCertificate(boolean parse) throws PtIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(returnData(getHttpClient().getRootNonRepudiationCertificate(getTypeId(), getReaderId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve authentication certificate from container", ex);
-        }
+    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getAuthenticationCertificate(boolean parse) throws PtIdContainerException {
-        return super.getAuthenticationCertificate(parse);
+    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
     }
 
     @Override
-    public T1cCertificate getNonRepudiationCertificate(boolean parse) throws PtIdContainerException {
-        return super.getNonRepudiationCertificate(parse);
+    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+        return null;
     }
 
-    private GclPtIdData getPtIdData(boolean includePhoto) {
-        try {
-            return returnData(getHttpClient().getPtIdData(getTypeId(), getReaderId(), includePhoto));
-        } catch (RestException ex) {
-            throw ExceptionFactory.ptIdContainerException("Could not retrieve ID data from container", ex);
-        }
+    @Override
+    public ContainerType getType() {
+        return null;
+    }
+
+    @Override
+    public String getTypeId() {
+        return null;
     }
 }
