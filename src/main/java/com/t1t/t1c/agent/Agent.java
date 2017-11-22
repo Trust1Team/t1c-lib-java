@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
  * @since 2017
  */
 public class Agent extends AbstractAgent {
-
     private static final Logger log = LoggerFactory.getLogger(Agent.class);
 
 }
