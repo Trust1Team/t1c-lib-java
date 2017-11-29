@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 @PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class DnieContainerTest extends AbstractTestClass {
 
-    private IDnieContainer dnieContainer;
+    /*private IDnieContainer dnieContainer;
 
     @Before
     public void initContainer() {
@@ -74,6 +74,6 @@ public class DnieContainerTest extends AbstractTestClass {
     @Test
     public void getSigningCertificate() throws Exception {
         assertNotNull(dnieContainer.getSigningCertificate(false));
-    }
+    }*/
 
 }

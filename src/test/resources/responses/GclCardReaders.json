@@ -1,0 +1,148 @@
+{
+  "data": [
+    {
+      "card": {
+        "atr": "3B9813400AA503010101AD1311",
+        "description": [
+          "Belgium Electronic ID card"
+        ]
+      },
+      "id": "57a3e2e71c48cee9",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B7D94000080318065B0831100C883009000",
+        "description": [
+          "personal identity card (ID card) of Republic of Lithuania",
+          "LuxTrust card"
+        ]
+      },
+      "id": "e5863fcc71478871",
+      "name": "Gemalto Ezio Shield Secure Channel",
+      "pinpad": true
+    },
+    {
+      "id": "e1348fcc71478871",
+      "name": "Gemalto Ezio Shield Secure Channel",
+      "pinpad": true
+    },
+    {
+      "card": {
+        "atr": "3B8F800180318065B0850300EF120FFF82900073",
+        "description": [
+          "Grand Duchy of Luxembourg / Identity card with LuxTrust certificate (eID)"
+        ]
+      },
+      "id": "d23a59e3f3a6a98c",
+      "name": "SpringCard CSB6 Ultimate(1)",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B67000000000000009000",
+        "description": [
+          "Axa Bank (Belgium) Mastercard Gold / Axa Bank Belgium",
+          "MisterCash & Proton card",
+          "VISA Card (emitted by Bank Card Company - Belgium)"
+        ]
+      },
+      "id": "57a3e2e71c48cee1",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B67000000000000009000",
+        "description": [
+          "Axa Bank (Belgium) Mastercard Gold / Axa Bank Belgium",
+          "MisterCash & Proton card",
+          "VISA Card (emitted by Bank Card Company - Belgium)"
+        ]
+      },
+      "id": "57a3e2e71c48cee2",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B7F94000080318065B0850300EF120FFF829000",
+        "description": [
+          "Gemalto Classic V4",
+          "Juridic Person's Token (PKI)"
+        ]
+      },
+      "id": "57a3e2e71c48cee3",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B7F96000080318065B085040011120FFF829000",
+        "description": [
+          "Unknown"
+        ]
+      },
+      "id": "57a3e2e71c48cee4",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B7D96000080318065B0831117E583009000",
+        "description": [
+          "Gemalto IDPrime PIV Card2.0 (eID)"
+        ]
+      },
+      "id": "57a3e2e71c48cee5",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B6F0000805A2C23C3000302028497A4829000",
+        "description": [
+          "MOBIB card for DeLijn (public transport operator for the Flemish part of Belgium)"
+        ]
+      },
+      "id": "57a3e2e71c48cee6",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3B6F0000805A2C23C310100571037E9B829000",
+        "description": [
+          "MOBIB Card"
+        ]
+      },
+      "id": "57a3e2e71c48cee7",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3BF51800008131FE454D794549449A",
+        "description": [
+          "Aventra ActiveSecurity MyEID"
+        ]
+      },
+      "id": "57a3e2e71c48cee8",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    },
+    {
+      "card": {
+        "atr": "3BDD18008131FE4580F9A000000077010800079000FE",
+        "description": [
+          "Oberthur Cosmo v7 IAS ECC"
+        ]
+      },
+      "id": "57a3e2e71c48ce10",
+      "name": "Bit4id miniLector",
+      "pinpad": false
+    }
+  ],
+  "success": true
+}

@@ -232,29 +232,4 @@ public class CoreTest extends AbstractTestClass {
             assertTrue(readers.contains(reader));
         }
     }
-
-    @Test
-    public void testGetUrl() throws Exception {
-        String url = this.getClient().getCore().getUrl();
-        String expected = this.getConfig().getGclClientUri();
-        assertEquals(expected, url);
-    }
-
-    @Test
-    public void testGetConsent() throws Exception {
-        boolean consented = this.getClient().getCore().getConsent("Title", "CodeWord", 5);
-        assertTrue(consented);
-    }
-
-    @Test
-    public void testGetReadersWithCard() throws Exception {
-        List<GclReader> readers = this.getClient().getCore().getReadersWithInsertedCard();
-        List<GclReader> expected = getAllReaders(false).getData();
-
-        assertTrue(CollectionUtils.isNotEmpty(readers));
-        assertEquals(expected.size(), readers.size());
-        for (GclReader reader : expected) {
-            assertTrue(readers.contains(reader));
-        }
-    }
 }

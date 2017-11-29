@@ -1,0 +1,11 @@
+{
+  "data": {
+    "municipality": "Gent",
+    "raw_data": "U3RhdGlvbnN0cmFhdCAxIAIEOTAwMAMER2VudA==",
+    "signature": "lI+0Jcu/a/Ubi6gGgNA1hCTXC2JUz81XelmpKHMolGAugCGXLMhg5CI2y80SPGokcol/UQYOrl+ZDqQIqxlFb3OzFUbsW4YRXpm5BS7ZT3DRr+n2uc7PDMkZ1BhvB7V2mYgCMZLLDyyXPoMYbM/MJ0tL/6tdIKds/DlKu3nkk6rGoi77DyIpi2OGL67v1ItbvL6eW9jzW/NcxdpULciql6lK+bAfMWs8lYqdFxADU65m/Ac9vmNHofYAVv8GQt3OiPZrL97ysisDJ6gbtX1I05P4czNv4msU2GqxYIQUqRFEoKLs//VooS75hwjbU5/QVUtvXjxusqWvUomNG65AzQ==",
+    "street_and_number": "Stationstraat 1",
+    "version": 0,
+    "zipcode": "9000"
+  },
+  "success": true
+}

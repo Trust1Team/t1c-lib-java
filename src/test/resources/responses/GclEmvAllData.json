@@ -1,0 +1,31 @@
+{
+  "data": {
+    "application_data": {
+      "country": "BE",
+      "country_code": "0056",
+      "effective_date": "091101",
+      "expiration_date": "141130",
+      "language": "nl",
+      "name": "",
+      "pan": "67034200172725017"
+    },
+    "applications": [
+      {
+        "aid": "A0000000048002",
+        "label": "SECURE CODE",
+        "priority": 0
+      },
+      {
+        "aid": "D056000666111010",
+        "label": "BANCONTACT",
+        "priority": 1
+      },
+      {
+        "aid": "A0000000043060",
+        "label": "MAESTRO",
+        "priority": 1
+      }
+    ]
+  },
+  "success": true
+}

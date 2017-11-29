@@ -27,11 +27,6 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getPublicKey() {
-        return delegate.returningResponse(getPublicKeyResponseDer()).getPublicKey();
-    }
-
-    @Override
     public Call<T1cResponse<Object>> setPublicKey(GclUpdatePublicKeyRequest request) {
         return delegate.returningResponse(getSuccessResponse()).activate();
     }

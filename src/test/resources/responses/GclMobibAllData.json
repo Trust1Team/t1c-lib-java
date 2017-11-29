@@ -1,0 +1,162 @@
+{
+  "data": {
+    "active": true,
+    "card-issuing": {
+      "card_expiration_date": "2020-03-06",
+      "card_holder_birth_date": "1968-09-03",
+      "card_holder_end_date": "not-a-date-time",
+      "card_holder_id": "6665601000000000015",
+      "card_holder_name": "TEST|KAART                                         ",
+      "card_holder_start_date": "2015-03-06",
+      "card_revalidation_date": "not-a-date-time",
+      "card_type": 1,
+      "company_id": 1,
+      "gender": 1,
+      "language": 1,
+      "version": 1
+    },
+    "contracts": [
+      {
+        "authenticator_kvc": 122,
+        "authenticator_value": 15923236,
+        "destination": 8821006,
+        "journey_interchanges_allowed": true,
+        "origin": 8813094,
+        "passengers_max": 0,
+        "price_amount": 100,
+        "provider": 1,
+        "sale_date": "2015-03-06",
+        "sale_sam_count": 440743,
+        "sale_sam_id": 15732992,
+        "spatials": [],
+        "tariff": {
+          "multimodal": false,
+          "nameref": 0
+        },
+        "type_id": 0,
+        "validity_duration": {
+          "unit": 3,
+          "value": 1
+        },
+        "validity_start_date": "2015-03-06",
+        "vehicle_class_allowed": 0,
+        "version": 4
+      },
+      {
+        "authenticator_kvc": 122,
+        "authenticator_value": 15348857,
+        "destination": 8821007,
+        "journey_interchanges_allowed": true,
+        "origin": 8813095,
+        "passengers_max": 0,
+        "price_amount": 100,
+        "provider": 1,
+        "sale_date": "2015-03-06",
+        "sale_sam_count": 440779,
+        "sale_sam_id": 15732992,
+        "spatials": [],
+        "tariff": {
+          "multimodal": false,
+          "nameref": 250
+        },
+        "type_id": 250,
+        "validity_duration": {
+          "unit": 3,
+          "value": 12
+        },
+        "validity_start_date": "2015-03-06",
+        "vehicle_class_allowed": 0,
+        "version": 4
+      },
+      {
+        "authenticator_kvc": 122,
+        "authenticator_value": 12970415,
+        "journey_interchanges_allowed": true,
+        "operator_map": 15,
+        "passengers_max": 0,
+        "price_amount": 10,
+        "provider": 1,
+        "sale_date": "2015-03-06",
+        "sale_sam_count": 396,
+        "sale_sam_id": 1135996,
+        "spatials": [],
+        "tariff": {
+          "counter": {
+            "journeys": 9,
+            "type": 2
+          },
+          "multimodal": true,
+          "nameref": 3
+        },
+        "type_id": 15363,
+        "validity_start_date": "2015-03-06",
+        "vehicle_class_allowed": 0,
+        "version": 4
+      },
+      {
+        "authenticator_kvc": 122,
+        "authenticator_value": 376519,
+        "journey_interchanges_allowed": true,
+        "operator_map": 15,
+        "passengers_max": 0,
+        "price_amount": 100,
+        "provider": 1,
+        "sale_date": "2015-03-06",
+        "sale_sam_count": 441131,
+        "sale_sam_id": 15732992,
+        "spatials": [
+          {
+            "route_destination": false,
+            "route_origin": 2,
+            "type": 6
+          }
+        ],
+        "tariff": {
+          "multimodal": true,
+          "nameref": 14
+        },
+        "type_id": 15374,
+        "validity_duration": {
+          "unit": 3,
+          "value": 1
+        },
+        "validity_start_date": "2015-03-06",
+        "vehicle_class_allowed": 0,
+        "version": 4
+      },
+      {
+        "authenticator_kvc": 122,
+        "authenticator_value": 14646958,
+        "journey_interchanges_allowed": true,
+        "operator_map": 15,
+        "passengers_max": 0,
+        "price_amount": 0,
+        "provider": 1,
+        "sale_date": "2015-03-06",
+        "sale_sam_count": 398,
+        "sale_sam_id": 1135996,
+        "spatials": [
+          {
+            "route_destination": false,
+            "route_origin": 1,
+            "type": 6
+          }
+        ],
+        "tariff": {
+          "multimodal": true,
+          "nameref": 13
+        },
+        "type_id": 15373,
+        "validity_duration": {
+          "unit": 3,
+          "value": 3
+        },
+        "validity_start_date": "2015-03-06",
+        "vehicle_class_allowed": 0,
+        "version": 4
+      }
+    ],
+    "picture": ""
+  },
+  "success": true
+}
