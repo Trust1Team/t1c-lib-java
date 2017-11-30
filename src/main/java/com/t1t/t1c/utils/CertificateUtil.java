@@ -36,7 +36,7 @@ public final class CertificateUtil {
         }
     }
 
-    public static T1cCertificate createT1cCertificate(String certificate, boolean... parse) {
+    public static T1cCertificate createT1cCertificate(String certificate, Boolean... parse) {
         boolean doParse = parse == null || parse.length <= 0 || parse[0];
         T1cCertificate cert = new T1cCertificate().withBase64(certificate);
         if (doParse) {
@@ -45,7 +45,7 @@ public final class CertificateUtil {
         return cert;
     }
 
-    public static List<T1cCertificate> createT1cCertificates(List<String> certificates, boolean... parse) {
+    public static List<T1cCertificate> createT1cCertificates(List<String> certificates, Boolean... parse) {
         boolean doParse = parse == null || parse.length <= 0 || parse[0];
         List<T1cCertificate> returnValue = new ArrayList<>();
         for (String unparsed : certificates) {

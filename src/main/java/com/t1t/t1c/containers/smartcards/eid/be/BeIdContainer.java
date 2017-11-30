@@ -2,15 +2,19 @@ package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.rest.RestExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -19,63 +23,79 @@ import java.util.List;
  * @since 2017
  */
 public class BeIdContainer extends GenericContainer<BeIdContainer> {
-    private static final Logger log = LoggerFactory.getLogger(BeIdContainer.class);
-    private GclBeidRestClient client;
 
-    public BeIdContainer(String readerId, GclBeidRestClient gclBeidRestClient) {
+    private final ContainerType type = ContainerType.BEID;
+    private static final List<String> certificateFilters = Arrays.asList("address", "rn", "picture", "root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate");
+    private static final Logger log = LoggerFactory.getLogger(BeIdContainer.class);
+    private GclBeidRestClientCommon client;
+
+    public BeIdContainer(String readerId, GclBeidRestClientCommon gclBeidRestClient) {
         this.readerId = readerId;
         this.client = gclBeidRestClient;
     }
 
     /*Dynamic instance creation*/
     @Override
-    protected BeIdContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
-        return null;
+    protected BeIdContainer createInstance(String readerId, CommonContainerRestClient commonClient, String pin) {
+        this.readerId = readerId;
+        this.commonClient = commonClient;
     }
 
     @Override
     protected List<String> getAllDataFilters() {
-        return null;
+        return Arrays.asList("address", "rn", "picture", "root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate");
     }
 
     @Override
     protected List<String> getAllCertificateFilters() {
-        return null;
+        return Arrays.asList("root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate");
     }
 
     @Override
     protected AllData getAllData() throws GenericContainerException {
-        return null;
+        return getAllData(null, null);
     }
 
     @Override
     protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        try {
+            GclBeIdAllData data = RestExecutor.returnData(client.getBeIdAllData(readerId, type.getId(), createFilterParams(filterParams)));
+            return new BeIdAllData(data, parseCertificates);
+        } catch (RestException ex) {
+            throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
+        }
     }
 
     @Override
     protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        return getAllData(null, parseCertificates);
     }
 
     @Override
     protected AllCertificates getAllCertificates() throws GenericContainerException {
-        return null;
+        return getAllCertificates(null, null);
     }
 
     @Override
     protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        try {
+            GclBeIdAllCertificates data = RestExecutor.returnData(client.getBeIdAllCertificates(readerId, type.getId(), createFilterParams(filterParams)));
+            return new BeIdAllCertificates(data, parseCertificates);
+        } catch (RestException ex) {
+            throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
+        }
     }
 
     @Override
     protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        return getAllCertificates(null, parseCertificates);
     }
 
     @Override
     protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        return null;
+        try {
+
+        }
     }
 
     @Override

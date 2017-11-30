@@ -1,7 +1,6 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.model.AllData;
-import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 
 import java.util.List;
 

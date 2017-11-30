@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.containers.CommonContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +19,15 @@ import java.util.List;
  */
 public class DnieContainer extends GenericContainer<DnieContainer> {
     private static final Logger log = LoggerFactory.getLogger(DnieContainer.class);
-    private GclDniRestClient client;
+    private GclDniRestClientCommon client;
 
-    public DnieContainer (String readerId, GclDniRestClient gclDniRestClient) {
+    public DnieContainer (String readerId, GclDniRestClientCommon gclDniRestClient) {
         this.readerId = readerId;
         this.client = gclDniRestClient;
     }
 
     @Override
-    protected DnieContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected DnieContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
         return null;
     }
 

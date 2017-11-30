@@ -2,18 +2,14 @@ package com.t1t.t1c.containers.smartcards.ocra;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclOcraChallengeData;
 import com.t1t.t1c.model.rest.GclVerifyPinRequest;
-import com.t1t.t1c.containers.ContainerRestClient;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.t1t.t1c.containers.CommonContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +23,7 @@ public class OcraContainer extends GenericContainer<OcraContainer>{
     private static final Logger log = LoggerFactory.getLogger(OcraContainer.class);
 
     @Override
-    protected OcraContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected OcraContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
         return null;
     }
 
