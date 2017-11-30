@@ -8,6 +8,9 @@ import com.t1t.t1c.model.rest.GclBeIdAllData;
 import com.t1t.t1c.model.rest.GclBeIdRn;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
+import t1c.containers.smartcards.eid.be.GclBeIdAddress;
+import t1c.containers.smartcards.eid.be.GclBeIdAllData;
+import t1c.containers.smartcards.eid.be.GclBeIdRn;
 
 /**
  * @author Guillaume Vandecasteele

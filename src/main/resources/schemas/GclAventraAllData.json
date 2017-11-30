@@ -1,0 +1,31 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclAventraAllData",
+  "javaType" : "com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
+  "type": "object",
+  "properties": {
+    "applet_info": {
+      "type": "object",
+      "$ref": "GclAventraAppletInfo.json"
+    },
+    "authentication_certificate": {
+      "type": "string"
+    },
+    "encryption_certificate": {
+      "type": "string"
+    },
+    "issuer_certificate": {
+      "type": "string"
+    },
+    "root_certificate": {
+      "type": "string"
+    },
+    "signing_certificate": {
+      "type": "string"
+    }
+  }
+}

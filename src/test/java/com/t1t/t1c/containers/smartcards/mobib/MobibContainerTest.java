@@ -14,6 +14,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import t1c.containers.smartcards.mobib.GclMobibAllData;
+import t1c.containers.smartcards.mobib.GclMobibCardIssuing;
+import t1c.containers.smartcards.mobib.GclMobibContract;
 
 import java.util.List;
 

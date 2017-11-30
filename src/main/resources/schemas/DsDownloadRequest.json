@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
+  "javaType" : "com.t1t.t1c.ds.DsDownloadRequest",
   "id": "DsDownloadRequest",
   "properties": {
     "os": {

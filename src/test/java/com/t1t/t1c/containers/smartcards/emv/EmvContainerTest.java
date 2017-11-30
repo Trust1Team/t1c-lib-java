@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import t1c.containers.smartcards.emv.GclEmvAllData;
+import t1c.containers.smartcards.emv.GclEmvApplication;
 
 import java.util.ArrayList;
 import java.util.List;

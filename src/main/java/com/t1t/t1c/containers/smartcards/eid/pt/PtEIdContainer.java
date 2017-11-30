@@ -2,18 +2,12 @@ package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.model.rest.GclPtIdData;
-import com.t1t.t1c.model.rest.T1cCertificate;
 import com.t1t.t1c.containers.ContainerRestClient;
-import com.t1t.t1c.utils.CertificateUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

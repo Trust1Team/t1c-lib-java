@@ -9,6 +9,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import t1c.containers.smartcards.mobib.GclMobibAllData;
+import t1c.containers.smartcards.mobib.GclMobibCardIssuing;
+import t1c.containers.smartcards.mobib.GclMobibContract;
 
 import java.util.List;
 

@@ -1,14 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclPtIdAllData",
+  "javaType" : "com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
   "type": "object",
   "properties": {
+    "authentication_certificate": {
+      "type": "string"
+    },
     "id": {
       "type": "object",
       "$ref": "GclPtIdData.json"
-    },
-    "authentication_certificate": {
-      "type": "string"
     },
     "non_repudiation_certificate": {
       "type": "string"

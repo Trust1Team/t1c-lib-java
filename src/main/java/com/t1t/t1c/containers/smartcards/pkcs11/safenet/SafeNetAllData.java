@@ -1,9 +1,7 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclSafeNetSlot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 
 import java.util.List;
 

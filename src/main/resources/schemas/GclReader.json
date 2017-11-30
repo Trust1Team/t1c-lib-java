@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
   "$id": "GclReaderResponse",
+  "javaType" : "com.t1t.t1c.core.GclReader",
   "properties": {
     "card": {
       "type": "object",

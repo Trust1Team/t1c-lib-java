@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclPivPrintedInformation",
+  "javaType" : "com.t1t.t1c.containers.smartcards.piv.GclPivPrintedInformation",
+  "type": "object",
+  "properties": {
+    "agency_card_serial_number": {
+      "type": "string"
+    },
+    "employee_affiliation": {
+      "type": "string"
+    },
+    "expiration_date": {
+      "type": "string"
+    },
+    "issuer_identification": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "organization_affiliation_line_1": {
+      "type": "string"
+    },
+    "organization_affiliation_line_2": {
+      "type": "string"
+    }
+  }
+}

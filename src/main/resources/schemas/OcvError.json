@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaType" : "com.t1t.t1c.ocv.OcvError",
+  "$id": "OcvError",
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "errorCode": {
+      "type": "integer"
+    },
+    "message": {
+      "type": "string"
+    },
+    "moreInfoUrl": {
+      "type": "string"
+    },
+    "stackTrace": {
+      "type": "string"
+    }
+  }
+}

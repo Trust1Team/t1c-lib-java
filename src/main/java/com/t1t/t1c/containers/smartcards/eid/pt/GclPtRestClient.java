@@ -9,6 +9,9 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import t1c.containers.smartcards.eid.pt.GclPtIdAllCertificates;
+import t1c.containers.smartcards.eid.pt.GclPtIdAllData;
+import t1c.containers.smartcards.eid.pt.GclPtIdData;
 
 /**
  * @Author Michallis Pashidis

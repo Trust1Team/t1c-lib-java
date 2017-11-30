@@ -5,7 +5,7 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.model.rest.GclLuxIdBiometric;
 import com.t1t.t1c.model.rest.GclLuxIdPicture;
 import com.t1t.t1c.model.rest.GclLuxIdSignatureImage;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.collections4.CollectionUtils;
@@ -15,6 +15,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import t1c.containers.smartcards.eid.lux.GclLuxIdBiometric;
+import t1c.containers.smartcards.eid.lux.GclLuxIdPicture;
+import t1c.containers.smartcards.eid.lux.GclLuxIdSignatureImage;
 
 import java.util.List;
 

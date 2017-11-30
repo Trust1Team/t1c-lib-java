@@ -5,7 +5,9 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.GclContainer;
 import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.rest.RestExecutor;
+import t1c.core.GclContainer;
+import t1c.core.GclReader;
+import t1c.core.GclStatus;
 
 import java.util.List;
 

@@ -1,23 +1,16 @@
 package com.t1t.t1c;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.*;
-import okhttp3.MediaType;
-import okhttp3.ResponseBody;
 import okhttp3.mockwebserver.MockResponse;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.mock.Calls;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

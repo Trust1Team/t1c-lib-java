@@ -10,6 +10,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
+import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
+import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 
 import java.util.List;
 /**

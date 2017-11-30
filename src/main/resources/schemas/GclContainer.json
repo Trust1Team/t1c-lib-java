@@ -1,7 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
-  "$id": "GclContainerResponse",
+  "$id": "GclContainer",
+  "javaType" : "com.t1t.t1c.core.GclContainer",
   "properties": {
     "id": {
       "type": "string"

@@ -1,7 +1,7 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 
 import java.util.List;
 

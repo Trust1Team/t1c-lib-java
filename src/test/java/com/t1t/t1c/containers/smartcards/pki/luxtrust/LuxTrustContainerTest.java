@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.collections4.CollectionUtils;

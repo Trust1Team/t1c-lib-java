@@ -7,6 +7,8 @@ import com.t1t.t1c.model.rest.GclVerifyPinRequest;
 import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.*;
+import t1c.containers.smartcards.ocra.GclOcraAllData;
+import t1c.containers.smartcards.ocra.GclOcraChallengeData;
 
 /**
  * @Author Michallis Pashidis

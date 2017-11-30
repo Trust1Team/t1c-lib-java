@@ -6,6 +6,8 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.rest.DsDevice;
 import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
 import com.t1t.t1c.model.rest.DsInfo;
+import t1c.ds.DsDevice;
+import t1c.ds.DsDeviceRegistrationRequest;
 
 /**
  * @author Guillaume Vandecasteele

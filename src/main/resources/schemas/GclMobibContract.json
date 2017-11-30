@@ -2,6 +2,7 @@
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclMobibContract",
+  "javaType" : "com.t1t.t1c.containers.smartcards.mobib.GclMobibContract",
   "type": "object",
   "properties": {
     "authenticator_kvc": {
@@ -15,10 +16,6 @@
     },
     "passengers_max": {
       "type": "integer"
-    },
-    "period_journeys": {
-      "type": "object",
-      "$ref": "GclMobibPeriodJourneys.json"
     },
     "price_amount": {
       "type": "integer"

@@ -5,6 +5,10 @@ import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.*;
+import t1c.containers.smartcards.emv.GclEmvAidRequest;
+import t1c.containers.smartcards.emv.GclEmvAllData;
+import t1c.containers.smartcards.emv.GclEmvApplication;
+import t1c.containers.smartcards.emv.GclEmvApplicationData;
 
 import java.util.List;
 

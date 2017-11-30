@@ -4,7 +4,7 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.model.rest.GclBeIdAddress;
 import com.t1t.t1c.model.rest.GclBeIdRn;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import t1c.containers.smartcards.eid.be.GclBeIdAddress;
+import t1c.containers.smartcards.eid.be.GclBeIdRn;
 
 import java.util.List;
 

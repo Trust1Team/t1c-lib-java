@@ -252,7 +252,7 @@
                     <!--<sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>-->
                     <!--We didn't provided the sourceDirectory, because alphabetical order makes nomenclature of classes bug out-->
                     <sourcePaths>
-                        <sourcePath>${basedir}/src/main/resources/schemas/T1cCertificate.json</sourcePath>
+                        <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsJava.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsBrowser.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsOs.json</sourcePath>
@@ -260,54 +260,12 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDeviceRegistrationRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadPath.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/DsInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsSystemStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsPublicKey.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsToken.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsTokenRefreshRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/Error.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIDAllCertificates.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainer.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdBiometric.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdPicture.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdSignatureImage.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllCertificates.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllCertificates.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclStatus.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieInfo.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllCertificates.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllCertificates.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplication.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplicationData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvCertificate.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibSpatial.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCardIssuing.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibValidityDuration.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibPeriodJourneys.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCounter.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibTariff.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibContract.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsError.json</sourcePath>
+                        <!-- OCV -->
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json</sourcePath>
@@ -315,9 +273,79 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvOcspResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCrlResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json</sourcePath>
+                        <!-- GCL core -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainer.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclStatus.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <!-- BE ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIDAllCertificates.json</sourcePath>
+                        <!-- DNIE -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllCertificates.json</sourcePath>
+                        <!-- Lux ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdBiometric.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdPicture.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdSignatureImage.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllCertificates.json</sourcePath>
+                        <!-- PT ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllCertificates.json</sourcePath>
+                        <!-- EMV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplication.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplicationData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvPublicKeyCertificate.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
+                        <!-- MOBIB -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibSpatial.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCardIssuing.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibValidityDuration.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCounter.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibTariff.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibContract.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibAllData.json</sourcePath>
+                        <!-- OCRA -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
+                        <!-- PIV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivPrintedInformation.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllData.json</sourcePath>
+                        <!-- SAFENET -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
+                        <!-- Aventra -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAuthenticationAlgorithmReferences.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraSignAlgorithmReferences.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAppletInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllData.json</sourcePath>
+                        <!-- LUXTRUST -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllData.json</sourcePath>
+                        <!-- OBERTHUR -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAuthenticationAlgorithmReferences.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurSignAlgorithmReferences.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllCertificates.json</sourcePath>
+                        <!-- More to come -->
                     </sourcePaths>
                     <excludes></excludes>
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>
@@ -328,6 +356,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <!--Uncomment the goal in order to generate kong model-->
                         <goals>
                             <goal>generate</goal>
                         </goals>
