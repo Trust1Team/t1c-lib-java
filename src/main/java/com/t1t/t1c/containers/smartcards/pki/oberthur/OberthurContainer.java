@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class OberthurContainer extends GenericContainer<OberthurContainer> {
 
     @Override
-    protected OberthurContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected OberthurContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 

@@ -1,7 +1,7 @@
 package com.t1t.t1c.rest;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
@@ -80,8 +80,8 @@ public final class RestServiceBuilder {
      * @param <U>
      * @return
      */
-    public static <U extends CommonContainerRestClient> U getContainerRestClient(LibConfig config, Class<U> clazz) {
-        return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CommonContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null, true);
+    public static <U extends ContainerRestClient> U getContainerRestClient(LibConfig config, Class<U> clazz) {
+        return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null, true);
     }
 
     /**

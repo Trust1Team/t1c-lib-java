@@ -30,8 +30,8 @@ public interface GclRestClient {
     @GET("card-readers")
     Call<T1cResponse<List<GclReader>>> getCardInsertedReaders(@Query("card-inserted") boolean cardInserted);
 
-    @GET("card-readers/{readerId}")
-    Call<T1cResponse<GclReader>> getCardReader(@Path("readerId") String readerId);
+    @GET("card-readers/{reader}")
+    Call<T1cResponse<GclReader>> getCardReader(@Path("reader") String readerId);
 
     @GET("plugins")
     Call<T1cResponse<List<GclContainer>>> getContainers();

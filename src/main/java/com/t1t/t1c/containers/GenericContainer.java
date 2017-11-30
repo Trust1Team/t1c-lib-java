@@ -1,11 +1,11 @@
 package com.t1t.t1c.containers;
 
-import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
@@ -19,14 +19,15 @@ import java.util.List;
  *
  * //TODO
  */
-public abstract class GenericContainer<T extends GenericContainer> implements GclContainer{
+public abstract class GenericContainer<T extends GenericContainer, U> implements IGclContainer {
     /*Properties*/
-    protected String readerId;
+    protected GclReader reader;
+    protected U httpCient;
     protected transient String pin;
     /*Instantiation*/
     public GenericContainer() {}
-    public GenericContainer(String readerId, ContainerRestClient httpClient, String pin) { createInstance(readerId, httpClient, pin); }
-    protected abstract T createInstance(String readerId, ContainerRestClient httpClient, String pin);
+    public GenericContainer(GclReader reader, U httpClient, String pin) { createInstance(reader, httpClient, pin); }
+    protected abstract T createInstance(GclReader reader, U httpClient, String pin);
     /*Data Related*/
     protected abstract List<String> getAllDataFilters();
     protected abstract List<String> getAllCertificateFilters();
@@ -51,23 +52,5 @@ public abstract class GenericContainer<T extends GenericContainer> implements Gc
             }
         }
         return StringUtils.isEmpty(sb.toString()) ? null : sb.toString();
-    }
-
-    protected void pinEnforcementCheck(String... pin) {
-        boolean pinPresent = pin.length > 0 && StringUtils.isNotBlank(pin[0]);
-        boolean hardwarePinPadPresent = FactoryService.getGclClient().getReader(readerId).getPinpad();
-        if (FactoryService.getConfig().isHardwarePinPadForced()) {
-            if (hardwarePinPadPresent) {
-                if (pinPresent) {
-                    throw ExceptionFactory.verifyPinException("Strict PIN-pad enforcement is enabled. This request was sent with a PIN, but the reader has a PIN-pad.");
-                }
-            } else if (!pinPresent) {
-                throw ExceptionFactory.verifyPinException("Strict PIN-pad enforcement is enabled. This request was sent without a PIN, but the reader does not have a PIN-pad.");
-            }
-        } else {
-            if (!hardwarePinPadPresent && !pinPresent) {
-                throw ExceptionFactory.verifyPinException("The request was sent without a PIN, but the reader doest not have a PIN-pad");
-            }
-        }
     }
 }

@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +23,13 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer> {
     private GclLuxIdRestClientCommon client;
 
     public LuxIdContainer(String readerId, GclLuxIdRestClientCommon gclLuxIdRestClient, String pin) {
-        this.readerId = readerId;
+        this.reader = readerId;
         this.client = gclLuxIdRestClient;
         this.pin = pin;
     }
 
     @Override
-    protected LuxIdContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected LuxIdContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 

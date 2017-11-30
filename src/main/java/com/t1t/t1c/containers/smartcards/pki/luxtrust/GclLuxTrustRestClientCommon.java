@@ -3,7 +3,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.model.rest.GclLuxTrustAllCertificates;
 import com.t1t.t1c.model.rest.GclLuxTrustAllData;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -16,19 +16,19 @@ import t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
  * @Since 2017
  * Specific GCL interface for LuxTrust Token Container
  */
-public interface GclLuxTrustRestClientCommon extends CommonContainerRestClient {
+public interface GclLuxTrustRestClientCommon extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
-    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
+    Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin, @Query("filter") String filter);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin, @Query("filter") String filter);
+    Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin, @Query("filter") String filter);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/activate")
-    Call<T1cResponse<Object>> isLuxTrustActivated(@Path("containerId") String containerId, @Path("readerId") String readerId, @Query("pin") String pin);
+    Call<T1cResponse<Object>> isLuxTrustActivated(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin);
 }

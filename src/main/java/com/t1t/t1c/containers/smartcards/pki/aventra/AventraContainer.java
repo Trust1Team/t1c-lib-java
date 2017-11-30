@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
 public class AventraContainer extends GenericContainer<AventraContainer> {
 
     @Override
-    protected AventraContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected AventraContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 

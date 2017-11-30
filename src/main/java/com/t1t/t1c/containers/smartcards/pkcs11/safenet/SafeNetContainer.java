@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
     private static final Logger log = LoggerFactory.getLogger(SafeNetContainer.class);
 
     @Override
-    protected SafeNetContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected SafeNetContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 
@@ -94,8 +94,8 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
         return null;
     }
 
-/*    public SafeNetContainer(String readerId, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
-        super(readerId, ContainerType.SAFENET, httpClient);
+/*    public SafeNetContainer(String reader, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
+        super(reader, ContainerType.SAFENET, httpClient);
         if (configuration != null) {
             safeNetConfig = configuration;
             boolean driverExists = false;

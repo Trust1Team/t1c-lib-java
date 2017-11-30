@@ -216,40 +216,40 @@ public class T1cClient implements IT1cClient {
         return false;
     }
 
-/*    public GenericContainer getGenericContainer(String readerId, String... pin) {
-        return getGenericContainer(readerId, ContainerUtil.determineContainer(gclClient.getReader(readerId).getCard()), pin);
+/*    public GenericContainer getGenericContainer(String reader, String... pin) {
+        return getGenericContainer(reader, ContainerUtil.determineContainer(gclClient.getReader(reader).getCard()), pin);
     }*/
 
 
-/*    private GenericContainer getGenericContainer(String readerId, ContainerType type, String... pin) {
+/*    private GenericContainer getGenericContainer(String reader, ContainerType type, String... pin) {
         switch (type) {
             case BEID:
-                return new BeIdContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclBeidRestClient.class));
+                return new BeIdContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclBeidRestClient.class));
             case LUXID:
-                return new LuxIdContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclLuxIdRestClient.class), getPin(pin));
+                return new LuxIdContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclLuxIdRestClient.class), getPin(pin));
             case LUXTRUST:
-                return new LuxTrustContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class), getPin(pin));
+                return new LuxTrustContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class), getPin(pin));
             case DNIE:
-                return new DnieContainer(readerId, RestServiceBuilder.getContainerRestClient(config, GclDniRestClient.class));
+                return new DnieContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclDniRestClient.class));
             //TODO
 *//*            case EMV:
-                return getEmvContainer(readerId);
+                return getEmvContainer(reader);
             case PT:
-                return getPtIdContainer(readerId);
+                return getPtIdContainer(reader);
             case MOBIB:
-                return getMobibContainer(readerId);
+                return getMobibContainer(reader);
             case OCRA:
-                return getOcraContainer(readerId);
+                return getOcraContainer(reader);
             case AVENTRA:
-                return getAventraContainer(readerId);
+                return getAventraContainer(reader);
             case OBERTHUR:
-                return getOberthurContainer(readerId);
+                return getOberthurContainer(reader);
             case PIV:
-                return getPivContainer(readerId);
+                return getPivContainer(reader);
             case READER_API:
-                return getReaderContainer(readerId);
+                return getReaderContainer(reader);
             case SAFENET:
-                return getSafeNetContainer(readerId);*//*
+                return getSafeNetContainer(reader);*//*
             default:
                 throw ExceptionFactory.unsupportedOperationException("No container for type found");
         }

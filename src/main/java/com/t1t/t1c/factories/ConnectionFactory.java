@@ -1,7 +1,7 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeidRestClientCommon;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeidRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClientCommon;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClientCommon;
 import com.t1t.t1c.containers.smartcards.eid.pt.GclPtRestClientCommon;
@@ -35,7 +35,7 @@ public final class ConnectionFactory {
     private OcvRestClient ocvRestClient;
 
     /*Container connections*/
-    private GclBeidRestClientCommon gclBeidRestClient;
+    private GclBeidRestClient gclBeidRestClient;
     private GclLuxIdRestClientCommon gclLuxIdRestClient;
     private GclLuxTrustRestClientCommon gclLuxTrustRestClient;
     private GclDniRestClientCommon gclDniRestClient;
@@ -60,7 +60,7 @@ public final class ConnectionFactory {
         this.gclAdminRestClient = RestServiceBuilder.getGclAdminRestClient(config);
         this.ocvRestClient = RestServiceBuilder.getOcvRestClient(config);
         //container specific connections
-        this.gclBeidRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeidRestClientCommon.class);
+        this.gclBeidRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeidRestClient.class);
         this.gclLuxIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxIdRestClientCommon.class);
         this.gclLuxTrustRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxTrustRestClientCommon.class);
         this.gclDniRestClient = RestServiceBuilder.getContainerRestClient(config,GclDniRestClientCommon.class);
@@ -85,7 +85,7 @@ public final class ConnectionFactory {
     public OcvRestClient getOcvRestClient() {
         return ocvRestClient;
     }
-    public GclBeidRestClientCommon getGclBeidRestClient() {
+    public GclBeidRestClient getGclBeidRestClient() {
         return gclBeidRestClient;
     }
     public GclLuxIdRestClientCommon getGclLuxIdRestClient() {

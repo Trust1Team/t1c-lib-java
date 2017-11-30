@@ -10,7 +10,7 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainerException;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainerException;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerException;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainerException;
-import com.t1t.t1c.model.rest.GclError;
+import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 

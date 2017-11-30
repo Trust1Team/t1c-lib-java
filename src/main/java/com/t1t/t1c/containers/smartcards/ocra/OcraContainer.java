@@ -9,7 +9,7 @@ import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 import com.t1t.t1c.model.rest.GclOcraChallengeData;
 import com.t1t.t1c.model.rest.GclVerifyPinRequest;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class OcraContainer extends GenericContainer<OcraContainer>{
     private static final Logger log = LoggerFactory.getLogger(OcraContainer.class);
 
     @Override
-    protected OcraContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected OcraContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 

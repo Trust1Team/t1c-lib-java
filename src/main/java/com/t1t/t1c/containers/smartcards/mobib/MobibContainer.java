@@ -7,7 +7,7 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.CommonContainerRestClient;
+import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class MobibContainer extends GenericContainer<MobibContainer> {
     private static final Logger log = LoggerFactory.getLogger(MobibContainer.class);
 
     @Override
-    protected MobibContainer createInstance(String readerId, CommonContainerRestClient httpClient, String pin) {
+    protected MobibContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
         return null;
     }
 
