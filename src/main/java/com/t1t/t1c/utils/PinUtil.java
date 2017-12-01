@@ -20,11 +20,9 @@ public final class PinUtil {
 
     private PinUtil() {}
 
-    public static void pinEnforcementCheck(GclReader reader, String... pin) {
+    public static void pinEnforcementCheck(GclReader reader, boolean forcePinPad, String... pin) {
         boolean pinPresent = pin.length > 0 && StringUtils.isNotBlank(pin[0]);
         boolean hardwarePinPadPresent = reader.getPinpad();
-        //TODO access config to determine whether or not pinpad use is forced
-        boolean forcePinPad = false;
         if (forcePinPad) {
             if (hardwarePinPadPresent) {
                 if (pinPresent) {

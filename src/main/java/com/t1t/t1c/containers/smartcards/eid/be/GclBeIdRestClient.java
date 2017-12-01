@@ -11,7 +11,7 @@ import retrofit2.http.*;
  * @Since 2017
  * Specific GCL interface for Belgian eID Container
  */
-public interface GclBeidRestClient {
+public interface GclBeIdRestClient {
 
     String CERTIFICATES_PATH = "/certificates";
     String CONTAINER_AND_READER_CONTEXT_PATH = "{containerId}/{reader}";

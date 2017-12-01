@@ -2,6 +2,7 @@ package com.t1t.t1c.utils;
 
 import com.t1t.t1c.model.T1cCertificate;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,23 +38,36 @@ public final class CertificateUtil {
     }
 
     public static T1cCertificate createT1cCertificate(String certificate, Boolean... parse) {
-        boolean doParse = parse == null || parse.length <= 0 || parse[0];
-        T1cCertificate cert = new T1cCertificate().withBase64(certificate);
-        if (doParse) {
-            cert.setParsed(parseCertificate(certificate));
+        if (StringUtils.isNotEmpty(certificate)) {
+            boolean doParse = doParse(parse);
+            T1cCertificate cert = new T1cCertificate().withBase64(certificate);
+            if (doParse) {
+                cert.setParsed(parseCertificate(certificate));
+            }
+            return cert;
         }
-        return cert;
+        return null;
     }
 
     public static List<T1cCertificate> createT1cCertificates(List<String> certificates, Boolean... parse) {
-        boolean doParse = parse == null || parse.length <= 0 || parse[0];
+        boolean doParse = doParse(parse);
         List<T1cCertificate> returnValue = new ArrayList<>();
         for (String unparsed : certificates) {
-            T1cCertificate cert = new T1cCertificate().withBase64(unparsed);
-            if (doParse) {
-                cert.setParsed(parseCertificate(unparsed));
+            if (StringUtils.isNotEmpty(unparsed)) {
+                T1cCertificate cert = new T1cCertificate().withBase64(unparsed);
+                if (doParse) {
+                    cert.setParsed(parseCertificate(unparsed));
+                }
+                returnValue.add(cert);
             }
-            returnValue.add(cert);
+        }
+        return returnValue;
+    }
+
+    private static boolean doParse(Boolean... parse) {
+        boolean returnValue = false;
+        if (parse != null && parse.length > 0 && parse[0] != null) {
+            returnValue = parse[0];
         }
         return returnValue;
     }

@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
-import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -12,7 +11,10 @@ import java.util.List;
  * @Since 2017
  * Specific GCL interface for EMV Container
  */
-public interface GclEmvRestClient extends ContainerRestClient {
+public interface GclEmvRestClient {
+
+    String CONTAINER_AND_READER_CONTEXT_PATH = "{containerId}/{reader}";
+
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/applications")
     Call<T1cResponse<List<GclEmvApplication>>> getEmvApplications(@Path("containerId") String containerId, @Path("reader") String readerId);
 

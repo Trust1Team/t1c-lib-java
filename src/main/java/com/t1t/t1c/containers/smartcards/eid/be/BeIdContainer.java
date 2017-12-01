@@ -26,19 +26,20 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeidRestClient> {
+public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestClient> {
 
     private final ContainerType type = ContainerType.BEID;
-    private GclBeidRestClient client;
+    private GclBeIdRestClient client;
 
-    public BeIdContainer(LibConfig config, GclReader reader, GclBeidRestClient gclBeidRestClient) {
+    public BeIdContainer(LibConfig config, GclReader reader, GclBeIdRestClient gclBeIdRestClient) {
+        this.config = config;
         this.reader = reader;
-        this.client = gclBeidRestClient;
+        this.client = gclBeIdRestClient;
     }
 
     /*Dynamic instance creation*/
     @Override
-    protected BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeidRestClient httpClient, String pin) {
+    protected BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeIdRestClient httpClient, String pin) {
         this.config = config;
         this.reader = reader;
         this.client = httpClient;
@@ -98,7 +99,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeidRestCl
 
     @Override
     protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, pin);
+        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");

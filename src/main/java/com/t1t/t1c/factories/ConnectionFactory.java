@@ -1,15 +1,15 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeidRestClient;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtRestClient;
+import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdRestClient;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvRestClient;
 import com.t1t.t1c.containers.smartcards.mobib.GclMobibRestClient;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraRestClient;
 import com.t1t.t1c.containers.smartcards.piv.GclPivRestClient;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafenetRestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
@@ -35,16 +35,16 @@ public final class ConnectionFactory {
     private OcvRestClient ocvRestClient;
 
     /*Container connections*/
-    private GclBeidRestClient gclBeidRestClient;
+    private GclBeIdRestClient gclBeIdRestClient;
     private GclLuxIdRestClient gclLuxIdRestClient;
     private GclLuxTrustRestClient gclLuxTrustRestClient;
     private GclDniRestClient gclDniRestClient;
-    private GclPtRestClient gclPtRestClient;
+    private GclPtIdRestClient gclPtRestClient;
     private GclEmvRestClient gclEmvRestClient;
     private GclMobibRestClient gclMobibRestClient;
     private GclOcraRestClient gclOcraRestClient;
     private GclPivRestClient gclPivRestClient;
-    private GclSafenetRestClient gclSafenetRestClient;
+    private GclSafeNetRestClient gclSafenetRestClient;
     private GclAventraRestClient gclAventraRestClient;
     private GclOberthurRestClient gclOberthurRestClient;
 
@@ -60,16 +60,16 @@ public final class ConnectionFactory {
         this.gclAdminRestClient = RestServiceBuilder.getGclAdminRestClient(config);
         this.ocvRestClient = RestServiceBuilder.getOcvRestClient(config);
         //container specific connections
-        this.gclBeidRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeidRestClient.class);
+        this.gclBeIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeIdRestClient.class);
         this.gclLuxIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxIdRestClient.class);
         this.gclLuxTrustRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxTrustRestClient.class);
         this.gclDniRestClient = RestServiceBuilder.getContainerRestClient(config,GclDniRestClient.class);
-        this.gclPtRestClient = RestServiceBuilder.getContainerRestClient(config,GclPtRestClient.class);
+        this.gclPtRestClient = RestServiceBuilder.getContainerRestClient(config,GclPtIdRestClient.class);
         this.gclEmvRestClient = RestServiceBuilder.getContainerRestClient(config,GclEmvRestClient.class);
         this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config,GclMobibRestClient.class);
         this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config,GclOcraRestClient.class);
         this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config,GclPivRestClient.class);
-        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config,GclSafenetRestClient.class);
+        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config,GclSafeNetRestClient.class);
         this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config,GclAventraRestClient.class);
         this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config,GclOberthurRestClient.class);
     }
@@ -85,8 +85,8 @@ public final class ConnectionFactory {
     public OcvRestClient getOcvRestClient() {
         return ocvRestClient;
     }
-    public GclBeidRestClient getGclBeidRestClient() {
-        return gclBeidRestClient;
+    public GclBeIdRestClient getGclBeIdRestClient() {
+        return gclBeIdRestClient;
     }
     public GclLuxIdRestClient getGclLuxIdRestClient() {
         return gclLuxIdRestClient;
@@ -97,7 +97,7 @@ public final class ConnectionFactory {
     public GclDniRestClient getGclDniRestClient() {
         return gclDniRestClient;
     }
-    public GclPtRestClient getGclPtRestClient() {
+    public GclPtIdRestClient getGclPtRestClient() {
         return gclPtRestClient;
     }
     public GclEmvRestClient getGclEmvRestClient() {
@@ -112,7 +112,7 @@ public final class ConnectionFactory {
     public GclPivRestClient getGclPivRestClient() {
         return gclPivRestClient;
     }
-    public GclSafenetRestClient getGclSafenetRestClient() {
+    public GclSafeNetRestClient getGclSafenetRestClient() {
         return gclSafenetRestClient;
     }
     public GclAventraRestClient getGclAventraRestClient() {

@@ -7,6 +7,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Iterator;
@@ -45,14 +46,21 @@ public abstract class GenericContainer<T extends GenericContainer, U> implements
     protected abstract String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
 
     protected String createFilterParams(List<String> params) {
-        StringBuilder sb = new StringBuilder("");
-        Iterator it = params.iterator();
-        while (it.hasNext()) {
-            sb.append(it.next());
-            if (it.hasNext()) {
-                sb.append(",");
+        String returnValue = null;
+        if (CollectionUtils.isNotEmpty(params)) {
+            StringBuilder sb = new StringBuilder("");
+            Iterator it = params.iterator();
+            while (it.hasNext()) {
+                sb.append(it.next());
+                if (it.hasNext()) {
+                    sb.append(",");
+                }
+            }
+            String filter = sb.toString();
+            if (StringUtils.isNotEmpty(filter)) {
+                returnValue = filter;
             }
         }
-        return StringUtils.isEmpty(sb.toString()) ? null : sb.toString();
+        return returnValue;
     }
 }

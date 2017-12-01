@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.ocra;
 
-import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
@@ -11,7 +10,10 @@ import retrofit2.http.*;
  * @Since 2017
  * Specific GCL interface for Ocra (OAuth Challenge Response Algorithm) Container
  */
-public interface GclOcraRestClient extends ContainerRestClient {
+public interface GclOcraRestClient {
+
+    String CONTAINER_AND_READER_CONTEXT_PATH = "{containerId}/{reader}";
+
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclOcraAllData>> getOcraAllData(@Path("containerId") String containerId, @Path("reader") String readerId);
 

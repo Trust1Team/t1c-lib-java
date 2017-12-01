@@ -18,7 +18,7 @@ import java.util.List;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafenetRestClient>{
+public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient>{
 
 /*    private SafeNetContainerConfiguration safeNetConfig;
     private String module;*/
@@ -26,7 +26,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     private static final Logger log = LoggerFactory.getLogger(SafeNetContainer.class);
 
     @Override
-    protected SafeNetContainer createInstance(LibConfig config, GclReader reader, GclSafenetRestClient httpClient, String pin) {
+    protected SafeNetContainer createInstance(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, String pin) {
         return null;
     }
 

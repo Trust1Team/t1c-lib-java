@@ -24,6 +24,7 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
 import com.t1t.t1c.core.GclCard;
 import com.t1t.t1c.core.GclContainer;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
 import com.t1t.t1c.ds.DsDevice;
 import com.t1t.t1c.ds.DsDownloadPath;
 import com.t1t.t1c.ds.DsToken;
@@ -64,6 +65,34 @@ public final class MockResponseFactory {
     }
 
     //
+    // GCL Core
+    //
+
+    public static T1cResponse<String> getGclAdminCertificateResponse() {
+        return getSuccessResponse(getGclAdminCertificate());
+    }
+
+    public static T1cResponse<GclStatus> getGclV1StatusResponse() {
+        return getSuccessResponse(getGclV1Status());
+    }
+
+    public static GclStatus getGclV1Status() {
+        return new GclStatus()
+                .withActivated(true)
+                .withArch("x86_64")
+                .withCitrix(false)
+                .withLogLevel("info")
+                .withManaged(false)
+                .withOs("10.13.1")
+                .withUid("B7289D3AEB22D233")
+                .withVersion("1.6.0");
+    }
+
+    public static String getGclAdminCertificate() {
+        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB";
+    }
+
+    //
     // BE ID responses
     //
 
@@ -94,6 +123,42 @@ public final class MockResponseFactory {
             if (!filterParams.contains("rrn-certificate")) data.setRrnCertificate(null);
         }
         return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclBeIdRn> getBeIdRnResponse() {
+        return getSuccessResponse(getGclBeIdRnData());
+    }
+
+    public static T1cResponse<GclBeIdAddress> getBeIdAddressResponse() {
+        return getSuccessResponse(getGclBeIdAddress());
+    }
+
+    public static T1cResponse<String> getBeIdPictureResponse() {
+        return getSuccessResponse(getBeIdPicture());
+    }
+
+    public static T1cResponse<String> getBeIdRootCertificateResponse() {
+        return getSuccessResponse(getBeIdRootCertificate());
+    }
+
+    public static T1cResponse<String> getBeIdCitizenCertificateResponse() {
+        return getSuccessResponse(getBeIdCitizenCertificate());
+    }
+
+    public static T1cResponse<String> getBeIdNonRepudiationCertificateResponse() {
+        return getSuccessResponse(getBeIdNonRepudiationCertificate());
+    }
+
+    public static T1cResponse<String> getBeIdAuthenticationCertificateResponse() {
+        return getSuccessResponse(getBeIdAuthenticationCertificate());
+    }
+
+    public static T1cResponse<String> getBeIdRrnCertificateResponse() {
+        return getSuccessResponse(getBeIdRrnCertificate());
+    }
+
+    public static T1cResponse<Object> getBeIdVerifyPinSuccess() {
+        return getSuccessResponse(null);
     }
 
     private static GclBeIdAllData getGclBeIdAllData() {

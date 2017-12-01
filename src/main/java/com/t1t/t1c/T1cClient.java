@@ -278,7 +278,7 @@ public class T1cClient implements IT1cClient {
     @Override
     public IOcvClient getOcvClient() { return ocvClient; }
     @Override
-    public BeIdContainer getBeIdContainer(GclReader reader) { return new BeIdContainer(connFactory.getConfig(), reader,connFactory.getGclBeidRestClient()); }
+    public BeIdContainer getBeIdContainer(GclReader reader) { return new BeIdContainer(connFactory.getConfig(), reader,connFactory.getGclBeIdRestClient()); }
     @Override
     public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) { return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin)); }
     @Override

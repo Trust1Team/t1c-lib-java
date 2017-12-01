@@ -18,11 +18,11 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtRestClient> {
+public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient> {
     private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
     @Override
-    protected PtEIdContainer createInstance(LibConfig config, GclReader reader, GclPtRestClient httpClient, String pin) {
+    protected PtEIdContainer createInstance(LibConfig config, GclReader reader, GclPtIdRestClient httpClient, String pin) {
         return null;
     }
 
