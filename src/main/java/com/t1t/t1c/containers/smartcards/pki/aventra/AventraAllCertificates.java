@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllCertificates;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
@@ -8,20 +7,20 @@ import com.t1t.t1c.utils.CertificateUtil;
 public class AventraAllCertificates implements AllCertificates {
 
     private T1cCertificate authenticationCertificate;
-    private T1cCertificate nonRepudiationCertificate;
-    private T1cCertificate rootAuthenticationCertificate;
+    private T1cCertificate encryptionCertificate;
+    private T1cCertificate issuerCertificate;
     private T1cCertificate rootCertificate;
-    private T1cCertificate rootNonRepudiationCertificate;
+    private T1cCertificate signingCertificate;
 
-    public AventraAllCertificates(GclAventraAllCertificates certificates, boolean... parseCertificates) {
+    public AventraAllCertificates(GclAventraAllCertificates certificates, Boolean... parseCertificates) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
-        this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
+        this.encryptionCertificate = CertificateUtil.createT1cCertificate(certificates.getEncryptionCertificate(), parseCertificates);
         ;
-        this.rootAuthenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);
+        this.issuerCertificate = CertificateUtil.createT1cCertificate(certificates.getIssuerCertificate(), parseCertificates);
         ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(certificates.getRootCertificate(), parseCertificates);
         ;
-        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);
+        this.signingCertificate = CertificateUtil.createT1cCertificate(certificates.getSigningCertificate(), parseCertificates);
         ;
     }
 
@@ -45,40 +44,40 @@ public class AventraAllCertificates implements AllCertificates {
     }
 
     /**
-     * @return The nonRepudiationCertificate
+     * @return The encryptionCertificate
      */
-    public T1cCertificate getNonRepudiationCertificate() {
-        return nonRepudiationCertificate;
+    public T1cCertificate getEncryptionCertificate() {
+        return encryptionCertificate;
     }
 
     /**
-     * @param nonRepudiationCertificate The non_repudiation_certificate
+     * @param encryptionCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
-        this.nonRepudiationCertificate = nonRepudiationCertificate;
+    public void setEncryptionCertificate(T1cCertificate encryptionCertificate) {
+        this.encryptionCertificate = encryptionCertificate;
     }
 
     public AventraAllCertificates withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
-        this.nonRepudiationCertificate = nonRepudiationCertificate;
+        this.encryptionCertificate = nonRepudiationCertificate;
         return this;
     }
 
     /**
-     * @return The rootAuthenticationCertificate
+     * @return The issuerCertificate
      */
-    public T1cCertificate getRootAuthenticationCertificate() {
-        return rootAuthenticationCertificate;
+    public T1cCertificate getIssuerCertificate() {
+        return issuerCertificate;
     }
 
     /**
-     * @param rootAuthenticationCertificate The root_authentication_certificate
+     * @param issuerCertificate The root_authentication_certificate
      */
-    public void setRootAuthenticationCertificate(T1cCertificate rootAuthenticationCertificate) {
-        this.rootAuthenticationCertificate = rootAuthenticationCertificate;
+    public void setIssuerCertificate(T1cCertificate issuerCertificate) {
+        this.issuerCertificate = issuerCertificate;
     }
 
     public AventraAllCertificates withRootAuthenticationCertificate(T1cCertificate rootAuthenticationCertificate) {
-        this.rootAuthenticationCertificate = rootAuthenticationCertificate;
+        this.issuerCertificate = rootAuthenticationCertificate;
         return this;
     }
 
@@ -102,21 +101,21 @@ public class AventraAllCertificates implements AllCertificates {
     }
 
     /**
-     * @return The rootNonRepudiationCertificate
+     * @return The signingCertificate
      */
-    public T1cCertificate getRootNonRepudiationCertificate() {
-        return rootNonRepudiationCertificate;
+    public T1cCertificate getSigningCertificate() {
+        return signingCertificate;
     }
 
     /**
-     * @param rootNonRepudiationCertificate The root_non_repudiation_certificate
+     * @param signingCertificate The root_non_repudiation_certificate
      */
-    public void setRootNonRepudiationCertificate(T1cCertificate rootNonRepudiationCertificate) {
-        this.rootNonRepudiationCertificate = rootNonRepudiationCertificate;
+    public void setSigningCertificate(T1cCertificate signingCertificate) {
+        this.signingCertificate = signingCertificate;
     }
 
     public AventraAllCertificates withRootNonRepudiationCertificate(T1cCertificate rootNonRepudiationCertificate) {
-        this.rootNonRepudiationCertificate = rootNonRepudiationCertificate;
+        this.signingCertificate = rootNonRepudiationCertificate;
         return this;
     }
 
@@ -124,10 +123,10 @@ public class AventraAllCertificates implements AllCertificates {
     public String toString() {
         return "PtIdAllCertificates{" +
                 "authenticationCertificate=" + authenticationCertificate +
-                ", nonRepudiationCertificate=" + nonRepudiationCertificate +
-                ", rootAuthenticationCertificate=" + rootAuthenticationCertificate +
+                ", encryptionCertificate=" + encryptionCertificate +
+                ", issuerCertificate=" + issuerCertificate +
                 ", rootCertificate=" + rootCertificate +
-                ", rootNonRepudiationCertificate=" + rootNonRepudiationCertificate +
+                ", signingCertificate=" + signingCertificate +
                 '}';
     }
 }

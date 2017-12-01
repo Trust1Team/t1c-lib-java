@@ -1,21 +1,11 @@
 package com.t1t.t1c.containers.smartcards.ocra;
 
 import com.t1t.t1c.AbstractTestClass;
-import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.model.rest.GclOcraAllData;
-import com.t1t.t1c.model.rest.GclOcraChallengeData;
-import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import com.t1t.t1c.rest.RestServiceBuilder;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import t1c.containers.smartcards.ocra.GclOcraAllData;
-import t1c.containers.smartcards.ocra.GclOcraChallengeData;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -25,7 +15,7 @@ import static org.junit.Assert.*;
 @PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class OcraContainerTest extends AbstractTestClass {
 
-    private IOcraContainer container;
+    /*private IOcraContainer container;
 
     @Before
     public void initContainer() {
@@ -58,6 +48,6 @@ public class OcraContainerTest extends AbstractTestClass {
         GclOcraChallengeData dataWithoutPin = new GclOcraChallengeData().withChallenge("This is a challenge");
         assertTrue(StringUtils.isNotEmpty(container.challenge(dataWithPin)));
         assertTrue(StringUtils.isNotEmpty(container.challenge(dataWithoutPin)));
-    }
+    }*/
 
 }

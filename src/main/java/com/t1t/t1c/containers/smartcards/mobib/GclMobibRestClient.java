@@ -1,17 +1,11 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclMobibAllData;
-import com.t1t.t1c.model.rest.GclMobibCardIssuing;
-import com.t1t.t1c.model.rest.GclMobibContract;
 import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import t1c.containers.smartcards.mobib.GclMobibAllData;
-import t1c.containers.smartcards.mobib.GclMobibCardIssuing;
-import t1c.containers.smartcards.mobib.GclMobibContract;
 
 import java.util.List;
 
@@ -20,7 +14,7 @@ import java.util.List;
  * @Since 2017
  * Specific GCL interface for Mobib (Belgian Mobility Card) Container
  */
-public interface GclMobibRestClientCommon extends ContainerRestClient {
+public interface GclMobibRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/status")
     Call<T1cResponse<Boolean>> getMobibStatus(@Path("containerId") String containerId, @Path("reader") String readerId);
 

@@ -1,13 +1,14 @@
 package com.t1t.t1c.containers.smartcards.piv;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.containers.ContainerRestClient;
 
 import java.util.List;
 
@@ -15,10 +16,10 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PivContainer extends GenericContainer<PivContainer> {
+public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient> {
 
     @Override
-    protected PivContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected PivContainer createInstance(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
         return null;
     }
 

@@ -11,7 +11,7 @@ public class DnieAllData implements AllData {
     private T1cCertificate signingCertificate;
     private GclDnieInfo info;
 
-    public DnieAllData(GclDnieAllData data, boolean... parseCertificate) {
+    public DnieAllData(GclDnieAllData data, Boolean... parseCertificate) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.intermediateCertificate = CertificateUtil.createT1cCertificate(data.getIntermediateCertificate(), parseCertificate);
         this.signingCertificate = CertificateUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);

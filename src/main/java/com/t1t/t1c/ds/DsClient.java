@@ -6,13 +6,11 @@ import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
-import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.UriUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import t1c.ds.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -29,7 +27,7 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public DsInfo getInfo() throws DsClientException {
+    public DsSystemStatus getInfo() throws DsClientException {
         try {
             return RestExecutor.executeCall(dsRestClient.getInfo());
         } catch (RestException ex) { throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex); }

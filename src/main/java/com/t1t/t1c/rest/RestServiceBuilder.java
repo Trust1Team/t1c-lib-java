@@ -8,12 +8,16 @@ import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.utils.UriUtils;
-import okhttp3.*;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -80,7 +84,7 @@ public final class RestServiceBuilder {
      * @param <U>
      * @return
      */
-    public static <U extends ContainerRestClient> U getContainerRestClient(LibConfig config, Class<U> clazz) {
+    public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
         return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null, true);
     }
 

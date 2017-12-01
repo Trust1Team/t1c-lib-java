@@ -16,11 +16,10 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfigur
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
-import com.t1t.t1c.core.Core;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.factories.ConnectionFactory;
-import com.t1t.t1c.model.rest.GclReader;
 import com.t1t.t1c.ocv.IOcvClient;
 
 import java.util.List;
@@ -39,23 +38,23 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    GenericContainer getGenericContainer(String readerId);
-    BeIdContainer getBeIdContainer(String readerId);
-    LuxIdContainer getLuxIdContainer(String readerId, String pin);
-    LuxTrustContainer getLuxTrustContainer(String readerId, String pin);
-    DnieContainer getDnieContainer(String readerId);
-    EmvContainer getEmvContainer(String readerId);
-    MobibContainer getMobibContainer(String readerId);
-    OcraContainer getOcraContainer(String readerId);
-    AventraContainer getAventraContainer(String readerId);
-    OberthurContainer getOberthurContainer(String readerId);
-    PivContainer getPivContainer(String readerId);
-    PtEIdContainer getPtIdContainer(String readerId);
-    SafeNetContainer getSafeNetContainer(String readerId);
-    SafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration);
+    GenericContainer getGenericContainer(GclReader reader);
+    BeIdContainer getBeIdContainer(GclReader reader);
+    LuxIdContainer getLuxIdContainer(GclReader reader, String pin);
+    LuxTrustContainer getLuxTrustContainer(GclReader reader, String pin);
+    DnieContainer getDnieContainer(GclReader reader);
+    EmvContainer getEmvContainer(GclReader reader);
+    MobibContainer getMobibContainer(GclReader reader);
+    OcraContainer getOcraContainer(GclReader reader);
+    AventraContainer getAventraContainer(GclReader reader);
+    OberthurContainer getOberthurContainer(GclReader reader);
+    PivContainer getPivContainer(GclReader reader);
+    PtEIdContainer getPtIdContainer(GclReader reader);
+    SafeNetContainer getSafeNetContainer(GclReader reader);
+    SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration);
 
     /*Functional containers*/
-    RemoteLoadingContainer getRemoteLoadingContainer(String readerId);
+    RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader);
     ReaderApiContainer getReaderApiContainer();
 
     /*DS Functionality*/

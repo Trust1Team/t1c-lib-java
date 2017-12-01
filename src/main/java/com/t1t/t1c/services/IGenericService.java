@@ -2,9 +2,9 @@ package com.t1t.t1c.services;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
 
 import java.util.List;
 

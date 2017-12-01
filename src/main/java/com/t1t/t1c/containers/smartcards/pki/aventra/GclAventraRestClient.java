@@ -6,5 +6,5 @@ import com.t1t.t1c.containers.ContainerRestClient;
  * @Since 2017
  * Specific GCL interface for Aventra MyeID Container
  */
-public interface GclAventraRestClientCommon extends ContainerRestClient {
+public interface GclAventraRestClient extends ContainerRestClient {
 }

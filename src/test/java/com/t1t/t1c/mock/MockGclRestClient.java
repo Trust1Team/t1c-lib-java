@@ -1,28 +1,12 @@
 package com.t1t.t1c.mock;
 
-import com.t1t.t1c.MockResponseFactory;
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclConsent;
-import com.t1t.t1c.model.rest.GclContainer;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.model.rest.GclStatus;
-import com.t1t.t1c.core.GclRestClient;
-import retrofit2.Call;
-import retrofit2.mock.BehaviorDelegate;
-import retrofit2.mock.Calls;
-
-import java.io.IOException;
-import java.util.List;
-
-import static com.t1t.t1c.MockResponseFactory.*;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class MockGclRestClient implements GclRestClient {
+public class MockGclRestClient {//implements GclRestClient {
 
-    private final BehaviorDelegate<GclRestClient> delegate;
+    /*private final BehaviorDelegate<GclRestClient> delegate;
 
     public MockGclRestClient(BehaviorDelegate<GclRestClient> delegate) {
         this.delegate = delegate;
@@ -64,5 +48,5 @@ public class MockGclRestClient implements GclRestClient {
         } catch (IOException ex) {
             return null;
         }
-    }
+    }*/
 }

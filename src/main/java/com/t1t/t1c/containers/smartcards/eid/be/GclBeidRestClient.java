@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
-import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.model.T1cResponse;

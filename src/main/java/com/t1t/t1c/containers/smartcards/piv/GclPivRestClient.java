@@ -6,6 +6,6 @@ import com.t1t.t1c.containers.ContainerRestClient;
  * @Since 2017
  * Specific GCL interface for PIV (Personal Identity Verification) Container
  */
-public interface GclPivRestClientCommon extends ContainerRestClient {
+public interface GclPivRestClient extends ContainerRestClient {
 
 }

@@ -1,12 +1,10 @@
 package com.t1t.t1c.ocv;
 
-import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import t1c.ocv.*;
 
 /**
  * @author Guillaume Vandecasteele

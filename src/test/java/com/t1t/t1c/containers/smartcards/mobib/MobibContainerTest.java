@@ -1,26 +1,11 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.t1t.t1c.AbstractTestClass;
-import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.model.rest.GclMobibAllData;
-import com.t1t.t1c.model.rest.GclMobibCardIssuing;
-import com.t1t.t1c.model.rest.GclMobibContract;
-import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import com.t1t.t1c.rest.RestServiceBuilder;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import t1c.containers.smartcards.mobib.GclMobibAllData;
-import t1c.containers.smartcards.mobib.GclMobibCardIssuing;
-import t1c.containers.smartcards.mobib.GclMobibContract;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -30,7 +15,7 @@ import static org.junit.Assert.*;
 @PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
 public class MobibContainerTest extends AbstractTestClass {
 
-    private IMobibContainer container;
+    /*private IMobibContainer container;
 
     @Before
     public void initContainer() {
@@ -80,6 +65,6 @@ public class MobibContainerTest extends AbstractTestClass {
 
     @Test
     public void getPicture() throws Exception {
-    }
+    }*/
 
 }

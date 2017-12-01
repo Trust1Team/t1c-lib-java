@@ -1,14 +1,9 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
-import t1c.containers.smartcards.emv.GclEmvAidRequest;
-import t1c.containers.smartcards.emv.GclEmvAllData;
-import t1c.containers.smartcards.emv.GclEmvApplication;
-import t1c.containers.smartcards.emv.GclEmvApplicationData;
 
 import java.util.List;
 
@@ -17,7 +12,7 @@ import java.util.List;
  * @Since 2017
  * Specific GCL interface for EMV Container
  */
-public interface GclEmvRestClientCommon extends ContainerRestClient {
+public interface GclEmvRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/applications")
     Call<T1cResponse<List<GclEmvApplication>>> getEmvApplications(@Path("containerId") String containerId, @Path("reader") String readerId);
 
@@ -25,10 +20,10 @@ public interface GclEmvRestClientCommon extends ContainerRestClient {
     Call<T1cResponse<GclEmvApplicationData>> getEmvApplicationData(@Path("containerId") String containerId, @Path("reader") String readerId);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/issuer-public-key-certificate")
-    Call<T1cResponse<GclEmvCertificate>> getEmvIssuerPublicKeyCertificate(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclEmvAidRequest request);
+    Call<T1cResponse<GclEmvPublicKeyCertificate>> getEmvIssuerPublicKeyCertificate(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclEmvAidRequest request);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/icc-public-key-certificate")
-    Call<T1cResponse<GclEmvCertificate>> getEmvIccPublicKeyCertificate(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclEmvAidRequest request);
+    Call<T1cResponse<GclEmvPublicKeyCertificate>> getEmvIccPublicKeyCertificate(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclEmvAidRequest request);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclEmvAllData>> getEmvAllData(@Path("containerId") String containerId, @Path("reader") String readerId);

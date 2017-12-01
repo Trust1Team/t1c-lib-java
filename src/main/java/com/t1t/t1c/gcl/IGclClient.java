@@ -1,10 +1,10 @@
 package com.t1t.t1c.gcl;
 
+import com.t1t.t1c.core.GclContainer;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
 import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.GclClientException;
-import com.t1t.t1c.model.rest.GclContainer;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.model.rest.GclStatus;
 
 import java.util.List;
 

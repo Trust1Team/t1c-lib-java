@@ -1,8 +1,5 @@
 package com.t1t.t1c.configuration;
 
-import com.t1t.t1c.utils.UriUtils;
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * Created by michallispashidis on 04/11/2017.
  */

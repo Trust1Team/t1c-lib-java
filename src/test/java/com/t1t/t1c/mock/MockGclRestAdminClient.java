@@ -1,12 +1,11 @@
 package com.t1t.t1c.mock;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclUpdatePublicKeyRequest;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
-import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponseDer;
 import static com.t1t.t1c.MockResponseFactory.getSuccessResponse;
 
 /**

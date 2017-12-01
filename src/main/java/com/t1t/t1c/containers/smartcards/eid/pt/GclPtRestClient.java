@@ -1,24 +1,18 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclPtIdAllCertificates;
-import com.t1t.t1c.model.rest.GclPtIdAllData;
-import com.t1t.t1c.model.rest.GclPtIdData;
 import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import t1c.containers.smartcards.eid.pt.GclPtIdAllCertificates;
-import t1c.containers.smartcards.eid.pt.GclPtIdAllData;
-import t1c.containers.smartcards.eid.pt.GclPtIdData;
 
 /**
  * @Author Michallis Pashidis
  * @Since 2017
  * Specific GCL interface for Portuguese ID Container
  */
-public interface GclPtRestClientCommon extends ContainerRestClient {
+public interface GclPtRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/id")
     Call<T1cResponse<GclPtIdData>> getPtIdData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("photo") boolean includePhoto);
 

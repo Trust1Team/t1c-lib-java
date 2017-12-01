@@ -1,14 +1,11 @@
 package com.t1t.t1c.containers.smartcards.eid.esp;
 
 import com.t1t.t1c.AbstractTestClass;
-import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.rest.RestServiceBuilder;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author Guillaume Vandecasteele

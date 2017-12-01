@@ -15,7 +15,7 @@ public class AventraAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public AventraAllData(GclPtIdAllData data, boolean... parseCertificates) {
+    public AventraAllData(GclPtIdAllData data, Boolean... parseCertificates) {
         this.id = data.getId();
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);

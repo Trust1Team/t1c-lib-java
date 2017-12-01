@@ -1,14 +1,10 @@
 package com.t1t.t1c.core;
 
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclContainer;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.model.rest.GclStatus;
 import retrofit2.Call;
-import retrofit2.http.*;
-import t1c.core.GclContainer;
-import t1c.core.GclReader;
-import t1c.core.GclStatus;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.util.List;
 

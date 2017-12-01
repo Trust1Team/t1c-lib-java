@@ -2,14 +2,6 @@ package com.t1t.t1c.ocv;
 
 import com.t1t.t1c.exceptions.OcvClientException;
 import com.t1t.t1c.model.DigestAlgorithm;
-import com.t1t.t1c.model.rest.OcvCertificateChainValidationResponse;
-import com.t1t.t1c.model.rest.OcvChallengeRequest;
-import com.t1t.t1c.model.rest.OcvChallengeVerificationRequest;
-import com.t1t.t1c.model.rest.OcvChallengeVerificationResponse;
-import t1c.ocv.OcvCertificateChainValidationResponse;
-import t1c.ocv.OcvChallengeRequest;
-import t1c.ocv.OcvChallengeVerificationRequest;
-import t1c.ocv.OcvChallengeVerificationResponse;
 
 /**
  * @author Guillaume Vandecasteele

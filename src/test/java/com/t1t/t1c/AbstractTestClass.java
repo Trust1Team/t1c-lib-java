@@ -2,9 +2,8 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.rest.*;
 import com.t1t.t1c.factories.ConnectionFactory;
-import okhttp3.mockwebserver.MockResponse;
+import com.t1t.t1c.rest.RestServiceBuilder;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Before;

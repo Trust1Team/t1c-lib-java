@@ -1,7 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.google.common.base.Preconditions;
-import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
@@ -31,14 +31,15 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeidRestCl
     private final ContainerType type = ContainerType.BEID;
     private GclBeidRestClient client;
 
-    public BeIdContainer(GclReader reader, GclBeidRestClient gclBeidRestClient) {
+    public BeIdContainer(LibConfig config, GclReader reader, GclBeidRestClient gclBeidRestClient) {
         this.reader = reader;
         this.client = gclBeidRestClient;
     }
 
     /*Dynamic instance creation*/
     @Override
-    protected BeIdContainer createInstance(GclReader reader, GclBeidRestClient httpClient, String pin) {
+    protected BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeidRestClient httpClient, String pin) {
+        this.config = config;
         this.reader = reader;
         this.client = httpClient;
         this.pin = pin;

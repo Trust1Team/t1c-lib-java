@@ -3,9 +3,8 @@ package com.t1t.t1c;
 import com.google.gson.Gson;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.model.rest.GclSafeNetRequest;
 
 /**
  * @author Guillaume Vandecasteele
@@ -37,8 +36,8 @@ public class JavaClientExample {
         /*Instantiate client*/
         T1cClient client = new T1cClient(conf);
 
-        GclReader reader = client.getCore().pollCardInserted();
-        System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
+        //GclReader reader = client.getCore().pollCardInserted();
+        //System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
         SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
         System.out.println(new Gson().toJson(new GclSafeNetRequest().withModule(config.getMac().toString())));
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));
@@ -99,7 +98,7 @@ public class JavaClientExample {
         GclBeIdAddress address = container.getAddress();
         String base64Picture = container.getPicture();
         T1cCertificate citizenCertificate = container.getCitizenCertificate(true);
-        T1cCertificate nonRepudiationCertificate = container.getNonRepudiationCertificate(true);
+        T1cCertificate nonRepudiationCertificate = container.getEncryptionCertificate(true);
         T1cCertificate rrnCertificate = container.getRrnCertificate(true);
         BeIdAllData allData = (BeIdAllData) container.getAllData();
         List<String> filters = Arrays.asList("root-certificate", "citizen-certificate", "non-repudiation-certificate");

@@ -2,23 +2,12 @@ package com.t1t.t1c.services;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.GclClientException;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.factories.ConnectionFactory;
-import com.t1t.t1c.gcl.IGclClient;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.PlatformInfo;
-import com.t1t.t1c.model.rest.GclAuthenticateOrSignData;
-import com.t1t.t1c.model.rest.GclCard;
-import com.t1t.t1c.model.rest.GclContainer;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.utils.ContainerUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

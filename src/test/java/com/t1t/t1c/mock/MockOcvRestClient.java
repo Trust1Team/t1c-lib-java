@@ -1,8 +1,6 @@
 package com.t1t.t1c.mock;
 
-import com.t1t.t1c.MockResponseFactory;
-import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.ocv.OcvRestClient;
+import com.t1t.t1c.ocv.*;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -22,7 +20,7 @@ public class MockOcvRestClient implements OcvRestClient {
 
     @Override
     public Call<OcvChallengeRequest> getChallenge(String digestAlgorithm) {
-        return delegate.returning(MockResponseFactory.getOcvChallengeRequestResponse()).getChallenge(digestAlgorithm);
+        return null;
     }
 
     @Override

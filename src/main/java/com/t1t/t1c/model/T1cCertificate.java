@@ -1,13 +1,14 @@
 
 package com.t1t.t1c.model;
 
-import java.security.cert.Certificate;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.security.cert.Certificate;
 
 @Generated("org.jsonschema2pojo")
 public class T1cCertificate {

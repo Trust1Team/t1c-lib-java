@@ -1,13 +1,14 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
+public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafenetRestClient>{
 
 /*    private SafeNetContainerConfiguration safeNetConfig;
     private String module;*/
@@ -25,7 +26,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer>{
     private static final Logger log = LoggerFactory.getLogger(SafeNetContainer.class);
 
     @Override
-    protected SafeNetContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected SafeNetContainer createInstance(LibConfig config, GclReader reader, GclSafenetRestClient httpClient, String pin) {
         return null;
     }
 

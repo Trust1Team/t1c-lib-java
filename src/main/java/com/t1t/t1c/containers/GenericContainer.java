@@ -1,5 +1,6 @@
 package com.t1t.t1c.containers;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -24,10 +25,11 @@ public abstract class GenericContainer<T extends GenericContainer, U> implements
     protected GclReader reader;
     protected U httpCient;
     protected transient String pin;
+    protected LibConfig config;
     /*Instantiation*/
     public GenericContainer() {}
-    public GenericContainer(GclReader reader, U httpClient, String pin) { createInstance(reader, httpClient, pin); }
-    protected abstract T createInstance(GclReader reader, U httpClient, String pin);
+    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) { createInstance(config, reader, httpClient, pin); }
+    protected abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
     /*Data Related*/
     protected abstract List<String> getAllDataFilters();
     protected abstract List<String> getAllCertificateFilters();

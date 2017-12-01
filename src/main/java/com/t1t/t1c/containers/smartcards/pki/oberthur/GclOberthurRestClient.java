@@ -6,5 +6,5 @@ import com.t1t.t1c.containers.ContainerRestClient;
  * @Since 2017
  * Specific GCL interface for Oberthur Cosmo Container
  */
-public interface GclOberthurRestClientCommon extends ContainerRestClient {
+public interface GclOberthurRestClient extends ContainerRestClient {
 }

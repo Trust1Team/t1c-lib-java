@@ -3,11 +3,6 @@ package com.t1t.t1c.ds;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
-import com.t1t.t1c.model.rest.DsDevice;
-import com.t1t.t1c.model.rest.DsDeviceRegistrationRequest;
-import com.t1t.t1c.model.rest.DsInfo;
-import t1c.ds.DsDevice;
-import t1c.ds.DsDeviceRegistrationRequest;
 
 /**
  * @author Guillaume Vandecasteele
@@ -20,7 +15,7 @@ public interface IDsClient {
      * @return
      * @throws DsClientException
      */
-    DsInfo getInfo() throws DsClientException;
+    DsSystemStatus getInfo() throws DsClientException;
 
     /**
      * Returns device information stored centrally.

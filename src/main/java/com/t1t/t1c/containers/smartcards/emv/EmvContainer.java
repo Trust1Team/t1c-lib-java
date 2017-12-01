@@ -1,13 +1,14 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +18,18 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class EmvContainer extends GenericContainer<EmvContainer> {
+public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClient> {
+
     private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
-    private GclEmvRestClientCommon client;
-    public EmvContainer(String readerId, GclEmvRestClientCommon gclEmvRestClient){
-        this.reader = readerId;
-        this.client = gclEmvRestClient;
+
+    public EmvContainer(LibConfig config, GclReader reader, GclEmvRestClient gclEmvRestClient) {
+        this.config = config;
+        this.reader = reader;
+        this.httpCient = gclEmvRestClient;
     }
 
     @Override
-    protected EmvContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, String pin) {
         return null;
     }
 

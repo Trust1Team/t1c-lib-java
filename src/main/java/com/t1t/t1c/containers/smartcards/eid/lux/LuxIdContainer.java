@@ -1,13 +1,14 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.containers.ContainerRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,19 +18,18 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class LuxIdContainer extends GenericContainer<LuxIdContainer> {
+public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRestClient> {
 
     private static final Logger log = LoggerFactory.getLogger(LuxIdContainer.class);
-    private GclLuxIdRestClientCommon client;
 
-    public LuxIdContainer(String readerId, GclLuxIdRestClientCommon gclLuxIdRestClient, String pin) {
-        this.reader = readerId;
-        this.client = gclLuxIdRestClient;
+    public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, String pin) {
+        this.reader = reader;
+        this.httpCient = gclLuxIdRestClient;
         this.pin = pin;
     }
 
     @Override
-    protected LuxIdContainer createInstance(String readerId, ContainerRestClient httpClient, String pin) {
+    protected LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pin) {
         return null;
     }
 

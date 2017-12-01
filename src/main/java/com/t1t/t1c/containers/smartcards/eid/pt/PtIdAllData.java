@@ -13,7 +13,7 @@ public class PtIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public PtIdAllData(GclPtIdAllData data, boolean... parseCertificates) {
+    public PtIdAllData(GclPtIdAllData data, Boolean... parseCertificates) {
         this.id = data.getId();
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);

@@ -1,9 +1,7 @@
 package com.t1t.t1c.ds;
 
-import com.t1t.t1c.model.rest.*;
 import retrofit2.Call;
 import retrofit2.http.*;
-import t1c.ds.*;
 
 /**
  * @Author Michallis Pashidis
@@ -11,7 +9,7 @@ import t1c.ds.*;
  */
 public interface DsRestClient {
     @GET("system/status")
-    Call<DsInfo> getInfo();
+    Call<DsSystemStatus> getInfo();
 
     @GET("devices/{deviceId}")
     Call<DsDevice> getDevice(@Path("deviceId") String deviceId);

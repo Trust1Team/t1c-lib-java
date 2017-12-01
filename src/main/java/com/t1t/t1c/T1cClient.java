@@ -19,21 +19,17 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.Core;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
 import com.t1t.t1c.core.ICore;
-import com.t1t.t1c.ds.DsClient;
-import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.gcl.IGclAdminClient;
-import com.t1t.t1c.gcl.IGclClient;
-import com.t1t.t1c.model.PlatformInfo;
-import com.t1t.t1c.model.rest.*;
-import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.ocv.OcvClient;
-import com.t1t.t1c.services.GenericService;
-import com.t1t.t1c.services.IGenericService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -282,58 +278,58 @@ public class T1cClient implements IT1cClient {
     @Override
     public IOcvClient getOcvClient() { return ocvClient; }
     @Override
-    public BeIdContainer getBeIdContainer(String readerId) { return new BeIdContainer(readerId,connFactory.getGclBeidRestClient()); }
+    public BeIdContainer getBeIdContainer(GclReader reader) { return new BeIdContainer(connFactory.getConfig(), reader,connFactory.getGclBeidRestClient()); }
     @Override
-    public LuxIdContainer getLuxIdContainer(String readerId, String pin) { return new LuxIdContainer(readerId, connFactory.getGclLuxIdRestClient(), getPin(pin)); }
+    public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) { return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin)); }
     @Override
-    public LuxTrustContainer getLuxTrustContainer(String readerId, String pin) { return new LuxTrustContainer(readerId,connFactory.getGclLuxTrustRestClient(), getPin(pin)); }
+    public LuxTrustContainer getLuxTrustContainer(GclReader reader, String pin) { return new LuxTrustContainer(connFactory.getConfig(), reader,connFactory.getGclLuxTrustRestClient(), getPin(pin)); }
     @Override
-    public DnieContainer getDnieContainer(String readerId) { return new DnieContainer(readerId, connFactory.getGclDniRestClient()); }
+    public DnieContainer getDnieContainer(GclReader reader) { return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient()); }
     @Override
-    public EmvContainer getEmvContainer(String readerId) { return new EmvContainer(readerId, connFactory.getGclEmvRestClient()); }
+    public EmvContainer getEmvContainer(GclReader reader) { return new EmvContainer(connFactory.getConfig(), reader, connFactory.getGclEmvRestClient()); }
 
     @Override
-    public MobibContainer getMobibContainer(String readerId) {
+    public MobibContainer getMobibContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public OcraContainer getOcraContainer(String readerId) {
+    public OcraContainer getOcraContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public AventraContainer getAventraContainer(String readerId) {
+    public AventraContainer getAventraContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public OberthurContainer getOberthurContainer(String readerId) {
+    public OberthurContainer getOberthurContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public PivContainer getPivContainer(String readerId) {
+    public PivContainer getPivContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public PtEIdContainer getPtIdContainer(String readerId) {
+    public PtEIdContainer getPtIdContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public SafeNetContainer getSafeNetContainer(String readerId) {
+    public SafeNetContainer getSafeNetContainer(GclReader reader) {
         return null;
     }
 
     @Override
-    public SafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration) {
+    public SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration) {
         return null;
     }
 
     @Override
-    public RemoteLoadingContainer getRemoteLoadingContainer(String readerId) {
+    public RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader) {
         return null;
     }
 
@@ -343,7 +339,7 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public GenericContainer getGenericContainer(String readerId) {
+    public GenericContainer getGenericContainer(GclReader reader) {
         return null; //TODO
     }
 

@@ -1,18 +1,12 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclSafeNetInfo;
-import com.t1t.t1c.model.rest.GclSafeNetRequest;
-import com.t1t.t1c.model.rest.GclSafeNetSlot;
 import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
-import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
-import t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 
 import java.util.List;
 /**
@@ -20,7 +14,7 @@ import java.util.List;
  * @Since 2017
  * Specific GCL interface for Safenet token Container
  */
-public interface GclSafenetRestClientCommon extends ContainerRestClient {
+public interface GclSafenetRestClient extends ContainerRestClient {
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
     Call<T1cResponse<List<String>>> getSafeNetCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclSafeNetRequest request);
 

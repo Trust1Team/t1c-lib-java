@@ -1,7 +1,6 @@
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.t1t.t1c.model.AllCertificates;
-
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
 
@@ -11,7 +10,7 @@ public class DnieAllCertificates implements AllCertificates {
     private T1cCertificate intermediateCertificate;
     private T1cCertificate signingCertificate;
 
-    public DnieAllCertificates(GclDnieAllCertificates certificates, boolean... parseCertificate) {
+    public DnieAllCertificates(GclDnieAllCertificates certificates, Boolean... parseCertificate) {
 
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificate);
         this.intermediateCertificate = CertificateUtil.createT1cCertificate(certificates.getIntermediateCertificate(), parseCertificate);

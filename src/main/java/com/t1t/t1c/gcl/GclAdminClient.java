@@ -1,10 +1,10 @@
 package com.t1t.t1c.gcl;
 
+import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
-import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.rest.RestExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
  * @since 2017
  */
 public class GclAdminClient implements IGclAdminClient {
+
     private static final Logger log = LoggerFactory.getLogger(GclAdminClient.class);
+
     private GclAdminRestClient gclAdminRestClient;
 
     public GclAdminClient(GclAdminRestClient gclAdminRestClient) {

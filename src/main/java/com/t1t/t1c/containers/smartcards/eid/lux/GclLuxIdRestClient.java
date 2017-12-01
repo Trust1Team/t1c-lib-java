@@ -1,20 +1,18 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
-import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.containers.ContainerRestClient;
+import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import t1c.containers.smartcards.eid.lux.*;
 
 /**
  * @Author Michallis Pashidis
  * @Since 2017
  * Specific GCL interface for Luxembourg ID Container
  */
-public interface GclLuxIdRestClientCommon extends ContainerRestClient {
+public interface GclLuxIdRestClient extends ContainerRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclLuxIdAllData>> getLuxIdAllData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin);
 
