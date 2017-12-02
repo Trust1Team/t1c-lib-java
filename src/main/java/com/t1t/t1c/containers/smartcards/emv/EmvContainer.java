@@ -25,7 +25,7 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     public EmvContainer(LibConfig config, GclReader reader, GclEmvRestClient gclEmvRestClient) {
         this.config = config;
         this.reader = reader;
-        this.httpCient = gclEmvRestClient;
+        this.httpClient = gclEmvRestClient;
     }
 
     @Override

@@ -24,7 +24,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     public DnieContainer (LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
         this.reader = reader;
-        this.httpCient = gclDniRestClient;
+        this.httpClient = gclDniRestClient;
     }
 
     @Override

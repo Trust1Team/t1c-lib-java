@@ -243,6 +243,17 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a lux ID container exception
+     *
+     * @return
+     */
+    public static LuxIdContainerException luxIdContainerException(String message) {
+        String errorMessage = "Communication error with Lux ID container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new LuxIdContainerException(errorMessage);
+    }
+
+    /**
      * Creates a luxTrust container exception
      *
      * @param message

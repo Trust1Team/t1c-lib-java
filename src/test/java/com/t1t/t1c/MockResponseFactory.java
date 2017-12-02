@@ -9,8 +9,7 @@ import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllData;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieInfo;
-import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdAllCertificates;
-import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdBiometric;
+import com.t1t.t1c.containers.smartcards.eid.lux.*;
 import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.emv.*;
 import com.t1t.t1c.containers.smartcards.mobib.GclMobibAllData;
@@ -240,6 +239,108 @@ public final class MockResponseFactory {
         return "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";
     }
 
+    //
+    // LuxId responses
+    //
+
+    public static T1cResponse<GclLuxIdAllData> getLuxIdAllDataResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclLuxIdAllData data = getGclLuxIdAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("biometric")) data.setBiometric(null);
+            if (!filterParams.contains("picture")) data.setPicture(null);
+            if (!filterParams.contains("root-certificates")) data.setRootCertificates(null);
+            if (!filterParams.contains("signature-image")) data.setSignatureImage(null);
+            if (!filterParams.contains("non-repudiation-certificate")) data.setNonRepudiationCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclLuxIdAllCertificates> getLuxIdAllCertificatesResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclLuxIdAllCertificates data = getGclLuxIdAllCertificates();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("root-certificates")) data.setRootCertificates(null);
+            if (!filterParams.contains("non-repudiation-certificate")) data.setNonRepudiationCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclLuxIdPicture> getLuxIdPictureResponse() {
+        return getSuccessResponse(getGclLuxIdPicture());
+    }
+
+    public static T1cResponse<GclLuxIdBiometric> getLuxIdBiometricResponse() {
+        return getSuccessResponse(getGclLuxIdBiometric());
+    }
+
+    public static T1cResponse<GclLuxIdSignatureImage> getLuxIdSignatureImageResponse() {
+        return getSuccessResponse(getGclLuxIdSignatureImage());
+    }
+
+    public static T1cResponse<Object> getLuxIdVerifyPinSuccess() {
+        return getSuccessResponse(null);
+    }
+
+    public static T1cResponse<String> getLuxIdAuthenticationCertificateResponse() {
+        return getBeIdAuthenticationCertificateResponse();
+    }
+
+    public static T1cResponse<String> getLuxIdNonRepudiationCertificateResponse() {
+        return getBeIdNonRepudiationCertificateResponse();
+    }
+
+    public static T1cResponse<List<String>> getLuxIdRootCertificatesResponse() {
+        return getSuccessResponse(getGclLuxIdRootCertificates());
+    }
+
+    public static GclLuxIdAllData getGclLuxIdAllData() {
+        return new GclLuxIdAllData()
+                .withBiometric(getGclLuxIdBiometric())
+                .withPicture(getGclLuxIdPicture())
+                .withSignatureImage(getGclLuxIdSignatureImage())
+                .withRootCertificates(getGclLuxIdRootCertificates())
+                .withAuthenticationCertificate(getBeIdAuthenticationCertificate())
+                .withNonRepudiationCertificate(getBeIdNonRepudiationCertificate());
+    }
+
+    public static GclLuxIdBiometric getGclLuxIdBiometric() {
+        return new GclLuxIdBiometric()
+                .withBirthDate("830819")
+                .withDocumentNumber("SPEC04168")
+                .withDocumentType("ID")
+                .withFirstName("SPECIMEN")
+                .withGender("F")
+                .withIssuingState("LUX")
+                .withLastName("SPECIMEN")
+                .withNationality("LUX")
+                .withValidityEndDate("251116")
+                .withValidityStartDate("151116");
+    }
+
+    public static GclLuxIdPicture getGclLuxIdPicture() {
+        return new GclLuxIdPicture().withHeight(320)
+                .withImage("/0//UQAvAAAAAADwAAABQAAAAAAAAAAAAAAA8AAA....uq9eK159DRO61Ufrf9ICA/9k=")
+                .withWidth(240);
+    }
+
+    public static GclLuxIdSignatureImage getGclLuxIdSignatureImage() {
+        return new GclLuxIdSignatureImage().withImage("/0//UQAvAAAAAADwAAABQAAAAAAAAAAAAAAA8AAA....uq9eK159DRO61Ufrf9ICA/9k=");
+    }
+
+    public static GclLuxIdAllCertificates getGclLuxIdAllCertificates() {
+        return new GclLuxIdAllCertificates()
+                .withRootCertificates(getGclLuxIdRootCertificates())
+                .withAuthenticationCertificate(getBeIdAuthenticationCertificate())
+                .withNonRepudiationCertificate(getBeIdNonRepudiationCertificate());
+    }
+
+    public static List<String> getGclLuxIdRootCertificates() {
+        return Arrays.asList(getBeIdRootCertificate(), getBeIdCitizenCertificate());
+    }
+
     // TODO clean up the rest of the responses below
 
     public static T1cResponse<String> getPublicKeyResponseDer() {
@@ -292,30 +393,6 @@ public final class MockResponseFactory {
         return new T1cResponse<String>().withSuccess(true).withData("mpzLEPr4Q+PNNZ4IhbvzhcRe5Q+pW7wPliKT8UIu1OFAspuFYQmE466O6weh9j4M1VJsHnQ8VOl42E/evMRGpUJHQuXMraQhK9hGvn+Xvr68aNF1G3LuZjTMH+Je9iWP/5HoJLru/vizLbrtcyaP5VJCDpfbcfSoRr0+QxOz7eT1XWpu1LLPsHquKKALCbbVLrbEzjMwZRQOPHSeAXDz72U8HfxzcOf2Iqjacw8ValIIXOma5BolLEPSE6e+27wgzXXqXNliqLn9PeThTVoCQS3vXtinFtZLZ6A5DinP9jZGCdmWHnw9x0V3phMtzWI+1w4r9+7DzliJqQH8LgnVXA==");
     }
 
-    public static T1cResponse<GclLuxIdBiometric> getLuxIdBiometricResponse() {
-        return new T1cResponse<GclLuxIdBiometric>()
-                .withSuccess(true)
-                .withData(new GclLuxIdBiometric()
-                        .withDocumentNumber("1")
-                        .withDocumentType("1")
-                        .withFirstName("John")
-                        .withLastName("Doe")
-                        .withGender("M")
-                        .withIssuingState("Luxembourg")
-                        .withNationality("Luxembourgian")
-                        .withValidityStartDate("01.01.2000")
-                        .withValidityEndDate("01.01.2100")
-                        .withBirthDate("00.00.00"));
-    }
-
-    public static T1cResponse<GclLuxIdAllCertificates> getLuxIdAllCertsResponse() {
-        String cert = getT1cCertificate().getBase64();
-        return new T1cResponse<GclLuxIdAllCertificates>().withSuccess(true)
-                .withData(new GclLuxIdAllCertificates()
-                        .withRootCertificates(Arrays.asList(cert, cert))
-                        .withNonRepudiationCertificate(cert)
-                        .withAuthenticationCertificate(cert));
-    }
 
     public static T1cResponse<GclLuxTrustAllData> getLuxTrustAllDataResponse() {
         String cert = getCertificateResponse().getData();

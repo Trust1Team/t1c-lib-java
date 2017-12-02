@@ -10,6 +10,10 @@ import com.t1t.t1c.exceptions.RestException;
  */
 public class LuxIdContainerException extends GenericContainerException {
 
+    public LuxIdContainerException(String message) {
+        super(message);
+    }
+
     public LuxIdContainerException(String message, RestException cause) {
         super(message, cause);
     }

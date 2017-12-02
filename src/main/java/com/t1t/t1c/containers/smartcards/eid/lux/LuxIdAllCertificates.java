@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,13 @@ public class LuxIdAllCertificates implements AllCertificates {
     public LuxIdAllCertificates(GclLuxIdAllCertificates certificates, Boolean... parseCertificates) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
-        List<T1cCertificate> rootCerts = new ArrayList<>();
-        for (String cert : certificates.getRootCertificates()) {
-            rootCerts.add(CertificateUtil.createT1cCertificate(cert, parseCertificates));
+        if (CollectionUtils.isNotEmpty(certificates.getRootCertificates())) {
+            List<T1cCertificate> rootCerts = new ArrayList<>();
+            for (String cert : certificates.getRootCertificates()) {
+                rootCerts.add(CertificateUtil.createT1cCertificate(cert, parseCertificates));
+            }
+            this.rootCertificates = rootCerts;
         }
-        this.rootCertificates = rootCerts;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,13 @@ public class LuxIdAllData implements AllData {
     public LuxIdAllData(GclLuxIdAllData data, Boolean... parseCertificates) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
-        List<T1cCertificate> rootCerts = new ArrayList<>();
-        for (String cert : data.getRootCertificates()) {
-            rootCerts.add(CertificateUtil.createT1cCertificate(cert, parseCertificates));
+        if (CollectionUtils.isNotEmpty(data.getRootCertificates())) {
+            List<T1cCertificate> rootCerts = new ArrayList<>();
+            for (String cert : data.getRootCertificates()) {
+                rootCerts.add(CertificateUtil.createT1cCertificate(cert, parseCertificates));
+            }
+            this.rootCertificates = rootCerts;
         }
-        this.rootCertificates = rootCerts;
         this.biometric = data.getBiometric();
         this.picture = data.getPicture();
         this.signatureImage = data.getSignatureImage();

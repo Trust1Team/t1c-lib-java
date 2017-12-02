@@ -24,9 +24,10 @@ import java.util.List;
 public abstract class GenericContainer<T extends GenericContainer, U> implements IGclContainer {
     /*Properties*/
     protected GclReader reader;
-    protected U httpCient;
+    protected U httpClient;
     protected transient String pin;
     protected LibConfig config;
+    protected ContainerType type;
     /*Instantiation*/
     public GenericContainer() {}
     public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) { createInstance(config, reader, httpClient, pin); }
