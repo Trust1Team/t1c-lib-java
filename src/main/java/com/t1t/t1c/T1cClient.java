@@ -25,6 +25,7 @@ import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
@@ -104,8 +105,8 @@ public class T1cClient implements IT1cClient {
         try {
             initSecurityContext();
             registerAndActivate();
-        } catch (RestException re) {
-            throw ExceptionFactory.initializationException(re.getMessage());
+        } catch (GclCoreException ex) {
+            throw ExceptionFactory.initializationException(ex.getMessage());
         }
     }
 
@@ -147,15 +148,16 @@ public class T1cClient implements IT1cClient {
                     throw ExceptionFactory.initializationException("Could not set GCL public key");
                 }
             }
-        } catch (RestException re) {
-            throw ExceptionFactory.initializationException(re.getMessage());
+        } catch (GclCoreException ex) {
+            log.error(ex.getCause().getMessage());
+            throw ExceptionFactory.initializationException(ex.getMessage());
         }
     }
 
     /**
      * Register and activate the GCL with the distribution server if necessary
      */
-    private void registerAndActivate() throws RestException {
+    private void registerAndActivate() {
         GclStatus gclInfo = core.getInfo();
         PlatformInfo platformInfo = core.getPlatformInfo();
         LibConfig config = connFactory.getConfig();

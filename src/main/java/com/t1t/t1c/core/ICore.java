@@ -1,6 +1,7 @@
 package com.t1t.t1c.core;
 
-import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.GclCoreException;
+import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
 
 import java.util.List;
@@ -14,25 +15,25 @@ public interface ICore {
      * Retrieve Platform information.
      * @return
      */
-    PlatformInfo getPlatformInfo() throws RestException;
+    PlatformInfo getPlatformInfo() throws GclCoreException;
 
     /**
      * Retrieve the version of the installed T1C-GCL.
      * @return
      */
-    String getVersion() throws RestException;
+    String getVersion() throws GclCoreException;
 
     /**
      * Verify the activation state of the installed T1C-GCL.
      * @return
      */
-    Boolean activate() throws RestException;
+    Boolean activate() throws GclCoreException;
 
     /**
      * Retrieve the public key for the installed T1C-GCL.
      * @return
      */
-    String getPubKey() throws RestException;
+    String getPubKey() throws GclCoreException;
 
     /**
      * Set the public key for the installed T1C-GCL.
@@ -40,57 +41,58 @@ public interface ICore {
      *
      * @param publicKey
      */
-    Boolean setPubKey(String publicKey) throws RestException;
+    Boolean setPubKey(String publicKey) throws GclCoreException;
 
     /**
      * Return T1C-GCL status information.
      *
      * @return
      */
-    GclStatus getInfo() throws RestException;
+    GclStatus getInfo() throws GclCoreException;
 
     /**
      * Return installed containers.
      * @return
      */
-    List<GclContainer> getContainers() throws RestException;
+    List<GclContainer> getContainers() throws GclCoreException;
 
     /**
-     * Poll readers for card inserted.
+     * Poll readers for inserted card.
      *
      * @return
      */
-    GclReader pollCardInserted() throws RestException;
-    GclReader pollCardInserted(Integer pollIntervalInSeconds) throws RestException;
-    GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws RestException;
+    GclReader pollCardInserted() throws GclCoreException;
+    GclReader pollCardInserted(Integer pollIntervalInSeconds) throws GclCoreException;
+    GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException;
 
     /**
-     * Poll for readers with card inserted.
+     * Poll for readers
      *
      * @return
      */
-    List<GclReader> pollReadersWithCards() throws RestException;
-    List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws RestException;
-    List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws RestException;
-    List<GclReader> getReadersWithoutInsertedCard() throws RestException;
+    List<GclReader> pollReadersWithCards() throws GclCoreException;
+    List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws GclCoreException;
+    List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException;
+    List<GclReader> pollReaders() throws GclCoreException;
+    List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws GclCoreException;
+    List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException;
 
     /**
      * Poll readers.
      *
      * @return
      */
-    List<GclReader> getReaders() throws RestException;
-    GclReader getReader(String readerId) throws RestException;
-    List<GclReader> pollReaders() throws RestException;
-    List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws RestException;
-    List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws RestException;
+    List<GclReader> getReaders() throws GclCoreException;
+    List<GclReader> getReadersWithInsertedCard() throws GclCoreException;
+    List<GclReader> getReadersWithoutInsertedCard() throws GclCoreException;
+    GclReader getReader(String readerId) throws GclCoreException;
 
     /**
      * Reader capabilities.
      *
      * @return
      */
-    List<GclReader> getAuthenticationCapableReaders() throws RestException;
-    List<GclReader> getSignCapableReaders() throws RestException;
-    List<GclReader> getPinVerificationCapableReaders() throws RestException;
+    List<GclReader> getAuthenticationCapableReaders() throws GclCoreException;
+    List<GclReader> getSignCapableReaders() throws GclCoreException;
+    List<GclReader> getPinVerificationCapableReaders() throws GclCoreException;
 }

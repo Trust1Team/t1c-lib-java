@@ -67,6 +67,9 @@ public class RestExecutor {
             if (isCallSuccessful(response)) {
                 return response.getData();
             }
+            else {
+                log.warn("Request was unsuccessfull: ", response);
+            }
         }
         return null;
     }

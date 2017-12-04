@@ -3,9 +3,11 @@ package com.t1t.t1c.core;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,109 +32,106 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public PlatformInfo getPlatformInfo() throws RestException {
+    public PlatformInfo getPlatformInfo() throws GclCoreException {
         return new PlatformInfo();
     }
 
     @Override
-    public String getVersion() throws RestException {
-        GclStatus data = RestExecutor.executeCall(gclRestClient.getV1Status()).getData();
-        return data.getVersion();
+    public String getVersion() throws GclCoreException {
+        try {
+            return getInfo().getVersion();
+        } catch (GclCoreException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving version", ex);
+        }
     }
 
     @Override
-    public Boolean activate() throws RestException {
-        return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate()));
+    public Boolean activate() throws GclCoreException {
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate()));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error activating the GCL", ex);
+        }
     }
 
     @Override
-    public String getPubKey() throws RestException {
-        return RestExecutor.executeCall(gclRestClient.getPublicKey()).getData();
+    public String getPubKey() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclRestClient.getPublicKey());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
+        }
     }
 
     @Override
-    public Boolean setPubKey(String publicKey) throws RestException {
-        GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
-        keyReq.setCertificate(publicKey);
-        return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq)));
+    public Boolean setPubKey(String publicKey) throws GclCoreException {
+        try {
+            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
+            keyReq.setCertificate(publicKey);
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq)));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
+        }
     }
 
     @Override
-    public GclStatus getInfo() throws RestException {
-        return RestExecutor.executeCall(gclRestClient.getV1Status()).getData();
+    public GclStatus getInfo() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclRestClient.getV1Status());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving GCL core info", ex);
+        }
     }
 
     @Override
-    public List<GclContainer> getContainers() throws RestException {
-        return RestExecutor.executeCall(gclRestClient.getContainers()).getData();
+    public List<GclContainer> getContainers() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclRestClient.getContainers());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving list of available containers", ex);
+        }
     }
 
     @Override
-    public GclReader pollCardInserted() throws RestException {
+    public GclReader pollCardInserted() throws GclCoreException {
         return pollCardInserted(null, null);
     }
 
     @Override
-    public GclReader pollCardInserted(Integer pollIntervalInSeconds) throws RestException {
+    public GclReader pollCardInserted(Integer pollIntervalInSeconds) throws GclCoreException {
         return pollCardInserted(pollIntervalInSeconds, null);
     }
 
     @Override
-    public GclReader pollCardInserted (Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds)  throws RestException{
+    public GclReader pollCardInserted (Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds)  throws GclCoreException{
         List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds, pollTimeoutInSeconds);
         return CollectionUtils.isNotEmpty(readers) ? readers.get(0) : null;
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards() throws RestException {
+    public List<GclReader> pollReadersWithCards() throws GclCoreException {
         return pollReadersWithCards(null, null);
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws RestException{
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws GclCoreException{
         return pollReadersWithCards(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws RestException {
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
         List<GclReader> readers = new ArrayList<>();
         int totalTime = 0;
         int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
         int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
-            readers = RestExecutor.executeCall(gclRestClient.getCardInsertedReaders(true)).getData();
-        }
-        return readers;
-    }
-
-    @Override
-    public List<GclReader> pollReaders() throws RestException {
-        return pollReaders(null, null);
-    }
-
-    @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws RestException{
-        return pollReaders(pollIntervalInSeconds, null);
-    }
-
-    @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws RestException {
-        List<GclReader> readers = new ArrayList<>();
-        int totalTime = 0;
-        int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
-        int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
-        while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
-            readers = RestExecutor.executeCall(gclRestClient.getCardReaders()).getData();
-            if (readers == null) {
-                throw ExceptionFactory.gclClientException("GCL not found");
-            }
-            if (readers.isEmpty()) {
+            readers = getReadersWithInsertedCard();
+            if (CollectionUtils.isEmpty(readers)) {
                 try {
                     Thread.sleep(pollInterval);
                     totalTime += pollInterval;
                 } catch (InterruptedException ex) {
-                    log.error("Thread sleep interrupted: ", ex);
-                    break;
+                    log.warn("error sleeping through polling interval: ", ex);
                 }
             }
         }
@@ -140,51 +139,128 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> getAuthenticationCapableReaders() throws RestException {
-        //TODO
-        return null;
+    public List<GclReader> pollReaders() throws GclCoreException {
+        return pollReaders(null, null);
     }
 
     @Override
-    public List<GclReader> getSignCapableReaders() throws RestException {
-        //TODO
-        return null;
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws GclCoreException{
+        return pollReaders(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> getPinVerificationCapableReaders() throws RestException {
-        //TODO
-        return null;
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
+        List<GclReader> readers = new ArrayList<>();
+        int totalTime = 0;
+        int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
+        int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
+        while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
+            readers = getReaders();
+            if (CollectionUtils.isEmpty(readers)) {
+                try {
+                    Thread.sleep(pollInterval);
+                    totalTime += pollInterval;
+                } catch (InterruptedException ex) {
+                    log.warn("error sleeping through polling interval: ", ex);
+                }
+            }
+        }
+        return readers;
     }
 
     @Override
-    public GclReader getReader(String readerId)  throws RestException{
+    public List<GclReader> getAuthenticationCapableReaders() throws GclCoreException {
+        List<GclReader> readers = new ArrayList<>();
+        List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (GclReader reader : readersWithCards) {
+            if (ContainerUtil.canAuthenticate(reader.getCard())) {
+                readers.add(reader);
+            }
+        }
+        return readers;
+    }
+
+    @Override
+    public List<GclReader> getSignCapableReaders() throws GclCoreException {
+        List<GclReader> readers = new ArrayList<>();
+        List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (GclReader reader : readersWithCards) {
+            if (ContainerUtil.canSign((reader.getCard()))) {
+                readers.add(reader);
+            }
+        }
+        return readers;
+    }
+
+    @Override
+    public List<GclReader> getPinVerificationCapableReaders() throws GclCoreException {
+        List<GclReader> readers = new ArrayList<>();
+        List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (GclReader reader : readersWithCards) {
+            if (ContainerUtil.canVerifyPin(reader.getCard())) {
+                readers.add(reader);
+            }
+        }
+        return readers;
+    }
+
+    @Override
+    public GclReader getReader(String readerId)  throws GclCoreException{
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
-        return RestExecutor.executeCall(gclRestClient.getCardReader(readerId)).getData();
+        try {
+            return RestExecutor.returnData(gclRestClient.getCardReader(readerId));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving reader with id \"" + readerId + "\"", ex);
+        }
     }
 
     @Override
-    public List<GclReader> getReaders() throws RestException {
-        return RestExecutor.executeCall(gclRestClient.getCardReaders()).getData();
+    public List<GclReader> getReaders() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclRestClient.getCardReaders());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving card readers", ex);
+        }
     }
 
     @Override
-    public List<GclReader> getReadersWithoutInsertedCard()  throws RestException{
-        return RestExecutor.executeCall(gclRestClient.getCardInsertedReaders(false)).getData();
+    public List<GclReader> getReadersWithoutInsertedCard()  throws GclCoreException{
+        return getReaders(false);
     }
 
-    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) throws RestException {
-        Preconditions.checkArgument(pollIntervalInSeconds == null || pollIntervalInSeconds > 0, "Polling interval must be greater than 0");
-        return 1000 * config.getDefaultPollingTimeoutInSeconds();
+    @Override
+    public List<GclReader> getReadersWithInsertedCard() throws GclCoreException {
+        return getReaders(true);
     }
 
-    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) throws RestException {
-        Preconditions.checkArgument(pollTimeoutInSeconds == null || (pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60), "Polling timout must be a value between 0 & 60");
-        return 1000 * config.getDefaultPollingTimeoutInSeconds();
+    private List<GclReader> getReaders(boolean cardInserted) {
+        try {
+            return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("error retrieving card readers without cards", ex);
+        }
+    }
+
+    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) throws GclCoreException {
+        int interval = config.getDefaultPollingIntervalInSeconds();
+        if (pollIntervalInSeconds != null) {
+            Preconditions.checkArgument(pollIntervalInSeconds > 0 && pollIntervalInSeconds < 60, "Polling interval must be a value between 0 & 60");
+            interval = pollIntervalInSeconds;
+        }
+        return 1000 * interval;
+    }
+
+    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) throws GclCoreException {
+        int timeout = config.getDefaultPollingTimeoutInSeconds();
+        if (pollTimeoutInSeconds != null) {
+            Preconditions.checkArgument(pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60, "Polling timout must be a value between 0 & 60");
+            timeout = pollTimeoutInSeconds;
+        }
+        return 1000 * timeout;
     }
 
 /*    //TODO
-    private void checkJwtValidity() throws RestException {
+    private void checkJwtValidity() throws GclCoreException {
         if (config.getEnvironment() != Environment.DEV) {
             JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
             String jwt = config.getJwt();

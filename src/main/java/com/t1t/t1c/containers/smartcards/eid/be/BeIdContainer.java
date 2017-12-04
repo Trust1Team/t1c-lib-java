@@ -27,6 +27,8 @@ import java.util.List;
  */
 public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestClient> {
 
+    private static final String PRIVATE_KEY_REFERENCE = "non-repudiation";
+
     private final ContainerType type = ContainerType.BEID;
 
     public BeIdContainer(LibConfig config, GclReader reader, GclBeIdRestClient gclBeIdRestClient) {
@@ -35,7 +37,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
 
     /*Dynamic instance creation*/
     @Override
-    protected BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeIdRestClient httpClient, String pin) {
+    public BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeIdRestClient httpClient, String pin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -44,24 +46,24 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    protected List<String> getAllDataFilters() {
+    public List<String> getAllDataFilters() {
         return Arrays.asList("address", "rn", "picture", "root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate");
     }
 
     @Override
-    protected List<String> getAllCertificateFilters() {
+    public List<String> getAllCertificateFilters() {
         return Arrays.asList("root-certificate", "authentication-certificate", "non-repudiation-certificate", "citizen-certificate", "rrn-certificate");
     }
 
     @Override
-    protected AllData getAllData() throws BeIdContainerException {
+    public AllData getAllData() throws BeIdContainerException {
         return getAllData(null, null);
     }
 
     @Override
-    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
+    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
         try {
-            GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(reader.getId(), type.getId(), createFilterParams(filterParams)));
+            GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)));
             return new BeIdAllData(data, parseCertificates);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
@@ -69,19 +71,19 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    protected AllData getAllData(Boolean... parseCertificates) throws BeIdContainerException {
+    public AllData getAllData(Boolean... parseCertificates) throws BeIdContainerException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    protected AllCertificates getAllCertificates() throws BeIdContainerException {
+    public AllCertificates getAllCertificates() throws BeIdContainerException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
         try {
-            GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(reader.getId(), type.getId(), createFilterParams(filterParams)));
+            GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)));
             return new BeIdAllCertificates(data, parseCertificates);
         } catch (RestException ex) {
             throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
@@ -89,17 +91,17 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws BeIdContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws BeIdContainerException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    protected Boolean verifyPin(String... pin) throws BeIdContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws BeIdContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0]))));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPrivateKeyReference(PRIVATE_KEY_REFERENCE).withPin(pin[0]))));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
             }
@@ -110,7 +112,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    protected String authenticate(GclAuthenticateOrSignData data) throws BeIdContainerException {
+    public String authenticate(GclAuthenticateOrSignData data) throws BeIdContainerException {
         try {
             return RestExecutor.returnData(httpClient.authenticate(type.getId(), reader.getId(), data));
         } catch (RestException ex) {
@@ -119,7 +121,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    protected String sign(GclAuthenticateOrSignData data) throws BeIdContainerException {
+    public String sign(GclAuthenticateOrSignData data) throws BeIdContainerException {
         try {
             return RestExecutor.returnData(httpClient.sign(type.getId(), reader.getId(), data));
         } catch (RestException ex) {

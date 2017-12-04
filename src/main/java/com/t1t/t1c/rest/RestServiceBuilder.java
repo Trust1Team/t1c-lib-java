@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
@@ -114,7 +115,8 @@ public final class RestServiceBuilder {
         try { Builder retrofitBuilder = new Builder()
                     .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(uri);
+                    // base URL must always end with /
+                    .baseUrl(UriUtils.uriFinalSlashAppender(uri));
             return retrofitBuilder.build().create(iFace);
         } catch (Exception ex) {
             log.error("Error creating client: ", ex);
@@ -167,7 +169,12 @@ public final class RestServiceBuilder {
                 }
             });
         }
-        return okHttpBuilder.build();
+        return okHttpBuilder
+                // Set timeouts a little higher, because reading data from cards can take time
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
     }
 
     //TODO - GCL expose SSL certificate -> check with T1C-GCL
@@ -183,14 +190,19 @@ public final class RestServiceBuilder {
      */
     private static SSLContext getSSLConfig(TrustManagerFactory trustManagerFactory) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        Certificate ca;
-        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c.crt")) {
-            ca = cf.generateCertificate(cert);
+        Certificate ca140;
+        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c-1.4.0.crt")) {
+            ca140 = cf.generateCertificate(cert);
+        }
+        Certificate ca160;
+        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c-1.6.0.crt")) {
+            ca160 = cf.generateCertificate(cert);
         }
         String keyStoreType = KeyStore.getDefaultType();
         KeyStore keyStore = KeyStore.getInstance(keyStoreType);
         keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
+        keyStore.setCertificateEntry("ca140", ca140);
+        keyStore.setCertificateEntry("ca160", ca160);
         trustManagerFactory.init(keyStore);
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
         sslContext.init(null, trustManagerFactory.getTrustManagers(), null);

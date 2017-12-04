@@ -365,4 +365,16 @@ public final class ExceptionFactory {
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new SafeNetContainerException(errorMessage, cause);
     }
+
+    /**
+     * Creates a GCL Core exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static GclCoreException gclCoreException(String message, Throwable cause) {
+        String errorMessage = "Communication error with GCL core";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new GclCoreException(errorMessage, cause);
+    }
 }

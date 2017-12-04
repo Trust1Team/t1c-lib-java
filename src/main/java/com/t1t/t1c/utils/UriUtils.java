@@ -9,7 +9,7 @@ public final class UriUtils {
     private UriUtils() { }
 
     public static String constructURI(String uri, String contextPath) {
-        return uriFinalSlashAppender(uri) + uriLeadingSlashRemover(contextPath);
+        return uriFinalSlashAppender(uriFinalSlashAppender(uri) + uriLeadingSlashRemover(contextPath));
     }
 
     public static String uriFinalSlashAppender(String uri) {

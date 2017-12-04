@@ -31,14 +31,12 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
 
     private final ContainerType type = ContainerType.LUXID;
 
-    private static final Logger log = LoggerFactory.getLogger(LuxIdContainer.class);
-
     public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, String pin) {
         super(config, reader, gclLuxIdRestClient, pin);
     }
 
     @Override
-    protected LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pin) {
+    public LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pin) {
         if (StringUtils.isEmpty(pin)) {
             throw ExceptionFactory.luxIdContainerException("PIN is required to initialize Lux ID container");
         }
@@ -50,24 +48,24 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    protected List<String> getAllDataFilters() {
+    public List<String> getAllDataFilters() {
         return Arrays.asList("authentication-certificate", "signature-image", "biometric", "non-repudiation-certificate", "picture", "root-certificates");
     }
 
     @Override
-    protected List<String> getAllCertificateFilters() {
+    public List<String> getAllCertificateFilters() {
         return Arrays.asList("authentication-certificate", "non-repudiation-certificate", "root-certificates");
     }
 
     @Override
-    protected AllData getAllData() throws LuxIdContainerException {
+    public AllData getAllData() throws LuxIdContainerException {
         return getAllData(null, null);
     }
 
     @Override
-    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
+    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
         try {
-            GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(reader.getId(), getTypeId(), this.pin, createFilterParams(filterParams)));
+            GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
             return new LuxIdAllData(data, parseCertificates);
         } catch (RestException ex) {
             throw ExceptionFactory.luxIdContainerException("could not retrieve all data", ex);
@@ -75,19 +73,19 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    protected AllData getAllData(Boolean... parseCertificates) throws LuxIdContainerException {
+    public AllData getAllData(Boolean... parseCertificates) throws LuxIdContainerException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    protected AllCertificates getAllCertificates() throws LuxIdContainerException {
+    public AllCertificates getAllCertificates() throws LuxIdContainerException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
         try {
-            GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(reader.getId(), getTypeId(), this.pin, createFilterParams(filterParams)));
+            GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
             return new LuxIdAllCertificates(data, parseCertificates);
         } catch (RestException ex) {
             throw ExceptionFactory.luxIdContainerException("could not retrieve all data", ex);
@@ -95,12 +93,12 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws LuxIdContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws LuxIdContainerException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    protected Boolean verifyPin(String... pin) throws LuxIdContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws LuxIdContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin.length > 0) {
@@ -116,7 +114,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    protected String authenticate(GclAuthenticateOrSignData data) throws LuxIdContainerException {
+    public String authenticate(GclAuthenticateOrSignData data) throws LuxIdContainerException {
         try {
             return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), this.pin, data));
         } catch (RestException ex) {
@@ -125,7 +123,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    protected String sign(GclAuthenticateOrSignData data) throws LuxIdContainerException {
+    public String sign(GclAuthenticateOrSignData data) throws LuxIdContainerException {
         try {
             return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), this.pin, data));
         } catch (RestException ex) {

@@ -15,6 +15,8 @@ public class GclVerifyPinRequest {
     @SerializedName("pin")
     @Expose
     private String pin;
+    @SerializedName("private_key_reference")
+    private String privateKeyReference;
 
     /**
      * 
@@ -36,6 +38,19 @@ public class GclVerifyPinRequest {
 
     public GclVerifyPinRequest withPin(String pin) {
         this.pin = pin;
+        return this;
+    }
+
+    public String getPrivateKeyReference() {
+        return privateKeyReference;
+    }
+
+    public void setPrivateKeyReference(String privateKeyReference) {
+        this.privateKeyReference = privateKeyReference;
+    }
+
+    public GclVerifyPinRequest withPrivateKeyReference(String privateKeyReference) {
+        this.privateKeyReference = privateKeyReference;
         return this;
     }
 

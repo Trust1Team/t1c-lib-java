@@ -31,20 +31,20 @@ public abstract class GenericContainer<T extends GenericContainer, U> implements
     /*Instantiation*/
     public GenericContainer() {}
     public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) { createInstance(config, reader, httpClient, pin); }
-    protected abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
+    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
     /*Data Related*/
-    protected abstract List<String> getAllDataFilters();
-    protected abstract List<String> getAllCertificateFilters();
-    protected abstract AllData getAllData() throws GenericContainerException;
-    protected abstract AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
-    protected abstract AllData getAllData(Boolean... parseCertificates) throws GenericContainerException;
-    protected abstract AllCertificates getAllCertificates() throws GenericContainerException;
-    protected abstract AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
-    protected abstract AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException;
+    public abstract List<String> getAllDataFilters();
+    public abstract List<String> getAllCertificateFilters();
+    public abstract AllData getAllData() throws GenericContainerException;
+    public abstract AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
+    public abstract AllData getAllData(Boolean... parseCertificates) throws GenericContainerException;
+    public abstract AllCertificates getAllCertificates() throws GenericContainerException;
+    public abstract AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
+    public abstract AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException;
     /*Token Functionality*/
-    protected abstract Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
-    protected abstract String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
-    protected abstract String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
+    public abstract Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
+    public abstract String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
+    public abstract String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
 
     protected String createFilterParams(List<String> params) {
         String returnValue = null;

@@ -3,8 +3,14 @@ package com.t1t.t1c;
 import com.google.gson.Gson;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.utils.ContainerUtil;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
@@ -15,10 +21,9 @@ public class JavaClientExample {
     private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
     /*Uris*/
     private static final String URI_GATEWAY = "https://accapim.t1t.be";
+    private static final String OCV_CONTEXT_PATH = "/trust1team/ocv-api/v1";
+    private static final String DS_CONTEXT_PATH = "/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
-    /*Context paths*/
-    private static final String CONTEXT_DS = "/trust1team/gclds/v1";
-    private static final String CONTEXT_OCV = "/trust1team/ocv-api/v1";
 
     public static void main(String[] args) {
         /*Config*/
@@ -26,20 +31,33 @@ public class JavaClientExample {
         conf.setEnvironment(Environment.DEV);
         conf.setDsUri(URI_GATEWAY);
         conf.setOcvUri(URI_GATEWAY);
+        conf.setOcvContextPath(OCV_CONTEXT_PATH);
+        conf.setDsContextPath(DS_CONTEXT_PATH);
         conf.setGclClientUri(URI_T1C_GCL);
-        conf.setDsContextPath(CONTEXT_DS);
         conf.setApiKey(API_KEY);
-        conf.setOcvContextPath(CONTEXT_OCV);
+        conf.setHardwarePinPadForced(false);
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);
 
         /*Instantiate client*/
         T1cClient client = new T1cClient(conf);
 
-        //GclReader reader = client.getCore().pollCardInserted();
-        //System.out.println(new Gson().toJson(client.getMobibContainer(reader.getId()).getAllData()));
-        SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
-        System.out.println(new Gson().toJson(new GclSafeNetRequest().withModule(config.getMac().toString())));
+        // Poll reader for insterted cards and get first available
+        GclReader reader = client.getCore().pollCardInserted();
+
+        ContainerUtil.determineContainer(reader.getCard());
+
+        BeIdContainer container = client.getBeIdContainer(reader);
+
+        // Comment
+        //System.out.println(container.getAllData().toString());
+
+        // With hardware PinPad
+        container.verifyPin();
+
+        // Without hardware PinPad
+        //container.verifyPin("1111");
+
         /*T1cClient t1cClient = new T1cClient(Paths.get("/usr/local/t1c.conf"));
         T1cClient t1cClient = new T1cClient(conf);
         IOcvClient ocvClient = t1cClient.getOcvClient();

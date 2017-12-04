@@ -73,4 +73,12 @@ public final class ErrorCodes {
     public static final int SIGNING_ERROR                               = 5000;
 
     public static final String SIGNING_ERROR_INFO                       = "signingError";
+
+    //
+    // Core related
+    //
+
+    public static final int CORE_ERROR                                  = 6000;
+
+    public static final String CORE_ERROR_INFO                          = "coreError";
 }

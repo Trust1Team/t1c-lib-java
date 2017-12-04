@@ -22,62 +22,62 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     private static final Logger log = LoggerFactory.getLogger(OcraContainer.class);
 
     @Override
-    protected OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pin) {
+    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pin) {
         return null;
     }
 
     @Override
-    protected List<String> getAllDataFilters() {
+    public List<String> getAllDataFilters() {
         return null;
     }
 
     @Override
-    protected List<String> getAllCertificateFilters() {
+    public List<String> getAllCertificateFilters() {
         return null;
     }
 
     @Override
-    protected AllData getAllData() throws GenericContainerException {
+    public AllData getAllData() throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+    public AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllCertificates getAllCertificates() throws GenericContainerException {
+    public AllCertificates getAllCertificates() throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
         return null;
     }
 
     @Override
-    protected String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
         return null;
     }
 
     @Override
-    protected String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
         return null;
     }
 
