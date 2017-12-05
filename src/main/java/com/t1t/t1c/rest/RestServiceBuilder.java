@@ -50,7 +50,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null);
     }
 
     /**
@@ -61,7 +61,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt());
     }
 
     /**
@@ -125,7 +125,7 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt) {
         try {
             Builder retrofitBuilder = new Builder()
                     .client(getHttpClientSkipTLS(apikey, jwt))
@@ -231,23 +231,21 @@ public final class RestServiceBuilder {
                     }
                 });
 
-/*        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
+        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
         if (jwtPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder requestBuilder = chain.request().newBuilder();
-                    if (jwtPresent) {
-                        if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                        } else {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
-                        }
+                    if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
+                    } else {
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
                     }
                     return chain.proceed(requestBuilder.build());
                 }
             });
-        }*/
+        }
 
         return okHttpBuilder
                 // Set timeouts a little higher, because reading data from cards can take time

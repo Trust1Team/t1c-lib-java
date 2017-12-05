@@ -49,36 +49,8 @@ public class MockRestServiceBuilder {
         }
     }
 
-    //TODO - GCL expose SSL certificate -> create ticket
-    private static SSLContext getSSLConfig(TrustManagerFactory trustManagerFactory) throws CertificateException, IOException,
-            KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        // Loading CAs from an InputStream
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        Certificate ca;
-        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c.crt")) {
-            ca = cf.generateCertificate(cert);
-        }
-        // Creating a KeyStore containing our trusted CAs
-        String keyStoreType = KeyStore.getDefaultType();
-        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca", ca);
-        // Creating a TrustManager that trusts the CAs in our KeyStore.
-        trustManagerFactory.init(keyStore);
-        // Creating an SSLSocketFactory that uses our TrustManager
-        SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-        return sslContext;
-    }
-
     private static OkHttpClient gethttpClient(final String apikey, final String jwt, boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-
-        if (setSslConfig) {
-            TrustManagerFactory tmf = getTrustManagerFactory();
-            SSLContext context = getSSLConfig(tmf);
-            okHttpBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) tmf.getTrustManagers()[0]);
-        }
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
         final boolean jwtPresent = StringUtils.isNotBlank(jwt);
@@ -103,10 +75,5 @@ public class MockRestServiceBuilder {
             });
         }
         return okHttpBuilder.build();
-    }
-
-    private static TrustManagerFactory getTrustManagerFactory() throws NoSuchAlgorithmException {
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        return TrustManagerFactory.getInstance(tmfAlgorithm);
     }
 }

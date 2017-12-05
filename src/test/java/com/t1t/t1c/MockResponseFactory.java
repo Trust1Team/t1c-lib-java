@@ -1,6 +1,7 @@
 package com.t1t.t1c;
 
 import com.google.gson.Gson;
+import com.sun.org.apache.regexp.internal.RE;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
@@ -52,6 +53,23 @@ public final class MockResponseFactory {
     private static final String JSON_EXTENSION = ".json";
     private static final String RESPONSE_RESOURCE_PATH = "/responses/";
 
+    public static final String NO_CARD_READER_ID = "57a3e2e71c48ce00";
+    public static final String AVENTRA_READER_ID = "57a3e2e71c48ce01";
+    public static final String BEID_READER_ID = "57a3e2e71c48ce02";
+    public static final String DNIE_READER_ID = "57a3e2e71c48ce03";
+    public static final String EMV_READER_ID = "57a3e2e71c48ce04";
+    public static final String EST_READER_ID = "57a3e2e71c48ce05";
+    public static final String LUXID_READER_ID = "57a3e2e71c48ce06";
+    public static final String LUXTRUST_READER_ID = "57a3e2e71c48ce07";
+    public static final String MOBIB_READER_ID = "57a3e2e71c48ce08";
+    public static final String OBERTHUR_READER_ID = "57a3e2e71c48ce09";
+    public static final String OCRA_READER_ID = "57a3e2e71c48ce10";
+    public static final String PIV_READER_ID = "57a3e2e71c48ce11";
+    public static final String PT_READER_ID = "57a3e2e71c48ce12";
+    public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
+
+
+
     private static final Gson GSON = new Gson();
 
     private MockResponseFactory() {
@@ -73,6 +91,201 @@ public final class MockResponseFactory {
 
     public static T1cResponse<GclStatus> getGclV1StatusResponse() {
         return getSuccessResponse(getGclV1Status());
+    }
+
+    public static T1cResponse<List<GclReader>> getGclReadersResponse(Boolean onlyCardsInserted) {
+        return getSuccessResponse(getGclReaders(onlyCardsInserted));
+    }
+
+    public static T1cResponse<GclReader> getGclReaderResponse(String readerId) {
+        return getSuccessResponse(getGclReader(readerId));
+    }
+
+    public static T1cResponse<List<GclContainer>> getAllContainersResponse() {
+        return new T1cResponse<List<GclContainer>>().withSuccess(true).withData(getAllContainers());
+    }
+
+    public static List<GclContainer> getAllContainers() {
+        List<GclContainer> containers = new ArrayList<>();
+        for (ContainerType type : ContainerType.values()) {
+            containers.add(new GclContainer().withId(type.getId()).withName(type.getId()).withVersion("1.0"));
+        }
+        return containers;
+    }
+
+    public static GclReader getGclReader(String readerId) {
+        GclReader reader;
+        switch (readerId) {
+            case AVENTRA_READER_ID:
+                reader = getReaderWithCard(ContainerType.AVENTRA, false);
+                break;
+            case BEID_READER_ID:
+                reader = getReaderWithCard(ContainerType.BEID, false);
+                break;
+            case DNIE_READER_ID:
+                reader = getReaderWithCard(ContainerType.DNIE, false);
+                break;
+            case EMV_READER_ID:
+                reader = getReaderWithCard(ContainerType.EMV, false);
+                break;
+            case LUXID_READER_ID:
+                reader = getReaderWithCard(ContainerType.LUXID, false);
+                break;
+            case LUXTRUST_READER_ID:
+                reader = getReaderWithCard(ContainerType.LUXTRUST, false);
+                break;
+            case MOBIB_READER_ID:
+                reader = getReaderWithCard(ContainerType.MOBIB, false);
+                break;
+            case OBERTHUR_READER_ID:
+                reader = getReaderWithCard(ContainerType.OBERTHUR, false);
+                break;
+            case OCRA_READER_ID:
+                reader = getReaderWithCard(ContainerType.OCRA, false);
+                break;
+            case PIV_READER_ID:
+                reader = getReaderWithCard(ContainerType.PIV, false);
+                break;
+            case PT_READER_ID:
+                reader = getReaderWithCard(ContainerType.PT, false);
+                break;
+            case NO_CARD_READER_ID:
+            default:
+                reader = getReaderWithCard(null, false);
+                break;
+        }
+        return reader;
+    }
+
+    public static List<GclReader> getGclReaders(Boolean onlyCardsInserted) {
+        List<GclReader> readers = new ArrayList<>();
+        if (onlyCardsInserted == null) {
+            readers.add(getReaderWithCard(ContainerType.BEID, false));
+            readers.add(getReaderWithCard(ContainerType.AVENTRA, false));
+            readers.add(getReaderWithCard(ContainerType.DNIE, false));
+            readers.add(getReaderWithCard(ContainerType.EMV, false));
+            readers.add(getReaderWithCard(ContainerType.LUXID, false));
+            readers.add(getReaderWithCard(ContainerType.LUXTRUST, false));
+            readers.add(getReaderWithCard(ContainerType.MOBIB, false));
+            readers.add(getReaderWithCard(ContainerType.OBERTHUR, false));
+            readers.add(getReaderWithCard(ContainerType.OCRA, false));
+            readers.add(getReaderWithCard(ContainerType.PIV, false));
+            readers.add(getReaderWithCard(ContainerType.PT, false));
+            readers.add(getReaderWithCard(null, false));
+        }
+        else if (onlyCardsInserted) {
+            readers.add(getReaderWithCard(ContainerType.BEID, false));
+            readers.add(getReaderWithCard(ContainerType.AVENTRA, false));
+            readers.add(getReaderWithCard(ContainerType.DNIE, false));
+            readers.add(getReaderWithCard(ContainerType.EMV, false));
+            readers.add(getReaderWithCard(ContainerType.LUXID, false));
+            readers.add(getReaderWithCard(ContainerType.LUXTRUST, false));
+            readers.add(getReaderWithCard(ContainerType.MOBIB, false));
+            readers.add(getReaderWithCard(ContainerType.OBERTHUR, false));
+            readers.add(getReaderWithCard(ContainerType.OCRA, false));
+            readers.add(getReaderWithCard(ContainerType.PIV, false));
+            readers.add(getReaderWithCard(ContainerType.PT, false));
+        } else {
+            readers.add(getReaderWithCard(null, false));
+        }
+        return readers;
+    }
+
+    public static GclReader getReaderWithCard(ContainerType type, boolean pinPad) {
+        GclReader reader = new GclReader().withName("Bit4id miniLector").withPinpad(false);
+        if (type == null) {
+            reader = reader.withCard(null).withId(NO_CARD_READER_ID);
+        } else {
+            switch (type) {
+                case AVENTRA:
+                    reader = getReader(pinPad, AVENTRA_READER_ID, getAventraCard());
+                    break;
+                case BEID:
+                    reader = getReader(pinPad, BEID_READER_ID, getBeIdCard());
+                    break;
+                case DNIE:
+                    reader = getReader(pinPad, DNIE_READER_ID, getDnieCard());
+                    break;
+                case EMV:
+                    reader = getReader(pinPad, EMV_READER_ID, getEmvCard());
+                    break;
+                case LUXID:
+                    reader = getReader(pinPad, LUXID_READER_ID, getLuxIdCard());
+                    break;
+                case LUXTRUST:
+                    reader = getReader(pinPad, LUXTRUST_READER_ID, getLuxTrustCard());
+                    break;
+                case MOBIB:
+                    reader = getReader(pinPad, MOBIB_READER_ID, getMobibCard());
+                    break;
+                case OBERTHUR:
+                    reader = getReader(pinPad, OBERTHUR_READER_ID, getOberthurCard());
+                    break;
+                case OCRA:
+                    reader = getReader(pinPad, OCRA_READER_ID, getOcraCard());
+                    break;
+                case PIV:
+                    reader = getReader(pinPad, PIV_READER_ID, getPivCard());
+                    break;
+                case PT:
+                    reader = getReader(pinPad, PT_READER_ID, getPtIdCard());
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Not a smartcard container or not yet supported");
+            }
+        }
+        return reader;
+    }
+
+    public static GclCard getAventraCard() {
+        return new GclCard().withAtr("3BF51800008131FE454D794549449A").withDescription(Collections.singletonList("Aventra ActiveSecurity MyEID"));
+    }
+
+    public static GclCard getBeIdCard() {
+        return new GclCard().withAtr("3B9813400AA503010101AD1311").withDescription(Collections.singletonList("Belgium Electronic ID card"));
+    }
+
+    public static GclCard getDnieCard() {
+        return new GclCard().withAtr("3B7F380000006A444E496520024C340113039000").withDescription(Collections.singletonList("DNI electronico (Spanish electronic ID card)"));
+    }
+
+    public static GclCard getEmvCard() {
+        return new GclCard().withAtr("3B67000000000000009000")
+                .withDescription(Arrays.asList("Axa Bank (Belgium) Mastercard Gold / Axa Bank Belgium", "MisterCash & Proton card", "VISA Card (emitted by Bank Card Company - Belgium)"));
+    }
+
+    public static GclCard getLuxIdCard() {
+        return new GclCard().withAtr("3B8F800180318065B0850300EF120FFF82900073").withDescription(Collections.singletonList("Grand Duchy of Luxembourg / Identity card with LuxTrust certificate (eID)"));
+    }
+
+    public static GclCard getLuxTrustCard() {
+        return new GclCard().withAtr("3B7D94000080318065B0831100C883009000")
+                .withDescription(Arrays.asList("personal identity card (ID card) of Republic of Lithuania", "LuxTrust card"));
+    }
+
+    public static GclCard getMobibCard() {
+        return new GclCard().withAtr("3B6F0000805A2C23C3000302028497A4829000").withDescription(Collections.singletonList("MOBIB card for DeLijn (public transport operator for the Flemish part of Belgium)"));
+    }
+
+    public static GclCard getOberthurCard() {
+        return new GclCard().withAtr("3BDD18008131FE4580F9A000000077010800079000FE").withDescription(Collections.singletonList("Oberthur Cosmo v7 IAS ECC"));
+    }
+
+    public static GclCard getOcraCard() {
+        return new GclCard().withAtr("3B7F94000080318065B0850300EF120FFF829000")
+                .withDescription(Arrays.asList("Gemalto Classic V4", "Juridic Person's Token (PKI)"));
+    }
+
+    public static GclCard getPivCard() {
+        return new GclCard().withAtr("3B7D96000080318065B0831117E583009000").withDescription(Collections.singletonList("Gemalto IDPrime PIV Card2.0 (eID)"));
+    }
+
+    public static GclCard getPtIdCard() {
+        return new GclCard().withAtr("3B9813400AA503010101AD1311").withDescription(Collections.singletonList("Portugese eID Card"));
+    }
+
+    public static GclReader getReader(boolean pinPad, String id, GclCard card) {
+        return new GclReader().withName("Bit4id miniLector").withPinpad(pinPad).withId(id).withCard(card);
     }
 
     public static GclStatus getGclV1Status() {
@@ -355,24 +568,6 @@ public final class MockResponseFactory {
                 .withData("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==");
     }
 
-    public static T1cResponse<List<GclReader>> getListOfEmptyReaders() {
-        return new T1cResponse<List<GclReader>>().withSuccess(true).withData(Collections.singletonList(getReaderWithCard(null)));
-    }
-
-    public static T1cResponse<GclReader> getReaderWithCardId(String readerId) {
-        return new T1cResponse<GclReader>()
-                .withSuccess(true)
-                .withData(getReaderWithCard(ContainerType.valueOfId(readerId)));
-    }
-
-    public static T1cResponse<List<GclContainer>> getAllContainers() {
-        List<GclContainer> containers = new ArrayList<>();
-        for (ContainerType type : ContainerType.values()) {
-            containers.add(new GclContainer().withId(type.getId()).withName(type.getId()).withVersion("1.0"));
-        }
-        return new T1cResponse<List<GclContainer>>().withSuccess(true).withData(containers);
-    }
-
     public static DsDevice getDsDevice() {
         return new DsDevice().withActivated(true).withCoreVersion("1.4.0").withManaged(false).withUuid("B7289D3AEB22D233");
     }
@@ -440,44 +635,6 @@ public final class MockResponseFactory {
                         .withIntermediateCertificate(cert)
                         .withSigningCertificate(cert)
                         .withAuthenticationCertificate(cert));
-    }
-
-    public static GclReader getReaderWithCard(ContainerType type) {
-        GclReader reader = new GclReader().withName("MockedReader").withPinpad(false);
-        if (type == null) {
-            reader = reader.withCard(null).withId("no-card");
-        } else {
-            reader.setId(type.getId());
-            switch (type) {
-                case AVENTRA:
-                    reader = reader.withCard(new GclCard().withAtr("3BF51800008131FE454D794549449A").withDescription(type.getCardDescriptions()));
-                case BEID:
-                    reader = reader.withCard(new GclCard().withAtr("3B9813400AA503010101AD1311").withDescription(type.getCardDescriptions()));
-                case DNIE:
-                    reader = reader.withCard(new GclCard().withAtr("3B7F380000006A444E496520024C340113039000").withDescription(type.getCardDescriptions()));
-                case EMV:
-                    reader = reader.withCard(new GclCard().withAtr("3BE700FF8131FE454430382E30203657").withDescription(type.getCardDescriptions()));
-                case EST:
-                    reader = reader.withCard(new GclCard().withAtr("3BFE1800008031FE454573744549442076657220312E30A8").withDescription(type.getCardDescriptions()));
-                case LUXID:
-                    reader = reader.withCard(new GclCard().withAtr("3B8B800100640411010131800090005A").withDescription(type.getCardDescriptions()));
-                case LUXTRUST:
-                    reader = reader.withCard(new GclCard().withAtr("3B6D000080318065B08302047E83009000").withDescription(type.getCardDescriptions()));
-                case MOBIB:
-                    reader = reader.withCard(new GclCard().withAtr("3B6F0000805A2C23C310100571034232829000").withDescription(type.getCardDescriptions()));
-                case OBERTHUR:
-                    reader = reader.withCard(new GclCard().withAtr("3B7B1800000031C06490E31100829000").withDescription(type.getCardDescriptions()));
-                case OCRA:
-                    reader = reader.withCard(new GclCard().withAtr("OCRA").withDescription(type.getCardDescriptions()));
-                case PIV:
-                    reader = reader.withCard(new GclCard().withAtr("3BDB9600801F030031C064B0F310000F900088").withDescription(type.getCardDescriptions()));
-                case PT:
-                    reader = reader.withCard(new GclCard().withAtr("3B7D95000080318065B08311----83009000").withDescription(type.getCardDescriptions()));
-                case SAFENET:
-                    reader = reader.withCard(new GclCard().withAtr("SAFENET").withDescription(type.getCardDescriptions()));
-            }
-        }
-        return reader;
     }
 
     public static T1cResponse<GclPtIdAllCertificates> getPtIdAllCertificatesResponse() {
