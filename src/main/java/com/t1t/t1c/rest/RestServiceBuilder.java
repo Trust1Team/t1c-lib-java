@@ -18,18 +18,14 @@ import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit.Builder;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -42,7 +38,9 @@ public final class RestServiceBuilder {
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
-    private RestServiceBuilder() {}
+
+    private RestServiceBuilder() {
+    }
 
     /**
      * GCL Rest client communicates over TLS to T1C-GCL (local).
@@ -52,7 +50,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null, true);
     }
 
     /**
@@ -63,7 +61,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), true);
     }
 
     /**
@@ -74,12 +72,13 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getDsUri(),config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getDsUri(), config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null, false);
     }
 
     /**
      * Container Rest client communicates over TLS to T1C-GCL (local) addressing a specific container.
      * No apikey or JWT required.
+     *
      * @param config
      * @param clazz
      * @param <U>
@@ -97,7 +96,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getOcvUri(),config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getOcvUri(), config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null, false);
     }
 
     /**
@@ -112,8 +111,24 @@ public final class RestServiceBuilder {
      * @return
      */
     private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
-        try { Builder retrofitBuilder = new Builder()
+        try {
+            Builder retrofitBuilder = new Builder()
                     .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    // base URL must always end with /
+                    .baseUrl(UriUtils.uriFinalSlashAppender(uri));
+            return retrofitBuilder.build().create(iFace);
+        } catch (Exception ex) {
+            log.error("Error creating client: ", ex);
+            throw ExceptionFactory.gclClientException("Error creating client: " + ex.getMessage());
+        }
+    }
+
+    //TODO remove duplicate code
+    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
+        try {
+            Builder retrofitBuilder = new Builder()
+                    .client(getHttpClientSkipTLS(apikey, jwt))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -177,9 +192,77 @@ public final class RestServiceBuilder {
                 .build();
     }
 
+    /**
+     * Returns a http handler using TLS, but accepting all certificates.
+     * Needed in order to bootstrap the T1C-GCL:
+     * Retrieve public key from GCL through TLS
+     *
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws CertificateException
+     * @throws KeyManagementException
+     */
+    private static OkHttpClient getHttpClientSkipTLS(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException {
+        // Create a trust manager that does not validate certificate chains
+        final TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                    @Override
+                    public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
+                    @Override
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return new java.security.cert.X509Certificate[0];
+                    }
+                }
+        };
+
+        // Install the all-trusting trust manager
+        final SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+        okHttpBuilder.sslSocketFactory(sslSocketFactory)
+                .hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String s, SSLSession sslSession) {
+                        return true;
+                    }
+                });
+
+/*        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
+        if (jwtPresent) {
+            okHttpBuilder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request.Builder requestBuilder = chain.request().newBuilder();
+                    if (jwtPresent) {
+                        if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
+                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
+                        } else {
+                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
+                        }
+                    }
+                    return chain.proceed(requestBuilder.build());
+                }
+            });
+        }*/
+
+        return okHttpBuilder
+                // Set timeouts a little higher, because reading data from cards can take time
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
+    }
+
+
     //TODO - GCL expose SSL certificate -> check with T1C-GCL
+
     /**
      * Utility method to resolve the TLC context.
+     *
      * @param trustManagerFactory
      * @return
      * @throws CertificateException
