@@ -1,6 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.AbstractTestClass;
+import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
@@ -32,7 +33,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getBeIdContainer(new GclReader().withId("1111").withPinpad(false));
+        container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false));
     }
 
     @Test

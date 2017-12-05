@@ -33,6 +33,9 @@
     },
     "validityStartDate": {
       "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
     }
   }
 }

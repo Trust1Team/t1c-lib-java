@@ -1,6 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.t1t.t1c.AbstractTestClass;
+import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
@@ -33,7 +34,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(false).withId("1111"), "1234");
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(false).withId(MockResponseFactory.LUXID_READER_ID), "123456");
     }
 
     @Test

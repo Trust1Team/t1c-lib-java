@@ -256,13 +256,26 @@ public final class ExceptionFactory {
     /**
      * Creates a luxTrust container exception
      *
-     * @param message
-     * @return
+     * @param message the message
+     * @param cause the cause
+     * @return LuxTrustContainerException
      */
     public static LuxTrustContainerException luxTrustContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with LuxTrust container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new LuxTrustContainerException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a luxTrust container exception
+     *
+     * @param message the message
+     * @return LuxTrustContainerException
+     */
+    public static LuxTrustContainerException luxTrustContainerException(String message) {
+        String errorMessage = "Communication error with LuxTrust container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new LuxTrustContainerException(errorMessage);
     }
 
     /**

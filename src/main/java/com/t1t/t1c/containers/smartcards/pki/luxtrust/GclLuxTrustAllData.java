@@ -1,6 +1,9 @@
 
 package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.t1t.t1c.model.AllData;
@@ -8,14 +11,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-import java.util.ArrayList;
-import java.util.List;
-
 @Generated("org.jsonschema2pojo")
 public class GclLuxTrustAllData implements AllData
 {
 
+    @SerializedName("activated")
+    @Expose
+    private Boolean activated;
     @SerializedName("authentication_certificate")
     @Expose
     private String authenticationCertificate;
@@ -25,6 +27,29 @@ public class GclLuxTrustAllData implements AllData
     @SerializedName("root_certificates")
     @Expose
     private List<String> rootCertificates = new ArrayList<String>();
+
+    /**
+     * 
+     * @return
+     *     The activated
+     */
+    public Boolean getActivated() {
+        return activated;
+    }
+
+    /**
+     * 
+     * @param activated
+     *     The activated
+     */
+    public void setActivated(Boolean activated) {
+        this.activated = activated;
+    }
+
+    public GclLuxTrustAllData withActivated(Boolean activated) {
+        this.activated = activated;
+        return this;
+    }
 
     /**
      * 
@@ -102,7 +127,7 @@ public class GclLuxTrustAllData implements AllData
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(authenticationCertificate).append(signingCertificate).append(rootCertificates).toHashCode();
+        return new HashCodeBuilder().append(activated).append(authenticationCertificate).append(signingCertificate).append(rootCertificates).toHashCode();
     }
 
     @Override
@@ -114,7 +139,7 @@ public class GclLuxTrustAllData implements AllData
             return false;
         }
         GclLuxTrustAllData rhs = ((GclLuxTrustAllData) other);
-        return new EqualsBuilder().append(authenticationCertificate, rhs.authenticationCertificate).append(signingCertificate, rhs.signingCertificate).append(rootCertificates, rhs.rootCertificates).isEquals();
+        return new EqualsBuilder().append(activated, rhs.activated).append(authenticationCertificate, rhs.authenticationCertificate).append(signingCertificate, rhs.signingCertificate).append(rootCertificates, rhs.rootCertificates).isEquals();
     }
 
 }

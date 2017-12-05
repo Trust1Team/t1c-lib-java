@@ -1,13 +1,12 @@
 
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclLuxIdBiometric {
@@ -42,6 +41,9 @@ public class GclLuxIdBiometric {
     @SerializedName("validityStartDate")
     @Expose
     private String validityStartDate;
+    @SerializedName("raw_data")
+    @Expose
+    private String rawData;
 
     /**
      * 
@@ -273,6 +275,29 @@ public class GclLuxIdBiometric {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     *     The rawData
+     */
+    public String getRawData() {
+        return rawData;
+    }
+
+    /**
+     * 
+     * @param rawData
+     *     The raw_data
+     */
+    public void setRawData(String rawData) {
+        this.rawData = rawData;
+    }
+
+    public GclLuxIdBiometric withRawData(String rawData) {
+        this.rawData = rawData;
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -280,7 +305,7 @@ public class GclLuxIdBiometric {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(birthDate).append(documentNumber).append(documentType).append(firstName).append(gender).append(issuingState).append(lastName).append(nationality).append(validityEndDate).append(validityStartDate).toHashCode();
+        return new HashCodeBuilder().append(birthDate).append(documentNumber).append(documentType).append(firstName).append(gender).append(issuingState).append(lastName).append(nationality).append(validityEndDate).append(validityStartDate).append(rawData).toHashCode();
     }
 
     @Override
@@ -292,7 +317,7 @@ public class GclLuxIdBiometric {
             return false;
         }
         GclLuxIdBiometric rhs = ((GclLuxIdBiometric) other);
-        return new EqualsBuilder().append(birthDate, rhs.birthDate).append(documentNumber, rhs.documentNumber).append(documentType, rhs.documentType).append(firstName, rhs.firstName).append(gender, rhs.gender).append(issuingState, rhs.issuingState).append(lastName, rhs.lastName).append(nationality, rhs.nationality).append(validityEndDate, rhs.validityEndDate).append(validityStartDate, rhs.validityStartDate).isEquals();
+        return new EqualsBuilder().append(birthDate, rhs.birthDate).append(documentNumber, rhs.documentNumber).append(documentType, rhs.documentType).append(firstName, rhs.firstName).append(gender, rhs.gender).append(issuingState, rhs.issuingState).append(lastName, rhs.lastName).append(nationality, rhs.nationality).append(validityEndDate, rhs.validityEndDate).append(validityStartDate, rhs.validityStartDate).append(rawData, rhs.rawData).isEquals();
     }
 
 }

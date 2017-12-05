@@ -7,6 +7,9 @@
     "com.t1t.t1c.model.AllData"
   ],
   "properties": {
+    "activated": {
+      "type": "boolean"
+    },
     "authentication_certificate": {
       "type": "string"
     },
