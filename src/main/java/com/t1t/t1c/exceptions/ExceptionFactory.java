@@ -1,6 +1,7 @@
 package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainerException;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainerException;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
@@ -389,5 +390,17 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with GCL core";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new GclCoreException(errorMessage, cause);
+    }
+
+    /**
+     * Creates a remote loading container exception
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static RemoteLoadingContainerException remoteLoadingContainerException(String message, RestException cause) {
+        String errorMessage = "Communication error with Remote Loading container";
+        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        return new RemoteLoadingContainerException(errorMessage, cause);
     }
 }

@@ -29,8 +29,6 @@ import java.util.List;
  */
 public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRestClient> {
 
-    private final ContainerType type = ContainerType.LUXID;
-
     public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, String pin) {
         super(config, reader, gclLuxIdRestClient, pin);
     }
@@ -44,6 +42,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         this.reader = reader;
         this.httpClient = httpClient;
         this.pin = pin;
+        this.type = ContainerType.LUXID;
         return this;
     }
 

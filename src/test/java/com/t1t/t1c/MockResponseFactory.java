@@ -1,7 +1,6 @@
 package com.t1t.t1c;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.regexp.internal.RE;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;

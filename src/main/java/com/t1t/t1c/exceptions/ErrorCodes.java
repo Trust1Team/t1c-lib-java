@@ -45,6 +45,7 @@ public final class ErrorCodes {
     public static final int OCRA_CONTAINER_REST_ERROR                   = 2012;
     public static final int SAFENET_CONTAINER_REST_ERROR                = 2013;
     public static final int OCV_REST_ERROR                              = 2014;
+    public static final int REMOTE_LOADING_CONTAINER_REST_ERROR         = 2015;
 
     public static final String REST_ERROR_INFO                          = "restError";
 

@@ -19,4 +19,5 @@ public interface IConfig {
     String LIB_OCV_CONTEXT_PATH = "t1c.ocv_context_path";
     String LIB_DEFAULT_POLLING_INTERVAL = "t1c.default_polling_interval";
     String LIB_DEFAULT_POLLING_TIMEOUT = "t1c.default_polling_timeout";
+    String LIB_DEFAULT_SESSION_TIMEOUT = "t1c.default_session_timeout";
 }

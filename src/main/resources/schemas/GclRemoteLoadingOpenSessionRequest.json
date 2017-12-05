@@ -1,0 +1,12 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclRemoteLoadingOpenSessionRequest",
+  "javaType" : "com.t1t.t1c.containers.remoteloading.GclRemoteLoadingOpenSessionRequest",
+  "type": "object",
+  "properties": {
+    "timeout": {
+      "type": "integer"
+    }
+  }
+}

@@ -345,6 +345,13 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurSignAlgorithmReferences.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllCertificates.json</sourcePath>
+                        <!-- REMOTE LOADING -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingApdu.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommand.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommandRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json</sourcePath>
                         <!-- More to come -->
                     </sourcePaths>
                     <excludes></excludes>

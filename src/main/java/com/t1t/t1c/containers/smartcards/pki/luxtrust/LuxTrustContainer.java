@@ -28,8 +28,6 @@ import java.util.List;
  */
 public class LuxTrustContainer extends GenericContainer<LuxTrustContainer, GclLuxTrustRestClient> {
 
-    private final ContainerType type = ContainerType.LUXTRUST;
-
     public LuxTrustContainer(LibConfig config, GclReader reader, GclLuxTrustRestClient gclLuxTrustRestClient, String pin) {
         super(config, reader, gclLuxTrustRestClient, pin);
     }
@@ -43,6 +41,7 @@ public class LuxTrustContainer extends GenericContainer<LuxTrustContainer, GclLu
         this.reader = reader;
         this.httpClient = httpClient;
         this.pin = pin;
+        this.type = ContainerType.LUXTRUST;
         return this;
     }
 

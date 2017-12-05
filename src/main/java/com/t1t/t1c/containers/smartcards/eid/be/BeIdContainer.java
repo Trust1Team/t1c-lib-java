@@ -29,8 +29,6 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
 
     private static final String PRIVATE_KEY_REFERENCE = "non-repudiation";
 
-    private final ContainerType type = ContainerType.BEID;
-
     public BeIdContainer(LibConfig config, GclReader reader, GclBeIdRestClient gclBeIdRestClient) {
         super(config, reader, gclBeIdRestClient, null);
     }
@@ -42,6 +40,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
         this.reader = reader;
         this.httpClient = httpClient;
         this.pin = pin;
+        this.type = ContainerType.BEID;
         return this;
     }
 

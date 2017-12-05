@@ -85,6 +85,9 @@ public class T1cConfigParser implements Serializable {
     public Integer getDefaultPollingTimeoutInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_TIMEOUT);
     }
+    public Integer getDefaultSessionTimeout() {
+        return config.getInt(IConfig.LIB_DEFAULT_SESSION_TIMEOUT);
+    }
     public LibConfig getAppConfig() {
         return appConfig;
     }
@@ -117,6 +120,7 @@ public class T1cConfigParser implements Serializable {
         _LOG.debug("OCV client Context path: {}", appConfig.getOcvContextPath());
         _LOG.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
         _LOG.debug("Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
+        _LOG.debug("Default session timeout (seconds): {}", appConfig.getSessionTimeout());
         _LOG.debug("=============================================================");
     }
 
@@ -138,6 +142,7 @@ public class T1cConfigParser implements Serializable {
         if (this.appConfig.getDefaultPollingTimeoutInSeconds()==null) this.appConfig.setDefaultPollingTimeoutInSeconds(DEFAULT_POLLING_TIMEOUT);
         if (this.appConfig.isHardwarePinPadForced()==null) this.appConfig.setHardwarePinPadForced(false);
         if (this.appConfig.isTokenCompatible()==null) this.appConfig.setTokenCompatible(false);
+        if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0) this.appConfig.setSessionTimeout(60);
     }
 
     /**

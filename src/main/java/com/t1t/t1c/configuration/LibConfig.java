@@ -19,6 +19,7 @@ public class LibConfig {
     private Integer defaultPollingTimeoutInSeconds;
     private Boolean hardwarePinPadForced = false;
     private Boolean tokenCompatible = false;
+    private Integer sessionTimeout;
     // Dynamic properties
     private String jwt;
 
@@ -130,4 +131,11 @@ public class LibConfig {
         this.ocvUri = ocvUri;
     }
 
+    public Integer getSessionTimeout() {
+        return this.sessionTimeout;
+    }
+
+    public void setSessionTimeout(Integer sessionTimeout) {
+        this.sessionTimeout = sessionTimeout;
+    }
 }
