@@ -72,7 +72,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getDsUri(), config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getDsUri(), config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null);
     }
 
     /**
@@ -85,7 +85,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
-        return getClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null, true);
+        return getLocalClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null);
     }
 
     /**
@@ -96,7 +96,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getOcvUri(), config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null, false);
+        return getClient(UriUtils.constructURI(config.getOcvUri(), config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null);
     }
 
     /**
@@ -106,14 +106,13 @@ public final class RestServiceBuilder {
      * @param iFace
      * @param apikey
      * @param jwt
-     * @param useGclCertificateSslConfig
      * @param <T>
      * @return
      */
-    private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt, boolean useGclCertificateSslConfig) {
+    private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(gethttpClient(apikey, jwt, useGclCertificateSslConfig))
+                    .client(gethttpClient(apikey, jwt))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -144,7 +143,6 @@ public final class RestServiceBuilder {
      *
      * @param apikey
      * @param jwt
-     * @param setSslConfig
      * @return
      * @throws NoSuchAlgorithmException
      * @throws CertificateException
@@ -152,15 +150,10 @@ public final class RestServiceBuilder {
      * @throws KeyStoreException
      * @throws IOException
      */
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt, final Boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-        if (setSslConfig) {
-            TrustManagerFactory tmf = getTrustManagerFactory();
-            SSLContext context = getSSLConfig(tmf);
-            okHttpBuilder.sslSocketFactory(context.getSocketFactory(), (X509TrustManager) tmf.getTrustManagers()[0]);
-        } else {
-            okHttpBuilder.sslSocketFactory(new TLSSocketFactory());
-        }
+
+        okHttpBuilder.sslSocketFactory(new TLSSocketFactory());
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
         final boolean jwtPresent = StringUtils.isNotBlank(jwt);
@@ -253,41 +246,6 @@ public final class RestServiceBuilder {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .build();
-    }
-
-
-    //TODO - GCL expose SSL certificate -> check with T1C-GCL
-
-    /**
-     * Utility method to resolve the TLC context.
-     *
-     * @param trustManagerFactory
-     * @return
-     * @throws CertificateException
-     * @throws IOException
-     * @throws KeyStoreException
-     * @throws NoSuchAlgorithmException
-     * @throws KeyManagementException
-     */
-    private static SSLContext getSSLConfig(TrustManagerFactory trustManagerFactory) throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        Certificate ca140;
-        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c-1.4.0.crt")) {
-            ca140 = cf.generateCertificate(cert);
-        }
-        Certificate ca160;
-        try (InputStream cert = RestServiceBuilder.class.getResourceAsStream("/t1c-1.6.0.crt")) {
-            ca160 = cf.generateCertificate(cert);
-        }
-        String keyStoreType = KeyStore.getDefaultType();
-        KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-        keyStore.load(null, null);
-        keyStore.setCertificateEntry("ca140", ca140);
-        keyStore.setCertificateEntry("ca160", ca160);
-        trustManagerFactory.init(keyStore);
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-        sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
-        return sslContext;
     }
 
     private static TrustManagerFactory getTrustManagerFactory() throws NoSuchAlgorithmException {
