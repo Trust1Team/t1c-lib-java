@@ -306,6 +306,7 @@
                         <!-- PT ID -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAddress.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllCertificates.json</sourcePath>
                         <!-- EMV -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplication.json</sourcePath>

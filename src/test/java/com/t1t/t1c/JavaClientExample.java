@@ -8,6 +8,7 @@ import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.remoteloading.*;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
@@ -17,6 +18,7 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -132,9 +134,69 @@ public class JavaClientExample {
             case PIV:
                 break;
             case PT:
+                ptIdUseCases(reader);
                 break;
             case SAFENET:
                 break;
+        }
+    }
+
+    private static void ptIdUseCases(GclReader reader) {
+        PtEIdContainer container = client.getPtIdContainer(reader);
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Please provide Sign PIN: ");
+        String signPin = scan.nextLine();
+
+        scan = new Scanner(System.in);
+        System.out.print("Please provide Sign PIN: ");
+        String addressPin = scan.nextLine();
+
+        scan = new Scanner(System.in);
+        System.out.print("Please provide Sign PIN: ");
+        String authenticatePin = scan.nextLine();
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
+
+        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate());
+
+        System.out.println("Base64-encoded root authentication certificate: " + container.getRootAuthenticationCertificate());
+
+        System.out.println("Base64-encoded non-repudiation certificate: " + container.getNonRepudiationCertificate());
+
+        System.out.println("Base64-encoded root non-repudiation certificate: " + container.getRootNonRepudiationCertificate());
+
+        System.out.println("ID data: " + container.getPtIdData());
+
+        boolean pinVerified = container.verifyPin(signPin);
+
+        // Without hardware PinPad
+        System.out.println("PIN verified: " + pinVerified);
+
+        if (pinVerified) {
+
+            // Sign data
+            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
+                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
+                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
+                    .withPin(signPin)));
+        }
+
+        // Authenticate data
+        String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+        System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                .withHash(challenge)
+                .withBase64Signature(container.authenticate(new GclAuthenticateOrSignData()
+                        .withData(challenge)
+                        .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
+                        .withPin(authenticatePin)))).getResult());
+
+        if (StringUtils.isNotEmpty(addressPin)) {
+            System.out.println("Address data: " + container.getAddress(addressPin));
         }
     }
 

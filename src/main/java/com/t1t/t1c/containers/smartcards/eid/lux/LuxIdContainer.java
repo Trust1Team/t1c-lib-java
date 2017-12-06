@@ -100,7 +100,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     public Boolean verifyPin(String... pin) throws LuxIdContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
-            if (pin.length > 0) {
+            if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), this.pin, new GclVerifyPinRequest().withPin(pin[0]))));
             } else {

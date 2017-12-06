@@ -98,7 +98,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     public Boolean verifyPin(String... pin) throws BeIdContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
-            if (pin.length > 0) {
+            if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPrivateKeyReference(PRIVATE_KEY_REFERENCE).withPin(pin[0]))));
             } else {

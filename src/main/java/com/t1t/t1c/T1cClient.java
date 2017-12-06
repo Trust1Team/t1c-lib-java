@@ -321,7 +321,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public PtEIdContainer getPtIdContainer(GclReader reader) {
-        return null;
+        return new PtEIdContainer(connFactory.getConfig(), reader, connFactory.getGclPtRestClient());
     }
 
     @Override

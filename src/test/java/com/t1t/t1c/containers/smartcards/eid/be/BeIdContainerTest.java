@@ -212,7 +212,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void authenticate() throws Exception {
-        String authenticatedHash = container.sign(new GclAuthenticateOrSignData()
+        String authenticatedHash = container.authenticate(new GclAuthenticateOrSignData()
                 .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
         assertNotNull(authenticatedHash);
     }

@@ -22,7 +22,7 @@ public class PtIdAllData implements AllData {
         ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
         ;
-        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootAuthenticationCertificate(), parseCertificates);
+        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootNonRepudiationCertificate(), parseCertificates);
         ;
     }
 

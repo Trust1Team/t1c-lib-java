@@ -1,103 +1,223 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.T1cCertificate;
+import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import retrofit2.Call;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient, AllData, AllCertificates> {
-    private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
+public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient, PtIdAllData, PtIdAllCertificates> {
+
+    public PtEIdContainer(LibConfig config, GclReader reader, GclPtIdRestClient httpClient) {
+        super(config, reader, httpClient, null);
+    }
 
     @Override
     public PtEIdContainer createInstance(LibConfig config, GclReader reader, GclPtIdRestClient httpClient, String pin) {
-        return null;
+        this.config = config;
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.pin = pin;
+        this.type = ContainerType.PT;
+        return this;
     }
 
     @Override
     public List<String> getAllDataFilters() {
-        return null;
+        return Arrays.asList("id", "root-certificate", "root-authentication-certificate", "authentication-certificate", "root-non-repudiation-certificate", "non-repudiation-certificate");
     }
 
     @Override
     public List<String> getAllCertificateFilters() {
-        return null;
+        return Arrays.asList("root-certificate", "root-authentication-certificate", "authentication-certificate", "root-non-repudiation-certificate", "non-repudiation-certificate");
     }
 
     @Override
-    public AllData getAllData() throws GenericContainerException {
-        return null;
+    public PtIdAllData getAllData() throws PtIdContainerException {
+        return getAllData(null, null);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public PtIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws PtIdContainerException {
+        try {
+            return new PtIdAllData(RestExecutor.returnData(httpClient.getPtIdAllData(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve all data", ex);
+        }
     }
 
     @Override
-    public AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public PtIdAllData getAllData(Boolean... parseCertificates) throws PtIdContainerException {
+        return getAllData(null, parseCertificates);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws GenericContainerException {
-        return null;
+    public PtIdAllCertificates getAllCertificates() throws PtIdContainerException {
+        return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public PtIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws PtIdContainerException {
+        try {
+            return new PtIdAllCertificates(RestExecutor.returnData(httpClient.getPtIdAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve all certificates", ex);
+        }
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public PtIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws PtIdContainerException {
+        return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        return null;
+    public Boolean verifyPin(String... pin) throws PtIdContainerException, VerifyPinException {
+        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        try {
+            if (pin != null && pin.length > 0) {
+                Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0]))));
+            } else {
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
+            }
+        } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
+            throw ExceptionFactory.ptIdContainerException("Could not verify pin with container", ex);
+        }
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
-        return null;
+    public String authenticate(GclAuthenticateOrSignData data) throws PtIdContainerException {
+        try {
+            return RestExecutor.returnData(httpClient.authenticate(type.getId(), reader.getId(), data));
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("Could not authenticate with container", ex);
+        }
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
-        return null;
+    public String sign(GclAuthenticateOrSignData data) throws PtIdContainerException {
+        try {
+            return RestExecutor.returnData(httpClient.sign(type.getId(), reader.getId(), data));
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("Could not authenticate with container", ex);
+        }
     }
 
     @Override
     public ContainerType getType() {
-        return null;
+        return type;
     }
 
     @Override
     public String getTypeId() {
-        return null;
+        return type.getId();
     }
 
     @Override
-    public Class<AllData> getAllDataClass() {
-        return null;
+    public Class<PtIdAllData> getAllDataClass() {
+        return PtIdAllData.class;
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
-        return null;
+    public Class<PtIdAllCertificates> getAllCertificateClass() {
+        return PtIdAllCertificates.class;
+    }
+
+    public GclPtIdData getPtIdData() {
+        return getPtIdData(null);
+    }
+
+    public GclPtIdData getPtIdData(Boolean includePhoto) {
+        try {
+            return RestExecutor.returnData(httpClient.getPtIdData(getTypeId(), reader.getId(), includePhoto));
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve ID data", ex);
+        }
+    }
+
+    public String getPtIdPhoto() {
+        try {
+            return RestExecutor.returnData(httpClient.getPtIdPhoto(getTypeId(), reader.getId()));
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve picture", ex);
+        }
+    }
+
+    public T1cCertificate getRootCertificate(Boolean... parse) {
+        try {
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve root certificate", ex);
+        }
+    }
+
+    public T1cCertificate getRootAuthenticationCertificate(Boolean... parse) {
+        try {
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootAuthenticationCertificate(getTypeId(), reader.getId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve root authentication certificate", ex);
+        }
+    }
+
+    public T1cCertificate getRootNonRepudiationCertificate(Boolean... parse) {
+        try {
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootNonRepudiationCertificate(getTypeId(), reader.getId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve root non-repudiation certificate", ex);
+        }
+    }
+
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) {
+        try {
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve authentication certificate", ex);
+        }
+    }
+
+    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) {
+        try {
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId())), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ptIdContainerException("could not retrieve non-repudiation certificate", ex);
+        }
+    }
+
+    public GclPtIdAddress getAddress(String... pin) {
+        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        try {
+            if (pin != null && pin.length > 0) {
+                Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
+                return RestExecutor.returnData(httpClient.getAddress(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0])));
+            } else {
+                return RestExecutor.returnData(httpClient.getAddress(type.getId(), reader.getId()));
+            }
+        } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
+            throw ExceptionFactory.ptIdContainerException("Could not verify pin with container", ex);
+        }
     }
 }

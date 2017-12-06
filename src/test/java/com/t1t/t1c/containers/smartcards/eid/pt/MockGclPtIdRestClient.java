@@ -1,5 +1,8 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
+import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.mock.AbstractMockRestClient;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
@@ -16,42 +19,87 @@ public class MockGclPtIdRestClient extends AbstractMockRestClient<GclPtIdRestCli
     }
 
     @Override
-    public Call<T1cResponse<GclPtIdData>> getPtIdData(String containerId, String readerId, boolean includePhoto) {
-        return null;
+    public Call<T1cResponse<GclPtIdData>> getPtIdData(String containerId, String readerId, Boolean includePhoto) {
+        return delegate.returningResponse(MockResponseFactory.getGclPtIdDataResponse(includePhoto)).getPtIdData(containerId, readerId, includePhoto);
     }
 
     @Override
     public Call<T1cResponse<String>> getPtIdPhoto(String containerId, String readerId) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdPhotoResponse()).getPtIdPhoto(containerId, readerId);
     }
 
     @Override
     public Call<T1cResponse<String>> getRootAuthenticationCertificate(String containerId, String readerId) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdRootAuthenticationResponse()).getRootAuthenticationCertificate(containerId, readerId);
     }
 
     @Override
     public Call<T1cResponse<String>> getRootNonRepudiationCertificate(String containerId, String readerId) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdRootNonRepudiationCertificateResponse()).getRootNonRepudiationCertificate(containerId, readerId);
     }
 
     @Override
     public Call<T1cResponse<GclPtIdAllData>> getPtIdAllData(String containerId, String readerId) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdAllDataResponse(null)).getPtIdAllData(containerId, readerId);
     }
 
     @Override
     public Call<T1cResponse<GclPtIdAllData>> getPtIdAllData(String containerId, String readerId, String filter) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdAllDataResponse(filter)).getPtIdAllData(containerId, readerId, filter);
     }
 
     @Override
     public Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(String containerId, String readerId) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdAllCertificatesResponse(null)).getPtIdAllCertificates(containerId, readerId);
     }
 
     @Override
     public Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(String containerId, String readerId, String filter) {
-        return null;
+        return delegate.returningResponse(MockResponseFactory.getPtIdAllCertificatesResponse(filter)).getPtIdAllCertificates(containerId, readerId, filter);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getRootCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdRootCertificateResponse()).getRootCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getAuthenticationCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdAuthenticationCertificateResponse()).getAuthenticationCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> getNonRepudiationCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdNonRepudiationCertificateResponse()).getNonRepudiationCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, GclVerifyPinRequest request) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdVerifyPinResponse()).verifyPin(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdVerifyPinResponse()).verifyPin(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).authenticate(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<String>> sign(String containerId, String readerId, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).sign(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAddress>> getAddress(String containerId, String readerId, GclVerifyPinRequest request) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse()).getAddress(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<GclPtIdAddress>> getAddress(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse()).getAddress(containerId, readerId);
     }
 }

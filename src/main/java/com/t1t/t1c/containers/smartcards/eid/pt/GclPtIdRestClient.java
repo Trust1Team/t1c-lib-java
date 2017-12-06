@@ -1,10 +1,10 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 /**
  * @Author Michallis Pashidis
@@ -17,7 +17,7 @@ public interface GclPtIdRestClient {
     String CONTAINER_AND_READER_CONTEXT_PATH = "{containerId}/{reader}";
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/id")
-    Call<T1cResponse<GclPtIdData>> getPtIdData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("photo") boolean includePhoto);
+    Call<T1cResponse<GclPtIdData>> getPtIdData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("photo") Boolean includePhoto);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/photo")
     Call<T1cResponse<String>> getPtIdPhoto(@Path("containerId") String containerId, @Path("reader") String readerId);
@@ -39,4 +39,31 @@ public interface GclPtIdRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
     Call<T1cResponse<GclPtIdAllCertificates>> getPtIdAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/root")
+    Call<T1cResponse<String>> getRootCertificate(@Path("containerId") String containerId, @Path("reader") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/authentication")
+    Call<T1cResponse<String>> getAuthenticationCertificate(@Path("containerId") String containerId, @Path("reader") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH + "/non-repudiation")
+    Call<T1cResponse<String>> getNonRepudiationCertificate(@Path("containerId") String containerId, @Path("reader") String readerId);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
+    Call<T1cResponse<String>> authenticate(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclAuthenticateOrSignData request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
+    Call<T1cResponse<String>> sign(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclAuthenticateOrSignData request);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
+    Call<T1cResponse<GclPtIdAddress>> getAddress(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
+    Call<T1cResponse<GclPtIdAddress>> getAddress(@Path("containerId") String containerId, @Path("reader") String readerId);
 }

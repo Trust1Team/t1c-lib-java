@@ -20,7 +20,7 @@ public class PtIdAllCertificates implements AllCertificates {
         ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(certificates.getRootCertificate(), parseCertificates);
         ;
-        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);
+        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootNonRepudiationCertificate(), parseCertificates);
         ;
     }
 
