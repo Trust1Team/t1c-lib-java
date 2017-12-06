@@ -9,8 +9,7 @@
       "type": "string"
     },
     "apdu": {
-      "type": "object",
-      "$ref": "GclRemoteLoadingApdu.json"
+      "type": "string"
     }
   }
 }

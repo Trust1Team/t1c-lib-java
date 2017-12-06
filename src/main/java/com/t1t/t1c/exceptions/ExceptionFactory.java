@@ -240,6 +240,7 @@ public final class ExceptionFactory {
     public static LuxIdContainerException luxIdContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with Lux ID container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new LuxIdContainerException(errorMessage, cause);
     }
 
@@ -264,6 +265,7 @@ public final class ExceptionFactory {
     public static LuxTrustContainerException luxTrustContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with LuxTrust container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new LuxTrustContainerException(errorMessage, cause);
     }
 
@@ -289,6 +291,7 @@ public final class ExceptionFactory {
     public static DnieContainerException dnieContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with DNIE container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new DnieContainerException(errorMessage, cause);
     }
 
@@ -302,6 +305,7 @@ public final class ExceptionFactory {
     public static PtIdContainerException ptIdContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with PT ID container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new PtIdContainerException(errorMessage, cause);
     }
 
@@ -315,6 +319,7 @@ public final class ExceptionFactory {
     public static EmvContainerException emvContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with EMV container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new EmvContainerException(errorMessage, cause);
     }
 
@@ -327,6 +332,7 @@ public final class ExceptionFactory {
     public static MobibContainerException mobibContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with MOBIB container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new MobibContainerException(errorMessage, cause);
     }
 
@@ -339,6 +345,7 @@ public final class ExceptionFactory {
     public static OcraContainerException ocraContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with MOBIB container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new OcraContainerException(errorMessage, cause);
     }
 
@@ -356,6 +363,7 @@ public final class ExceptionFactory {
     public static OcvClientException ocvException(String message, RestException cause) {
         String errorMessage = "Communication error with OCV";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new OcvClientException(errorMessage, cause);
     }
 
@@ -377,6 +385,7 @@ public final class ExceptionFactory {
     public static SafeNetContainerException safeNetContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with SafeNet Container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new SafeNetContainerException(errorMessage, cause);
     }
 
@@ -389,6 +398,7 @@ public final class ExceptionFactory {
     public static GclCoreException gclCoreException(String message, Throwable cause) {
         String errorMessage = "Communication error with GCL core";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new GclCoreException(errorMessage, cause);
     }
 
@@ -401,6 +411,7 @@ public final class ExceptionFactory {
     public static RemoteLoadingContainerException remoteLoadingContainerException(String message, RestException cause) {
         String errorMessage = "Communication error with Remote Loading container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
+        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new RemoteLoadingContainerException(errorMessage, cause);
     }
 }

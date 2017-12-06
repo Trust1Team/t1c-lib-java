@@ -10,7 +10,7 @@
     </appender>
 
     <logger name="com.t1t">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
     <root>

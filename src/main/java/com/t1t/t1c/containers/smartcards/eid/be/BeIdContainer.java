@@ -25,7 +25,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestClient> {
+public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestClient, BeIdAllData, BeIdAllCertificates> {
 
     private static final String PRIVATE_KEY_REFERENCE = "non-repudiation";
 
@@ -55,12 +55,12 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public AllData getAllData() throws BeIdContainerException {
+    public BeIdAllData getAllData() throws BeIdContainerException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
         try {
             GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)));
             return new BeIdAllData(data, parseCertificates);
@@ -70,17 +70,17 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public AllData getAllData(Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllData getAllData(Boolean... parseCertificates) throws BeIdContainerException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws BeIdContainerException {
+    public BeIdAllCertificates getAllCertificates() throws BeIdContainerException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
         try {
             GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)));
             return new BeIdAllCertificates(data, parseCertificates);
@@ -90,7 +90,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws BeIdContainerException {
         return getAllCertificates(null, parseCertificates);
     }
 
@@ -202,5 +202,15 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     @Override
     public String getTypeId() {
         return getType().getId();
+    }
+
+    @Override
+    public Class<BeIdAllData> getAllDataClass() {
+        return BeIdAllData.class;
+    }
+
+    @Override
+    public Class<BeIdAllCertificates> getAllCertificateClass() {
+        return BeIdAllCertificates.class;
     }
 }

@@ -25,17 +25,17 @@ public interface GclRemoteLoadingRestClient {
                                                                @Body GclRemoteLoadingApdu apdu,
                                                                @Query("session-id") String sessionId);
 
-    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/apdu")
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/apdus")
     Call<T1cResponse<List<GclRemoteLoadingCommand>>> executeApduCalls(@Path("containerId") String containerId,
                                                                       @Path("reader") String readerId,
                                                                       @Body List<GclRemoteLoadingApdu> apdu,
                                                                       @Query("session-id") String sessionId);
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/ccid")
-    Call<T1cResponse<GclRemoteLoadingCommand>> getCcid(@Path("containerId") String containerId,
-                                                       @Path("reader") String readerId,
-                                                       @Body GclRemoteLoadingCcidRequest request,
-                                                       @Query("session-id") String sessionId);
+    Call<T1cResponse<GclRemoteLoadingCommand>> executeCcid(@Path("containerId") String containerId,
+                                                           @Path("reader") String readerId,
+                                                           @Body GclRemoteLoadingCcidRequest request,
+                                                           @Query("session-id") String sessionId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/ccid-features")
     Call<T1cResponse<List<GclRemoteLoadingCcidFeature>>> getCcidFeatures(@Path("containerId") String containerId,

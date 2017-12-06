@@ -18,7 +18,7 @@ import java.util.List;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient>{
+public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, AllData, AllCertificates>{
 
 /*    private SafeNetContainerConfiguration safeNetConfig;
     private String module;*/
@@ -95,7 +95,17 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         return null;
     }
 
-/*    public SafeNetContainer(String reader, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
+        return null;
+    }
+
+    /*    public SafeNetContainer(String reader, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
         super(reader, ContainerType.SAFENET, httpClient);
         if (configuration != null) {
             safeNetConfig = configuration;

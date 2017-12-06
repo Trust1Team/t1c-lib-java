@@ -141,7 +141,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllData() throws Exception {
-        BeIdAllData data = (BeIdAllData) container.getAllData();
+        BeIdAllData data = container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getAddress());
         assertNotNull(data.getRn());

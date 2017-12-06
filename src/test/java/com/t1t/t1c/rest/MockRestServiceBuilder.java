@@ -36,10 +36,10 @@ public class MockRestServiceBuilder {
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
 
-    public static Retrofit getRetrofit(String uri, String apiKey, String jwt, boolean useGclCertificate) {
+    public static Retrofit getRetrofit(String uri, String apiKey, String jwt) {
         try {
             Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-                    .client(gethttpClient(apiKey, jwt, useGclCertificate))
+                    .client(gethttpClient(apiKey, jwt))
                     .addConverterFactory(GsonConverterFactory.create())
                     .baseUrl(uri);
             return retrofitBuilder.build();
@@ -49,7 +49,7 @@ public class MockRestServiceBuilder {
         }
     }
 
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt, boolean setSslConfig) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);

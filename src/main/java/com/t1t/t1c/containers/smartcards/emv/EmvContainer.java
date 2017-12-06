@@ -18,7 +18,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClient> {
+public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClient, AllData, AllCertificates> {
 
     private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
 
@@ -95,6 +95,16 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

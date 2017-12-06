@@ -18,7 +18,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestClient>{
+public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestClient, AllData, AllCertificates>{
     private static final Logger log = LoggerFactory.getLogger(OcraContainer.class);
 
     @Override
@@ -88,6 +88,16 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

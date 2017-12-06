@@ -18,7 +18,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRestClient> {
+public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRestClient, AllData, AllCertificates> {
     private static final Logger log = LoggerFactory.getLogger(MobibContainer.class);
 
     @Override
@@ -88,6 +88,16 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

@@ -4,13 +4,13 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRestClient> {
+public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRestClient, LuxIdAllData, LuxIdAllCertificates> {
 
     public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, String pin) {
         super(config, reader, gclLuxIdRestClient, pin);
@@ -57,12 +57,12 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public AllData getAllData() throws LuxIdContainerException {
+    public LuxIdAllData getAllData() throws LuxIdContainerException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
         try {
             GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
             return new LuxIdAllData(data, parseCertificates);
@@ -72,17 +72,17 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public AllData getAllData(Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllData getAllData(Boolean... parseCertificates) throws LuxIdContainerException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws LuxIdContainerException {
+    public LuxIdAllCertificates getAllCertificates() throws LuxIdContainerException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
         try {
             GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
             return new LuxIdAllCertificates(data, parseCertificates);
@@ -92,7 +92,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws LuxIdContainerException {
         return getAllCertificates(null, parseCertificates);
     }
 
@@ -186,5 +186,15 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         } catch (RestException ex) {
             throw ExceptionFactory.luxIdContainerException("Could not retrieve authentication certificate from container", ex);
         }
+    }
+
+    @Override
+    public Class<LuxIdAllData> getAllDataClass() {
+        return LuxIdAllData.class;
+    }
+
+    @Override
+    public Class<LuxIdAllCertificates> getAllCertificateClass() {
+        return LuxIdAllCertificates.class;
     }
 }

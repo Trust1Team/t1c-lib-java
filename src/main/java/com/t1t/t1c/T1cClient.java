@@ -1,8 +1,11 @@
 package com.t1t.t1c;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.configuration.T1cConfigParser;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
@@ -31,6 +34,7 @@ import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.ocv.OcvClient;
+import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -255,7 +259,7 @@ public class T1cClient implements IT1cClient {
 
     //TODO implement pin constraint in safe way
     private static String getPin(String... pin) {
-        return (pin.length == 0) ? "" : pin[0];
+        return (pin == null || pin.length == 0) ? "" : pin[0];
     }
 
     public String refreshJwt() {
@@ -284,7 +288,7 @@ public class T1cClient implements IT1cClient {
     @Override
     public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) { return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin)); }
     @Override
-    public LuxTrustContainer getLuxTrustContainer(GclReader reader, String pin) { return new LuxTrustContainer(connFactory.getConfig(), reader,connFactory.getGclLuxTrustRestClient(), getPin(pin)); }
+    public LuxTrustContainer getLuxTrustContainer(GclReader reader) { return new LuxTrustContainer(connFactory.getConfig(), reader,connFactory.getGclLuxTrustRestClient()); }
     @Override
     public DnieContainer getDnieContainer(GclReader reader) { return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient()); }
     @Override
@@ -332,7 +336,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader) {
-        return null;
+        return new RemoteLoadingContainer(connFactory.getConfig(), reader, connFactory.getGclRemoteLoadingRestClient());
     }
 
     @Override
@@ -341,8 +345,52 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public GenericContainer getGenericContainer(GclReader reader) {
-        return null; //TODO
+    public IGenericContainer getGenericContainer(GclReader reader, String... pin) {
+        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
+        IGenericContainer container;
+        switch (type) {
+            case AVENTRA:
+                container = getAventraContainer(reader);
+                break;
+            case BEID:
+                container = getBeIdContainer(reader);
+                break;
+            case DNIE:
+                container = getDnieContainer(reader);
+                break;
+            case EMV:
+                container = getEmvContainer(reader);
+                break;
+            case LUXID:
+                String pinToUse = getPin(pin);
+                Preconditions.checkArgument(StringUtils.isNotEmpty(pinToUse), "Cannot instantiate generic container for this reader without PIN");
+                container = getLuxIdContainer(reader, pinToUse);
+                break;
+            case LUXTRUST:
+                container = getLuxTrustContainer(reader);
+                break;
+            case MOBIB:
+                container = getMobibContainer(reader);
+                break;
+            case OBERTHUR:
+                container = getOberthurContainer(reader);
+                break;
+            case OCRA:
+                container = getOcraContainer(reader);
+                break;
+            case PIV:
+                container = getPivContainer(reader);
+                break;
+            case PT:
+                container = getPtIdContainer(reader);
+                break;
+            case SAFENET:
+                container = getSafeNetContainer(reader);
+                break;
+            default:
+                throw ExceptionFactory.genericContainerException("No generic container available for this reader");
+        }
+        return container;
     }
 
     @Override

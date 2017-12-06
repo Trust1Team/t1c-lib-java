@@ -16,7 +16,7 @@ import java.util.List;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class OberthurContainer extends GenericContainer<OberthurContainer, GclOberthurRestClient> {
+public class OberthurContainer extends GenericContainer<OberthurContainer, GclOberthurRestClient, AllData, AllCertificates> {
 
     @Override
     public OberthurContainer createInstance(LibConfig config, GclReader reader, GclOberthurRestClient httpClient, String pin) {
@@ -85,6 +85,16 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

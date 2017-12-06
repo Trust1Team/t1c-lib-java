@@ -16,7 +16,7 @@ public class GclRemoteLoadingCcidRequest {
     private String feature;
     @SerializedName("apdu")
     @Expose
-    private GclRemoteLoadingApdu apdu;
+    private String apdu;
 
     /**
      * 
@@ -46,7 +46,7 @@ public class GclRemoteLoadingCcidRequest {
      * @return
      *     The apdu
      */
-    public GclRemoteLoadingApdu getApdu() {
+    public String getApdu() {
         return apdu;
     }
 
@@ -55,11 +55,11 @@ public class GclRemoteLoadingCcidRequest {
      * @param apdu
      *     The apdu
      */
-    public void setApdu(GclRemoteLoadingApdu apdu) {
+    public void setApdu(String apdu) {
         this.apdu = apdu;
     }
 
-    public GclRemoteLoadingCcidRequest withApdu(GclRemoteLoadingApdu apdu) {
+    public GclRemoteLoadingCcidRequest withApdu(String apdu) {
         this.apdu = apdu;
         return this;
     }

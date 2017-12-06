@@ -36,7 +36,7 @@ public enum ContainerType {
             BeIdContainer.class,
             GclBeIdAllData.class),
     DNIE("dnie",
-            Collections.singletonList(""),
+            Collections.singletonList("DNI electronico"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
             DnieContainer.class,

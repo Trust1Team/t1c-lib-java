@@ -1,6 +1,7 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
@@ -38,10 +39,10 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    GenericContainer getGenericContainer(GclReader reader);
+    IGenericContainer getGenericContainer(GclReader reader, String... pin);
     BeIdContainer getBeIdContainer(GclReader reader);
     LuxIdContainer getLuxIdContainer(GclReader reader, String pin);
-    LuxTrustContainer getLuxTrustContainer(GclReader reader, String pin);
+    LuxTrustContainer getLuxTrustContainer(GclReader reader);
     DnieContainer getDnieContainer(GclReader reader);
     EmvContainer getEmvContainer(GclReader reader);
     MobibContainer getMobibContainer(GclReader reader);

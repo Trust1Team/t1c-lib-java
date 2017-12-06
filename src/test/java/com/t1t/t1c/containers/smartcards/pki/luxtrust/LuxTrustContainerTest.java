@@ -33,7 +33,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false), "123456");
+        container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false));
     }
 
     @Test

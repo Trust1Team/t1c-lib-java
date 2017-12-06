@@ -2,6 +2,8 @@ package com.t1t.t1c;
 
 import com.google.gson.Gson;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidFeature;
+import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCommand;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllData;
@@ -66,6 +68,7 @@ public final class MockResponseFactory {
     public static final String PIV_READER_ID = "57a3e2e71c48ce11";
     public static final String PT_READER_ID = "57a3e2e71c48ce12";
     public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
+    public static final String REMOTE_LOADING_READER_ID = "57a3e2e71c48ce14";
 
 
 
@@ -645,6 +648,68 @@ public final class MockResponseFactory {
 
     public static Boolean getLuxTrustActivated() {
         return true;
+    }
+
+    //
+    // Remote loading responses
+    //
+
+    public static T1cResponse<String> getRemoteLoadingAtrResponse() {
+        return getSuccessResponse(getRemoteLoadingAtr());
+    }
+
+    public static T1cResponse<GclRemoteLoadingCommand> getRemoteLoadingCommandResponse() {
+        return getSuccessResponse(getGclRemoteLoadingCommand(0));
+    }
+
+    public static T1cResponse<List<GclRemoteLoadingCommand>> getRemoteLoadingCommandsResponses(int amountOfCommands) {
+        List<GclRemoteLoadingCommand> remoteLoadingCommands = new ArrayList<>();
+        for (int i = 0; i < amountOfCommands; i++) {
+            remoteLoadingCommands.add(getGclRemoteLoadingCommand(i));
+        }
+        return getSuccessResponse(remoteLoadingCommands);
+    }
+
+    public static T1cResponse<List<GclRemoteLoadingCcidFeature>> getRemoteLoadingCcidFeaturesResponse() {
+        return getSuccessResponse(getGclRemoteLoadingCcidFeatures());
+    }
+
+    public static T1cResponse<Boolean> getRemoteLoadingIsPresentResponse() {
+        return getSuccessResponse(true);
+    }
+
+    public static T1cResponse<String> getRemoteLoadingOpenSessionResponse() {
+        return getSuccessResponse(getRemoteLoadingSessionId());
+    }
+
+    public static T1cResponse<String> getRemoteLoadingCloseSessionResponse(String sessionId) {
+        return getSuccessResponse(sessionId);
+    }
+
+    public static String getRemoteLoadingSessionId() {
+        return "sessionId";
+    }
+
+    public static List<GclRemoteLoadingCcidFeature> getGclRemoteLoadingCcidFeatures() {
+        List<GclRemoteLoadingCcidFeature> features = new ArrayList<>();
+        features.add(new GclRemoteLoadingCcidFeature()
+                .withId("VERIFY_PIN_DIRECT")
+                .withControlCode(1));
+        features.add(new GclRemoteLoadingCcidFeature()
+                .withId("MODIFY_PIN_DIRECT")
+                .withControlCode(2));
+        return features;
+    }
+
+    public static GclRemoteLoadingCommand getGclRemoteLoadingCommand(int txIncrement) {
+        return new GclRemoteLoadingCommand()
+                .withRx("RESPONSE_DATA")
+                .withTx("00B00000B" + txIncrement)
+                .withSw("9000");
+    }
+
+    public static String getRemoteLoadingAtr() {
+        return "3B8F800180318065B0850300EF120FFF82900073";
     }
 
     // TODO clean up the rest of the responses below

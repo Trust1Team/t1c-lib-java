@@ -10,13 +10,14 @@ import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 
+import java.security.AlgorithmConstraints;
 import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class AventraContainer extends GenericContainer<AventraContainer, GclAventraRestClient> {
+public class AventraContainer extends GenericContainer<AventraContainer, GclAventraRestClient, AllData, AllCertificates> {
 
     @Override
     public AventraContainer createInstance(LibConfig config, GclReader reader, GclAventraRestClient httpClient, String pin) {
@@ -85,6 +86,16 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

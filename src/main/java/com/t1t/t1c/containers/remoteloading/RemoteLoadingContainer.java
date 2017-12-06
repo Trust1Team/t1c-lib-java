@@ -7,10 +7,10 @@ import com.t1t.t1c.containers.FunctionalContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.rest.RestExecutor;
-import retrofit2.Call;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,12 +33,20 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         return this;
     }
 
+    public String getAtr() {
+        return getAtr(null);
+    }
+
     public String getAtr(String sessionId) {
         try {
             return RestExecutor.returnData(httpClient.getAtr(getTypeId(), reader.getId(), sessionId));
         } catch (RestException ex) {
             throw ExceptionFactory.remoteLoadingContainerException("could not retrieve ATR", ex);
         }
+    }
+
+    public GclRemoteLoadingCommand executeApduCall(GclRemoteLoadingApdu apdu) {
+        return executeApduCall(apdu, null);
     }
 
     public GclRemoteLoadingCommand executeApduCall(GclRemoteLoadingApdu apdu, String sessionId) {
@@ -49,6 +57,10 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         }
     }
 
+    public List<GclRemoteLoadingCommand> executeApduCalls(List<GclRemoteLoadingApdu> apdus) {
+        return executeApduCalls(apdus, null);
+    }
+
     public List<GclRemoteLoadingCommand> executeApduCalls(List<GclRemoteLoadingApdu> apdus, String sessionId) {
         try {
             return RestExecutor.returnData(httpClient.executeApduCalls(getTypeId(), reader.getId(), apdus, sessionId));
@@ -57,12 +69,20 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         }
     }
 
-    public GclRemoteLoadingCommand isCcidFeatureAvailable(GclRemoteLoadingCcidRequest request, String sessionId) {
+    public GclRemoteLoadingCommand executeCcid(String feature, String apdu) {
+        return executeCcid(feature, apdu, null);
+    }
+
+    public GclRemoteLoadingCommand executeCcid(String feature, String apdu, String sessionId) {
         try {
-            return RestExecutor.returnData(httpClient.getCcid(getTypeId(), reader.getId(), request, sessionId));
+            return RestExecutor.returnData(httpClient.executeCcid(getTypeId(), reader.getId(), new GclRemoteLoadingCcidRequest().withApdu(apdu).withFeature(feature), sessionId));
         } catch (RestException ex) {
             throw ExceptionFactory.remoteLoadingContainerException("could not retrieve CCID feature availability", ex);
         }
+    }
+
+    public List<GclRemoteLoadingCcidFeature> getCcidFeatures() {
+        return getCcidFeatures(null);
     }
 
     public List<GclRemoteLoadingCcidFeature> getCcidFeatures(String sessionId) {
@@ -73,27 +93,43 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         }
     }
 
-    public GclRemoteLoadingCommand executeCommand(GclRemoteLoadingCommandRequest request, String sessionId) {
+    public GclRemoteLoadingCommand executeCommand(String command) {
+        return executeCommand(command, null);
+    }
+
+    public GclRemoteLoadingCommand executeCommand(String command, String sessionId) {
         try {
-            return RestExecutor.returnData(httpClient.executeCommand(getTypeId(), reader.getId(), request, sessionId));
+            return RestExecutor.returnData(httpClient.executeCommand(getTypeId(), reader.getId(), new GclRemoteLoadingCommandRequest().withTx(command), sessionId));
         } catch (RestException ex) {
             throw ExceptionFactory.remoteLoadingContainerException("could not execute command", ex);
         }
     }
 
-    public List<GclRemoteLoadingCommand> executeCommands(List<GclRemoteLoadingCommandRequest> request, String sessionId) {
+    public List<GclRemoteLoadingCommand> executeCommands(List<String> commands) {
+        return executeCommands(commands, null);
+    }
+
+    public List<GclRemoteLoadingCommand> executeCommands(List<String> commands, String sessionId) {
         try {
-            return RestExecutor.returnData(httpClient.executeCommands(getTypeId(), reader.getId(), request, sessionId));
+            List<GclRemoteLoadingCommandRequest> commandRequests = new ArrayList<>();
+            for (String command : commands) {
+                commandRequests.add(new GclRemoteLoadingCommandRequest().withTx(command));
+            }
+            return RestExecutor.returnData(httpClient.executeCommands(getTypeId(), reader.getId(), commandRequests, sessionId));
         } catch (RestException ex) {
             throw ExceptionFactory.remoteLoadingContainerException("could not execute commands", ex);
         }
+    }
+
+    public Boolean isCardPresent() {
+        return isCardPresent(null);
     }
 
     public Boolean isCardPresent(String sessionId) {
         try {
             return RestExecutor.returnData(httpClient.isPresent(getTypeId(), reader.getId(), sessionId));
         } catch (RestException ex) {
-            throw ExceptionFactory.remoteLoadingContainerException("could not execute command", ex);
+            throw ExceptionFactory.remoteLoadingContainerException("could determine if card is present", ex);
         }
     }
 
@@ -109,15 +145,22 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
             }
             return RestExecutor.returnData(httpClient.openSession(getTypeId(), reader.getId(), new GclRemoteLoadingOpenSessionRequest().withTimeout(timeoutToUse)));
         } catch (RestException ex) {
-            throw ExceptionFactory.remoteLoadingContainerException("could not execute command", ex);
+            throw ExceptionFactory.remoteLoadingContainerException("could not open session", ex);
         }
     }
 
-    public String closeSession(String sessionId) {
+    public Boolean closeSession() {
+        return closeSession(null);
+    }
+
+    public Boolean closeSession(String sessionId) {
         try {
-            return RestExecutor.returnData(httpClient.closeSession(getTypeId(), reader.getId(), sessionId));
+            if (StringUtils.isNotEmpty(sessionId)) {
+                return sessionId.equals(RestExecutor.returnData(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
+            }
+            else return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
         } catch (RestException ex) {
-            throw ExceptionFactory.remoteLoadingContainerException("could not execute command", ex);
+            throw ExceptionFactory.remoteLoadingContainerException("could not close session", ex);
         }
     }
 

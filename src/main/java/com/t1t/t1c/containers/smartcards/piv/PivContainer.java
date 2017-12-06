@@ -16,7 +16,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient> {
+public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient, AllData, AllCertificates> {
 
     @Override
     public PivContainer createInstance(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
@@ -85,6 +85,16 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

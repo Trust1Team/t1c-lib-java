@@ -21,62 +21,52 @@ public class MockGclLuxTrustRestClient extends AbstractMockRestClient<GclLuxTrus
     }
 
     @Override
-    public Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllDataResponse(null)).getLuxTrustAllData(containerId, readerId, pin);
+    public Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllDataResponse(filter)).getLuxTrustAllData(containerId, readerId, filter);
     }
 
     @Override
-    public Call<T1cResponse<GclLuxTrustAllData>> getLuxTrustAllData(String containerId, String readerId, String pin, String filter) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllDataResponse(filter)).getLuxTrustAllData(containerId, readerId, pin, filter);
+    public Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(String containerId, String readerId, String filter) {
+        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllCertificatesResponse(filter)).getLuxTrustAllCertificates(containerId, readerId, filter);
     }
 
     @Override
-    public Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllCertificatesResponse(null)).getLuxTrustAllCertificates(containerId, readerId, pin);
+    public Call<T1cResponse<Object>> isLuxTrustActivated(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSuccessResponse()).isLuxTrustActivated(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(String containerId, String readerId, String pin, String filter) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAllCertificatesResponse(filter)).getLuxTrustAllCertificates(containerId, readerId, pin, filter);
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, GclVerifyPinRequest request) {
+        return delegate.returningResponse(MockResponseFactory.getLuxTrustVerifyPinResponse()).verifyPin(containerId, readerId, request);
     }
 
     @Override
-    public Call<T1cResponse<Object>> isLuxTrustActivated(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getSuccessResponse()).isLuxTrustActivated(containerId, readerId, pin);
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getLuxTrustVerifyPinResponse()).verifyPin(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin, GclVerifyPinRequest request) {
-        return delegate.returningResponse(MockResponseFactory.getLuxTrustVerifyPinResponse()).verifyPin(containerId, readerId, pin, request);
+    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).authenticate(containerId, readerId, request);
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getLuxTrustVerifyPinResponse()).verifyPin(containerId, readerId, pin);
+    public Call<T1cResponse<String>> sign(String containerId, String readerId, GclAuthenticateOrSignData request) {
+        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).authenticate(containerId, readerId, request);
     }
 
     @Override
-    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
-        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).authenticate(containerId, readerId, pin, request);
+    public Call<T1cResponse<String>> getAuthenticationCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAuthenticationCertificate()).getAuthenticationCertificate(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<String>> sign(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) {
-        return delegate.returningResponse(MockResponseFactory.getSignedHashResponse()).authenticate(containerId, readerId, pin, request);
+    public Call<T1cResponse<String>> getSigningCertificate(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustSigningCertificate()).getAuthenticationCertificate(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<String>> getAuthenticationCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustAuthenticationCertificate()).getAuthenticationCertificate(containerId, readerId, pin);
-    }
-
-    @Override
-    public Call<T1cResponse<String>> getSigningCertificate(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustSigningCertificate()).getAuthenticationCertificate(containerId, readerId, pin);
-    }
-
-    @Override
-    public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId, String pin) {
-        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustRootCertificates()).getRootCertificates(containerId, readerId, pin);
+    public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getGclLuxTrustRootCertificates()).getRootCertificates(containerId, readerId);
     }
 }

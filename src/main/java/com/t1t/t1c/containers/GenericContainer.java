@@ -1,10 +1,7 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,7 +18,7 @@ import java.util.List;
  *
  * //TODO
  */
-public abstract class GenericContainer<T extends GenericContainer, U> implements IGclContainer {
+public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
     /*Properties*/
     protected GclReader reader;
     protected U httpClient;
@@ -32,19 +29,6 @@ public abstract class GenericContainer<T extends GenericContainer, U> implements
     public GenericContainer() {}
     public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) { createInstance(config, reader, httpClient, pin); }
     public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
-    /*Data Related*/
-    public abstract List<String> getAllDataFilters();
-    public abstract List<String> getAllCertificateFilters();
-    public abstract AllData getAllData() throws GenericContainerException;
-    public abstract AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
-    public abstract AllData getAllData(Boolean... parseCertificates) throws GenericContainerException;
-    public abstract AllCertificates getAllCertificates() throws GenericContainerException;
-    public abstract AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
-    public abstract AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException;
-    /*Token Functionality*/
-    public abstract Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
-    public abstract String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
-    public abstract String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
 
     protected String createFilterParams(List<String> params) {
         String returnValue = null;

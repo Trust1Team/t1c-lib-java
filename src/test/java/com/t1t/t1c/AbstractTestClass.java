@@ -2,6 +2,8 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingRestClient;
+import com.t1t.t1c.containers.remoteloading.MockGclRemoteLoadingRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.MockGclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
@@ -100,6 +102,8 @@ public abstract class AbstractTestClass {
     private GclLuxTrustRestClient gclLuxTrustRestClient;
     @Mock
     private GclOberthurRestClient gclOberthurRestClient;
+    @Mock
+    private GclRemoteLoadingRestClient gclRemoteLoadingRestClient;
 
     @Before
     public void init() {
@@ -154,9 +158,9 @@ public abstract class AbstractTestClass {
         this.config = conf;
     }
 
-    private <T> BehaviorDelegate<T> mockRestClient(Class<T> clazz, String baseUrl, String apikey, String jwt, boolean useGclCertificate) {
+    private <T> BehaviorDelegate<T> mockRestClient(Class<T> clazz, String baseUrl, String apikey, String jwt) {
         NetworkBehavior behavior = getNetworkBehavior();
-        Retrofit retrofit = MockRestServiceBuilder.getRetrofit(baseUrl, apikey, jwt, useGclCertificate);
+        Retrofit retrofit = MockRestServiceBuilder.getRetrofit(baseUrl, apikey, jwt);
         MockRetrofit mockRetrofit = new MockRetrofit.Builder(retrofit)
                 .networkBehavior(behavior)
                 .build();
@@ -188,24 +192,26 @@ public abstract class AbstractTestClass {
         expect(RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class)).andReturn(gclAventraRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class)).andReturn(gclLuxTrustRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class)).andReturn(gclOberthurRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(config, GclRemoteLoadingRestClient.class)).andReturn(gclRemoteLoadingRestClient);
     }
 
     private void mockRestClients() {
-        dsRestClient = new MockDsRestClient(mockRestClient(DsRestClient.class, config.getDsUri(), config.getApiKey(), null, false));
-        gclRestClient = new MockGclRestClient(mockRestClient(GclRestClient.class, config.getGclClientUri(), null, config.getJwt(), true));
-        gclAdminRestClient = new MockGclRestAdminClient(mockRestClient(GclAdminRestClient.class, config.getGclClientUri(), null, config.getJwt(), true));
-        ocvRestClient = new MockOcvRestClient(mockRestClient(OcvRestClient.class, config.getOcvUri(), config.getApiKey(), null, false));
-        gclBeIdRestClient = new MockGclBeIdRestClient(mockRestClient(GclBeIdRestClient.class, config.getGclClientUri(), null, null, true));
-        gclDniRestClient = new MockGclDnieRestClient(mockRestClient(GclDniRestClient.class, config.getGclClientUri(), null, null, true));
-        gclLuxIdRestClient = new MockGclLuxIdRestClient(mockRestClient(GclLuxIdRestClient.class, config.getGclClientUri(), null, null, true));
-        gclPtIdRestClient = new MockGclPtIdRestClient(mockRestClient(GclPtIdRestClient.class, config.getGclClientUri(), null, null, true));
-        gclEmvRestClient = new MockGclEmvRestClient(mockRestClient(GclEmvRestClient.class, config.getGclClientUri(), null, null, true));
-        gclMobibRestClient = new MockGclMobibRestClient(mockRestClient(GclMobibRestClient.class, config.getGclClientUri(), null, null, true));
-        gclOcraRestClient = new MockGclOcraRestClient(mockRestClient(GclOcraRestClient.class, config.getGclClientUri(), null, null, true));
-        gclPivRestClient = new MockGclPivRestClient(mockRestClient(GclPivRestClient.class, config.getGclClientUri(), null, null, true));
-        gclSafeNetRestClient = new MockGclSafeNetRestClient(mockRestClient(GclSafeNetRestClient.class, config.getGclClientUri(), null, null, true));
-        gclAventraRestClient = new MockGclAventraRestClient(mockRestClient(GclAventraRestClient.class, config.getGclClientUri(), null, null, true));
-        gclLuxTrustRestClient = new MockGclLuxTrustRestClient(mockRestClient(GclLuxTrustRestClient.class, config.getGclClientUri(), null, null, true));
-        gclOberthurRestClient = new MockGclOberthurRestClient(mockRestClient(GclOberthurRestClient.class, config.getGclClientUri(), null, null, true));
+        dsRestClient = new MockDsRestClient(mockRestClient(DsRestClient.class, config.getDsUri(), config.getApiKey(), null));
+        gclRestClient = new MockGclRestClient(mockRestClient(GclRestClient.class, config.getGclClientUri(), null, config.getJwt()));
+        gclAdminRestClient = new MockGclRestAdminClient(mockRestClient(GclAdminRestClient.class, config.getGclClientUri(), null, config.getJwt()));
+        ocvRestClient = new MockOcvRestClient(mockRestClient(OcvRestClient.class, config.getOcvUri(), config.getApiKey(), null));
+        gclBeIdRestClient = new MockGclBeIdRestClient(mockRestClient(GclBeIdRestClient.class, config.getGclClientUri(), null, null));
+        gclDniRestClient = new MockGclDnieRestClient(mockRestClient(GclDniRestClient.class, config.getGclClientUri(), null, null));
+        gclLuxIdRestClient = new MockGclLuxIdRestClient(mockRestClient(GclLuxIdRestClient.class, config.getGclClientUri(), null, null));
+        gclPtIdRestClient = new MockGclPtIdRestClient(mockRestClient(GclPtIdRestClient.class, config.getGclClientUri(), null, null));
+        gclEmvRestClient = new MockGclEmvRestClient(mockRestClient(GclEmvRestClient.class, config.getGclClientUri(), null, null));
+        gclMobibRestClient = new MockGclMobibRestClient(mockRestClient(GclMobibRestClient.class, config.getGclClientUri(), null, null));
+        gclOcraRestClient = new MockGclOcraRestClient(mockRestClient(GclOcraRestClient.class, config.getGclClientUri(), null, null));
+        gclPivRestClient = new MockGclPivRestClient(mockRestClient(GclPivRestClient.class, config.getGclClientUri(), null, null));
+        gclSafeNetRestClient = new MockGclSafeNetRestClient(mockRestClient(GclSafeNetRestClient.class, config.getGclClientUri(), null, null));
+        gclAventraRestClient = new MockGclAventraRestClient(mockRestClient(GclAventraRestClient.class, config.getGclClientUri(), null, null));
+        gclLuxTrustRestClient = new MockGclLuxTrustRestClient(mockRestClient(GclLuxTrustRestClient.class, config.getGclClientUri(), null, null));
+        gclOberthurRestClient = new MockGclOberthurRestClient(mockRestClient(GclOberthurRestClient.class, config.getGclClientUri(), null, null));
+        gclRemoteLoadingRestClient = new MockGclRemoteLoadingRestClient(mockRestClient(GclRemoteLoadingRestClient.class, config.getGclClientUri(), null, null));
     }
 }

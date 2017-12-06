@@ -18,7 +18,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient> {
+public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient, AllData, AllCertificates> {
 
     private static final Logger log = LoggerFactory.getLogger(DnieContainer.class);
 
@@ -94,6 +94,16 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }

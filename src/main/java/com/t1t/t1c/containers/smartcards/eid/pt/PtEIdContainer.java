@@ -18,7 +18,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient> {
+public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient, AllData, AllCertificates> {
     private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
     @Override
@@ -88,6 +88,16 @@ public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRest
 
     @Override
     public String getTypeId() {
+        return null;
+    }
+
+    @Override
+    public Class<AllData> getAllDataClass() {
+        return null;
+    }
+
+    @Override
+    public Class<AllCertificates> getAllCertificateClass() {
         return null;
     }
 }
