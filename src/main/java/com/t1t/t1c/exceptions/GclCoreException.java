@@ -1,8 +1,5 @@
 package com.t1t.t1c.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017

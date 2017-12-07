@@ -1,5 +1,6 @@
 package com.t1t.t1c.containers.smartcards.emv;
 
+import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
@@ -33,4 +34,10 @@ public interface GclEmvRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH)
     Call<T1cResponse<GclEmvAllData>> getEmvAllData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter) throws RestException;
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request) throws RestException;
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
+    Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException;
 }

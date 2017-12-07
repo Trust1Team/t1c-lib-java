@@ -6,8 +6,6 @@ import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
 import com.t1t.t1c.model.T1cResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 

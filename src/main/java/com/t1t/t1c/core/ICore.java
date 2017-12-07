@@ -1,7 +1,6 @@
 package com.t1t.t1c.core;
 
 import com.t1t.t1c.exceptions.GclCoreException;
-import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
 
 import java.util.List;

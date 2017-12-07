@@ -1,10 +1,7 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -14,14 +11,11 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
-import com.t1t.t1c.core.Core;
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.IDsClient;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -29,7 +23,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Guillaume Vandecasteele

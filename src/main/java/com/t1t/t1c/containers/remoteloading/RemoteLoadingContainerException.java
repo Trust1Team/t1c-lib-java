@@ -3,8 +3,6 @@ package com.t1t.t1c.containers.remoteloading;
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Guillaume Vandecasteele

@@ -1,6 +1,5 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;

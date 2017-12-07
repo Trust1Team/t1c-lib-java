@@ -6,7 +6,6 @@ import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.utils.ContainerUtil;
-import okhttp3.mockwebserver.MockResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.t1t.t1c.MockResponseFactory.getGclReaders;

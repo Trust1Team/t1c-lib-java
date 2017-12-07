@@ -20,12 +20,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.net.ssl.*;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.*;
-import java.security.cert.Certificate;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
 /**

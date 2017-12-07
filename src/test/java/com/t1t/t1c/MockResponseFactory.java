@@ -25,7 +25,10 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
-import com.t1t.t1c.core.*;
+import com.t1t.t1c.core.GclCard;
+import com.t1t.t1c.core.GclContainer;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
 import com.t1t.t1c.ds.DsDevice;
 import com.t1t.t1c.ds.DsDownloadPath;
 import com.t1t.t1c.ds.DsToken;
@@ -978,6 +981,84 @@ public final class MockResponseFactory {
                 .withIdesp("AMF108370")
                 .withNumber("54350330L")
                 .withSerialNumber("8644E25A8A30A4");
+    }
+
+    //
+    // EMV responses
+    //
+
+    public static T1cResponse<List<GclEmvApplication>> getGclEmvApplicationsResponse() {
+        return getSuccessResponse(getGclEmvApplications());
+    }
+
+    public static T1cResponse<GclEmvApplicationData> getGclEmvApplicationDataResponse() {
+        return getSuccessResponse(getGclEmvApplicationData());
+    }
+
+    public static T1cResponse<GclEmvPublicKeyCertificate> getGclEmvIccPublicKeyCertificateResponse(String aid) throws RestException {
+        if (!"A0000000048002".equals(aid)) throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
+        return getSuccessResponse(getGclEmvIccPublicKeyCertificate());
+    }
+
+    public static T1cResponse<GclEmvPublicKeyCertificate> getGclEmvIssuerPublicKeyCertificateResponse(String aid) throws RestException {
+        if (!"A0000000048002".equals(aid)) throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
+        return getSuccessResponse(getGclEmvIssuerPublicKeyCertificate());
+    }
+
+    public static T1cResponse<GclEmvAllData> getGclEmvAllDataResponse(String filter) throws RestException {
+        List<String> filterParams = splitFilterParams(filter);
+        GclEmvAllData data = getGclEmvAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("applications")) data.setApplicationData(null);
+            if (!filterParams.contains("application-data")) data.setApplicationData(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static GclEmvAllData getGclEmvAllData() {
+        return new GclEmvAllData().withApplicationData(getGclEmvApplicationData()).withApplications(getGclEmvApplications());
+    }
+
+    public static GclEmvPublicKeyCertificate getGclEmvIssuerPublicKeyCertificate() {
+        return new GclEmvPublicKeyCertificate()
+                .withData("owD7hDFbMOg3AG2IESD8j78T2Etrvv+7tZAkrSdMZZ8wXgFlAaXdOWngrRp3c2GWSkeHIR5YfgRbDeUtvCMObGG6qyGc1yDmAP6m6UBcEBWYbxjqHtSmnsAroz9lt4prMvKLx4AHLWwiJV3cc/PTHG4NoMIKXlK/dOxdVmjrul0lcEwBEZ+TwvYjQ8lLxOjW1LnD8pbFCt3mhB/WDikySLLITKEsY0rQBTbcJ0fHTYo=")
+                .withExponent("Aw==")
+                .withRemainder("ZkSGPIZ4v4rEe7JOO4HX3VrAytZZBvMITumBsGTtVvrXszzl");
+    }
+
+    public static GclEmvPublicKeyCertificate getGclEmvIccPublicKeyCertificate() {
+        return new GclEmvPublicKeyCertificate()
+                .withData("C9UsasgS2x98a8tCtCvPxiLCT/B6KuaoqJAvAOfigrqLXQt8gRCLnkLKwwVNA9iwFJ/YdWet9bHBVLZjPIro3TPze26O1rjPrehAskMr/EWA86H9NP7AuY45p58eUrrc+Ks7tT3dByvVUYNAFP9iK1Sndhl7ExWY6nxKFRqSY651x3xs1Y0UcVzf7RJgAsIUT9pJvpU4sX+EQpa8Eb85q0mVu1wsbLsfSA5P6f8tgtg=")
+                .withExponent("AQAB")
+                .withRemainder("");
+    }
+
+    public static GclEmvApplicationData getGclEmvApplicationData() {
+        return new GclEmvApplicationData()
+                .withCountry("BE")
+                .withCountryCode("0056")
+                .withEffectiveDate("091101")
+                .withExpirationDate("141130")
+                .withLanguage("nl")
+                .withName("")
+                .withPan("67034200172725018");
+    }
+
+    public static List<GclEmvApplication> getGclEmvApplications() {
+        return Arrays.asList(
+                new GclEmvApplication()
+                        .withAid("A0000000048002")
+                        .withLabel("SECURE CODE")
+                        .withPriority(0),
+                new GclEmvApplication()
+                        .withAid("D056000666111010")
+                        .withLabel("BANCONTACT")
+                        .withPriority(1),
+                new GclEmvApplication()
+                        .withAid("A0000000043060")
+                        .withLabel("MAESTRO")
+                        .withPriority(1)
+        );
     }
 
     // TODO clean up the rest of the responses below

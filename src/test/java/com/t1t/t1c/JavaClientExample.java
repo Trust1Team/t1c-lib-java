@@ -1,19 +1,19 @@
 package com.t1t.t1c;
 
-import com.google.gson.Gson;
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.remoteloading.*;
+import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingApdu;
+import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
+import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
+import com.t1t.t1c.containers.smartcards.emv.GclEmvApplication;
+import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -22,10 +22,7 @@ import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -113,6 +110,7 @@ public class JavaClientExample {
                 dnieUseCases(reader);
                 break;
             case EMV:
+                emvUseCases(reader);
                 break;
             case EST:
                 break;
@@ -138,6 +136,31 @@ public class JavaClientExample {
         }
     }
 
+    private static void emvUseCases(GclReader reader) {
+        EmvContainer container = client.getEmvContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Card data dump (filtered): " + container.getAllData(Collections.singletonList("application-data")).toString());
+
+        List<GclEmvApplication> apps = container.getApplications();
+        for (GclEmvApplication app : apps) {
+            System.out.println("Application: " + app.toString());
+            GclEmvPublicKeyCertificate iccCert = container.getIccPublicKeyCertificate(app.getAid());
+            if (iccCert != null) System.out.println("Application ICC public key certificate: " + iccCert.toString());
+            GclEmvPublicKeyCertificate issCert = container.getIssuerPublicKeyCertificate(app.getAid());
+            if (issCert != null) System.out.println("Application Issuer public key certificate: " + app.toString());
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        if (StringUtils.isNotEmpty(pin)) {
+            System.out.println("PIN verified: " + container.verifyPin(pin));
+        }
+    }
+
     private static void dnieUseCases(GclReader reader) {
         DnieContainer container = client.getDnieContainer(reader);
 
@@ -145,13 +168,13 @@ public class JavaClientExample {
 
         System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
 
-        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate());
+        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate().getBase64());
 
-        System.out.println("Base64-encoded intermediate certificate: " + container.getIntermediateCertificate());
+        System.out.println("Base64-encoded intermediate certificate: " + container.getIntermediateCertificate().getBase64());
 
-        System.out.println("Base64-encoded signing certificate: " + container.getSigningCertificate());
+        System.out.println("Base64-encoded signing certificate: " + container.getSigningCertificate().getBase64());
 
-        System.out.println("DNIE info: " + container.getInfo());
+        System.out.println("DNIE info: " + container.getInfo().toString());
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
@@ -184,15 +207,15 @@ public class JavaClientExample {
 
         System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
 
-        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate());
+        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate().getBase64());
 
-        System.out.println("Base64-encoded root authentication certificate: " + container.getRootAuthenticationCertificate());
+        System.out.println("Base64-encoded root authentication certificate: " + container.getRootAuthenticationCertificate().getBase64());
 
-        System.out.println("Base64-encoded non-repudiation certificate: " + container.getNonRepudiationCertificate());
+        System.out.println("Base64-encoded non-repudiation certificate: " + container.getNonRepudiationCertificate().getBase64());
 
-        System.out.println("Base64-encoded root non-repudiation certificate: " + container.getRootNonRepudiationCertificate());
+        System.out.println("Base64-encoded root non-repudiation certificate: " + container.getRootNonRepudiationCertificate().getBase64());
 
-        System.out.println("ID data: " + container.getPtIdData());
+        System.out.println("ID data: " + container.getPtIdData().toString());
 
         Scanner scan = new Scanner(System.in);
         System.out.print("Please provide Sign PIN: ");
@@ -322,8 +345,8 @@ public class JavaClientExample {
                 if (it.hasNext()) sb.append(", ");
             }
             System.out.println("Base64 root certificates: " + sb.toString());
-            System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate());
-            System.out.println("Base64 non-repudiation certificate: " + container.getNonRepudiationCertificate());
+            System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate().getBase64());
+            System.out.println("Base64 non-repudiation certificate: " + container.getNonRepudiationCertificate().getBase64());
             System.out.println("Card data dump: " + container.getAllData());
             System.out.println("Card certificate dump: " + container.getAllCertificates());
         }
@@ -360,8 +383,8 @@ public class JavaClientExample {
                 if (it.hasNext()) sb.append(", ");
             }
             System.out.println("Base64 root certificates: " + sb.toString());
-            System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate());
-            System.out.println("Base64 non-repudiation certificate: " + container.getSigningCertificate());
+            System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate().getBase64());
+            System.out.println("Base64 non-repudiation certificate: " + container.getSigningCertificate().getBase64());
             System.out.println("Card data dump: " + container.getAllData());
             System.out.println("Card certificate dump: " + container.getAllCertificates());
         }

@@ -3,7 +3,6 @@ package com.t1t.t1c.containers.smartcards.pki.aventra;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -11,7 +10,6 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 
-import java.security.AlgorithmConstraints;
 import java.util.List;
 
 /**
