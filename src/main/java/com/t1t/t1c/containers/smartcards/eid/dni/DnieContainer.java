@@ -177,7 +177,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public Class<DnieAllCertificates> getAllCertificateClass() {
+    public Class<DnieAllCertificates> getAllCertificatesClass() {
         return DnieAllCertificates.class;
     }
 }

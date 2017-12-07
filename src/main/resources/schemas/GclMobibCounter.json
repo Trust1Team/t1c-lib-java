@@ -9,6 +9,9 @@
     },
     "type": {
       "type": "integer"
+    },
+    "journeys": {
+      "type": "integer"
     }
   }
 }

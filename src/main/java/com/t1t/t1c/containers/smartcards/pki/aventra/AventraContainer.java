@@ -103,7 +103,7 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         return null;
     }
 }

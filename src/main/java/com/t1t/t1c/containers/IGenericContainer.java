@@ -21,7 +21,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * Returns the implementation class of the AllCertificates interface
      * @return the implementation class
      */
-    Class<W> getAllCertificateClass();
+    Class<W> getAllCertificatesClass();
     /*Data Related*/
 
     /**

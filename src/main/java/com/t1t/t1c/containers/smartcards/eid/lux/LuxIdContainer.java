@@ -199,7 +199,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public Class<LuxIdAllCertificates> getAllCertificateClass() {
+    public Class<LuxIdAllCertificates> getAllCertificatesClass() {
         return LuxIdAllCertificates.class;
     }
 }

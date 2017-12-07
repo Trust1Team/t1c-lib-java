@@ -125,7 +125,7 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 

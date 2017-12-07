@@ -103,7 +103,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         return null;
     }
 }

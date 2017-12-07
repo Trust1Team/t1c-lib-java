@@ -13,6 +13,7 @@ import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvApplication;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -121,6 +122,7 @@ public class JavaClientExample {
                 luxTrustUseCases(reader);
                 break;
             case MOBIB:
+                mobibUseCases(reader);
                 break;
             case OBERTHUR:
                 break;
@@ -134,6 +136,20 @@ public class JavaClientExample {
             case SAFENET:
                 break;
         }
+    }
+
+    private static void mobibUseCases(GclReader reader) {
+        MobibContainer container = client.getMobibContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData());
+
+        System.out.println("Cars is active: " + container.getStatus());
+
+        System.out.println("Bas64-encoded picture: " + container.getPicture());
+
+        System.out.println("Contracts: " + container.getContracts());
+
+        System.out.println("Card issuing data: " + container.getCardIssuing());
     }
 
     private static void emvUseCases(GclReader reader) {

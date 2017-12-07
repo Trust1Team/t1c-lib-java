@@ -103,7 +103,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         return null;
     }
 }

@@ -18,6 +18,9 @@ public class GclMobibCounter {
     @SerializedName("type")
     @Expose
     private Integer type;
+    @SerializedName("journeys")
+    @Expose
+    private Integer journeys;
 
     /**
      * 
@@ -65,6 +68,29 @@ public class GclMobibCounter {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     *     The journeys
+     */
+    public Integer getJourneys() {
+        return journeys;
+    }
+
+    /**
+     * 
+     * @param journeys
+     *     The journeys
+     */
+    public void setJourneys(Integer journeys) {
+        this.journeys = journeys;
+    }
+
+    public GclMobibCounter withJourneys(Integer journeys) {
+        this.journeys = journeys;
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -72,7 +98,7 @@ public class GclMobibCounter {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(time).append(type).toHashCode();
+        return new HashCodeBuilder().append(time).append(type).append(journeys).toHashCode();
     }
 
     @Override
@@ -84,7 +110,7 @@ public class GclMobibCounter {
             return false;
         }
         GclMobibCounter rhs = ((GclMobibCounter) other);
-        return new EqualsBuilder().append(time, rhs.time).append(type, rhs.type).isEquals();
+        return new EqualsBuilder().append(time, rhs.time).append(type, rhs.type).append(journeys, rhs.journeys).isEquals();
     }
 
 }

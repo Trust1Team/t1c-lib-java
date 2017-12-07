@@ -103,7 +103,7 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         return null;
     }
 }

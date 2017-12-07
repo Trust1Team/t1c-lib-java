@@ -145,7 +145,7 @@ public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRest
     }
 
     @Override
-    public Class<PtIdAllCertificates> getAllCertificateClass() {
+    public Class<PtIdAllCertificates> getAllCertificatesClass() {
         return PtIdAllCertificates.class;
     }
 

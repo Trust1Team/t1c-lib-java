@@ -106,7 +106,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public Class<AllCertificates> getAllCertificateClass() {
+    public Class<AllCertificates> getAllCertificatesClass() {
         return null;
     }
 

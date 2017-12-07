@@ -7,9 +7,7 @@ import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
-import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -183,6 +181,6 @@ public class EmvContainerTest extends AbstractTestClass {
 
     @Test(expected = UnsupportedOperationException.class)
     public void getAllCertificateClass() {
-        assertEquals(AllCertificates.class, container.getAllCertificateClass());
+        assertEquals(AllCertificates.class, container.getAllCertificatesClass());
     }
 }

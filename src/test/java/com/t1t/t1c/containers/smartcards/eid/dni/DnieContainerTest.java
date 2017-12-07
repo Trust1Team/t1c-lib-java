@@ -248,6 +248,6 @@ public class DnieContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificateClass() {
-        assertEquals(DnieAllCertificates.class, container.getAllCertificateClass());
+        assertEquals(DnieAllCertificates.class, container.getAllCertificatesClass());
     }
 }

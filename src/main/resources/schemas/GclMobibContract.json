@@ -14,6 +14,9 @@
     "journey_interchanges_allowed": {
       "type": "boolean"
     },
+    "operator_map": {
+      "type": "integer"
+    },
     "passengers_max": {
       "type": "integer"
     },
@@ -48,6 +51,9 @@
     "tariff": {
       "type": "object",
       "$ref": "GclMobibTariff.json"
+    },
+    "type_id": {
+      "type": "integer"
     },
     "validity_duration": {
       "type": "object",

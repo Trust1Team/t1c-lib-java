@@ -158,7 +158,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificateClass() {
-        assertEquals(PtIdAllCertificates.class, container.getAllCertificateClass());
+        assertEquals(PtIdAllCertificates.class, container.getAllCertificatesClass());
     }
 
     @Test

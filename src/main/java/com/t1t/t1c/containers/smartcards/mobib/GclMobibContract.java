@@ -23,6 +23,9 @@ public class GclMobibContract {
     @SerializedName("journey_interchanges_allowed")
     @Expose
     private Boolean journeyInterchangesAllowed;
+    @SerializedName("operator_map")
+    @Expose
+    private Integer operatorMap;
     @SerializedName("passengers_max")
     @Expose
     private Integer passengersMax;
@@ -53,6 +56,9 @@ public class GclMobibContract {
     @SerializedName("tariff")
     @Expose
     private GclMobibTariff tariff;
+    @SerializedName("type_id")
+    @Expose
+    private Integer typeId;
     @SerializedName("validity_duration")
     @Expose
     private GclMobibValidityDuration validityDuration;
@@ -132,6 +138,29 @@ public class GclMobibContract {
 
     public GclMobibContract withJourneyInterchangesAllowed(Boolean journeyInterchangesAllowed) {
         this.journeyInterchangesAllowed = journeyInterchangesAllowed;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The operatorMap
+     */
+    public Integer getOperatorMap() {
+        return operatorMap;
+    }
+
+    /**
+     * 
+     * @param operatorMap
+     *     The operator_map
+     */
+    public void setOperatorMap(Integer operatorMap) {
+        this.operatorMap = operatorMap;
+    }
+
+    public GclMobibContract withOperatorMap(Integer operatorMap) {
+        this.operatorMap = operatorMap;
         return this;
     }
 
@@ -368,6 +397,29 @@ public class GclMobibContract {
     /**
      * 
      * @return
+     *     The typeId
+     */
+    public Integer getTypeId() {
+        return typeId;
+    }
+
+    /**
+     * 
+     * @param typeId
+     *     The type_id
+     */
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
+
+    public GclMobibContract withTypeId(Integer typeId) {
+        this.typeId = typeId;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
      *     The validityDuration
      */
     public GclMobibValidityDuration getValidityDuration() {
@@ -464,7 +516,7 @@ public class GclMobibContract {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(authenticatorKvc).append(authenticatorValue).append(journeyInterchangesAllowed).append(passengersMax).append(priceAmount).append(provider).append(restrictCode).append(restrictTime).append(saleDate).append(saleSamCount).append(saleSamId).append(spatials).append(tariff).append(validityDuration).append(validityStartDate).append(vehicleClassAllowed).append(version).toHashCode();
+        return new HashCodeBuilder().append(authenticatorKvc).append(authenticatorValue).append(journeyInterchangesAllowed).append(operatorMap).append(passengersMax).append(priceAmount).append(provider).append(restrictCode).append(restrictTime).append(saleDate).append(saleSamCount).append(saleSamId).append(spatials).append(tariff).append(typeId).append(validityDuration).append(validityStartDate).append(vehicleClassAllowed).append(version).toHashCode();
     }
 
     @Override
@@ -476,7 +528,7 @@ public class GclMobibContract {
             return false;
         }
         GclMobibContract rhs = ((GclMobibContract) other);
-        return new EqualsBuilder().append(authenticatorKvc, rhs.authenticatorKvc).append(authenticatorValue, rhs.authenticatorValue).append(journeyInterchangesAllowed, rhs.journeyInterchangesAllowed).append(passengersMax, rhs.passengersMax).append(priceAmount, rhs.priceAmount).append(provider, rhs.provider).append(restrictCode, rhs.restrictCode).append(restrictTime, rhs.restrictTime).append(saleDate, rhs.saleDate).append(saleSamCount, rhs.saleSamCount).append(saleSamId, rhs.saleSamId).append(spatials, rhs.spatials).append(tariff, rhs.tariff).append(validityDuration, rhs.validityDuration).append(validityStartDate, rhs.validityStartDate).append(vehicleClassAllowed, rhs.vehicleClassAllowed).append(version, rhs.version).isEquals();
+        return new EqualsBuilder().append(authenticatorKvc, rhs.authenticatorKvc).append(authenticatorValue, rhs.authenticatorValue).append(journeyInterchangesAllowed, rhs.journeyInterchangesAllowed).append(operatorMap, rhs.operatorMap).append(passengersMax, rhs.passengersMax).append(priceAmount, rhs.priceAmount).append(provider, rhs.provider).append(restrictCode, rhs.restrictCode).append(restrictTime, rhs.restrictTime).append(saleDate, rhs.saleDate).append(saleSamCount, rhs.saleSamCount).append(saleSamId, rhs.saleSamId).append(spatials, rhs.spatials).append(tariff, rhs.tariff).append(typeId, rhs.typeId).append(validityDuration, rhs.validityDuration).append(validityStartDate, rhs.validityStartDate).append(vehicleClassAllowed, rhs.vehicleClassAllowed).append(version, rhs.version).isEquals();
     }
 
 }

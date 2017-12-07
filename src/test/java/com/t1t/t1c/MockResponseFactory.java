@@ -17,9 +17,7 @@ import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdData;
 import com.t1t.t1c.containers.smartcards.emv.*;
-import com.t1t.t1c.containers.smartcards.mobib.GclMobibAllData;
-import com.t1t.t1c.containers.smartcards.mobib.GclMobibCardIssuing;
-import com.t1t.t1c.containers.smartcards.mobib.GclMobibContract;
+import com.t1t.t1c.containers.smartcards.mobib.*;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraAllData;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
@@ -1059,6 +1057,105 @@ public final class MockResponseFactory {
                         .withLabel("MAESTRO")
                         .withPriority(1)
         );
+    }
+
+    //
+    // MOBIB responses
+    //
+
+    public static T1cResponse<Boolean> getGclMobibStatusResponse() {
+        return getSuccessResponse(true);
+    }
+
+    public static T1cResponse<String> getGclMobibPictureResponse() {
+        return getSuccessResponse(getGclMobibPicture());
+    }
+
+    public static T1cResponse<GclMobibCardIssuing> getGclMobibCardIssuingResponse() {
+        return getSuccessResponse(getGclMobibCardIssuing());
+    }
+
+    public static T1cResponse<List<GclMobibContract>> getGclMobibContractsResponse() {
+        return getSuccessResponse(Arrays.asList(getGclMobibContract(), getGclMobibContract()));
+    }
+
+    public static T1cResponse<GclMobibAllData> getGclMobibAllDataResponse(String filter) throws RestException {
+        List<String> filterParams = splitFilterParams(filter);
+        GclMobibAllData data = getGclMobibAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("picture")) data.setPicture(null);
+            if (!filterParams.contains("status")) data.setActive(null);
+            if (!filterParams.contains("card-issuing")) data.setCardIssuing(null);
+            if (!filterParams.contains("contracts")) data.setContracts(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static GclMobibAllData getGclMobibAllData() {
+        return new GclMobibAllData()
+                .withActive(true)
+                .withCardIssuing(getGclMobibCardIssuing())
+                .withContracts(Arrays.asList(getGclMobibContract(), getGclMobibContract()))
+                .withPicture(getGclMobibPicture());
+    }
+
+    public static GclMobibContract getGclMobibContract() {
+        return new GclMobibContract()
+                .withAuthenticatorKvc(122)
+                .withAuthenticatorValue(14646958)
+                .withJourneyInterchangesAllowed(true)
+                .withOperatorMap(15)
+                .withPassengersMax(0)
+                .withPriceAmount(0)
+                .withProvider(1)
+                .withRestrictCode(5)
+                .withRestrictTime(2)
+                .withSaleDate("2015-03-06")
+                .withSaleSamCount(398)
+                .withSaleSamId(1135996)
+                .withSpatials(Arrays.asList(getGclMobibSpatial(), getGclMobibSpatial()))
+                .withTariff(getGclMobibTariff())
+                .withTypeId(15373)
+                .withValidityDuration(getGclMobibValidityDuration())
+                .withValidityStartDate("2015-03-06")
+                .withVehicleClassAllowed(0)
+                .withVersion(4);
+    }
+
+    public static GclMobibSpatial getGclMobibSpatial() {
+        return new GclMobibSpatial().withRouteDestination(false).withRouteOrigin(1).withType(6);
+    }
+
+    public static GclMobibTariff getGclMobibTariff() {
+        return new GclMobibTariff().withCounter(getGclMobibCounter()).withMultimodal(true).withNameref(3);
+    }
+
+    public static GclMobibCounter getGclMobibCounter() {
+        return new GclMobibCounter().withTime("2017-02-21T06:20:00").withType(2).withJourneys(0);
+    }
+
+    public static GclMobibValidityDuration getGclMobibValidityDuration() {
+        return new GclMobibValidityDuration().withUnit(3).withValue(3);
+    }
+
+    public static GclMobibCardIssuing getGclMobibCardIssuing() {
+        return new GclMobibCardIssuing()
+                .withCardExpirationDate("2020-03-06")
+                .withCardHolderBirthDate("1968-09-03")
+                .withCardHolderEndDate("not-a-date-time")
+                .withCardHolderId("6665601000000000015")
+                .withCardHolderName("TEST|KAART                                         ")
+                .withCardHolderStartDate("2015-03-06")
+                .withCardRevalidationDate("not-a-date-time")
+                .withCardType(1)
+                .withCompanyId(1)
+                .withGender(1)
+                .withLanguage(1)
+                .withVersion(1);
+    }
+
+    public static String getGclMobibPicture() {
+        return "";
     }
 
     // TODO clean up the rest of the responses below

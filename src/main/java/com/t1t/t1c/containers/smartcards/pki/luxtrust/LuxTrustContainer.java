@@ -182,7 +182,7 @@ public class LuxTrustContainer extends GenericContainer<LuxTrustContainer, GclLu
     }
 
     @Override
-    public Class<LuxTrustAllCertificates> getAllCertificateClass() {
+    public Class<LuxTrustAllCertificates> getAllCertificatesClass() {
         return LuxTrustAllCertificates.class;
     }
 }

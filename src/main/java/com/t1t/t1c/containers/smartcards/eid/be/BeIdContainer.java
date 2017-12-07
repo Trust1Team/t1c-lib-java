@@ -217,7 +217,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public Class<BeIdAllCertificates> getAllCertificateClass() {
+    public Class<BeIdAllCertificates> getAllCertificatesClass() {
         return BeIdAllCertificates.class;
     }
 }
