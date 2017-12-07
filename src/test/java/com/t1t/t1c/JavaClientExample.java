@@ -7,6 +7,7 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.remoteloading.*;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest;
@@ -14,6 +15,7 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfigur
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
@@ -90,16 +92,10 @@ public class JavaClientExample {
         System.out.println("PIN verified: " + pinVerified);
         if (pinVerified) {
             // Sign data
-            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
-                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                    .withPin(pin)));
+            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
             // Authenticate data
-            System.out.println("Signed challenge: " + container.authenticate(new GclAuthenticateOrSignData()
-                            .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                            .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                            .withPin(pin)));
+            System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
         }
     }
 
@@ -114,6 +110,7 @@ public class JavaClientExample {
                 beIdUseCases(reader);
                 break;
             case DNIE:
+                dnieUseCases(reader);
                 break;
             case EMV:
                 break;
@@ -141,20 +138,47 @@ public class JavaClientExample {
         }
     }
 
+    private static void dnieUseCases(GclReader reader) {
+        DnieContainer container = client.getDnieContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
+
+        System.out.println("Base64-encoded authentication certificate: " + container.getAuthenticationCertificate());
+
+        System.out.println("Base64-encoded intermediate certificate: " + container.getIntermediateCertificate());
+
+        System.out.println("Base64-encoded signing certificate: " + container.getSigningCertificate());
+
+        System.out.println("DNIE info: " + container.getInfo());
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        try {
+            Boolean pinVerified = container.verifyPin(pin);
+            if (pinVerified) {
+                // Sign data
+                System.out.println("Signed hash: " + container.sign( "mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                // Authenticate data
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
+            }
+        }
+        catch (VerifyPinException ex) {
+            System.out.println("PIN verification failed: " + ex.getMessage());
+        }
+    }
+
     private static void ptIdUseCases(GclReader reader) {
         PtEIdContainer container = client.getPtIdContainer(reader);
-
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Please provide Sign PIN: ");
-        String signPin = scan.nextLine();
-
-        scan = new Scanner(System.in);
-        System.out.print("Please provide Sign PIN: ");
-        String addressPin = scan.nextLine();
-
-        scan = new Scanner(System.in);
-        System.out.print("Please provide Sign PIN: ");
-        String authenticatePin = scan.nextLine();
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -170,6 +194,10 @@ public class JavaClientExample {
 
         System.out.println("ID data: " + container.getPtIdData());
 
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Please provide Sign PIN: ");
+        String signPin = scan.nextLine();
+
         boolean pinVerified = container.verifyPin(signPin);
 
         // Without hardware PinPad
@@ -178,24 +206,30 @@ public class JavaClientExample {
         if (pinVerified) {
 
             // Sign data
-            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
-                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                    .withPin(signPin)));
+            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, signPin));
         }
 
-        // Authenticate data
-        String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-        System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                .withHash(challenge)
-                .withBase64Signature(container.authenticate(new GclAuthenticateOrSignData()
-                        .withData(challenge)
-                        .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                        .withPin(authenticatePin)))).getResult());
+        scan = new Scanner(System.in);
+        System.out.print("Please provide Authentication PIN: ");
+        String authenticatePin = scan.nextLine();
 
-        if (StringUtils.isNotEmpty(addressPin)) {
+        if (StringUtils.isNotBlank(authenticatePin)) {
+
+            // Authenticate data
+            String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+            System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                    .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                    .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                    .withHash(challenge)
+                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, authenticatePin))).getResult());
+
+        }
+
+        scan = new Scanner(System.in);
+        System.out.print("Please provide Address PIN: ");
+        String addressPin = scan.nextLine();
+
+        if (StringUtils.isNotBlank(addressPin)) {
             System.out.println("Address data: " + container.getAddress(addressPin));
         }
     }
@@ -219,10 +253,7 @@ public class JavaClientExample {
         if (pinVerified) {
 
             // Sign data
-            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
-                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                    .withPin(pin)));
+            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
             // Authenticate data
             String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
@@ -230,10 +261,7 @@ public class JavaClientExample {
                     .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                     .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
                     .withHash(challenge)
-                    .withBase64Signature(container.authenticate(new GclAuthenticateOrSignData()
-                            .withData(challenge)
-                            .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                            .withPin(pin)))).getResult());
+                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
             // Rn data
             System.out.println("RN Data: " + container.getRnData().toString());
@@ -273,10 +301,7 @@ public class JavaClientExample {
         if (pinVerified) {
 
             // Sign data
-            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
-                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                    .withPin(pin)));
+            System.out.println("Signed hash: " + container.sign( "mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
             // Authenticate data
             String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
@@ -284,10 +309,7 @@ public class JavaClientExample {
                     .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                     .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
                     .withHash(challenge)
-                    .withBase64Signature(container.authenticate(new GclAuthenticateOrSignData()
-                            .withData(challenge)
-                            .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                            .withPin(pin)))).getResult());
+                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
             System.out.println("Biometric data: " + container.getBiometric());
 
@@ -321,10 +343,7 @@ public class JavaClientExample {
         if (pinVerified) {
 
             // Sign data
-            System.out.println("Signed hash: " + container.sign(new GclAuthenticateOrSignData()
-                    .withData("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=")
-                    .withAlgorithmReference(DigestAlgorithm.SHA256.getStringValue())
-                    .withPin(pin)));
+            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
             // Authenticate data
             String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA1).getHash();
@@ -332,10 +351,7 @@ public class JavaClientExample {
                     .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                     .withDigestAlgorithm(DigestAlgorithm.SHA1.getStringValue())
                     .withHash(challenge)
-                    .withBase64Signature(container.authenticate(new GclAuthenticateOrSignData()
-                            .withData(challenge)
-                            .withAlgorithmReference(DigestAlgorithm.SHA1.getStringValue())
-                            .withPin(pin)))).getResult());
+                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA1,pin))).getResult());
 
             StringBuilder sb = new StringBuilder();
             Iterator<T1cCertificate> it = container.getRootCertificates().iterator();

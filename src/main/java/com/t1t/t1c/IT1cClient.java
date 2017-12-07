@@ -49,7 +49,7 @@ public interface IT1cClient {
     OcraContainer getOcraContainer(GclReader reader);
     AventraContainer getAventraContainer(GclReader reader);
     OberthurContainer getOberthurContainer(GclReader reader);
-    PivContainer getPivContainer(GclReader reader);
+    PivContainer getPivContainer(GclReader reader, String pin);
     PtEIdContainer getPtIdContainer(GclReader reader);
     SafeNetContainer getSafeNetContainer(GclReader reader);
     SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration);

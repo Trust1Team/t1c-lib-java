@@ -5,7 +5,9 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,11 +36,11 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(false).withId(MockResponseFactory.LUXID_READER_ID), "123456");
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "123456");
     }
 
     @Test
-    public void getBiometric() throws Exception {
+    public void getBiometric() {
         GclLuxIdBiometric bio = container.getBiometric();
         assertNotNull(bio);
         assertNotNull(bio.getBirthDate());
@@ -54,7 +56,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getPicture() throws Exception {
+    public void getPicture() {
         GclLuxIdPicture pic = container.getPicture();
         assertNotNull(pic);
         assertNotNull(pic.getHeight());
@@ -63,14 +65,14 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getSignatureImage() throws Exception {
+    public void getSignatureImage() {
         GclLuxIdSignatureImage sig = container.getSignatureImage();
         assertNotNull(sig);
         assertNotNull(sig.getImage());
     }
 
     @Test
-    public void getAllData() throws Exception {
+    public void getAllData() {
         LuxIdAllData data = (LuxIdAllData) container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getNonRepudiationCertificate());
@@ -82,7 +84,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllDataFiltered() throws Exception {
+    public void getAllDataFiltered() {
         LuxIdAllData data = (LuxIdAllData) container.getAllData(Arrays.asList("biometric", "root-certificates"));
         assertNotNull(data);
         assertNull(data.getNonRepudiationCertificate());
@@ -94,7 +96,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllDataParsed() throws Exception {
+    public void getAllDataParsed() {
         LuxIdAllData data = (LuxIdAllData) container.getAllData(Collections.singletonList("authentication-certificate"), true);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
@@ -102,7 +104,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllCertificates() throws Exception {
+    public void getAllCertificates() {
         LuxIdAllCertificates certs = (LuxIdAllCertificates) container.getAllCertificates();
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
@@ -111,7 +113,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllCertificatesFiltered() throws Exception {
+    public void getAllCertificatesFiltered() {
         LuxIdAllCertificates certs = (LuxIdAllCertificates) container.getAllCertificates(Arrays.asList("authentication-certificate", "non-repudiation-certificate"));
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
@@ -120,7 +122,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllCertificatesParsed() throws Exception {
+    public void getAllCertificatesParsed() {
         LuxIdAllCertificates certs = (LuxIdAllCertificates) container.getAllCertificates(true);
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
@@ -131,7 +133,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getRootCertificates() throws Exception {
+    public void getRootCertificates() {
         List<T1cCertificate> certs = container.getRootCertificates();
         assertTrue(CollectionUtils.isNotEmpty(certs));
         for (T1cCertificate cert : certs) {
@@ -141,7 +143,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getRootCertificatesParsed() throws Exception {
+    public void getRootCertificatesParsed() {
         List<T1cCertificate> certs = container.getRootCertificates(true);
         assertTrue(CollectionUtils.isNotEmpty(certs));
         for (T1cCertificate cert : certs) {
@@ -151,67 +153,80 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAuthenticationCertificate() throws Exception {
+    public void getAuthenticationCertificate() {
         assertNotNull(container.getAuthenticationCertificate());
     }
 
     @Test
-    public void getAuthenticationCertificateParsed() throws Exception {
+    public void getAuthenticationCertificateParsed() {
         T1cCertificate cert = container.getAuthenticationCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getNonRepudiationCertificate() throws Exception {
+    public void getNonRepudiationCertificate() {
         T1cCertificate cert = container.getNonRepudiationCertificate();
         assertTrue(StringUtils.isNotEmpty(cert.getBase64()));
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getNonRepudiationCertificateParsed() throws Exception {
+    public void getNonRepudiationCertificateParsed() {
         T1cCertificate cert = container.getNonRepudiationCertificate(true);
         assertTrue(StringUtils.isNotEmpty(cert.getBase64()));
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getAllDataFilters() throws Exception {
+    public void getAllDataFilters() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllDataFilters()));
     }
 
     @Test
-    public void getAllCertificateFilters() throws Exception {
+    public void getAllCertificateFilters() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllCertificateFilters()));
     }
 
     @Test
-    public void verifyPin() throws Exception {
+    public void verifyPin() {
         assertTrue(container.verifyPin("1111"));
     }
 
-    @Test
-    public void authenticate() throws Exception {
-        String signedHash = container.authenticate(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
-        assertNotNull(signedHash);
+    @Test(expected = VerifyPinException.class)
+    public void verifyPinIncorrect() {
+        container.verifyPin("1112");
     }
 
     @Test
-    public void sign() throws Exception {
-        String signedHash = container.sign(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
-        assertNotNull(signedHash);
+    public void authenticate() {
+        String authenticatedHash = container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
+        assertNotNull(authenticatedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void authenticatePinIncorrect() {
+        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
     }
 
     @Test
-    public void getType() throws Exception {
+    public void sign() {
+        String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
+        assertNotNull(signedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void signPinIncorrect() {
+        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test
+    public void getType() {
         assertEquals(ContainerType.LUXID, container.getType());
     }
 
     @Test
-    public void getTypeId() throws Exception {
+    public void getTypeId() {
         assertEquals(ContainerType.LUXID.getId(), container.getTypeId());
     }
 }

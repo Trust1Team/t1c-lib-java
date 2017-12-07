@@ -2,6 +2,7 @@ package com.t1t.t1c.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -49,4 +50,10 @@ public final class PinUtil {
         }
     }
 
+    public static GclAuthenticateOrSignData setPinIfPresent(GclAuthenticateOrSignData data, String... pin) {
+        if (pin != null && pin.length > 0) {
+            data.setPin(pin[0]);
+        }
+        return data;
+    }
 }

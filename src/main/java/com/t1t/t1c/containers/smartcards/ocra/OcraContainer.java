@@ -9,6 +9,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.DigestAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +20,19 @@ import java.util.List;
  * @since 2017
  */
 public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestClient, AllData, AllCertificates>{
-    private static final Logger log = LoggerFactory.getLogger(OcraContainer.class);
+
+    public OcraContainer(LibConfig config, GclReader reader, GclOcraRestClient httpClient) {
+        super(config, reader, httpClient, null);
+    }
 
     @Override
     public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pin) {
-        return null;
+        this.config = config;
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.pin = pin;
+        this.type = ContainerType.OCRA;
+        return this;
     }
 
     @Override
@@ -72,12 +81,12 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 

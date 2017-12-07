@@ -5,7 +5,9 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,7 +35,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false));
+        container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(true));
     }
 
     @Test
@@ -48,7 +50,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllData() {
-        LuxTrustAllData data = (LuxTrustAllData) container.getAllData();
+        LuxTrustAllData data = container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getActivated());
         assertNotNull(data.getAuthenticationCertificate());
@@ -58,7 +60,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataFiltered() {
-        LuxTrustAllData data = (LuxTrustAllData) container.getAllData(Arrays.asList("activated", "root-certificates"));
+        LuxTrustAllData data = container.getAllData(Arrays.asList("activated", "root-certificates"));
         assertNotNull(data);
         assertNotNull(data.getActivated());
         assertNull(data.getAuthenticationCertificate());
@@ -68,7 +70,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataParsed() {
-        LuxTrustAllData data = (LuxTrustAllData) container.getAllData(true);
+        LuxTrustAllData data = container.getAllData(true);
         assertNotNull(data);
         assertNotNull(data.getActivated());
         assertNotNull(data.getAuthenticationCertificate().getParsed());
@@ -80,7 +82,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificates() {
-        LuxTrustAllCertificates certs = (LuxTrustAllCertificates) container.getAllCertificates();
+        LuxTrustAllCertificates certs = container.getAllCertificates();
         assertNotNull(certs);
         assertNotNull(certs.getSigningCertificate());
         assertNotNull(certs.getAuthenticationCertificate());
@@ -89,7 +91,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesFiltered() {
-        LuxTrustAllCertificates certs = (LuxTrustAllCertificates) container.getAllCertificates(Arrays.asList("signing-certificate", "authentication-certificate"));
+        LuxTrustAllCertificates certs = container.getAllCertificates(Arrays.asList("signing-certificate", "authentication-certificate"));
         assertNotNull(certs);
         assertNotNull(certs.getSigningCertificate());
         assertNotNull(certs.getAuthenticationCertificate());
@@ -98,7 +100,7 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesParsed() {
-        LuxTrustAllCertificates certs = (LuxTrustAllCertificates) container.getAllCertificates(Arrays.asList("signing-certificate"), true);
+        LuxTrustAllCertificates certs = container.getAllCertificates(Arrays.asList("signing-certificate"), true);
         assertNotNull(certs);
         assertNotNull(certs.getSigningCertificate());
         assertNotNull(certs.getSigningCertificate().getBase64());
@@ -107,21 +109,44 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
     @Test
     public void verifyPin() {
-        assertTrue(container.verifyPin("123456"));
+        assertTrue(container.verifyPin("1111"));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void verifyPinIncorrect() {
+        container.verifyPin("1112");
     }
 
     @Test
     public void authenticate() {
-        String signedHash = container.authenticate(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
-        assertNotNull(signedHash);
+        String authenticatedHash = container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
+        assertNotNull(authenticatedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void authenticatePinIncorrect() {
+        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void authenticateInvalidDigestAlgorithm() {
+        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.MD5, "1111");
     }
 
     @Test
     public void sign() {
-        String signedHash = container.sign(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
+        String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(signedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void signPinIncorrect() {
+        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void signInvalidDigestAlgorithm() {
+        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.MD5, "1111");
     }
 
     @Test

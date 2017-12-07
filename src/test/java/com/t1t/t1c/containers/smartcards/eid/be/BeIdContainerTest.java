@@ -5,7 +5,9 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.codec.binary.Base64;
@@ -33,114 +35,114 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false));
+        container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(true));
     }
 
     @Test
-    public void getRnData() throws Exception {
+    public void getRnData() {
         GclBeIdRn rn = container.getRnData();
         assertNotNull(rn);
     }
 
     @Test
-    public void getBeIdAddress() throws Exception {
+    public void getBeIdAddress() {
         GclBeIdAddress address = container.getBeIdAddress();
         assertNotNull(address);
     }
 
     @Test
-    public void getBeIdPicture() throws Exception {
+    public void getBeIdPicture() {
         String picture = container.getBeIdPicture();
         assertNotNull(picture);
         assertTrue(Base64.isBase64(picture));
     }
 
     @Test
-    public void getRootCertificate() throws Exception {
+    public void getRootCertificate() {
         T1cCertificate cert = container.getRootCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getRootCertificateParsed() throws Exception {
+    public void getRootCertificateParsed() {
         T1cCertificate cert = container.getRootCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getCitizenCertificate() throws Exception {
+    public void getCitizenCertificate() {
         T1cCertificate cert = container.getCitizenCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getCitizenCertificateParsed() throws Exception {
+    public void getCitizenCertificateParsed() {
         T1cCertificate cert = container.getCitizenCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getNonRepudiationCertificate() throws Exception {
+    public void getNonRepudiationCertificate() {
         T1cCertificate cert = container.getCitizenCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getNonRepudiationCertificateParsed() throws Exception {
+    public void getNonRepudiationCertificateParsed() {
         T1cCertificate cert = container.getCitizenCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getAuthenticationCertificate() throws Exception {
+    public void getAuthenticationCertificate() {
         T1cCertificate cert = container.getAuthenticationCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getAuthenticationCertificateParsed() throws Exception {
+    public void getAuthenticationCertificateParsed() {
         T1cCertificate cert = container.getAuthenticationCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void getRrnCertificate() throws Exception {
+    public void getRrnCertificate() {
         T1cCertificate cert = container.getRrnCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
-    public void getRrnCertificateParsed() throws Exception {
+    public void getRrnCertificateParsed() {
         T1cCertificate cert = container.getRrnCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
 
     @Test
-    public void createInstance() throws Exception {
+    public void createInstance() {
     }
 
     @Test
-    public void getAllDataFilters() throws Exception {
+    public void getAllDataFilters() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllDataFilters()));
     }
 
     @Test
-    public void getAllCertificateFilters() throws Exception {
+    public void getAllCertificateFilters() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllCertificateFilters()));
     }
 
     @Test
-    public void getAllData() throws Exception {
+    public void getAllData() {
         BeIdAllData data = container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getAddress());
@@ -154,8 +156,8 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllDataWithFilters() throws Exception {
-        BeIdAllData data = (BeIdAllData) container.getAllData(Arrays.asList("rn", "root-certificate"));
+    public void getAllDataWithFilters() {
+        BeIdAllData data = container.getAllData(Arrays.asList("rn", "root-certificate"));
         assertNotNull(data);
         assertNull(data.getAddress());
         assertNotNull(data.getRn());
@@ -168,16 +170,16 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllDataWithParsing() throws Exception {
-        BeIdAllData data = (BeIdAllData) container.getAllData(Arrays.asList("root-certificate"), true);
+    public void getAllDataWithParsing() {
+        BeIdAllData data = container.getAllData(Arrays.asList("root-certificate"), true);
         assertNotNull(data);
         assertNotNull(data.getRootCertificate());
         assertNotNull(data.getRootCertificate().getParsed());
     }
 
     @Test
-    public void getAllCertificates() throws Exception {
-        BeIdAllCertificates certs = (BeIdAllCertificates) container.getAllCertificates();
+    public void getAllCertificates() {
+        BeIdAllCertificates certs = container.getAllCertificates();
         assertNotNull(certs);
         assertNotNull(certs.getRootCertificate());
         assertNotNull(certs.getCitizenCertificate());
@@ -187,8 +189,8 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllCertificatesWithFilter() throws Exception {
-        BeIdAllCertificates certs = (BeIdAllCertificates) container.getAllCertificates(Arrays.asList("non-repudiation-certificate", "citizen-certificate"));
+    public void getAllCertificatesWithFilter() {
+        BeIdAllCertificates certs = container.getAllCertificates(Arrays.asList("non-repudiation-certificate", "citizen-certificate"));
         assertNotNull(certs);
         assertNull(certs.getRootCertificate());
         assertNotNull(certs.getCitizenCertificate());
@@ -198,40 +200,53 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getAllCertificatesWithParsing() throws Exception {
-        BeIdAllCertificates certs = (BeIdAllCertificates) container.getAllCertificates(Collections.singletonList("root-certificate"), true);
+    public void getAllCertificatesWithParsing() {
+        BeIdAllCertificates certs = container.getAllCertificates(Collections.singletonList("root-certificate"), true);
         assertNotNull(certs);
         assertNotNull(certs.getRootCertificate());
         assertNotNull(certs.getRootCertificate().getParsed());
     }
 
     @Test
-    public void verifyPin() throws Exception {
+    public void verifyPin() {
         assertTrue(container.verifyPin("1111"));
     }
 
+    @Test(expected = VerifyPinException.class)
+    public void verifyPinIncorrect() {
+        container.verifyPin("1112");
+    }
+
     @Test
-    public void authenticate() throws Exception {
-        String authenticatedHash = container.authenticate(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
+    public void authenticate() {
+        String authenticatedHash = container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(authenticatedHash);
     }
 
-    @Test
-    public void sign() throws Exception {
-        String signedHash = container.sign(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
-        assertNotNull(signedHash);
+    @Test(expected = VerifyPinException.class)
+    public void authenticatePinIncorrect() {
+        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
     }
 
     @Test
-    public void getType() throws Exception {
+    public void sign() {
+        String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
+        assertNotNull(signedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void signPinIncorrect() {
+        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test
+    public void getType() {
         assertNotNull(container.getType());
         assertEquals(ContainerType.BEID, container.getType());
     }
 
     @Test
-    public void getTypeId() throws Exception {
+    public void getTypeId() {
         assertNotNull(container.getTypeId());
         assertEquals(ContainerType.BEID.getId(), container.getTypeId());
     }

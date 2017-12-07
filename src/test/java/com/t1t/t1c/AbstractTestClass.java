@@ -7,7 +7,7 @@ import com.t1t.t1c.containers.remoteloading.MockGclRemoteLoadingRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.MockGclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
-import com.t1t.t1c.containers.smartcards.eid.esp.MockGclDnieRestClient;
+import com.t1t.t1c.containers.smartcards.eid.dni.MockGclDnieRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.MockGclLuxIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdRestClient;
@@ -114,16 +114,6 @@ public abstract class AbstractTestClass {
 
         setMocksBeforeConfigReset();
         setMocksBeforeConfigReset();
-
-        /*expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);
-        expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);
-        expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);
-        expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
-        expect(RestServiceBuilder.getGclRestClient(conf)).andReturn(gclRestClient);
-        expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);
-        expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);
-        expect(RestServiceBuilder.getOcvRestClient(conf)).andReturn(ocvRestClient);*/
-
 
         replayAll();
 

@@ -29,7 +29,7 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false));
+        container = getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true));
     }
 
     @Test

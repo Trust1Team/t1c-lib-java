@@ -9,6 +9,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.DigestAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,15 +23,18 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
 
     private static final Logger log = LoggerFactory.getLogger(EmvContainer.class);
 
-    public EmvContainer(LibConfig config, GclReader reader, GclEmvRestClient gclEmvRestClient) {
-        this.config = config;
-        this.reader = reader;
-        this.httpClient = gclEmvRestClient;
+    public EmvContainer(LibConfig config, GclReader reader, GclEmvRestClient httpClient) {
+        super(config, reader, httpClient, null);
     }
 
     @Override
     public EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, String pin) {
-        return null;
+        this.config = config;
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.pin = pin;
+        this.type = ContainerType.EMV;
+        return this;
     }
 
     @Override
@@ -79,12 +83,12 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 

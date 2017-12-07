@@ -107,23 +107,29 @@ public class LuxTrustContainer extends GenericContainer<LuxTrustContainer, GclLu
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws LuxTrustContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws LuxTrustContainerException {
         try {
-            Preconditions.checkArgument(data.getAlgorithmReference() != null
-                    && (data.getAlgorithmReference().equalsIgnoreCase(DigestAlgorithm.SHA1.getStringValue()) || data.getAlgorithmReference().equalsIgnoreCase(DigestAlgorithm.SHA256.getStringValue())), "algorithmReference must be provided and must be one of: SHA1, SHA256");
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), data));
+            Preconditions.checkNotNull(data, "data to authenticate must not be null");
+            Preconditions.checkArgument(algo != null
+                    && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
+            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
             throw ExceptionFactory.luxTrustContainerException("Could not authenticate with container", ex);
         }
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws LuxTrustContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws LuxTrustContainerException {
         try {
-            Preconditions.checkArgument(data.getAlgorithmReference() != null
-                    && (data.getAlgorithmReference().equalsIgnoreCase(DigestAlgorithm.SHA1.getStringValue()) || data.getAlgorithmReference().equalsIgnoreCase(DigestAlgorithm.SHA256.getStringValue())), "algorithmReference must be provided and must be one of: SHA1, SHA256");
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), data));
+            Preconditions.checkNotNull(data, "data to sign must not be null");
+            Preconditions.checkArgument(algo != null
+                    && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
+            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
             throw ExceptionFactory.luxTrustContainerException("Could not authenticate with container", ex);
         }
     }

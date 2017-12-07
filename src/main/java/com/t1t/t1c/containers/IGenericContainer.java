@@ -3,6 +3,7 @@ package com.t1t.t1c.containers;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.model.DigestAlgorithm;
 
 import java.util.List;
 
@@ -100,7 +101,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
      */
-    String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException;
+    String authenticate(String data, DigestAlgorithm algo,  String... pin) throws GenericContainerException;
 
     /**
      * Signs a hash with the card's signing (non-repudiation) certificate
@@ -108,5 +109,5 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
      */
-    String sign(GclAuthenticateOrSignData data) throws GenericContainerException;
+    String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException;
 }

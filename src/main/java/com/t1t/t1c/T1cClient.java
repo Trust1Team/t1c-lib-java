@@ -296,27 +296,27 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public MobibContainer getMobibContainer(GclReader reader) {
-        return null;
+        return new MobibContainer(connFactory.getConfig(), reader, connFactory.getGclMobibRestClient());
     }
 
     @Override
     public OcraContainer getOcraContainer(GclReader reader) {
-        return null;
+        return new OcraContainer(connFactory.getConfig(), reader, connFactory.getGclOcraRestClient());
     }
 
     @Override
     public AventraContainer getAventraContainer(GclReader reader) {
-        return null;
+        return new AventraContainer(connFactory.getConfig(), reader, connFactory.getGclAventraRestClient());
     }
 
     @Override
     public OberthurContainer getOberthurContainer(GclReader reader) {
-        return null;
+        return new OberthurContainer(connFactory.getConfig(), reader, connFactory.getGclOberthurRestClient());
     }
 
     @Override
-    public PivContainer getPivContainer(GclReader reader) {
-        return null;
+    public PivContainer getPivContainer(GclReader reader, String pin) {
+        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pin);
     }
 
     @Override
@@ -326,12 +326,12 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public SafeNetContainer getSafeNetContainer(GclReader reader) {
-        return null;
+        return getSafeNetContainer(reader, new SafeNetContainerConfiguration());
     }
 
     @Override
     public SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration) {
-        return null;
+        return new SafeNetContainer(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
     }
 
     @Override
@@ -341,7 +341,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public ReaderApiContainer getReaderApiContainer() {
-        return null;
+        return new ReaderApiContainer();
     }
 
     @Override
@@ -362,9 +362,9 @@ public class T1cClient implements IT1cClient {
                 container = getEmvContainer(reader);
                 break;
             case LUXID:
-                String pinToUse = getPin(pin);
-                Preconditions.checkArgument(StringUtils.isNotEmpty(pinToUse), "Cannot instantiate generic container for this reader without PIN");
-                container = getLuxIdContainer(reader, pinToUse);
+                String luxPinToUse = getPin(pin);
+                Preconditions.checkArgument(StringUtils.isNotEmpty(luxPinToUse), "Cannot instantiate generic container for this reader without PIN");
+                container = getLuxIdContainer(reader, luxPinToUse);
                 break;
             case LUXTRUST:
                 container = getLuxTrustContainer(reader);
@@ -379,13 +379,15 @@ public class T1cClient implements IT1cClient {
                 container = getOcraContainer(reader);
                 break;
             case PIV:
-                container = getPivContainer(reader);
+                String pivPinToUse = getPin(pin);
+                Preconditions.checkArgument(StringUtils.isNotEmpty(pivPinToUse), "Cannot instantiate generic container for this reader without PIN");
+                container = getPivContainer(reader, pivPinToUse);
                 break;
             case PT:
                 container = getPtIdContainer(reader);
                 break;
             case SAFENET:
-                container = getSafeNetContainer(reader);
+                container = getSafeNetContainer(reader, new SafeNetContainerConfiguration());
                 break;
             default:
                 throw ExceptionFactory.genericContainerException("No generic container available for this reader");
@@ -395,22 +397,22 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public String getDownloadLink() {
-        return null;
+        return getDsClient().getDownloadLink();
     }
 
     @Override
     public List<GclReader> getAuthenticateCapableReaders() {
-        return null;
+        return getCore().getAuthenticationCapableReaders();
     }
 
     @Override
     public List<GclReader> getSignCapableReaders() {
-        return null;
+        return getCore().getSignCapableReaders();
     }
 
     @Override
     public List<GclReader> getPinVerificationCapableReaders() {
-        return null;
+        return getCore().getPinVerificationCapableReaders();
     }
 
 }

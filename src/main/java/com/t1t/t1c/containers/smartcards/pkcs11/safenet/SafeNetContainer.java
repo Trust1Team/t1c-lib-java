@@ -9,6 +9,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.DigestAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +21,21 @@ import java.util.List;
  */
 public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, AllData, AllCertificates>{
 
-/*    private SafeNetContainerConfiguration safeNetConfig;
-    private String module;*/
+    private SafeNetContainerConfiguration safeNetConfig;
 
-    private static final Logger log = LoggerFactory.getLogger(SafeNetContainer.class);
+    public SafeNetContainer(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, SafeNetContainerConfiguration safeNetConfig) {
+        super(config, reader, httpClient, null);
+        this.safeNetConfig = safeNetConfig;
+    }
 
     @Override
     public SafeNetContainer createInstance(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, String pin) {
-        return null;
+        this.config = config;
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.pin = pin;
+        this.type = ContainerType.SAFENET;
+        return this;
     }
 
     @Override
@@ -76,12 +84,12 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 

@@ -1,5 +1,6 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
@@ -18,32 +19,32 @@ public class MockGclMobibRestClient extends AbstractMockRestClient<GclMobibRestC
     }
 
     @Override
-    public Call<T1cResponse<Boolean>> getMobibStatus(String containerId, String readerId) {
+    public Call<T1cResponse<Boolean>> getMobibStatus(String containerId, String readerId) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<String>> getMobibPicture(String containerId, String readerId) {
+    public Call<T1cResponse<String>> getMobibPicture(String containerId, String readerId) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<GclMobibCardIssuing>> getMobibCardIssuing(String containerId, String readerId) {
+    public Call<T1cResponse<GclMobibCardIssuing>> getMobibCardIssuing(String containerId, String readerId) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<List<GclMobibContract>>> getMobibContracts(String containerId, String readerId) {
+    public Call<T1cResponse<List<GclMobibContract>>> getMobibContracts(String containerId, String readerId) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId) {
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId, String filter) {
+    public Call<T1cResponse<GclMobibAllData>> getMobibAllData(String containerId, String readerId, String filter) throws RestException {
         return null;
     }
 }

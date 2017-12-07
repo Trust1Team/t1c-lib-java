@@ -5,7 +5,9 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -33,7 +35,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(false));
+        container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(true));
     }
 
     @Test
@@ -110,21 +112,34 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void verifyPin() {
-        assertTrue(container.verifyPin("1234"));
+        assertTrue(container.verifyPin("1111"));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void verifyPinIncorrect() {
+        container.verifyPin("1112");
     }
 
     @Test
     public void authenticate() {
-        String authenticatedHash = container.authenticate(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
+        String authenticatedHash = container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(authenticatedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void authenticatePinIncorrect() {
+        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
     }
 
     @Test
     public void sign() {
-        String authenticatedHash = container.sign(new GclAuthenticateOrSignData()
-                .withData("ehlWXR2mz8/m04On93dZ5w==").withAlgorithmReference("sha256").withPin("1111"));
-        assertNotNull(authenticatedHash);
+        String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
+        assertNotNull(signedHash);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void signPinIncorrect() {
+        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
     }
 
     @Test

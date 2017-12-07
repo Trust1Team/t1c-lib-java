@@ -4,16 +4,14 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainerException;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.model.*;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
@@ -109,19 +107,27 @@ public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRest
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws PtIdContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws PtIdContainerException {
         try {
-            return RestExecutor.returnData(httpClient.authenticate(type.getId(), reader.getId(), data));
+            Preconditions.checkNotNull(data, "data to authenticate must not be null");
+            Preconditions.checkNotNull(algo, "digest algorithm must not be null");
+            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
             throw ExceptionFactory.ptIdContainerException("Could not authenticate with container", ex);
         }
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws PtIdContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws PtIdContainerException {
         try {
-            return RestExecutor.returnData(httpClient.sign(type.getId(), reader.getId(), data));
+            Preconditions.checkNotNull(data, "data to sign must not be null");
+            Preconditions.checkNotNull(algo, "digest algorithm must not be null");
+            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
+            PinUtil.checkPinExceptionMessage(ex);
             throw ExceptionFactory.ptIdContainerException("Could not authenticate with container", ex);
         }
     }

@@ -9,6 +9,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.model.DigestAlgorithm;
 
 import java.util.List;
 
@@ -18,9 +19,18 @@ import java.util.List;
  */
 public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient, AllData, AllCertificates> {
 
+    public PivContainer(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
+        super(config, reader, httpClient, pin);
+    }
+
     @Override
     public PivContainer createInstance(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
-        return null;
+        this.config = config;
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.pin = pin;
+        this.type = ContainerType.PIV;
+        return this;
     }
 
     @Override
@@ -69,12 +79,12 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     @Override
-    public String authenticate(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 
     @Override
-    public String sign(GclAuthenticateOrSignData data) throws GenericContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
         return null;
     }
 

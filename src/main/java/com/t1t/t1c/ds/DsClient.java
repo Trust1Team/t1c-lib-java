@@ -89,6 +89,9 @@ public class DsClient implements IDsClient {
     @Override
     public String getDownloadLink(PlatformInfo info) throws DsClientException {
         try {
+            if (info == null) {
+                info = new PlatformInfo();
+            }
             DsDownloadRequest request = new DsDownloadRequest()
                     .withOs(new DsOs()
                             .withArchitecture(info.getOs().getArchitecture())

@@ -90,7 +90,7 @@ public enum ContainerType {
             PivContainer.class,
             null),
     PT("pteid",
-            Collections.singletonList("Portuguese"),
+            Arrays.asList("Portuguese", "Portugese"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
             PtEIdContainer.class,

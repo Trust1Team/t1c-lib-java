@@ -25,13 +25,12 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
-import com.t1t.t1c.core.GclCard;
-import com.t1t.t1c.core.GclContainer;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.DsDevice;
 import com.t1t.t1c.ds.DsDownloadPath;
 import com.t1t.t1c.ds.DsToken;
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.model.T1cResponse;
 import okhttp3.mockwebserver.MockResponse;
@@ -80,10 +79,14 @@ public final class MockResponseFactory {
     private MockResponseFactory() {
     }
 
-    public static T1cResponse<Object> getSuccessResponse() {
-        return new T1cResponse<>()
+    public static <T> T1cResponse<T> getSuccessResponseWithoutData() {
+        return new T1cResponse<T>()
                 .withSuccess(true)
                 .withData(null);
+    }
+
+    private static <T> T1cResponse<T> getSuccessResponse(T data) {
+        return new T1cResponse<T>().withSuccess(true).withData(data);
     }
 
     //
@@ -310,10 +313,36 @@ public final class MockResponseFactory {
     }
 
     //
+    // Generic interface responses
+    //
+
+    public static T1cResponse<String> getSignedHashResponse(String pin) throws RestException {
+        if (pin != null && !"1111".equals(pin)) {
+            throw new RestException("sign failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
+        return new T1cResponse<String>().withSuccess(true).withData("mpzLEPr4Q+PNNZ4IhbvzhcRe5Q+pW7wPliKT8UIu1OFAspuFYQmE466O6weh9j4M1VJsHnQ8VOl42E/evMRGpUJHQuXMraQhK9hGvn+Xvr68aNF1G3LuZjTMH+Je9iWP/5HoJLru/vizLbrtcyaP5VJCDpfbcfSoRr0+QxOz7eT1XWpu1LLPsHquKKALCbbVLrbEzjMwZRQOPHSeAXDz72U8HfxzcOf2Iqjacw8ValIIXOma5BolLEPSE6e+27wgzXXqXNliqLn9PeThTVoCQS3vXtinFtZLZ6A5DinP9jZGCdmWHnw9x0V3phMtzWI+1w4r9+7DzliJqQH8LgnVXA==");
+    }
+
+    public static T1cResponse<Object> verifyPin(String pin) throws RestException {
+        if (!"1111".equals(pin)) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
+        return getSuccessResponseWithoutData();
+    }
+
+    //
     // BE ID responses
     //
 
-    public static T1cResponse<GclBeIdAllData> getGclBeIdAllDataResponse(String filter) {
+    public static T1cResponse<GclBeIdAllData> getGclBeIdAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclBeIdAllData data = getGclBeIdAllData();
         if (!filterParams.isEmpty()) {
@@ -329,7 +358,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(data);
     }
 
-    public static T1cResponse<GclBeIdAllCertificates> getGclBeIdAllCertificatesResponse(String filter) {
+    public static T1cResponse<GclBeIdAllCertificates> getGclBeIdAllCertificatesResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclBeIdAllCertificates data = getGclBeIdAllCertificates();
         if (!filterParams.isEmpty()) {
@@ -372,10 +401,6 @@ public final class MockResponseFactory {
 
     public static T1cResponse<String> getBeIdRrnCertificateResponse() {
         return getSuccessResponse(getBeIdRrnCertificate());
-    }
-
-    public static T1cResponse<Object> getBeIdVerifyPinSuccess() {
-        return getSuccessResponse(null);
     }
 
     private static GclBeIdAllData getGclBeIdAllData() {
@@ -461,7 +486,7 @@ public final class MockResponseFactory {
     // LuxId responses
     //
 
-    public static T1cResponse<GclLuxIdAllData> getLuxIdAllDataResponse(String filter) {
+    public static T1cResponse<GclLuxIdAllData> getLuxIdAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclLuxIdAllData data = getGclLuxIdAllData();
         if (!filterParams.isEmpty()) {
@@ -475,7 +500,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(data);
     }
 
-    public static T1cResponse<GclLuxIdAllCertificates> getLuxIdAllCertificatesResponse(String filter) {
+    public static T1cResponse<GclLuxIdAllCertificates> getLuxIdAllCertificatesResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclLuxIdAllCertificates data = getGclLuxIdAllCertificates();
         if (!filterParams.isEmpty()) {
@@ -496,10 +521,6 @@ public final class MockResponseFactory {
 
     public static T1cResponse<GclLuxIdSignatureImage> getLuxIdSignatureImageResponse() {
         return getSuccessResponse(getGclLuxIdSignatureImage());
-    }
-
-    public static T1cResponse<Object> getLuxIdVerifyPinSuccess() {
-        return getSuccessResponse(null);
     }
 
     public static T1cResponse<String> getLuxIdAuthenticationCertificateResponse() {
@@ -581,7 +602,7 @@ public final class MockResponseFactory {
     // LuxTrust responses
     //
 
-    public static T1cResponse<GclLuxTrustAllData> getGclLuxTrustAllDataResponse(String filter) {
+    public static T1cResponse<GclLuxTrustAllData> getGclLuxTrustAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclLuxTrustAllData data = getGclLuxTrustAllData();
         if (!filterParams.isEmpty()) {
@@ -593,7 +614,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(data);
     }
 
-    public static T1cResponse<GclLuxTrustAllCertificates> getGclLuxTrustAllCertificatesResponse(String filter) {
+    public static T1cResponse<GclLuxTrustAllCertificates> getGclLuxTrustAllCertificatesResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclLuxTrustAllCertificates data = getGclLuxTrustAllCertificates();
         if (!filterParams.isEmpty()) {
@@ -602,10 +623,6 @@ public final class MockResponseFactory {
             if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
         }
         return getSuccessResponse(data);
-    }
-
-    public static T1cResponse<Object> getLuxTrustVerifyPinResponse() {
-        return getSuccessResponse(null);
     }
 
     public static T1cResponse<String> getGclLuxTrustAuthenticationCertificate() {
@@ -749,11 +766,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(getPtIdNonRepudiationCertificate());
     }
 
-    public static T1cResponse<Object> getPtIdVerifyPinResponse() {
-        return getSuccessResponse(null);
-    }
-
-    public static T1cResponse<GclPtIdAllData> getPtIdAllDataResponse(String filter) {
+    public static T1cResponse<GclPtIdAllData> getPtIdAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclPtIdAllData data = getPtIdAllData();
         if (!filterParams.isEmpty()) {
@@ -767,7 +780,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(data);
     }
 
-    public static T1cResponse<GclPtIdAllCertificates> getPtIdAllCertificatesResponse(String filter) {
+    public static T1cResponse<GclPtIdAllCertificates> getPtIdAllCertificatesResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclPtIdAllCertificates data = getPtIdAllCertificates();
         if (!filterParams.isEmpty()) {
@@ -887,6 +900,86 @@ public final class MockResponseFactory {
                 .withValidityEndDate("31 10 2016");
     }
 
+    //
+    // DNIE responses
+    //
+
+    public static T1cResponse<GclDnieInfo> getGclDnieInfoResponse() {
+        return getSuccessResponse(getGclDnieInfo());
+    }
+
+    public static T1cResponse<String> getGclDnieAuthenticationCertificateResponse() {
+        return getSuccessResponse(getDnieAuthenticationCertificate());
+    }
+
+    public static T1cResponse<String> getGclDnieIntermediateCertificateResponse() {
+        return getSuccessResponse(getDnieIntermediateCertificate());
+    }
+
+    public static T1cResponse<String> getGclDnieSigningCertificateResponse() {
+        return getSuccessResponse(getDnieSigningCertificate());
+    }
+
+    public static T1cResponse<GclDnieAllData> getGclDnieAllDataResponse(String filter) throws RestException {
+        List<String> filterParams = splitFilterParams(filter);
+        GclDnieAllData data = getDnieAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("info")) data.setInfo(null);
+            if (!filterParams.contains("intermediate-certificate")) data.setIntermediateCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclDnieAllCertificates> getGclDnieAllCertificatesResponse(String filter) throws RestException {
+        List<String> filterParams = splitFilterParams(filter);
+        GclDnieAllCertificates data = getDnieAllCertificates();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("intermediate-certificate")) data.setIntermediateCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static GclDnieAllData getDnieAllData() {
+        return new GclDnieAllData()
+                .withInfo(getGclDnieInfo())
+                .withAuthenticationCertificate(getDnieAuthenticationCertificate())
+                .withIntermediateCertificate(getDnieIntermediateCertificate())
+                .withSigningCertificate(getDnieSigningCertificate());
+    }
+
+    public static GclDnieAllCertificates getDnieAllCertificates() {
+        return new GclDnieAllCertificates()
+                .withAuthenticationCertificate(getDnieAuthenticationCertificate())
+                .withIntermediateCertificate(getDnieIntermediateCertificate())
+                .withSigningCertificate(getDnieSigningCertificate());
+    }
+
+    public static String getDnieAuthenticationCertificate() {
+        return "MIIF9DCCBNygAwIBAgIQehYO6pDPiOpY+NT32MAePzANBgkqhkiG9w0BAQsFADBcMQswCQYDVQQGEwJFUzEoMCYGA1UECgwfRElSRUNDSU9OIEdFTkVSQUwgREUgTEEgUE9MSUNJQTENMAsGA1UECwwERE5JRTEUMBIGA1UEAwwLQUMgRE5JRSAwMDEwHhcNMTcwNDIwMTUzNDE1WhcNMjEwMjI2MjI1OTU5WjCBhTELMAkGA1UEBhMCRVMxEjAQBgNVBAUTCTU0MzUwMzMwTDEQMA4GA1UEBAwHRVNDT0JBUjEXMBUGA1UEKgwORElBTkEgQ0FST0xJTkExNzA1BgNVBAMMLkVTQ09CQVIgTUVKSUEsIERJQU5BIENBUk9MSU5BIChBVVRFTlRJQ0FDScOTTikwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDit5WX38NNYqDMyhf7ifSqYpNvi6cWrDDbiBRrrfnQqOQpiPsaSlg7ghShNgU3IPGDvGQ9ptZs+gHKfMlaOAEHdp29/LbBlSMpdqz20MUuymFnG1K4catVVhMLurfWXVrfvaiMAhRqqErbDhxHt76zE87/I1Fry1zQDkF0Zi7vxCV3ejCE3soDEnYtDGBnt8DNlYFRFJmtn9K0rer8qHAGLF2Kfu+Le6c25ZfHvavJW0PNf4YmQYNNTiIPrNQKrI/CUOOO+QJyikK/4sSfbMYjSLk0sSncVfirAtEqdNLUyiEXUn0JSbgkN0XgN96oKDZrcYZHIT5HyQYtxrgPP6v3AgMBAAGjggKGMIICgjAMBgNVHRMBAf8EAjAAMA4GA1UdDwEB/wQEAwIHgDAdBgNVHQ4EFgQUiJAkHEmhAlmsVkMsMZR73CvW1U8wHwYDVR0jBBgwFoAUGomoxe6Pdl1VcYnzOzW9qgUAlW8wIgYIKwYBBQUHAQMEFjAUMAgGBgQAjkYBATAIBgYEAI5GAQQwYAYIKwYBBQUHAQEEVDBSMB8GCCsGAQUFBzABhhNodHRwOi8vb2NzcC5kbmllLmVzMC8GCCsGAQUFBzAChiNodHRwOi8vd3d3LmRuaWUuZXMvY2VydHMvQUNSYWl6LmNydDA7BgNVHSAENDAyMDAGCGCFVAECAgIEMCQwIgYIKwYBBQUHAgEWFmh0dHA6Ly93d3cuZG5pZS5lcy9kcGMwgfAGCCsGAQUFBwECBIHjMIHgMDICAQEwCwYJYIZIAWUDBAIBBCBmQv+IBXgTj/id4mAKu6qlWmzK/urgPLLojPktgrXMiDAyAgEAMAsGCWCGSAFlAwQCAQQgQb29S/dRjlGVuLx+qkSU1wzDOGtI48UGrSQScVc2AZUwOgYJYIVUAQICBAIBMAsGCWCGSAFlAwQCAQQg7Ai3TKIl/mYYoQxFhUkQaRj44WBTPiEZTyfFLmXZcQYwOgYJYIVUAQICBAIGMAsGCWCGSAFlAwQCAQQg7Ai3TKIl/mYYoQxFhUkQaRj44WBTPiEZTyfFLmXZcQYwKAYDVR0JBCEwHzAdBggrBgEFBQcJATERGA8xOTgxMDcxMDEyMDAwMFowQgYIYIVUAQICBAEENjA0MDICAQIwCwYJYIZIAWUDBAIBBCDsCLdMoiX+ZhihDEWFSRBpGPjhYFM+IRlPJ8UuZdlxBjANBgkqhkiG9w0BAQsFAAOCAQEALKa+wzhoYYVfWUkGEuR+jePhAgpM4gsrC3GWFFVlTvq3NnMbR7qXiRGvYd56g7Ks5eoC7fNmSsGpi2oj3EZuL4tax2JRaUj8YWcanuz3NpbYUw0TslCj7cfeaF3Gh6NOXc5/DCSXkaQFUiWOG7afJubTlxR7UXzA86j2J0SoTvQuTdU0iJ3vIufuDnZ6joMx5H//88714zumvVe7C7Yq3gO2Dp73i3x8nSKVD3cGfKWEHu2Pday8UxOV5zWPDi6DhcYx5XUQuvAC68hK9rRh1h7JnvrlXoWSBZWhyoWNNDj/YCfY0FHQPYUqXHXVDxgVU2Kgptfv6Hbmbw1keVLdZw==";
+    }
+
+    public static String getDnieIntermediateCertificate() {
+        return "MIIFxTCCA62gAwIBAgIQTC76D3cRLAdEAtoYr7n+fjANBgkqhkiG9w0BAQsFADBdMQswCQYDVQQGEwJFUzEoMCYGA1UECgwfRElSRUNDSU9OIEdFTkVSQUwgREUgTEEgUE9MSUNJQTENMAsGA1UECwwERE5JRTEVMBMGA1UEAwwMQUMgUkFJWiBETklFMB4XDTA2MDIyNzEwNTMxMloXDTIxMDIyNjIyNTk1OVowXDELMAkGA1UEBhMCRVMxKDAmBgNVBAoMH0RJUkVDQ0lPTiBHRU5FUkFMIERFIExBIFBPTElDSUExDTALBgNVBAsMBEROSUUxFDASBgNVBAMMC0FDIEROSUUgMDAxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArP5KmdLkp/2ND+57jLnX+4k1f86Z36TGrvy3MuANV+ft8NbNOxZcpcGSPw6WYa+m0zKfhQ+sQETHhMHMo7Gb6nlhqCmNTpTdj35K0Bn5maLnTE8F8/p/6pT9CLrEPYV5eX7ObNCiqk2vnuWQMcVAwRX077QYGKNzW98p9Kxiq4mYZRR0ObnxYNd61WDczOduP5C/dUIrGk3JfFLINLGV0d/9EaeHl7zjkzOYyCScGq+tlrkKVgW6BQwI/gXw4XRYNhFjCAPzb8caLevxQxGnzRUZ8dTOUOeqgOZ1FXfNuig7Koek4qkdyQKowYNp4S3NweuuvbsbPJZqVzCqzwCq9wIDAQABo4IBgDCCAXwwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUGomoxe6Pdl1VcYnzOzW9qgUAlW8wHwYDVR0jBBgwFoAUjkX0n3PF/y8bBdsBR2AbA4qBt7owDgYDVR0PAQH/BAQDAgEGMDcGA1UdIAQwMC4wLAYEVR0gADAkMCIGCCsGAQUFBwIBFhZodHRwOi8vd3d3LmRuaWUuZXMvZHBjMIHcBgNVHR8EgdQwgdEwgc6ggcuggciGIGh0dHA6Ly9jcmxzLmRuaWUuZXMvY3Jscy9BUkwuY3JshoGjbGRhcDovL2xkYXAuZG5pZS5lcy9DTj1DUkwsQ049QUMlMjBSQUlaJTIwRE5JRSxPVT1ETklFLE89RElSRUNDSU9OJTIwR0VORVJBTCUyMERFJTIwTEElMjBQT0xJQ0lBLEM9RVM/YXV0aG9yaXR5UmV2b2NhdGlvbkxpc3Q/YmFzZT9vYmplY3RjbGFzcz1jUkxEaXN0cmlidXRpb25Qb2ludDANBgkqhkiG9w0BAQsFAAOCAgEAcpi2LlDeKvi54BNoqtJy/ZLi9Qm+W68L/WFAqzg+za4gbhilpL/rlSYnBPAx4X17kJe0COywhwX/u+q8Iywt7LPdX3VheWwJBHY75jkCveLThpSvkDD69/DCi+4P/GnaoXeycJX2Hs70h/lw6PM62Vn6686+tf/X/kYApAwiCIW7MeQFrDtB/ZLUQF9nlbi6Iimcaew4Csi1Y0tsEjaRmFiZxMohSuaZaW7EpiAFmns19LRhKHpGYlHHuqXVKghSAkGRgAAyp45CsA0PkhK2vq/PL2Ey8o4wrtdyiZSi370DA+khg8x9hSBD/lOWk0Ivzop+Gb4ONHldjZRUW+ipX1wvtYoGhumETvf9oZXrLEJr6dV44U2Sdz8bhhkCt3G75u0zxaZTOexewhpRDyx6RoWSeUs0Z7Pppwxlb4kjmqfH10TlSEQj1I5yzi6p8Y2Eu3UG6XmI+LEZy6PhYo+ky5OS+ktJgqiYAKW161X9E2+iSBF77ikbFUhsvvVc4zDJeqHktCkNj3CnktWqjmzwd6G16HegLQW+nbn0bkTUO98hNOyuRzkb7o8wsWpX5pZPNQ1wwz3lAZQ7TL72N25JEOTUt9oZe4SoWrycjHyJ4uXPGJLUKPXISOyi9uKq/gKePNNF8/TfmBsEOfmjXQ7PDA55y7dW05EoO3RMg669K8A=";
+    }
+
+    public static String getDnieSigningCertificate() {
+        return "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";
+    }
+
+    public static GclDnieInfo getGclDnieInfo() {
+        return new GclDnieInfo()
+                .withSecondLastName("MEJIA")
+                .withFirstLastName("ESCOBAR")
+                .withFirstName("DIANA CAROLINA")
+                .withIdesp("AMF108370")
+                .withNumber("54350330L")
+                .withSerialNumber("8644E25A8A30A4");
+    }
+
     // TODO clean up the rest of the responses below
 
     public static T1cResponse<String> getPublicKeyResponseDer() {
@@ -915,10 +1008,6 @@ public final class MockResponseFactory {
 
     public static T1cResponse<String> getCertificateResponse() {
         return new T1cResponse<String>().withSuccess(true).withData("MIIFjjCCA3agAwIBAgIIOyEC3pZbHakwDQYJKoZIhvcNAQEFBQAwKDELMAkGA1UEBhMCQkUxGTAXBgNVBAMTEEJlbGdpdW0gUm9vdCBDQTMwHhcNMTMwNjI2MTIwMDAwWhcNMjgwMTI4MTIwMDAwWjAoMQswCQYDVQQGEwJCRTEZMBcGA1UEAxMQQmVsZ2l1bSBSb290IENBMzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKjyAZ2Lg8kHoIX7JLc3BeZ1Tzy9MEv7Bnr59xcJezc/xJJdO4V3bwMltKFfNvqsQ5H/GQADFJ0GmTLLPDI5AoeUjBubRZ9hwruUuQ11+vhtoVhuEuZUxofEIU2yJtiSOONwpo/GIb9C4YZ5h+7ltDpC3MvsFyyordpzgwqSHvFwTCmls5SpU05UbF7ZVPcfVf24A5IgHLpZTgQfAvnzPlm++eJY+sNoNzTBoe6iZphmPbxuPNcJ6slV8qMQQk50/g+KmoPpHX4AvoTr4/7TMTvuK8jS1dEn+fdVKdx9qo9ZZRHFW/TXEn5SrNUu99xhzlE/WBurrVwFoKCWCjmO0CnekJlw0NTr3HBTG5D4AiDjNFUYaIcGJk/ha9rzHzY+WpGdoFZxhbP83ZGeoqkgBr8UzfOFCY8cyUN2db6hpIaK6Nuoho6QWnn+TSNh5Hjui5miqpGxS73gYlT2Qww16h8gFTJQ49fiS+QHlwRw5cqFuqfFLE3nFFF9KIamS4TSe7T4dNGY2VbHzpaGVT4wy+fl7gWsfaUkvhM4b00DzgDiJ9BHiKytNLmzoa3Sneij/CKur0dJ5OdMiAqUpSd0Oe8pdIbmQm1oP5cjckiQjxx7+vSxWtacpGowWK8+7oEsYc+7fLt3GD6q/O5Xi440Pd/sFJmfqRf3C1PPMdBqXcwjAgMBAAGjgbswgbgwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wQgYDVR0gBDswOTA3BgVgOAoBATAuMCwGCCsGAQUFBwIBFiBodHRwOi8vcmVwb3NpdG9yeS5laWQuYmVsZ2l1bS5iZTAdBgNVHQ4EFgQUuLxsAI9bGYWdJQGc8BncQI7QOCswEQYJYIZIAYb4QgEBBAQDAgAHMB8GA1UdIwQYMBaAFLi8bACPWxmFnSUBnPAZ3ECO0DgrMA0GCSqGSIb3DQEBBQUAA4ICAQBFYjv/mKX+VcyxEacckgx4L8XvFkIFPXzjEnDnAtCCkROU/k5n1jjVK+ODOn+Q4kJg6Nd7K47+zTXcrSe1tB2gVMsyaCN9scy4phLX1qT48sThCjUtooxfIoRycpdlf14HcUPCYlASTCapZU0MnAbzfpzxm49Ik/A2JWxAhxXVRHwOu3TMGiQ4W/VyVawxjwQMO8TneBDombmkXsI9bI0OxWUh2A5dKlqu0sYvE0dz8xDxr9ZkmZqYcPIKizCZlaP1ZsSlCi5S31gn3EUP+fd21q6ZXgU+50/qgoh/0UUaHRpedPQBES/FYc2IQZ2XjhmeTwM+9Lk7tnzHeHp3dgCoOfceyPUaVkWiXMWcNAvvkDVELvXfJpRxwcRfS5Ks5oafOfj81RzGUbmpwl2usOeCRwdWE8gPvbfWNQQC8MJquDl5HdeuzUesTXUqXeEkyAOo6YnF3g0qGcLI9NXusji1egRUZ7B4XCvG52lTB7Wgd/wVFzS3f4mAmYTGJXH+N/lrBBGKuTJ5XncJaliFUKxGP6VmNyaaLUF5IlTqC9CGHPLSXOgDokt2G9pNwFm2t7AcpwAmegkMNpgcgTd+qk2yljEaT8wf953jUAFedbpN3tX/3i+uvHOOmWjQOxJg2lVKkC+bkWa2FrTBDdrlEWVaLrY+M+xeIctrC0WnP7u4xg==");
-    }
-
-    public static T1cResponse<String> getSignedHashResponse() {
-        return new T1cResponse<String>().withSuccess(true).withData("mpzLEPr4Q+PNNZ4IhbvzhcRe5Q+pW7wPliKT8UIu1OFAspuFYQmE466O6weh9j4M1VJsHnQ8VOl42E/evMRGpUJHQuXMraQhK9hGvn+Xvr68aNF1G3LuZjTMH+Je9iWP/5HoJLru/vizLbrtcyaP5VJCDpfbcfSoRr0+QxOz7eT1XWpu1LLPsHquKKALCbbVLrbEzjMwZRQOPHSeAXDz72U8HfxzcOf2Iqjacw8ValIIXOma5BolLEPSE6e+27wgzXXqXNliqLn9PeThTVoCQS3vXtinFtZLZ6A5DinP9jZGCdmWHnw9x0V3phMtzWI+1w4r9+7DzliJqQH8LgnVXA==");
     }
 
     public static T1cResponse<GclDnieInfo> getDnieInfoResponse() {
@@ -1183,18 +1272,16 @@ public final class MockResponseFactory {
         return getSuccessResponse(slots);
     }
 
-    private static <T> T1cResponse<T> getSuccessResponse(T data) {
-        return new T1cResponse<T>().withSuccess(true).withData(data);
-    }
-
     private static T1cCertificate getT1cCertificate() {
         return new T1cCertificate().withBase64(getCertificateResponse().getData());
     }
 
-    private static List<String> splitFilterParams(String filter) {
+    private static List<String> splitFilterParams(String filter) throws RestException {
+        // To mock rest exceptions, if filter contains "throwException", we throw a RestException
         if (StringUtils.isEmpty(filter)) {
             return Collections.emptyList();
         }
+        if (filter.contains("throwException")) throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
     }
 
