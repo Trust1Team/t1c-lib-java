@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclEmvPublicKeyCertificate {
     private String remainder;
 
     /**
-     * 
-     * @return
-     *     The data
+     * @return The data
      */
     public String getData() {
         return data;
     }
 
     /**
-     * 
-     * @param data
-     *     The data
+     * @param data The data
      */
     public void setData(String data) {
         this.data = data;
@@ -46,18 +41,14 @@ public class GclEmvPublicKeyCertificate {
     }
 
     /**
-     * 
-     * @return
-     *     The exponent
+     * @return The exponent
      */
     public String getExponent() {
         return exponent;
     }
 
     /**
-     * 
-     * @param exponent
-     *     The exponent
+     * @param exponent The exponent
      */
     public void setExponent(String exponent) {
         this.exponent = exponent;
@@ -69,18 +60,14 @@ public class GclEmvPublicKeyCertificate {
     }
 
     /**
-     * 
-     * @return
-     *     The remainder
+     * @return The remainder
      */
     public String getRemainder() {
         return remainder;
     }
 
     /**
-     * 
-     * @param remainder
-     *     The remainder
+     * @param remainder The remainder
      */
     public void setRemainder(String remainder) {
         this.remainder = remainder;

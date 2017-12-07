@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclDnieAllData implements AllData
-{
+public class GclDnieAllData implements AllData {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -28,18 +26,14 @@ public class GclDnieAllData implements AllData
     private String signingCertificate;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -51,18 +45,14 @@ public class GclDnieAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The info
+     * @return The info
      */
     public GclDnieInfo getInfo() {
         return info;
     }
 
     /**
-     * 
-     * @param info
-     *     The info
+     * @param info The info
      */
     public void setInfo(GclDnieInfo info) {
         this.info = info;
@@ -74,18 +64,14 @@ public class GclDnieAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The intermediateCertificate
+     * @return The intermediateCertificate
      */
     public String getIntermediateCertificate() {
         return intermediateCertificate;
     }
 
     /**
-     * 
-     * @param intermediateCertificate
-     *     The intermediate_certificate
+     * @param intermediateCertificate The intermediate_certificate
      */
     public void setIntermediateCertificate(String intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
@@ -97,18 +83,14 @@ public class GclDnieAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;

@@ -267,17 +267,22 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/DsError.json</sourcePath>
                         <!-- OCV -->
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificate.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvOcspResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCrlResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
+                        </sourcePath>
                         <!-- GCL core -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
@@ -333,8 +338,11 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
                         <!-- Aventra -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAuthenticationAlgorithmReferences.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraSignAlgorithmReferences.json</sourcePath>
+                        <sourcePath>
+                            ${basedir}/src/main/resources/schemas/GclAventraAuthenticationAlgorithmReferences.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraSignAlgorithmReferences.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAppletInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllCertificates.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllData.json</sourcePath>
@@ -342,17 +350,22 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllCertificates.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllData.json</sourcePath>
                         <!-- OBERTHUR -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAuthenticationAlgorithmReferences.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurSignAlgorithmReferences.json</sourcePath>
+                        <sourcePath>
+                            ${basedir}/src/main/resources/schemas/GclOberthurAuthenticationAlgorithmReferences.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurSignAlgorithmReferences.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllCertificates.json</sourcePath>
                         <!-- REMOTE LOADING -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingApdu.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommand.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommandRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommandRequest.json
+                        </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json
+                        </sourcePath>
                         <!-- More to come -->
                     </sourcePaths>
                     <excludes></excludes>

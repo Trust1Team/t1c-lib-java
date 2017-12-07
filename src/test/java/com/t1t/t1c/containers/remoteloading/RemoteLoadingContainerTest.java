@@ -34,7 +34,7 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void getAtr() {
-        String atr =  container.getAtr();
+        String atr = container.getAtr();
         assertNotNull(atr);
         assertEquals(MockResponseFactory.getRemoteLoadingAtr(), atr);
     }
@@ -57,19 +57,19 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
     public void executeApduCalls() {
         List<GclRemoteLoadingCommand> commands = container.executeApduCalls(
                 Arrays.asList(
-                    new GclRemoteLoadingApdu()
-                        .withCla("cla")
-                        .withData("data")
-                        .withIns("ins")
-                        .withLe("le")
-                        .withP1("p1")
-                        .withP2("p2"),
-                    new GclRemoteLoadingApdu().withCla("cla")
-                        .withData("data")
-                        .withIns("ins")
-                        .withLe("le")
-                        .withP1("p1")
-                        .withP2("p2"))
+                        new GclRemoteLoadingApdu()
+                                .withCla("cla")
+                                .withData("data")
+                                .withIns("ins")
+                                .withLe("le")
+                                .withP1("p1")
+                                .withP2("p2"),
+                        new GclRemoteLoadingApdu().withCla("cla")
+                                .withData("data")
+                                .withIns("ins")
+                                .withLe("le")
+                                .withP1("p1")
+                                .withP2("p2"))
         );
         assertNotNull(commands);
         assertEquals(2, commands.size());
@@ -93,7 +93,7 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void executeCommand() {
-        GclRemoteLoadingCommand command =  container.executeCommand("00B00000FF");
+        GclRemoteLoadingCommand command = container.executeCommand("00B00000FF");
         assertNotNull(command);
         assertEquals(MockResponseFactory.getGclRemoteLoadingCommand(0), command);
     }

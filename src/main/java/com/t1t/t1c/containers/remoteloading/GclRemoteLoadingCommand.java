@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.remoteloading;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclRemoteLoadingCommand {
     private String sw;
 
     /**
-     * 
-     * @return
-     *     The tx
+     * @return The tx
      */
     public String getTx() {
         return tx;
     }
 
     /**
-     * 
-     * @param tx
-     *     The tx
+     * @param tx The tx
      */
     public void setTx(String tx) {
         this.tx = tx;
@@ -46,18 +41,14 @@ public class GclRemoteLoadingCommand {
     }
 
     /**
-     * 
-     * @return
-     *     The rx
+     * @return The rx
      */
     public String getRx() {
         return rx;
     }
 
     /**
-     * 
-     * @param rx
-     *     The rx
+     * @param rx The rx
      */
     public void setRx(String rx) {
         this.rx = rx;
@@ -69,18 +60,14 @@ public class GclRemoteLoadingCommand {
     }
 
     /**
-     * 
-     * @return
-     *     The sw
+     * @return The sw
      */
     public String getSw() {
         return sw;
     }
 
     /**
-     * 
-     * @param sw
-     *     The sw
+     * @param sw The sw
      */
     public void setSw(String sw) {
         this.sw = sw;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.google.gson.annotations.Expose;
@@ -47,18 +46,14 @@ public class GclLuxIdBiometric {
     private String rawData;
 
     /**
-     * 
-     * @return
-     *     The birthDate
+     * @return The birthDate
      */
     public String getBirthDate() {
         return birthDate;
     }
 
     /**
-     * 
-     * @param birthDate
-     *     The birthDate
+     * @param birthDate The birthDate
      */
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
@@ -70,18 +65,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The documentNumber
+     * @return The documentNumber
      */
     public String getDocumentNumber() {
         return documentNumber;
     }
 
     /**
-     * 
-     * @param documentNumber
-     *     The documentNumber
+     * @param documentNumber The documentNumber
      */
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
@@ -93,18 +84,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The documentType
+     * @return The documentType
      */
     public String getDocumentType() {
         return documentType;
     }
 
     /**
-     * 
-     * @param documentType
-     *     The documentType
+     * @param documentType The documentType
      */
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
@@ -116,18 +103,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The firstName
+     * @return The firstName
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * 
-     * @param firstName
-     *     The firstName
+     * @param firstName The firstName
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -139,18 +122,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The gender
+     * @return The gender
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * 
-     * @param gender
-     *     The gender
+     * @param gender The gender
      */
     public void setGender(String gender) {
         this.gender = gender;
@@ -162,18 +141,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The issuingState
+     * @return The issuingState
      */
     public String getIssuingState() {
         return issuingState;
     }
 
     /**
-     * 
-     * @param issuingState
-     *     The issuingState
+     * @param issuingState The issuingState
      */
     public void setIssuingState(String issuingState) {
         this.issuingState = issuingState;
@@ -185,18 +160,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The lastName
+     * @return The lastName
      */
     public String getLastName() {
         return lastName;
     }
 
     /**
-     * 
-     * @param lastName
-     *     The lastName
+     * @param lastName The lastName
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
@@ -208,18 +179,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The nationality
+     * @return The nationality
      */
     public String getNationality() {
         return nationality;
     }
 
     /**
-     * 
-     * @param nationality
-     *     The nationality
+     * @param nationality The nationality
      */
     public void setNationality(String nationality) {
         this.nationality = nationality;
@@ -231,18 +198,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The validityEndDate
+     * @return The validityEndDate
      */
     public String getValidityEndDate() {
         return validityEndDate;
     }
 
     /**
-     * 
-     * @param validityEndDate
-     *     The validityEndDate
+     * @param validityEndDate The validityEndDate
      */
     public void setValidityEndDate(String validityEndDate) {
         this.validityEndDate = validityEndDate;
@@ -254,18 +217,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The validityStartDate
+     * @return The validityStartDate
      */
     public String getValidityStartDate() {
         return validityStartDate;
     }
 
     /**
-     * 
-     * @param validityStartDate
-     *     The validityStartDate
+     * @param validityStartDate The validityStartDate
      */
     public void setValidityStartDate(String validityStartDate) {
         this.validityStartDate = validityStartDate;
@@ -277,18 +236,14 @@ public class GclLuxIdBiometric {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ocv;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class OcvCertificate {
     private Integer order;
 
     /**
-     * 
-     * @return
-     *     The certificate
+     * @return The certificate
      */
     public String getCertificate() {
         return certificate;
     }
 
     /**
-     * 
-     * @param certificate
-     *     The certificate
+     * @param certificate The certificate
      */
     public void setCertificate(String certificate) {
         this.certificate = certificate;
@@ -43,18 +38,14 @@ public class OcvCertificate {
     }
 
     /**
-     * 
-     * @return
-     *     The order
+     * @return The order
      */
     public Integer getOrder() {
         return order;
     }
 
     /**
-     * 
-     * @param order
-     *     The order
+     * @param order The order
      */
     public void setOrder(Integer order) {
         this.order = order;

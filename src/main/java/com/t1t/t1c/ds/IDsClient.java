@@ -79,7 +79,7 @@ public interface IDsClient {
      * Public properties are send in order to determine operating system browser, ...
      *
      * @param deviceId the devide ID
-     * @param request the registration request
+     * @param request  the registration request
      * @return a JWT
      * @throws DsClientException: on failure
      */

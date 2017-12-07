@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "OcvChallengeVerificationResponse",
   "type": "object",
-  "javaType" : "com.t1t.t1c.ocv.OcvChallengeVerificationResponse",
+  "javaType": "com.t1t.t1c.ocv.OcvChallengeVerificationResponse",
   "properties": {
     "result": {
       "type": "boolean"

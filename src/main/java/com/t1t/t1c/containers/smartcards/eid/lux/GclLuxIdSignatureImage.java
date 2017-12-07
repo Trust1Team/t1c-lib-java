@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class GclLuxIdSignatureImage {
     private String rawData;
 
     /**
-     * 
-     * @return
-     *     The image
+     * @return The image
      */
     public String getImage() {
         return image;
     }
 
     /**
-     * 
-     * @param image
-     *     The image
+     * @param image The image
      */
     public void setImage(String image) {
         this.image = image;
@@ -43,18 +38,14 @@ public class GclLuxIdSignatureImage {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;

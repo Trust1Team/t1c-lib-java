@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.ocra;
 
 import com.google.gson.annotations.Expose;
@@ -11,26 +10,21 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclOcraAllData implements AllData
-{
+public class GclOcraAllData implements AllData {
 
     @SerializedName("counter")
     @Expose
     private String counter;
 
     /**
-     * 
-     * @return
-     *     The counter
+     * @return The counter
      */
     public String getCounter() {
         return counter;
     }
 
     /**
-     * 
-     * @param counter
-     *     The counter
+     * @param counter The counter
      */
     public void setCounter(String counter) {
         this.counter = counter;

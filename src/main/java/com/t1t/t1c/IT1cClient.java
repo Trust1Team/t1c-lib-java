@@ -31,35 +31,54 @@ import java.util.List;
 public interface IT1cClient {
     /*General*/
     ICore getCore();
+
     ConnectionFactory getConnectionFactory();
 
     /*Clients*/
     IDsClient getDsClient();
+
     IOcvClient getOcvClient();
 
     /*Containers*/
     IGenericContainer getGenericContainer(GclReader reader, String... pin);
+
     BeIdContainer getBeIdContainer(GclReader reader);
+
     LuxIdContainer getLuxIdContainer(GclReader reader, String pin);
+
     LuxTrustContainer getLuxTrustContainer(GclReader reader);
+
     DnieContainer getDnieContainer(GclReader reader);
+
     EmvContainer getEmvContainer(GclReader reader);
+
     MobibContainer getMobibContainer(GclReader reader);
+
     OcraContainer getOcraContainer(GclReader reader);
+
     AventraContainer getAventraContainer(GclReader reader);
+
     OberthurContainer getOberthurContainer(GclReader reader);
+
     PivContainer getPivContainer(GclReader reader, String pin);
+
     PtEIdContainer getPtIdContainer(GclReader reader);
+
     SafeNetContainer getSafeNetContainer(GclReader reader);
+
     SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration);
 
     /*Functional containers*/
     RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader);
+
     ReaderApiContainer getReaderApiContainer();
 
     /*DS Functionality*/
     String getDownloadLink();
+
     List<GclReader> getAuthenticateCapableReaders();
+
     List<GclReader> getSignCapableReaders();
+
     List<GclReader> getPinVerificationCapableReaders();
 }

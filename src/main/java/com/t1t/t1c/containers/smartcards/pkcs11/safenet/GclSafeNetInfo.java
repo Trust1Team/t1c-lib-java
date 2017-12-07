@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.google.gson.annotations.Expose;
@@ -29,18 +28,14 @@ public class GclSafeNetInfo {
     private String libraryVersion;
 
     /**
-     * 
-     * @return
-     *     The cryptokiVersion
+     * @return The cryptokiVersion
      */
     public String getCryptokiVersion() {
         return cryptokiVersion;
     }
 
     /**
-     * 
-     * @param cryptokiVersion
-     *     The cryptoki_version
+     * @param cryptokiVersion The cryptoki_version
      */
     public void setCryptokiVersion(String cryptokiVersion) {
         this.cryptokiVersion = cryptokiVersion;
@@ -52,18 +47,14 @@ public class GclSafeNetInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The manufacturerId
+     * @return The manufacturerId
      */
     public String getManufacturerId() {
         return manufacturerId;
     }
 
     /**
-     * 
-     * @param manufacturerId
-     *     The manufacturer_id
+     * @param manufacturerId The manufacturer_id
      */
     public void setManufacturerId(String manufacturerId) {
         this.manufacturerId = manufacturerId;
@@ -75,18 +66,14 @@ public class GclSafeNetInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The flags
+     * @return The flags
      */
     public Integer getFlags() {
         return flags;
     }
 
     /**
-     * 
-     * @param flags
-     *     The flags
+     * @param flags The flags
      */
     public void setFlags(Integer flags) {
         this.flags = flags;
@@ -98,18 +85,14 @@ public class GclSafeNetInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The libraryDescription
+     * @return The libraryDescription
      */
     public String getLibraryDescription() {
         return libraryDescription;
     }
 
     /**
-     * 
-     * @param libraryDescription
-     *     The library_description
+     * @param libraryDescription The library_description
      */
     public void setLibraryDescription(String libraryDescription) {
         this.libraryDescription = libraryDescription;
@@ -121,18 +104,14 @@ public class GclSafeNetInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The libraryVersion
+     * @return The libraryVersion
      */
     public String getLibraryVersion() {
         return libraryVersion;
     }
 
     /**
-     * 
-     * @param libraryVersion
-     *     The library_version
+     * @param libraryVersion The library_version
      */
     public void setLibraryVersion(String libraryVersion) {
         this.libraryVersion = libraryVersion;

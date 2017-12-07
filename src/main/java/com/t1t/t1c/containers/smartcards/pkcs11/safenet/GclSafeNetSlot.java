@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.google.gson.annotations.Expose;
@@ -29,18 +28,14 @@ public class GclSafeNetSlot {
     private String firmwareVersion;
 
     /**
-     * 
-     * @return
-     *     The slotId
+     * @return The slotId
      */
     public Integer getSlotId() {
         return slotId;
     }
 
     /**
-     * 
-     * @param slotId
-     *     The slot_id
+     * @param slotId The slot_id
      */
     public void setSlotId(Integer slotId) {
         this.slotId = slotId;
@@ -52,18 +47,14 @@ public class GclSafeNetSlot {
     }
 
     /**
-     * 
-     * @return
-     *     The description
+     * @return The description
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * 
-     * @param description
-     *     The description
+     * @param description The description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -75,18 +66,14 @@ public class GclSafeNetSlot {
     }
 
     /**
-     * 
-     * @return
-     *     The flags
+     * @return The flags
      */
     public Integer getFlags() {
         return flags;
     }
 
     /**
-     * 
-     * @param flags
-     *     The flags
+     * @param flags The flags
      */
     public void setFlags(Integer flags) {
         this.flags = flags;
@@ -98,18 +85,14 @@ public class GclSafeNetSlot {
     }
 
     /**
-     * 
-     * @return
-     *     The hardwareVersion
+     * @return The hardwareVersion
      */
     public String getHardwareVersion() {
         return hardwareVersion;
     }
 
     /**
-     * 
-     * @param hardwareVersion
-     *     The hardware_version
+     * @param hardwareVersion The hardware_version
      */
     public void setHardwareVersion(String hardwareVersion) {
         this.hardwareVersion = hardwareVersion;
@@ -121,18 +104,14 @@ public class GclSafeNetSlot {
     }
 
     /**
-     * 
-     * @return
-     *     The firmwareVersion
+     * @return The firmwareVersion
      */
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
 
     /**
-     * 
-     * @param firmwareVersion
-     *     The firmware_version
+     * @param firmwareVersion The firmware_version
      */
     public void setFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;

@@ -23,7 +23,7 @@ import com.t1t.t1c.rest.RestServiceBuilder;
 /**
  * @author Guillaume Vandecasteele, Michallis
  * @since 2017
- *
+ * <p>
  * Factory to establish connection instances.
  */
 public final class ConnectionFactory {
@@ -55,25 +55,25 @@ public final class ConnectionFactory {
         resetConnections();
     }
 
-    private void resetConnections(){
+    private void resetConnections() {
         //global connections
         this.dsRestClient = RestServiceBuilder.getDsRestClient(config);
         this.gclRestClient = RestServiceBuilder.getGclRestClient(config);
         this.gclAdminRestClient = RestServiceBuilder.getGclAdminRestClient(config);
         this.ocvRestClient = RestServiceBuilder.getOcvRestClient(config);
         //container specific connections
-        this.gclBeIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclBeIdRestClient.class);
-        this.gclLuxIdRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxIdRestClient.class);
-        this.gclLuxTrustRestClient = RestServiceBuilder.getContainerRestClient(config,GclLuxTrustRestClient.class);
-        this.gclDniRestClient = RestServiceBuilder.getContainerRestClient(config,GclDniRestClient.class);
-        this.gclPtRestClient = RestServiceBuilder.getContainerRestClient(config,GclPtIdRestClient.class);
-        this.gclEmvRestClient = RestServiceBuilder.getContainerRestClient(config,GclEmvRestClient.class);
-        this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config,GclMobibRestClient.class);
-        this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config,GclOcraRestClient.class);
-        this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config,GclPivRestClient.class);
-        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config,GclSafeNetRestClient.class);
-        this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config,GclAventraRestClient.class);
-        this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config,GclOberthurRestClient.class);
+        this.gclBeIdRestClient = RestServiceBuilder.getContainerRestClient(config, GclBeIdRestClient.class);
+        this.gclLuxIdRestClient = RestServiceBuilder.getContainerRestClient(config, GclLuxIdRestClient.class);
+        this.gclLuxTrustRestClient = RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class);
+        this.gclDniRestClient = RestServiceBuilder.getContainerRestClient(config, GclDniRestClient.class);
+        this.gclPtRestClient = RestServiceBuilder.getContainerRestClient(config, GclPtIdRestClient.class);
+        this.gclEmvRestClient = RestServiceBuilder.getContainerRestClient(config, GclEmvRestClient.class);
+        this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config, GclMobibRestClient.class);
+        this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config, GclOcraRestClient.class);
+        this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config, GclPivRestClient.class);
+        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclSafeNetRestClient.class);
+        this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class);
+        this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class);
         this.gclRemoteLoadingRestClient = RestServiceBuilder.getContainerRestClient(config, GclRemoteLoadingRestClient.class);
     }
 
@@ -81,52 +81,77 @@ public final class ConnectionFactory {
     public GclRestClient getGclRestClient() {
         return gclRestClient;
     }
+
     public GclAdminRestClient getGclAdminRestClient() {
         return gclAdminRestClient;
     }
-    public DsRestClient getDsRestClient() { return dsRestClient; }
+
+    public DsRestClient getDsRestClient() {
+        return dsRestClient;
+    }
+
     public OcvRestClient getOcvRestClient() {
         return ocvRestClient;
     }
+
     public GclBeIdRestClient getGclBeIdRestClient() {
         return gclBeIdRestClient;
     }
+
     public GclLuxIdRestClient getGclLuxIdRestClient() {
         return gclLuxIdRestClient;
     }
+
     public GclLuxTrustRestClient getGclLuxTrustRestClient() {
         return gclLuxTrustRestClient;
     }
+
     public GclDniRestClient getGclDniRestClient() {
         return gclDniRestClient;
     }
+
     public GclPtIdRestClient getGclPtRestClient() {
         return gclPtRestClient;
     }
+
     public GclEmvRestClient getGclEmvRestClient() {
         return gclEmvRestClient;
     }
+
     public GclMobibRestClient getGclMobibRestClient() {
         return gclMobibRestClient;
     }
+
     public GclOcraRestClient getGclOcraRestClient() {
         return gclOcraRestClient;
     }
+
     public GclPivRestClient getGclPivRestClient() {
         return gclPivRestClient;
     }
+
     public GclSafeNetRestClient getGclSafenetRestClient() {
         return gclSafenetRestClient;
     }
+
     public GclAventraRestClient getGclAventraRestClient() {
         return gclAventraRestClient;
     }
+
     public GclOberthurRestClient getGclOberthurRestClient() {
         return gclOberthurRestClient;
     }
+
     public GclRemoteLoadingRestClient getGclRemoteLoadingRestClient() {
         return gclRemoteLoadingRestClient;
     }
-    public LibConfig getConfig() { return config; }
-    public void setConfig(LibConfig config) { this.config = config; resetConnections(); }
+
+    public LibConfig getConfig() {
+        return config;
+    }
+
+    public void setConfig(LibConfig config) {
+        this.config = config;
+        resetConnections();
+    }
 }

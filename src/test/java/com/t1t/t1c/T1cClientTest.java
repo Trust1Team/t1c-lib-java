@@ -35,102 +35,102 @@ import static org.junit.Assert.assertNotNull;
 public class T1cClientTest extends AbstractTestClass {
 
     @Test
-    public void testGetCore(){
+    public void testGetCore() {
         ICore core = getClient().getCore();
         assertNotNull(core);
     }
 
     @Test
-    public void testGetConfig(){
+    public void testGetConfig() {
         LibConfig conf = getClient().getConnectionFactory().getConfig();
         assertNotNull(conf);
     }
 
     @Test
-    public void testGetDsClient(){
+    public void testGetDsClient() {
         IDsClient dsClient = getClient().getDsClient();
 
         assertNotNull(dsClient);
     }
 
     @Test()
-    public void testGetOcvClient(){
+    public void testGetOcvClient() {
         assertNotNull(getClient().getOcvClient());
 
     }
 
     @Test
-    public void testGetGenericContainer(){
+    public void testGetGenericContainer() {
         IGenericContainer genericContainer = getClient().getGenericContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false).withCard(MockResponseFactory.getBeIdCard()));
 
         assertNotNull(genericContainer);
     }
 
     @Test
-    public void testGetBeIdContainer(){
+    public void testGetBeIdContainer() {
         BeIdContainer container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false));
 
         assertNotNull(container);
     }
 
     @Test
-    public void testGetLuxIdContainer(){
+    public void testGetLuxIdContainer() {
         LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), "123456");
 
         assertNotNull(container);
     }
 
     @Test
-    public void testGetLuxTrustContainer(){
+    public void testGetLuxTrustContainer() {
         LuxTrustContainer container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false));
 
         assertNotNull(container);
     }
 
     @Test
-    public void testGetDnieContainer(){
+    public void testGetDnieContainer() {
         DnieContainer container = getClient().getDnieContainer(new GclReader().withId(MockResponseFactory.DNIE_READER_ID).withPinpad(false));
 
         assertNotNull(container);
     }
 
     @Test
-    public void testGetPtIdContainer(){
+    public void testGetPtIdContainer() {
         PtEIdContainer container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(false));
 
         assertNotNull(container);
     }
 
     @Test()
-    public void testGetEmvContainer(){
+    public void testGetEmvContainer() {
         EmvContainer container = getClient().getEmvContainer(new GclReader().withId(MockResponseFactory.EMV_READER_ID).withPinpad(false));
         assertNotNull(container);
     }
 
     @Test()
-    public void testGetMobibContainer(){
+    public void testGetMobibContainer() {
         MobibContainer container = getClient().getMobibContainer(new GclReader().withId(MockResponseFactory.MOBIB_READER_ID).withPinpad(false));
         assertNotNull(container);
     }
 
     @Test
-    public void testGetOcraContainer(){
+    public void testGetOcraContainer() {
         OcraContainer container = getClient().getOcraContainer(new GclReader().withId(MockResponseFactory.OCRA_READER_ID).withPinpad(false));
         assertNotNull(container);
     }
 
     @Test
-    public void testGetAventraContainer(){
+    public void testGetAventraContainer() {
         assertNotNull(getClient().getAventraContainer(new GclReader().withId(MockResponseFactory.AVENTRA_READER_ID).withPinpad(false)));
     }
 
     @Test
-    public void testGetOberthurContainer(){
+    public void testGetOberthurContainer() {
         assertNotNull(getClient().getOberthurContainer(new GclReader().withId(MockResponseFactory.OBERTHUR_READER_ID).withPinpad(false)));
     }
 
     @Test
-    public void testGetPivContainer(){
+    public void testGetPivContainer() {
         assertNotNull(getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(false), "1111"));
     }
 
@@ -141,35 +141,35 @@ public class T1cClientTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGetReaderContainer(){
+    public void testGetReaderContainer() {
         assertNotNull(getClient().getReaderApiContainer());
     }
 
     @Test
-    public void testGetRemoteLoadingContainer(){
+    public void testGetRemoteLoadingContainer() {
         getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false));
     }
 
     @Test
-    public void testGetDownloadLink(){
+    public void testGetDownloadLink() {
         String downloadLink = getClient().getDownloadLink();
         assertNotNull(downloadLink);
     }
 
     @Test
-    public void testReadersCanAuthenticate(){
+    public void testReadersCanAuthenticate() {
         List<GclReader> readersThatCanAuthenticate = getClient().getAuthenticateCapableReaders();
         assertEquals(8, readersThatCanAuthenticate.size());
     }
 
     @Test
-    public void testReadersCanSign(){
+    public void testReadersCanSign() {
         List<GclReader> readersThatCanSign = getClient().getAuthenticateCapableReaders();
         assertEquals(8, readersThatCanSign.size());
     }
 
     @Test
-    public void testReadersCanVerifyPin(){
+    public void testReadersCanVerifyPin() {
         List<GclReader> readersThatCanVerifyPin = getClient().getPinVerificationCapableReaders();
         assertEquals(10, readersThatCanVerifyPin.size());
     }

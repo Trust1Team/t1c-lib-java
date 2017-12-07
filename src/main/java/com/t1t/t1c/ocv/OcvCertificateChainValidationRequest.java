@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ocv;
 
 import com.google.gson.annotations.Expose;
@@ -19,18 +18,14 @@ public class OcvCertificateChainValidationRequest {
     private List<OcvCertificate> certificateChain = new ArrayList<OcvCertificate>();
 
     /**
-     * 
-     * @return
-     *     The certificateChain
+     * @return The certificateChain
      */
     public List<OcvCertificate> getCertificateChain() {
         return certificateChain;
     }
 
     /**
-     * 
-     * @param certificateChain
-     *     The certificateChain
+     * @param certificateChain The certificateChain
      */
     public void setCertificateChain(List<OcvCertificate> certificateChain) {
         this.certificateChain = certificateChain;

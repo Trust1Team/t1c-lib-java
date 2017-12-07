@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclMobibSpatial {
     private Integer type;
 
     /**
-     * 
-     * @return
-     *     The routeDestination
+     * @return The routeDestination
      */
     public Boolean getRouteDestination() {
         return routeDestination;
     }
 
     /**
-     * 
-     * @param routeDestination
-     *     The route_destination
+     * @param routeDestination The route_destination
      */
     public void setRouteDestination(Boolean routeDestination) {
         this.routeDestination = routeDestination;
@@ -46,18 +41,14 @@ public class GclMobibSpatial {
     }
 
     /**
-     * 
-     * @return
-     *     The routeOrigin
+     * @return The routeOrigin
      */
     public Integer getRouteOrigin() {
         return routeOrigin;
     }
 
     /**
-     * 
-     * @param routeOrigin
-     *     The route_origin
+     * @param routeOrigin The route_origin
      */
     public void setRouteOrigin(Integer routeOrigin) {
         this.routeOrigin = routeOrigin;
@@ -69,18 +60,14 @@ public class GclMobibSpatial {
     }
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(Integer type) {
         this.type = type;

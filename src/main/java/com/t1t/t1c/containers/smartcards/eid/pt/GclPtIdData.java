@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.google.gson.annotations.Expose;
@@ -101,18 +100,14 @@ public class GclPtIdData {
     private String validityEndDate;
 
     /**
-     * 
-     * @return
-     *     The accidentalIndications
+     * @return The accidentalIndications
      */
     public String getAccidentalIndications() {
         return accidentalIndications;
     }
 
     /**
-     * 
-     * @param accidentalIndications
-     *     The accidental_indications
+     * @param accidentalIndications The accidental_indications
      */
     public void setAccidentalIndications(String accidentalIndications) {
         this.accidentalIndications = accidentalIndications;
@@ -124,18 +119,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The civilianNumber
+     * @return The civilianNumber
      */
     public String getCivilianNumber() {
         return civilianNumber;
     }
 
     /**
-     * 
-     * @param civilianNumber
-     *     The civilian_number
+     * @param civilianNumber The civilian_number
      */
     public void setCivilianNumber(String civilianNumber) {
         this.civilianNumber = civilianNumber;
@@ -147,18 +138,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The country
+     * @return The country
      */
     public String getCountry() {
         return country;
     }
 
     /**
-     * 
-     * @param country
-     *     The country
+     * @param country The country
      */
     public void setCountry(String country) {
         this.country = country;
@@ -170,18 +157,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The dateOfBirth
+     * @return The dateOfBirth
      */
     public String getDateOfBirth() {
         return dateOfBirth;
     }
 
     /**
-     * 
-     * @param dateOfBirth
-     *     The date_of_birth
+     * @param dateOfBirth The date_of_birth
      */
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
@@ -193,18 +176,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The documentNumber
+     * @return The documentNumber
      */
     public String getDocumentNumber() {
         return documentNumber;
     }
 
     /**
-     * 
-     * @param documentNumber
-     *     The document_number
+     * @param documentNumber The document_number
      */
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
@@ -216,18 +195,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The documentNumberPan
+     * @return The documentNumberPan
      */
     public String getDocumentNumberPan() {
         return documentNumberPan;
     }
 
     /**
-     * 
-     * @param documentNumberPan
-     *     The document_number_pan
+     * @param documentNumberPan The document_number_pan
      */
     public void setDocumentNumberPan(String documentNumberPan) {
         this.documentNumberPan = documentNumberPan;
@@ -239,18 +214,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The documentType
+     * @return The documentType
      */
     public String getDocumentType() {
         return documentType;
     }
 
     /**
-     * 
-     * @param documentType
-     *     The document_type
+     * @param documentType The document_type
      */
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
@@ -262,18 +233,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The documentVersion
+     * @return The documentVersion
      */
     public String getDocumentVersion() {
         return documentVersion;
     }
 
     /**
-     * 
-     * @param documentVersion
-     *     The document_version
+     * @param documentVersion The document_version
      */
     public void setDocumentVersion(String documentVersion) {
         this.documentVersion = documentVersion;
@@ -285,18 +252,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The gender
+     * @return The gender
      */
     public String getGender() {
         return gender;
     }
 
     /**
-     * 
-     * @param gender
-     *     The gender
+     * @param gender The gender
      */
     public void setGender(String gender) {
         this.gender = gender;
@@ -308,18 +271,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The givenNameFather
+     * @return The givenNameFather
      */
     public String getGivenNameFather() {
         return givenNameFather;
     }
 
     /**
-     * 
-     * @param givenNameFather
-     *     The given_name_father
+     * @param givenNameFather The given_name_father
      */
     public void setGivenNameFather(String givenNameFather) {
         this.givenNameFather = givenNameFather;
@@ -331,18 +290,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The givenNameMother
+     * @return The givenNameMother
      */
     public String getGivenNameMother() {
         return givenNameMother;
     }
 
     /**
-     * 
-     * @param givenNameMother
-     *     The given_name_mother
+     * @param givenNameMother The given_name_mother
      */
     public void setGivenNameMother(String givenNameMother) {
         this.givenNameMother = givenNameMother;
@@ -354,18 +309,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The healthNo
+     * @return The healthNo
      */
     public String getHealthNo() {
         return healthNo;
     }
 
     /**
-     * 
-     * @param healthNo
-     *     The health_no
+     * @param healthNo The health_no
      */
     public void setHealthNo(String healthNo) {
         this.healthNo = healthNo;
@@ -377,18 +328,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The height
+     * @return The height
      */
     public String getHeight() {
         return height;
     }
 
     /**
-     * 
-     * @param height
-     *     The height
+     * @param height The height
      */
     public void setHeight(String height) {
         this.height = height;
@@ -400,18 +347,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The issuingEntity
+     * @return The issuingEntity
      */
     public String getIssuingEntity() {
         return issuingEntity;
     }
 
     /**
-     * 
-     * @param issuingEntity
-     *     The issuing_entity
+     * @param issuingEntity The issuing_entity
      */
     public void setIssuingEntity(String issuingEntity) {
         this.issuingEntity = issuingEntity;
@@ -423,18 +366,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The localOfRequest
+     * @return The localOfRequest
      */
     public String getLocalOfRequest() {
         return localOfRequest;
     }
 
     /**
-     * 
-     * @param localOfRequest
-     *     The local_of_request
+     * @param localOfRequest The local_of_request
      */
     public void setLocalOfRequest(String localOfRequest) {
         this.localOfRequest = localOfRequest;
@@ -446,18 +385,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The mrz1
+     * @return The mrz1
      */
     public String getMrz1() {
         return mrz1;
     }
 
     /**
-     * 
-     * @param mrz1
-     *     The mrz1
+     * @param mrz1 The mrz1
      */
     public void setMrz1(String mrz1) {
         this.mrz1 = mrz1;
@@ -469,18 +404,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The mrz2
+     * @return The mrz2
      */
     public String getMrz2() {
         return mrz2;
     }
 
     /**
-     * 
-     * @param mrz2
-     *     The mrz2
+     * @param mrz2 The mrz2
      */
     public void setMrz2(String mrz2) {
         this.mrz2 = mrz2;
@@ -492,18 +423,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The mrz3
+     * @return The mrz3
      */
     public String getMrz3() {
         return mrz3;
     }
 
     /**
-     * 
-     * @param mrz3
-     *     The mrz3
+     * @param mrz3 The mrz3
      */
     public void setMrz3(String mrz3) {
         this.mrz3 = mrz3;
@@ -515,18 +442,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -538,18 +461,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The nationality
+     * @return The nationality
      */
     public String getNationality() {
         return nationality;
     }
 
     /**
-     * 
-     * @param nationality
-     *     The nationality
+     * @param nationality The nationality
      */
     public void setNationality(String nationality) {
         this.nationality = nationality;
@@ -561,18 +480,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The photo
+     * @return The photo
      */
     public String getPhoto() {
         return photo;
     }
 
     /**
-     * 
-     * @param photo
-     *     The photo
+     * @param photo The photo
      */
     public void setPhoto(String photo) {
         this.photo = photo;
@@ -584,18 +499,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;
@@ -607,18 +518,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The socialSecurityNo
+     * @return The socialSecurityNo
      */
     public String getSocialSecurityNo() {
         return socialSecurityNo;
     }
 
     /**
-     * 
-     * @param socialSecurityNo
-     *     The social_security_no
+     * @param socialSecurityNo The social_security_no
      */
     public void setSocialSecurityNo(String socialSecurityNo) {
         this.socialSecurityNo = socialSecurityNo;
@@ -630,18 +537,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The surname
+     * @return The surname
      */
     public String getSurname() {
         return surname;
     }
 
     /**
-     * 
-     * @param surname
-     *     The surname
+     * @param surname The surname
      */
     public void setSurname(String surname) {
         this.surname = surname;
@@ -653,18 +556,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The surnameFather
+     * @return The surnameFather
      */
     public String getSurnameFather() {
         return surnameFather;
     }
 
     /**
-     * 
-     * @param surnameFather
-     *     The surname_father
+     * @param surnameFather The surname_father
      */
     public void setSurnameFather(String surnameFather) {
         this.surnameFather = surnameFather;
@@ -676,18 +575,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The surnameMother
+     * @return The surnameMother
      */
     public String getSurnameMother() {
         return surnameMother;
     }
 
     /**
-     * 
-     * @param surnameMother
-     *     The surname_mother
+     * @param surnameMother The surname_mother
      */
     public void setSurnameMother(String surnameMother) {
         this.surnameMother = surnameMother;
@@ -699,18 +594,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The taxNo
+     * @return The taxNo
      */
     public String getTaxNo() {
         return taxNo;
     }
 
     /**
-     * 
-     * @param taxNo
-     *     The tax_no
+     * @param taxNo The tax_no
      */
     public void setTaxNo(String taxNo) {
         this.taxNo = taxNo;
@@ -722,18 +613,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The validityBeginDate
+     * @return The validityBeginDate
      */
     public String getValidityBeginDate() {
         return validityBeginDate;
     }
 
     /**
-     * 
-     * @param validityBeginDate
-     *     The validity_begin_date
+     * @param validityBeginDate The validity_begin_date
      */
     public void setValidityBeginDate(String validityBeginDate) {
         this.validityBeginDate = validityBeginDate;
@@ -745,18 +632,14 @@ public class GclPtIdData {
     }
 
     /**
-     * 
-     * @return
-     *     The validityEndDate
+     * @return The validityEndDate
      */
     public String getValidityEndDate() {
         return validityEndDate;
     }
 
     /**
-     * 
-     * @param validityEndDate
-     *     The validity_end_date
+     * @param validityEndDate The validity_end_date
      */
     public void setValidityEndDate(String validityEndDate) {
         this.validityEndDate = validityEndDate;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclDnieAllCertificates implements AllCertificates
-{
+public class GclDnieAllCertificates implements AllCertificates {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -25,18 +23,14 @@ public class GclDnieAllCertificates implements AllCertificates
     private String signingCertificate;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -48,18 +42,14 @@ public class GclDnieAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The intermediateCertificate
+     * @return The intermediateCertificate
      */
     public String getIntermediateCertificate() {
         return intermediateCertificate;
     }
 
     /**
-     * 
-     * @param intermediateCertificate
-     *     The intermediate_certificate
+     * @param intermediateCertificate The intermediate_certificate
      */
     public void setIntermediateCertificate(String intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
@@ -71,18 +61,14 @@ public class GclDnieAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;

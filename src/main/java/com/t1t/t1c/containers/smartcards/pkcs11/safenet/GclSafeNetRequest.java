@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclSafeNetRequest {
     private String pin;
 
     /**
-     * 
-     * @return
-     *     The module
+     * @return The module
      */
     public String getModule() {
         return module;
     }
 
     /**
-     * 
-     * @param module
-     *     The module
+     * @param module The module
      */
     public void setModule(String module) {
         this.module = module;
@@ -46,18 +41,14 @@ public class GclSafeNetRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The slotId
+     * @return The slotId
      */
     public Integer getSlotId() {
         return slotId;
     }
 
     /**
-     * 
-     * @param slotId
-     *     The slot_id
+     * @param slotId The slot_id
      */
     public void setSlotId(Integer slotId) {
         this.slotId = slotId;
@@ -69,18 +60,14 @@ public class GclSafeNetRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The pin
+     * @return The pin
      */
     public String getPin() {
         return pin;
     }
 
     /**
-     * 
-     * @param pin
-     *     The pin
+     * @param pin The pin
      */
     public void setPin(String pin) {
         this.pin = pin;

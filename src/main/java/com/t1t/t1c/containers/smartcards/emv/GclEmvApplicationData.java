@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.google.gson.annotations.Expose;
@@ -35,18 +34,14 @@ public class GclEmvApplicationData {
     private String pan;
 
     /**
-     * 
-     * @return
-     *     The country
+     * @return The country
      */
     public String getCountry() {
         return country;
     }
 
     /**
-     * 
-     * @param country
-     *     The country
+     * @param country The country
      */
     public void setCountry(String country) {
         this.country = country;
@@ -58,18 +53,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The countryCode
+     * @return The countryCode
      */
     public String getCountryCode() {
         return countryCode;
     }
 
     /**
-     * 
-     * @param countryCode
-     *     The country_code
+     * @param countryCode The country_code
      */
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
@@ -81,18 +72,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The effectiveDate
+     * @return The effectiveDate
      */
     public String getEffectiveDate() {
         return effectiveDate;
     }
 
     /**
-     * 
-     * @param effectiveDate
-     *     The effective_date
+     * @param effectiveDate The effective_date
      */
     public void setEffectiveDate(String effectiveDate) {
         this.effectiveDate = effectiveDate;
@@ -104,18 +91,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The expirationDate
+     * @return The expirationDate
      */
     public String getExpirationDate() {
         return expirationDate;
     }
 
     /**
-     * 
-     * @param expirationDate
-     *     The expiration_date
+     * @param expirationDate The expiration_date
      */
     public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
@@ -127,18 +110,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The language
+     * @return The language
      */
     public String getLanguage() {
         return language;
     }
 
     /**
-     * 
-     * @param language
-     *     The language
+     * @param language The language
      */
     public void setLanguage(String language) {
         this.language = language;
@@ -150,18 +129,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -173,18 +148,14 @@ public class GclEmvApplicationData {
     }
 
     /**
-     * 
-     * @return
-     *     The pan
+     * @return The pan
      */
     public String getPan() {
         return pan;
     }
 
     /**
-     * 
-     * @param pan
-     *     The pan
+     * @param pan The pan
      */
     public void setPan(String pan) {
         this.pan = pan;

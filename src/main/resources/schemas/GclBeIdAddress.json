@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclBeIdAddress",
-  "javaType" : "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress",
   "type": "object",
   "properties": {
     "municipality": {

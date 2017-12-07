@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.google.gson.annotations.Expose;
@@ -74,18 +73,14 @@ public class GclBeIdRn {
     private Integer version;
 
     /**
-     * 
-     * @return
-     *     The birthDate
+     * @return The birthDate
      */
     public String getBirthDate() {
         return birthDate;
     }
 
     /**
-     * 
-     * @param birthDate
-     *     The birth_date
+     * @param birthDate The birth_date
      */
     public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
@@ -97,18 +92,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The birthLocation
+     * @return The birthLocation
      */
     public String getBirthLocation() {
         return birthLocation;
     }
 
     /**
-     * 
-     * @param birthLocation
-     *     The birth_location
+     * @param birthLocation The birth_location
      */
     public void setBirthLocation(String birthLocation) {
         this.birthLocation = birthLocation;
@@ -120,18 +111,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The cardDeliveryMunicipality
+     * @return The cardDeliveryMunicipality
      */
     public String getCardDeliveryMunicipality() {
         return cardDeliveryMunicipality;
     }
 
     /**
-     * 
-     * @param cardDeliveryMunicipality
-     *     The card_delivery_municipality
+     * @param cardDeliveryMunicipality The card_delivery_municipality
      */
     public void setCardDeliveryMunicipality(String cardDeliveryMunicipality) {
         this.cardDeliveryMunicipality = cardDeliveryMunicipality;
@@ -143,18 +130,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The cardNumber
+     * @return The cardNumber
      */
     public String getCardNumber() {
         return cardNumber;
     }
 
     /**
-     * 
-     * @param cardNumber
-     *     The card_number
+     * @param cardNumber The card_number
      */
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
@@ -166,18 +149,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The cardValidityDateBegin
+     * @return The cardValidityDateBegin
      */
     public String getCardValidityDateBegin() {
         return cardValidityDateBegin;
     }
 
     /**
-     * 
-     * @param cardValidityDateBegin
-     *     The card_validity_date_begin
+     * @param cardValidityDateBegin The card_validity_date_begin
      */
     public void setCardValidityDateBegin(String cardValidityDateBegin) {
         this.cardValidityDateBegin = cardValidityDateBegin;
@@ -189,18 +168,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The cardValidityDateEnd
+     * @return The cardValidityDateEnd
      */
     public String getCardValidityDateEnd() {
         return cardValidityDateEnd;
     }
 
     /**
-     * 
-     * @param cardValidityDateEnd
-     *     The card_validity_date_end
+     * @param cardValidityDateEnd The card_validity_date_end
      */
     public void setCardValidityDateEnd(String cardValidityDateEnd) {
         this.cardValidityDateEnd = cardValidityDateEnd;
@@ -212,18 +187,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The chipNumber
+     * @return The chipNumber
      */
     public String getChipNumber() {
         return chipNumber;
     }
 
     /**
-     * 
-     * @param chipNumber
-     *     The chip_number
+     * @param chipNumber The chip_number
      */
     public void setChipNumber(String chipNumber) {
         this.chipNumber = chipNumber;
@@ -235,18 +206,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The documentType
+     * @return The documentType
      */
     public String getDocumentType() {
         return documentType;
     }
 
     /**
-     * 
-     * @param documentType
-     *     The document_type
+     * @param documentType The document_type
      */
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
@@ -258,18 +225,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The firstNames
+     * @return The firstNames
      */
     public String getFirstNames() {
         return firstNames;
     }
 
     /**
-     * 
-     * @param firstNames
-     *     The first_names
+     * @param firstNames The first_names
      */
     public void setFirstNames(String firstNames) {
         this.firstNames = firstNames;
@@ -281,18 +244,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -304,18 +263,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The nationalNumber
+     * @return The nationalNumber
      */
     public String getNationalNumber() {
         return nationalNumber;
     }
 
     /**
-     * 
-     * @param nationalNumber
-     *     The national_number
+     * @param nationalNumber The national_number
      */
     public void setNationalNumber(String nationalNumber) {
         this.nationalNumber = nationalNumber;
@@ -327,18 +282,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The nationality
+     * @return The nationality
      */
     public String getNationality() {
         return nationality;
     }
 
     /**
-     * 
-     * @param nationality
-     *     The nationality
+     * @param nationality The nationality
      */
     public void setNationality(String nationality) {
         this.nationality = nationality;
@@ -350,18 +301,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The nobleCondition
+     * @return The nobleCondition
      */
     public String getNobleCondition() {
         return nobleCondition;
     }
 
     /**
-     * 
-     * @param nobleCondition
-     *     The noble_condition
+     * @param nobleCondition The noble_condition
      */
     public void setNobleCondition(String nobleCondition) {
         this.nobleCondition = nobleCondition;
@@ -373,18 +320,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The pictureHash
+     * @return The pictureHash
      */
     public String getPictureHash() {
         return pictureHash;
     }
 
     /**
-     * 
-     * @param pictureHash
-     *     The picture_hash
+     * @param pictureHash The picture_hash
      */
     public void setPictureHash(String pictureHash) {
         this.pictureHash = pictureHash;
@@ -396,18 +339,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;
@@ -419,18 +358,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The sex
+     * @return The sex
      */
     public String getSex() {
         return sex;
     }
 
     /**
-     * 
-     * @param sex
-     *     The sex
+     * @param sex The sex
      */
     public void setSex(String sex) {
         this.sex = sex;
@@ -442,18 +377,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The signature
+     * @return The signature
      */
     public String getSignature() {
         return signature;
     }
 
     /**
-     * 
-     * @param signature
-     *     The signature
+     * @param signature The signature
      */
     public void setSignature(String signature) {
         this.signature = signature;
@@ -465,18 +396,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The specialStatus
+     * @return The specialStatus
      */
     public String getSpecialStatus() {
         return specialStatus;
     }
 
     /**
-     * 
-     * @param specialStatus
-     *     The special_status
+     * @param specialStatus The special_status
      */
     public void setSpecialStatus(String specialStatus) {
         this.specialStatus = specialStatus;
@@ -488,18 +415,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The thirdName
+     * @return The thirdName
      */
     public String getThirdName() {
         return thirdName;
     }
 
     /**
-     * 
-     * @param thirdName
-     *     The third_name
+     * @param thirdName The third_name
      */
     public void setThirdName(String thirdName) {
         this.thirdName = thirdName;
@@ -511,18 +434,14 @@ public class GclBeIdRn {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public Integer getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(Integer version) {
         this.version = version;

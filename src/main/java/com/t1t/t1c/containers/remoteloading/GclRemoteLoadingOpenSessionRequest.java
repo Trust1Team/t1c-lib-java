@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.remoteloading;
 
 import com.google.gson.annotations.Expose;
@@ -17,18 +16,14 @@ public class GclRemoteLoadingOpenSessionRequest {
     private Integer timeout;
 
     /**
-     * 
-     * @return
-     *     The timeout
+     * @return The timeout
      */
     public Integer getTimeout() {
         return timeout;
     }
 
     /**
-     * 
-     * @param timeout
-     *     The timeout
+     * @param timeout The timeout
      */
     public void setTimeout(Integer timeout) {
         this.timeout = timeout;

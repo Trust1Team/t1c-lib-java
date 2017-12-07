@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclAdminPublicKeyUpdateResponse",
-  "javaType" : "com.t1t.t1c.core.GclAdminPublicKeyUpdateResonse",
+  "javaType": "com.t1t.t1c.core.GclAdminPublicKeyUpdateResonse",
   "type": "object",
   "properties": {
     "success": {

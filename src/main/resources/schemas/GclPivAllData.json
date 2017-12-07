@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclPivAllData",
-  "javaType" : "com.t1t.t1c.containers.smartcards.piv.GclPivAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.piv.GclPivAllData",
   "javaInterfaces": [
     "com.t1t.t1c.model.AllData"
   ],

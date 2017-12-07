@@ -19,7 +19,8 @@ public final class PinUtil {
 
     private static final Logger log = LoggerFactory.getLogger(PinUtil.class);
 
-    private PinUtil() {}
+    private PinUtil() {
+    }
 
     public static void pinEnforcementCheck(GclReader reader, boolean forcePinPad, String... pin) {
         boolean pinPresent = pin.length > 0 && StringUtils.isNotBlank(pin[0]);

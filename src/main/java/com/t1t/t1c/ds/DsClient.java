@@ -30,7 +30,9 @@ public class DsClient implements IDsClient {
     public DsSystemStatus getInfo() throws DsClientException {
         try {
             return RestExecutor.executeCall(dsRestClient.getInfo());
-        } catch (RestException ex) { throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex); }
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
+        }
     }
 
     @Override
@@ -99,7 +101,7 @@ public class DsClient implements IDsClient {
                             .withVersion(info.getOs().getVersion()));
             DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request));
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return UriUtils.constructURI(config.getDsUri(),clientResponse.getPath());
+                return UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
             } else return null;
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -38,18 +37,14 @@ public class GclStatus {
     private String version;
 
     /**
-     * 
-     * @return
-     *     The activated
+     * @return The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * 
-     * @param activated
-     *     The activated
+     * @param activated The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -61,18 +56,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The arch
+     * @return The arch
      */
     public String getArch() {
         return arch;
     }
 
     /**
-     * 
-     * @param arch
-     *     The arch
+     * @param arch The arch
      */
     public void setArch(String arch) {
         this.arch = arch;
@@ -84,18 +75,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The citrix
+     * @return The citrix
      */
     public Boolean getCitrix() {
         return citrix;
     }
 
     /**
-     * 
-     * @param citrix
-     *     The citrix
+     * @param citrix The citrix
      */
     public void setCitrix(Boolean citrix) {
         this.citrix = citrix;
@@ -107,18 +94,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The logLevel
+     * @return The logLevel
      */
     public String getLogLevel() {
         return logLevel;
     }
 
     /**
-     * 
-     * @param logLevel
-     *     The log_level
+     * @param logLevel The log_level
      */
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
@@ -130,18 +113,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The managed
+     * @return The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * 
-     * @param managed
-     *     The managed
+     * @param managed The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -153,18 +132,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public String getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(String os) {
         this.os = os;
@@ -176,18 +151,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The uid
+     * @return The uid
      */
     public String getUid() {
         return uid;
     }
 
     /**
-     * 
-     * @param uid
-     *     The uid
+     * @param uid The uid
      */
     public void setUid(String uid) {
         this.uid = uid;
@@ -199,18 +170,14 @@ public class GclStatus {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;

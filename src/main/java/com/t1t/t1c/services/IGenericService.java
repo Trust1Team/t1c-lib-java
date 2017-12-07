@@ -48,6 +48,7 @@ public interface IGenericService {
      * @return
      */
     AllData dumpData(String readerId, String pin, List<String> filterParams);
+
     AllData dumpData(String readerId, List<String> filterParams);
 
     /**

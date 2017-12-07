@@ -20,7 +20,7 @@ public class MockOcvRestClient implements OcvRestClient {
 
     @Override
     public Call<OcvChallengeRequest> getChallenge(String digestAlgorithm) {
-        return null;
+        return delegate.returningResponse(new OcvChallengeRequest().withDigestAlgorithm(digestAlgorithm).withHash("hash")).getChallenge(digestAlgorithm);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -73,18 +72,14 @@ public class GclMobibContract {
     private Integer version;
 
     /**
-     * 
-     * @return
-     *     The authenticatorKvc
+     * @return The authenticatorKvc
      */
     public Integer getAuthenticatorKvc() {
         return authenticatorKvc;
     }
 
     /**
-     * 
-     * @param authenticatorKvc
-     *     The authenticator_kvc
+     * @param authenticatorKvc The authenticator_kvc
      */
     public void setAuthenticatorKvc(Integer authenticatorKvc) {
         this.authenticatorKvc = authenticatorKvc;
@@ -96,18 +91,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The authenticatorValue
+     * @return The authenticatorValue
      */
     public Integer getAuthenticatorValue() {
         return authenticatorValue;
     }
 
     /**
-     * 
-     * @param authenticatorValue
-     *     The authenticator_value
+     * @param authenticatorValue The authenticator_value
      */
     public void setAuthenticatorValue(Integer authenticatorValue) {
         this.authenticatorValue = authenticatorValue;
@@ -119,18 +110,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The journeyInterchangesAllowed
+     * @return The journeyInterchangesAllowed
      */
     public Boolean getJourneyInterchangesAllowed() {
         return journeyInterchangesAllowed;
     }
 
     /**
-     * 
-     * @param journeyInterchangesAllowed
-     *     The journey_interchanges_allowed
+     * @param journeyInterchangesAllowed The journey_interchanges_allowed
      */
     public void setJourneyInterchangesAllowed(Boolean journeyInterchangesAllowed) {
         this.journeyInterchangesAllowed = journeyInterchangesAllowed;
@@ -142,18 +129,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The operatorMap
+     * @return The operatorMap
      */
     public Integer getOperatorMap() {
         return operatorMap;
     }
 
     /**
-     * 
-     * @param operatorMap
-     *     The operator_map
+     * @param operatorMap The operator_map
      */
     public void setOperatorMap(Integer operatorMap) {
         this.operatorMap = operatorMap;
@@ -165,18 +148,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The passengersMax
+     * @return The passengersMax
      */
     public Integer getPassengersMax() {
         return passengersMax;
     }
 
     /**
-     * 
-     * @param passengersMax
-     *     The passengers_max
+     * @param passengersMax The passengers_max
      */
     public void setPassengersMax(Integer passengersMax) {
         this.passengersMax = passengersMax;
@@ -188,18 +167,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The priceAmount
+     * @return The priceAmount
      */
     public Integer getPriceAmount() {
         return priceAmount;
     }
 
     /**
-     * 
-     * @param priceAmount
-     *     The price_amount
+     * @param priceAmount The price_amount
      */
     public void setPriceAmount(Integer priceAmount) {
         this.priceAmount = priceAmount;
@@ -211,18 +186,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The provider
+     * @return The provider
      */
     public Integer getProvider() {
         return provider;
     }
 
     /**
-     * 
-     * @param provider
-     *     The provider
+     * @param provider The provider
      */
     public void setProvider(Integer provider) {
         this.provider = provider;
@@ -234,18 +205,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The restrictCode
+     * @return The restrictCode
      */
     public Integer getRestrictCode() {
         return restrictCode;
     }
 
     /**
-     * 
-     * @param restrictCode
-     *     The restrict_code
+     * @param restrictCode The restrict_code
      */
     public void setRestrictCode(Integer restrictCode) {
         this.restrictCode = restrictCode;
@@ -257,18 +224,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The restrictTime
+     * @return The restrictTime
      */
     public Integer getRestrictTime() {
         return restrictTime;
     }
 
     /**
-     * 
-     * @param restrictTime
-     *     The restrict_time
+     * @param restrictTime The restrict_time
      */
     public void setRestrictTime(Integer restrictTime) {
         this.restrictTime = restrictTime;
@@ -280,18 +243,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The saleDate
+     * @return The saleDate
      */
     public String getSaleDate() {
         return saleDate;
     }
 
     /**
-     * 
-     * @param saleDate
-     *     The sale_date
+     * @param saleDate The sale_date
      */
     public void setSaleDate(String saleDate) {
         this.saleDate = saleDate;
@@ -303,18 +262,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The saleSamCount
+     * @return The saleSamCount
      */
     public Integer getSaleSamCount() {
         return saleSamCount;
     }
 
     /**
-     * 
-     * @param saleSamCount
-     *     The sale_sam_count
+     * @param saleSamCount The sale_sam_count
      */
     public void setSaleSamCount(Integer saleSamCount) {
         this.saleSamCount = saleSamCount;
@@ -326,18 +281,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The saleSamId
+     * @return The saleSamId
      */
     public Integer getSaleSamId() {
         return saleSamId;
     }
 
     /**
-     * 
-     * @param saleSamId
-     *     The sale_sam_id
+     * @param saleSamId The sale_sam_id
      */
     public void setSaleSamId(Integer saleSamId) {
         this.saleSamId = saleSamId;
@@ -349,18 +300,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The spatials
+     * @return The spatials
      */
     public List<GclMobibSpatial> getSpatials() {
         return spatials;
     }
 
     /**
-     * 
-     * @param spatials
-     *     The spatials
+     * @param spatials The spatials
      */
     public void setSpatials(List<GclMobibSpatial> spatials) {
         this.spatials = spatials;
@@ -372,18 +319,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The tariff
+     * @return The tariff
      */
     public GclMobibTariff getTariff() {
         return tariff;
     }
 
     /**
-     * 
-     * @param tariff
-     *     The tariff
+     * @param tariff The tariff
      */
     public void setTariff(GclMobibTariff tariff) {
         this.tariff = tariff;
@@ -395,18 +338,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The typeId
+     * @return The typeId
      */
     public Integer getTypeId() {
         return typeId;
     }
 
     /**
-     * 
-     * @param typeId
-     *     The type_id
+     * @param typeId The type_id
      */
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
@@ -418,18 +357,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The validityDuration
+     * @return The validityDuration
      */
     public GclMobibValidityDuration getValidityDuration() {
         return validityDuration;
     }
 
     /**
-     * 
-     * @param validityDuration
-     *     The validity_duration
+     * @param validityDuration The validity_duration
      */
     public void setValidityDuration(GclMobibValidityDuration validityDuration) {
         this.validityDuration = validityDuration;
@@ -441,18 +376,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The validityStartDate
+     * @return The validityStartDate
      */
     public String getValidityStartDate() {
         return validityStartDate;
     }
 
     /**
-     * 
-     * @param validityStartDate
-     *     The validity_start_date
+     * @param validityStartDate The validity_start_date
      */
     public void setValidityStartDate(String validityStartDate) {
         this.validityStartDate = validityStartDate;
@@ -464,18 +395,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The vehicleClassAllowed
+     * @return The vehicleClassAllowed
      */
     public Integer getVehicleClassAllowed() {
         return vehicleClassAllowed;
     }
 
     /**
-     * 
-     * @param vehicleClassAllowed
-     *     The vehicle_class_allowed
+     * @param vehicleClassAllowed The vehicle_class_allowed
      */
     public void setVehicleClassAllowed(Integer vehicleClassAllowed) {
         this.vehicleClassAllowed = vehicleClassAllowed;
@@ -487,18 +414,14 @@ public class GclMobibContract {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public Integer getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(Integer version) {
         this.version = version;

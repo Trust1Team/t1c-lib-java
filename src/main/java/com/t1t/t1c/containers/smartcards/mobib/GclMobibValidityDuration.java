@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class GclMobibValidityDuration {
     private Integer value;
 
     /**
-     * 
-     * @return
-     *     The unit
+     * @return The unit
      */
     public Integer getUnit() {
         return unit;
     }
 
     /**
-     * 
-     * @param unit
-     *     The unit
+     * @param unit The unit
      */
     public void setUnit(Integer unit) {
         this.unit = unit;
@@ -43,18 +38,14 @@ public class GclMobibValidityDuration {
     }
 
     /**
-     * 
-     * @return
-     *     The value
+     * @return The value
      */
     public Integer getValue() {
         return value;
     }
 
     /**
-     * 
-     * @param value
-     *     The value
+     * @param value The value
      */
     public void setValue(Integer value) {
         this.value = value;

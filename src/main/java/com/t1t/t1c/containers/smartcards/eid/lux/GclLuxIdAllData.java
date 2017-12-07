@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.google.gson.annotations.Expose;
@@ -13,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Generated("org.jsonschema2pojo")
-public class GclLuxIdAllData implements AllData
-{
+public class GclLuxIdAllData implements AllData {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -39,18 +37,14 @@ public class GclLuxIdAllData implements AllData
     private String signatureObject;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -62,18 +56,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The nonRepudiationCertificate
+     * @return The nonRepudiationCertificate
      */
     public String getNonRepudiationCertificate() {
         return nonRepudiationCertificate;
     }
 
     /**
-     * 
-     * @param nonRepudiationCertificate
-     *     The non_repudiation_certificate
+     * @param nonRepudiationCertificate The non_repudiation_certificate
      */
     public void setNonRepudiationCertificate(String nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
@@ -85,18 +75,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificates
+     * @return The rootCertificates
      */
     public List<String> getRootCertificates() {
         return rootCertificates;
     }
 
     /**
-     * 
-     * @param rootCertificates
-     *     The root_certificates
+     * @param rootCertificates The root_certificates
      */
     public void setRootCertificates(List<String> rootCertificates) {
         this.rootCertificates = rootCertificates;
@@ -108,18 +94,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The biometric
+     * @return The biometric
      */
     public GclLuxIdBiometric getBiometric() {
         return biometric;
     }
 
     /**
-     * 
-     * @param biometric
-     *     The biometric
+     * @param biometric The biometric
      */
     public void setBiometric(GclLuxIdBiometric biometric) {
         this.biometric = biometric;
@@ -131,18 +113,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The picture
+     * @return The picture
      */
     public GclLuxIdPicture getPicture() {
         return picture;
     }
 
     /**
-     * 
-     * @param picture
-     *     The picture
+     * @param picture The picture
      */
     public void setPicture(GclLuxIdPicture picture) {
         this.picture = picture;
@@ -154,18 +132,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The signatureImage
+     * @return The signatureImage
      */
     public GclLuxIdSignatureImage getSignatureImage() {
         return signatureImage;
     }
 
     /**
-     * 
-     * @param signatureImage
-     *     The signature_image
+     * @param signatureImage The signature_image
      */
     public void setSignatureImage(GclLuxIdSignatureImage signatureImage) {
         this.signatureImage = signatureImage;
@@ -177,18 +151,14 @@ public class GclLuxIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The signatureObject
+     * @return The signatureObject
      */
     public String getSignatureObject() {
         return signatureObject;
     }
 
     /**
-     * 
-     * @param signatureObject
-     *     The signature_object
+     * @param signatureObject The signature_object
      */
     public void setSignatureObject(String signatureObject) {
         this.signatureObject = signatureObject;

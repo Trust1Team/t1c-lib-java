@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -50,18 +49,14 @@ public class GclMobibCardIssuing {
     private Integer version;
 
     /**
-     * 
-     * @return
-     *     The cardExpirationDate
+     * @return The cardExpirationDate
      */
     public String getCardExpirationDate() {
         return cardExpirationDate;
     }
 
     /**
-     * 
-     * @param cardExpirationDate
-     *     The card_expiration_date
+     * @param cardExpirationDate The card_expiration_date
      */
     public void setCardExpirationDate(String cardExpirationDate) {
         this.cardExpirationDate = cardExpirationDate;
@@ -73,18 +68,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardHolderBirthDate
+     * @return The cardHolderBirthDate
      */
     public String getCardHolderBirthDate() {
         return cardHolderBirthDate;
     }
 
     /**
-     * 
-     * @param cardHolderBirthDate
-     *     The card_holder_birth_date
+     * @param cardHolderBirthDate The card_holder_birth_date
      */
     public void setCardHolderBirthDate(String cardHolderBirthDate) {
         this.cardHolderBirthDate = cardHolderBirthDate;
@@ -96,18 +87,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardHolderEndDate
+     * @return The cardHolderEndDate
      */
     public String getCardHolderEndDate() {
         return cardHolderEndDate;
     }
 
     /**
-     * 
-     * @param cardHolderEndDate
-     *     The card_holder_end_date
+     * @param cardHolderEndDate The card_holder_end_date
      */
     public void setCardHolderEndDate(String cardHolderEndDate) {
         this.cardHolderEndDate = cardHolderEndDate;
@@ -119,18 +106,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardHolderId
+     * @return The cardHolderId
      */
     public String getCardHolderId() {
         return cardHolderId;
     }
 
     /**
-     * 
-     * @param cardHolderId
-     *     The card_holder_id
+     * @param cardHolderId The card_holder_id
      */
     public void setCardHolderId(String cardHolderId) {
         this.cardHolderId = cardHolderId;
@@ -142,18 +125,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardHolderName
+     * @return The cardHolderName
      */
     public String getCardHolderName() {
         return cardHolderName;
     }
 
     /**
-     * 
-     * @param cardHolderName
-     *     The card_holder_name
+     * @param cardHolderName The card_holder_name
      */
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
@@ -165,18 +144,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardHolderStartDate
+     * @return The cardHolderStartDate
      */
     public String getCardHolderStartDate() {
         return cardHolderStartDate;
     }
 
     /**
-     * 
-     * @param cardHolderStartDate
-     *     The card_holder_start_date
+     * @param cardHolderStartDate The card_holder_start_date
      */
     public void setCardHolderStartDate(String cardHolderStartDate) {
         this.cardHolderStartDate = cardHolderStartDate;
@@ -188,18 +163,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardRevalidationDate
+     * @return The cardRevalidationDate
      */
     public String getCardRevalidationDate() {
         return cardRevalidationDate;
     }
 
     /**
-     * 
-     * @param cardRevalidationDate
-     *     The card_revalidation_date
+     * @param cardRevalidationDate The card_revalidation_date
      */
     public void setCardRevalidationDate(String cardRevalidationDate) {
         this.cardRevalidationDate = cardRevalidationDate;
@@ -211,18 +182,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The cardType
+     * @return The cardType
      */
     public Integer getCardType() {
         return cardType;
     }
 
     /**
-     * 
-     * @param cardType
-     *     The card_type
+     * @param cardType The card_type
      */
     public void setCardType(Integer cardType) {
         this.cardType = cardType;
@@ -234,18 +201,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The companyId
+     * @return The companyId
      */
     public Integer getCompanyId() {
         return companyId;
     }
 
     /**
-     * 
-     * @param companyId
-     *     The company_id
+     * @param companyId The company_id
      */
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
@@ -257,18 +220,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The gender
+     * @return The gender
      */
     public Integer getGender() {
         return gender;
     }
 
     /**
-     * 
-     * @param gender
-     *     The gender
+     * @param gender The gender
      */
     public void setGender(Integer gender) {
         this.gender = gender;
@@ -280,18 +239,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The language
+     * @return The language
      */
     public Integer getLanguage() {
         return language;
     }
 
     /**
-     * 
-     * @param language
-     *     The language
+     * @param language The language
      */
     public void setLanguage(Integer language) {
         this.language = language;
@@ -303,18 +258,14 @@ public class GclMobibCardIssuing {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public Integer getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(Integer version) {
         this.version = version;

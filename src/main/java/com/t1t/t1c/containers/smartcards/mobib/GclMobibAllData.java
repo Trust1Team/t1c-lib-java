@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -13,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Generated("org.jsonschema2pojo")
-public class GclMobibAllData implements AllData
-{
+public class GclMobibAllData implements AllData {
 
     @SerializedName("active")
     @Expose
@@ -30,18 +28,14 @@ public class GclMobibAllData implements AllData
     private String picture;
 
     /**
-     * 
-     * @return
-     *     The active
+     * @return The active
      */
     public Boolean getActive() {
         return active;
     }
 
     /**
-     * 
-     * @param active
-     *     The active
+     * @param active The active
      */
     public void setActive(Boolean active) {
         this.active = active;
@@ -53,18 +47,14 @@ public class GclMobibAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The cardIssuing
+     * @return The cardIssuing
      */
     public GclMobibCardIssuing getCardIssuing() {
         return cardIssuing;
     }
 
     /**
-     * 
-     * @param cardIssuing
-     *     The card-issuing
+     * @param cardIssuing The card-issuing
      */
     public void setCardIssuing(GclMobibCardIssuing cardIssuing) {
         this.cardIssuing = cardIssuing;
@@ -76,18 +66,14 @@ public class GclMobibAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The contracts
+     * @return The contracts
      */
     public List<GclMobibContract> getContracts() {
         return contracts;
     }
 
     /**
-     * 
-     * @param contracts
-     *     The contracts
+     * @param contracts The contracts
      */
     public void setContracts(List<GclMobibContract> contracts) {
         this.contracts = contracts;
@@ -99,18 +85,14 @@ public class GclMobibAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The picture
+     * @return The picture
      */
     public String getPicture() {
         return picture;
     }
 
     /**
-     * 
-     * @param picture
-     *     The picture
+     * @param picture The picture
      */
     public void setPicture(String picture) {
         this.picture = picture;

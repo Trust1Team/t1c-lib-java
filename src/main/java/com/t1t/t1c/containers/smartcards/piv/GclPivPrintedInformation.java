@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.piv;
 
 import com.google.gson.annotations.Expose;
@@ -35,18 +34,14 @@ public class GclPivPrintedInformation {
     private String organizationAffiliationLine2;
 
     /**
-     * 
-     * @return
-     *     The agencyCardSerialNumber
+     * @return The agencyCardSerialNumber
      */
     public String getAgencyCardSerialNumber() {
         return agencyCardSerialNumber;
     }
 
     /**
-     * 
-     * @param agencyCardSerialNumber
-     *     The agency_card_serial_number
+     * @param agencyCardSerialNumber The agency_card_serial_number
      */
     public void setAgencyCardSerialNumber(String agencyCardSerialNumber) {
         this.agencyCardSerialNumber = agencyCardSerialNumber;
@@ -58,18 +53,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The employeeAffiliation
+     * @return The employeeAffiliation
      */
     public String getEmployeeAffiliation() {
         return employeeAffiliation;
     }
 
     /**
-     * 
-     * @param employeeAffiliation
-     *     The employee_affiliation
+     * @param employeeAffiliation The employee_affiliation
      */
     public void setEmployeeAffiliation(String employeeAffiliation) {
         this.employeeAffiliation = employeeAffiliation;
@@ -81,18 +72,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The expirationDate
+     * @return The expirationDate
      */
     public String getExpirationDate() {
         return expirationDate;
     }
 
     /**
-     * 
-     * @param expirationDate
-     *     The expiration_date
+     * @param expirationDate The expiration_date
      */
     public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
@@ -104,18 +91,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The issuerIdentification
+     * @return The issuerIdentification
      */
     public String getIssuerIdentification() {
         return issuerIdentification;
     }
 
     /**
-     * 
-     * @param issuerIdentification
-     *     The issuer_identification
+     * @param issuerIdentification The issuer_identification
      */
     public void setIssuerIdentification(String issuerIdentification) {
         this.issuerIdentification = issuerIdentification;
@@ -127,18 +110,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -150,18 +129,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The organizationAffiliationLine1
+     * @return The organizationAffiliationLine1
      */
     public String getOrganizationAffiliationLine1() {
         return organizationAffiliationLine1;
     }
 
     /**
-     * 
-     * @param organizationAffiliationLine1
-     *     The organization_affiliation_line_1
+     * @param organizationAffiliationLine1 The organization_affiliation_line_1
      */
     public void setOrganizationAffiliationLine1(String organizationAffiliationLine1) {
         this.organizationAffiliationLine1 = organizationAffiliationLine1;
@@ -173,18 +148,14 @@ public class GclPivPrintedInformation {
     }
 
     /**
-     * 
-     * @return
-     *     The organizationAffiliationLine2
+     * @return The organizationAffiliationLine2
      */
     public String getOrganizationAffiliationLine2() {
         return organizationAffiliationLine2;
     }
 
     /**
-     * 
-     * @param organizationAffiliationLine2
-     *     The organization_affiliation_line_2
+     * @param organizationAffiliationLine2 The organization_affiliation_line_2
      */
     public void setOrganizationAffiliationLine2(String organizationAffiliationLine2) {
         this.organizationAffiliationLine2 = organizationAffiliationLine2;

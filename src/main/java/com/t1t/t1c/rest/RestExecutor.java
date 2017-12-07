@@ -20,7 +20,7 @@ import java.io.IOException;
 public class RestExecutor {
     private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
-    public static final synchronized  <T> T executeCall(Call<T> call) throws RestException {
+    public static final synchronized <T> T executeCall(Call<T> call) throws RestException {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
@@ -66,8 +66,7 @@ public class RestExecutor {
             T1cResponse<T> response = executeCall(call);
             if (isCallSuccessful(response)) {
                 return response.getData();
-            }
-            else {
+            } else {
                 log.warn("Request was unsuccessfull: ", response);
             }
         }

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -26,18 +25,14 @@ public class GclReader {
     private Boolean pinpad;
 
     /**
-     * 
-     * @return
-     *     The card
+     * @return The card
      */
     public GclCard getCard() {
         return card;
     }
 
     /**
-     * 
-     * @param card
-     *     The card
+     * @param card The card
      */
     public void setCard(GclCard card) {
         this.card = card;
@@ -49,18 +44,14 @@ public class GclReader {
     }
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(String id) {
         this.id = id;
@@ -72,18 +63,14 @@ public class GclReader {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -95,18 +82,14 @@ public class GclReader {
     }
 
     /**
-     * 
-     * @return
-     *     The pinpad
+     * @return The pinpad
      */
     public Boolean getPinpad() {
         return pinpad;
     }
 
     /**
-     * 
-     * @param pinpad
-     *     The pinpad
+     * @param pinpad The pinpad
      */
     public void setPinpad(Boolean pinpad) {
         this.pinpad = pinpad;

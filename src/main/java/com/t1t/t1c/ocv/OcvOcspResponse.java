@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ocv;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class OcvOcspResponse {
     private Boolean status;
 
     /**
-     * 
-     * @return
-     *     The ocspLocation
+     * @return The ocspLocation
      */
     public String getOcspLocation() {
         return ocspLocation;
     }
 
     /**
-     * 
-     * @param ocspLocation
-     *     The ocspLocation
+     * @param ocspLocation The ocspLocation
      */
     public void setOcspLocation(String ocspLocation) {
         this.ocspLocation = ocspLocation;
@@ -43,18 +38,14 @@ public class OcvOcspResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Boolean getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Boolean status) {
         this.status = status;

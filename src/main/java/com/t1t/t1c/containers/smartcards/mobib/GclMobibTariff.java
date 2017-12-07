@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclMobibTariff {
     private Integer nameref;
 
     /**
-     * 
-     * @return
-     *     The counter
+     * @return The counter
      */
     public GclMobibCounter getCounter() {
         return counter;
     }
 
     /**
-     * 
-     * @param counter
-     *     The counter
+     * @param counter The counter
      */
     public void setCounter(GclMobibCounter counter) {
         this.counter = counter;
@@ -46,18 +41,14 @@ public class GclMobibTariff {
     }
 
     /**
-     * 
-     * @return
-     *     The multimodal
+     * @return The multimodal
      */
     public Boolean getMultimodal() {
         return multimodal;
     }
 
     /**
-     * 
-     * @param multimodal
-     *     The multimodal
+     * @param multimodal The multimodal
      */
     public void setMultimodal(Boolean multimodal) {
         this.multimodal = multimodal;
@@ -69,18 +60,14 @@ public class GclMobibTariff {
     }
 
     /**
-     * 
-     * @return
-     *     The nameref
+     * @return The nameref
      */
     public Integer getNameref() {
         return nameref;
     }
 
     /**
-     * 
-     * @param nameref
-     *     The nameref
+     * @param nameref The nameref
      */
     public void setNameref(Integer nameref) {
         this.nameref = nameref;

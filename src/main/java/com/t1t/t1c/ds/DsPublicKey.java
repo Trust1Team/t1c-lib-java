@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class DsPublicKey {
     private String pubkey;
 
     /**
-     * 
-     * @return
-     *     The success
+     * @return The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * 
-     * @param success
-     *     The success
+     * @param success The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;
@@ -43,18 +38,14 @@ public class DsPublicKey {
     }
 
     /**
-     * 
-     * @return
-     *     The pubkey
+     * @return The pubkey
      */
     public String getPubkey() {
         return pubkey;
     }
 
     /**
-     * 
-     * @param pubkey
-     *     The pubkey
+     * @param pubkey The pubkey
      */
     public void setPubkey(String pubkey) {
         this.pubkey = pubkey;

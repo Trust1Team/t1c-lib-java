@@ -69,8 +69,14 @@ public class T1cClient implements IT1cClient {
     public T1cClient(LibConfig config) {
         init(config, null);
     }
+
     public T1cClient(Path toConfigurationFile) {
         init(null, toConfigurationFile);
+    }
+
+    //TODO implement pin constraint in safe way
+    private static String getPin(String... pin) {
+        return (pin == null || pin.length == 0) ? "" : pin[0];
     }
 
     /**
@@ -115,9 +121,17 @@ public class T1cClient implements IT1cClient {
     /**
      * The core uses the gclRestClient and gclAdminRestClient.
      */
-    private void resetCore() { this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getConfig()); }
-    private void resetDs() { this.dsClient = new DsClient(connFactory.getDsRestClient(), connFactory.getConfig()); }
-    private void resetOcv() { this.ocvClient = new OcvClient(connFactory.getOcvRestClient(), connFactory.getConfig()); }
+    private void resetCore() {
+        this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getConfig());
+    }
+
+    private void resetDs() {
+        this.dsClient = new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
+    }
+
+    private void resetOcv() {
+        this.ocvClient = new OcvClient(connFactory.getOcvRestClient(), connFactory.getConfig());
+    }
 
     /**
      * Reset containers
@@ -200,22 +214,6 @@ public class T1cClient implements IT1cClient {
         }
     }
 
-    /**
-     * Determines if the GCL version is token compatible
-     *
-     * @return
-     */
-    private boolean isTokenCompatible(String gclVersion) {
-        if (StringUtils.isNotBlank(gclVersion)) {
-            String version;
-            if (gclVersion.contains("-")) {
-                version = gclVersion.substring(gclVersion.indexOf("-") + 1);
-            } else version = gclVersion;
-            return version.compareToIgnoreCase("1.4.0") > 0;
-        }
-        return false;
-    }
-
 /*    public GenericContainer getGenericContainer(String reader, String... pin) {
         return getGenericContainer(reader, ContainerUtil.determineContainer(gclClient.getReader(reader).getCard()), pin);
     }*/
@@ -255,9 +253,20 @@ public class T1cClient implements IT1cClient {
         }
     }*/
 
-    //TODO implement pin constraint in safe way
-    private static String getPin(String... pin) {
-        return (pin == null || pin.length == 0) ? "" : pin[0];
+    /**
+     * Determines if the GCL version is token compatible
+     *
+     * @return
+     */
+    private boolean isTokenCompatible(String gclVersion) {
+        if (StringUtils.isNotBlank(gclVersion)) {
+            String version;
+            if (gclVersion.contains("-")) {
+                version = gclVersion.substring(gclVersion.indexOf("-") + 1);
+            } else version = gclVersion;
+            return version.compareToIgnoreCase("1.4.0") > 0;
+        }
+        return false;
     }
 
     public String refreshJwt() {
@@ -274,23 +283,49 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public ICore getCore() { return core; }
+    public ICore getCore() {
+        return core;
+    }
+
     @Override
-    public ConnectionFactory getConnectionFactory() { return connFactory; }
+    public ConnectionFactory getConnectionFactory() {
+        return connFactory;
+    }
+
     @Override
-    public IDsClient getDsClient() { return dsClient; }
+    public IDsClient getDsClient() {
+        return dsClient;
+    }
+
     @Override
-    public IOcvClient getOcvClient() { return ocvClient; }
+    public IOcvClient getOcvClient() {
+        return ocvClient;
+    }
+
     @Override
-    public BeIdContainer getBeIdContainer(GclReader reader) { return new BeIdContainer(connFactory.getConfig(), reader,connFactory.getGclBeIdRestClient()); }
+    public BeIdContainer getBeIdContainer(GclReader reader) {
+        return new BeIdContainer(connFactory.getConfig(), reader, connFactory.getGclBeIdRestClient());
+    }
+
     @Override
-    public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) { return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin)); }
+    public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) {
+        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin));
+    }
+
     @Override
-    public LuxTrustContainer getLuxTrustContainer(GclReader reader) { return new LuxTrustContainer(connFactory.getConfig(), reader,connFactory.getGclLuxTrustRestClient()); }
+    public LuxTrustContainer getLuxTrustContainer(GclReader reader) {
+        return new LuxTrustContainer(connFactory.getConfig(), reader, connFactory.getGclLuxTrustRestClient());
+    }
+
     @Override
-    public DnieContainer getDnieContainer(GclReader reader) { return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient()); }
+    public DnieContainer getDnieContainer(GclReader reader) {
+        return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient());
+    }
+
     @Override
-    public EmvContainer getEmvContainer(GclReader reader) { return new EmvContainer(connFactory.getConfig(), reader, connFactory.getGclEmvRestClient()); }
+    public EmvContainer getEmvContainer(GclReader reader) {
+        return new EmvContainer(connFactory.getConfig(), reader, connFactory.getGclEmvRestClient());
+    }
 
     @Override
     public MobibContainer getMobibContainer(GclReader reader) {

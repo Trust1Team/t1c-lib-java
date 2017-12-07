@@ -139,8 +139,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
             if (timeout != null) {
                 Preconditions.checkArgument(timeout > 0, "timeout value must be greater than 0");
                 timeoutToUse = timeout;
-            }
-            else {
+            } else {
                 timeoutToUse = config.getSessionTimeout();
             }
             return RestExecutor.returnData(httpClient.openSession(getTypeId(), reader.getId(), new GclRemoteLoadingOpenSessionRequest().withTimeout(timeoutToUse)));
@@ -157,8 +156,8 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         try {
             if (StringUtils.isNotEmpty(sessionId)) {
                 return sessionId.equals(RestExecutor.returnData(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
-            }
-            else return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
+            } else
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
         } catch (RestException ex) {
             throw ExceptionFactory.remoteLoadingContainerException("could not close session", ex);
         }

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclPtIdAllData implements AllData
-{
+public class GclPtIdAllData implements AllData {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -34,18 +32,14 @@ public class GclPtIdAllData implements AllData
     private String rootNonRepudiationCertificate;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -57,18 +51,14 @@ public class GclPtIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public GclPtIdData getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(GclPtIdData id) {
         this.id = id;
@@ -80,18 +70,14 @@ public class GclPtIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The nonRepudiationCertificate
+     * @return The nonRepudiationCertificate
      */
     public String getNonRepudiationCertificate() {
         return nonRepudiationCertificate;
     }
 
     /**
-     * 
-     * @param nonRepudiationCertificate
-     *     The non_repudiation_certificate
+     * @param nonRepudiationCertificate The non_repudiation_certificate
      */
     public void setNonRepudiationCertificate(String nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
@@ -103,18 +89,14 @@ public class GclPtIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The rootAuthenticationCertificate
+     * @return The rootAuthenticationCertificate
      */
     public String getRootAuthenticationCertificate() {
         return rootAuthenticationCertificate;
     }
 
     /**
-     * 
-     * @param rootAuthenticationCertificate
-     *     The root_authentication_certificate
+     * @param rootAuthenticationCertificate The root_authentication_certificate
      */
     public void setRootAuthenticationCertificate(String rootAuthenticationCertificate) {
         this.rootAuthenticationCertificate = rootAuthenticationCertificate;
@@ -126,18 +108,14 @@ public class GclPtIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificate
+     * @return The rootCertificate
      */
     public String getRootCertificate() {
         return rootCertificate;
     }
 
     /**
-     * 
-     * @param rootCertificate
-     *     The root_certificate
+     * @param rootCertificate The root_certificate
      */
     public void setRootCertificate(String rootCertificate) {
         this.rootCertificate = rootCertificate;
@@ -149,18 +127,14 @@ public class GclPtIdAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The rootNonRepudiationCertificate
+     * @return The rootNonRepudiationCertificate
      */
     public String getRootNonRepudiationCertificate() {
         return rootNonRepudiationCertificate;
     }
 
     /**
-     * 
-     * @param rootNonRepudiationCertificate
-     *     The root_non_repudiation_certificate
+     * @param rootNonRepudiationCertificate The root_non_repudiation_certificate
      */
     public void setRootNonRepudiationCertificate(String rootNonRepudiationCertificate) {
         this.rootNonRepudiationCertificate = rootNonRepudiationCertificate;

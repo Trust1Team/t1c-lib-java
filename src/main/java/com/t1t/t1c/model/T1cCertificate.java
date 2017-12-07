@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.model;
 
 import com.google.gson.annotations.Expose;
@@ -21,18 +20,14 @@ public class T1cCertificate {
     private Certificate parsed;
 
     /**
-     * 
-     * @return
-     *     The base64
+     * @return The base64
      */
     public String getBase64() {
         return base64;
     }
 
     /**
-     * 
-     * @param base64
-     *     The base64
+     * @param base64 The base64
      */
     public void setBase64(String base64) {
         this.base64 = base64;
@@ -44,18 +39,14 @@ public class T1cCertificate {
     }
 
     /**
-     * 
-     * @return
-     *     The parsed
+     * @return The parsed
      */
     public Certificate getParsed() {
         return parsed;
     }
 
     /**
-     * 
-     * @param parsed
-     *     The parsed
+     * @param parsed The parsed
      */
     public void setParsed(Certificate parsed) {
         this.parsed = parsed;

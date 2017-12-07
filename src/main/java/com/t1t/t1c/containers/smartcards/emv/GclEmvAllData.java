@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.google.gson.annotations.Expose;
@@ -13,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Generated("org.jsonschema2pojo")
-public class GclEmvAllData implements AllData
-{
+public class GclEmvAllData implements AllData {
 
     @SerializedName("applications")
     @Expose
@@ -24,18 +22,14 @@ public class GclEmvAllData implements AllData
     private GclEmvApplicationData applicationData;
 
     /**
-     * 
-     * @return
-     *     The applications
+     * @return The applications
      */
     public List<GclEmvApplication> getApplications() {
         return applications;
     }
 
     /**
-     * 
-     * @param applications
-     *     The applications
+     * @param applications The applications
      */
     public void setApplications(List<GclEmvApplication> applications) {
         this.applications = applications;
@@ -47,18 +41,14 @@ public class GclEmvAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The applicationData
+     * @return The applicationData
      */
     public GclEmvApplicationData getApplicationData() {
         return applicationData;
     }
 
     /**
-     * 
-     * @param applicationData
-     *     The application_data
+     * @param applicationData The application_data
      */
     public void setApplicationData(GclEmvApplicationData applicationData) {
         this.applicationData = applicationData;

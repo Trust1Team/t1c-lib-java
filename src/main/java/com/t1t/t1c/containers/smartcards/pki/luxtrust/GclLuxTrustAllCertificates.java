@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.google.gson.annotations.Expose;
@@ -13,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Generated("org.jsonschema2pojo")
-public class GclLuxTrustAllCertificates implements AllCertificates
-{
+public class GclLuxTrustAllCertificates implements AllCertificates {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -27,18 +25,14 @@ public class GclLuxTrustAllCertificates implements AllCertificates
     private List<String> rootCertificates = new ArrayList<String>();
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -50,18 +44,14 @@ public class GclLuxTrustAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;
@@ -73,18 +63,14 @@ public class GclLuxTrustAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificates
+     * @return The rootCertificates
      */
     public List<String> getRootCertificates() {
         return rootCertificates;
     }
 
     /**
-     * 
-     * @param rootCertificates
-     *     The root_certificates
+     * @param rootCertificates The root_certificates
      */
     public void setRootCertificates(List<String> rootCertificates) {
         this.rootCertificates = rootCertificates;

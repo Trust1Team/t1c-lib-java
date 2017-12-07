@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ocv;
 
 import com.google.gson.annotations.Expose;
@@ -34,18 +33,14 @@ public class OcvCrlResponse {
     private Boolean status;
 
     /**
-     * 
-     * @return
-     *     The productionDate
+     * @return The productionDate
      */
     public String getProductionDate() {
         return productionDate;
     }
 
     /**
-     * 
-     * @param productionDate
-     *     The productionDate
+     * @param productionDate The productionDate
      */
     public void setProductionDate(String productionDate) {
         this.productionDate = productionDate;
@@ -57,18 +52,14 @@ public class OcvCrlResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The issuerCertificate
+     * @return The issuerCertificate
      */
     public String getIssuerCertificate() {
         return issuerCertificate;
     }
 
     /**
-     * 
-     * @param issuerCertificate
-     *     The issuerCertificate
+     * @param issuerCertificate The issuerCertificate
      */
     public void setIssuerCertificate(String issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
@@ -80,18 +71,14 @@ public class OcvCrlResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -103,18 +90,14 @@ public class OcvCrlResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The crlLocations
+     * @return The crlLocations
      */
     public List<String> getCrlLocations() {
         return crlLocations;
     }
 
     /**
-     * 
-     * @param crlLocations
-     *     The crlLocations
+     * @param crlLocations The crlLocations
      */
     public void setCrlLocations(List<String> crlLocations) {
         this.crlLocations = crlLocations;
@@ -126,18 +109,14 @@ public class OcvCrlResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The signatureAlgorithm
+     * @return The signatureAlgorithm
      */
     public String getSignatureAlgorithm() {
         return signatureAlgorithm;
     }
 
     /**
-     * 
-     * @param signatureAlgorithm
-     *     The signatureAlgorithm
+     * @param signatureAlgorithm The signatureAlgorithm
      */
     public void setSignatureAlgorithm(String signatureAlgorithm) {
         this.signatureAlgorithm = signatureAlgorithm;
@@ -149,18 +128,14 @@ public class OcvCrlResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Boolean getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Boolean status) {
         this.status = status;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclMobibCounter {
     private Integer journeys;
 
     /**
-     * 
-     * @return
-     *     The time
+     * @return The time
      */
     public String getTime() {
         return time;
     }
 
     /**
-     * 
-     * @param time
-     *     The time
+     * @param time The time
      */
     public void setTime(String time) {
         this.time = time;
@@ -46,18 +41,14 @@ public class GclMobibCounter {
     }
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(Integer type) {
         this.type = type;
@@ -69,18 +60,14 @@ public class GclMobibCounter {
     }
 
     /**
-     * 
-     * @return
-     *     The journeys
+     * @return The journeys
      */
     public Integer getJourneys() {
         return journeys;
     }
 
     /**
-     * 
-     * @param journeys
-     *     The journeys
+     * @param journeys The journeys
      */
     public void setJourneys(Integer journeys) {
         this.journeys = journeys;

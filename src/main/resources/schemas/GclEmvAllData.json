@@ -2,7 +2,7 @@
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclEmvAllData",
-  "javaType" : "com.t1t.t1c.containers.smartcards.emv.GclEmvAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.emv.GclEmvAllData",
   "javaInterfaces": [
     "com.t1t.t1c.model.AllData"
   ],

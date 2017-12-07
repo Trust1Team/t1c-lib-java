@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class DsJava {
     private String specificationVersion;
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -43,18 +38,14 @@ public class DsJava {
     }
 
     /**
-     * 
-     * @return
-     *     The specificationVersion
+     * @return The specificationVersion
      */
     public String getSpecificationVersion() {
         return specificationVersion;
     }
 
     /**
-     * 
-     * @param specificationVersion
-     *     The specificationVersion
+     * @param specificationVersion The specificationVersion
      */
     public void setSpecificationVersion(String specificationVersion) {
         this.specificationVersion = specificationVersion;

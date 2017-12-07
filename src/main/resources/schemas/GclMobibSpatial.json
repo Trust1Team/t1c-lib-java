@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclMobibSpatial",
-  "javaType" : "com.t1t.t1c.containers.smartcards.mobib.GclMobibSpatial",
+  "javaType": "com.t1t.t1c.containers.smartcards.mobib.GclMobibSpatial",
   "type": "object",
   "properties": {
     "route_destination": {

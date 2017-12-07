@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclError {
     private Boolean success;
 
     /**
-     * 
-     * @return
-     *     The code
+     * @return The code
      */
     public Integer getCode() {
         return code;
     }
 
     /**
-     * 
-     * @param code
-     *     The code
+     * @param code The code
      */
     public void setCode(Integer code) {
         this.code = code;
@@ -46,18 +41,14 @@ public class GclError {
     }
 
     /**
-     * 
-     * @return
-     *     The description
+     * @return The description
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * 
-     * @param description
-     *     The description
+     * @param description The description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -69,18 +60,14 @@ public class GclError {
     }
 
     /**
-     * 
-     * @return
-     *     The success
+     * @return The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * 
-     * @param success
-     *     The success
+     * @param success The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;

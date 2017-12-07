@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "OcvChallengeVerificationRequest",
   "type": "object",
-  "javaType" : "com.t1t.t1c.ocv.OcvChallengeVerificationRequest",
+  "javaType": "com.t1t.t1c.ocv.OcvChallengeVerificationRequest",
   "properties": {
     "base64Certificate": {
       "type": "string"

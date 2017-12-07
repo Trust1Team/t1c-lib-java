@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.google.gson.annotations.Expose;
@@ -83,18 +82,14 @@ public class GclPtIdAddress {
     private String zip4;
 
     /**
-     * 
-     * @return
-     *     The abbrBuildingType
+     * @return The abbrBuildingType
      */
     public String getAbbrBuildingType() {
         return abbrBuildingType;
     }
 
     /**
-     * 
-     * @param abbrBuildingType
-     *     The abbr_building_type
+     * @param abbrBuildingType The abbr_building_type
      */
     public void setAbbrBuildingType(String abbrBuildingType) {
         this.abbrBuildingType = abbrBuildingType;
@@ -106,18 +101,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The abbrStreetType
+     * @return The abbrStreetType
      */
     public String getAbbrStreetType() {
         return abbrStreetType;
     }
 
     /**
-     * 
-     * @param abbrStreetType
-     *     The abbr_street_type
+     * @param abbrStreetType The abbr_street_type
      */
     public void setAbbrStreetType(String abbrStreetType) {
         this.abbrStreetType = abbrStreetType;
@@ -129,18 +120,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The buildingType
+     * @return The buildingType
      */
     public String getBuildingType() {
         return buildingType;
     }
 
     /**
-     * 
-     * @param buildingType
-     *     The building_type
+     * @param buildingType The building_type
      */
     public void setBuildingType(String buildingType) {
         this.buildingType = buildingType;
@@ -152,18 +139,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The civilParish
+     * @return The civilParish
      */
     public String getCivilParish() {
         return civilParish;
     }
 
     /**
-     * 
-     * @param civilParish
-     *     The civil_parish
+     * @param civilParish The civil_parish
      */
     public void setCivilParish(String civilParish) {
         this.civilParish = civilParish;
@@ -175,18 +158,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The civilParishDescription
+     * @return The civilParishDescription
      */
     public String getCivilParishDescription() {
         return civilParishDescription;
     }
 
     /**
-     * 
-     * @param civilParishDescription
-     *     The civil_parish_description
+     * @param civilParishDescription The civil_parish_description
      */
     public void setCivilParishDescription(String civilParishDescription) {
         this.civilParishDescription = civilParishDescription;
@@ -198,18 +177,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The district
+     * @return The district
      */
     public String getDistrict() {
         return district;
     }
 
     /**
-     * 
-     * @param district
-     *     The district
+     * @param district The district
      */
     public void setDistrict(String district) {
         this.district = district;
@@ -221,18 +196,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The districtDescription
+     * @return The districtDescription
      */
     public String getDistrictDescription() {
         return districtDescription;
     }
 
     /**
-     * 
-     * @param districtDescription
-     *     The district_description
+     * @param districtDescription The district_description
      */
     public void setDistrictDescription(String districtDescription) {
         this.districtDescription = districtDescription;
@@ -244,18 +215,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The doorNo
+     * @return The doorNo
      */
     public String getDoorNo() {
         return doorNo;
     }
 
     /**
-     * 
-     * @param doorNo
-     *     The door_no
+     * @param doorNo The door_no
      */
     public void setDoorNo(String doorNo) {
         this.doorNo = doorNo;
@@ -267,18 +234,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The floor
+     * @return The floor
      */
     public String getFloor() {
         return floor;
     }
 
     /**
-     * 
-     * @param floor
-     *     The floor
+     * @param floor The floor
      */
     public void setFloor(String floor) {
         this.floor = floor;
@@ -290,18 +253,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The genAddressNum
+     * @return The genAddressNum
      */
     public String getGenAddressNum() {
         return genAddressNum;
     }
 
     /**
-     * 
-     * @param genAddressNum
-     *     The gen_address_num
+     * @param genAddressNum The gen_address_num
      */
     public void setGenAddressNum(String genAddressNum) {
         this.genAddressNum = genAddressNum;
@@ -313,18 +272,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The isNational
+     * @return The isNational
      */
     public Boolean getIsNational() {
         return isNational;
     }
 
     /**
-     * 
-     * @param isNational
-     *     The is_national
+     * @param isNational The is_national
      */
     public void setIsNational(Boolean isNational) {
         this.isNational = isNational;
@@ -336,18 +291,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The locality
+     * @return The locality
      */
     public String getLocality() {
         return locality;
     }
 
     /**
-     * 
-     * @param locality
-     *     The locality
+     * @param locality The locality
      */
     public void setLocality(String locality) {
         this.locality = locality;
@@ -359,18 +310,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The municipality
+     * @return The municipality
      */
     public String getMunicipality() {
         return municipality;
     }
 
     /**
-     * 
-     * @param municipality
-     *     The municipality
+     * @param municipality The municipality
      */
     public void setMunicipality(String municipality) {
         this.municipality = municipality;
@@ -382,18 +329,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The municipalityDescription
+     * @return The municipalityDescription
      */
     public String getMunicipalityDescription() {
         return municipalityDescription;
     }
 
     /**
-     * 
-     * @param municipalityDescription
-     *     The municipality_description
+     * @param municipalityDescription The municipality_description
      */
     public void setMunicipalityDescription(String municipalityDescription) {
         this.municipalityDescription = municipalityDescription;
@@ -405,18 +348,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The place
+     * @return The place
      */
     public String getPlace() {
         return place;
     }
 
     /**
-     * 
-     * @param place
-     *     The place
+     * @param place The place
      */
     public void setPlace(String place) {
         this.place = place;
@@ -428,18 +367,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The postalLocality
+     * @return The postalLocality
      */
     public String getPostalLocality() {
         return postalLocality;
     }
 
     /**
-     * 
-     * @param postalLocality
-     *     The postal_locality
+     * @param postalLocality The postal_locality
      */
     public void setPostalLocality(String postalLocality) {
         this.postalLocality = postalLocality;
@@ -451,18 +386,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;
@@ -474,18 +405,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The side
+     * @return The side
      */
     public String getSide() {
         return side;
     }
 
     /**
-     * 
-     * @param side
-     *     The side
+     * @param side The side
      */
     public void setSide(String side) {
         this.side = side;
@@ -497,18 +424,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The streetName
+     * @return The streetName
      */
     public String getStreetName() {
         return streetName;
     }
 
     /**
-     * 
-     * @param streetName
-     *     The street_name
+     * @param streetName The street_name
      */
     public void setStreetName(String streetName) {
         this.streetName = streetName;
@@ -520,18 +443,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The streetType
+     * @return The streetType
      */
     public String getStreetType() {
         return streetType;
     }
 
     /**
-     * 
-     * @param streetType
-     *     The street_type
+     * @param streetType The street_type
      */
     public void setStreetType(String streetType) {
         this.streetType = streetType;
@@ -543,18 +462,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(String type) {
         this.type = type;
@@ -566,18 +481,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The zip3
+     * @return The zip3
      */
     public String getZip3() {
         return zip3;
     }
 
     /**
-     * 
-     * @param zip3
-     *     The zip3
+     * @param zip3 The zip3
      */
     public void setZip3(String zip3) {
         this.zip3 = zip3;
@@ -589,18 +500,14 @@ public class GclPtIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The zip4
+     * @return The zip4
      */
     public String getZip4() {
         return zip4;
     }
 
     /**
-     * 
-     * @param zip4
-     *     The zip4
+     * @param zip4 The zip4
      */
     public void setZip4(String zip4) {
         this.zip4 = zip4;

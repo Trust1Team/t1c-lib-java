@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclBeIdAllCertificates implements AllCertificates
-{
+public class GclBeIdAllCertificates implements AllCertificates {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -31,18 +29,14 @@ public class GclBeIdAllCertificates implements AllCertificates
     private String rrnCertificate;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -54,18 +48,14 @@ public class GclBeIdAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The citizenCertificate
+     * @return The citizenCertificate
      */
     public String getCitizenCertificate() {
         return citizenCertificate;
     }
 
     /**
-     * 
-     * @param citizenCertificate
-     *     The citizen_certificate
+     * @param citizenCertificate The citizen_certificate
      */
     public void setCitizenCertificate(String citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
@@ -77,18 +67,14 @@ public class GclBeIdAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The nonRepudiationCertificate
+     * @return The nonRepudiationCertificate
      */
     public String getNonRepudiationCertificate() {
         return nonRepudiationCertificate;
     }
 
     /**
-     * 
-     * @param nonRepudiationCertificate
-     *     The non_repudiation_certificate
+     * @param nonRepudiationCertificate The non_repudiation_certificate
      */
     public void setNonRepudiationCertificate(String nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
@@ -100,18 +86,14 @@ public class GclBeIdAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificate
+     * @return The rootCertificate
      */
     public String getRootCertificate() {
         return rootCertificate;
     }
 
     /**
-     * 
-     * @param rootCertificate
-     *     The root_certificate
+     * @param rootCertificate The root_certificate
      */
     public void setRootCertificate(String rootCertificate) {
         this.rootCertificate = rootCertificate;
@@ -123,18 +105,14 @@ public class GclBeIdAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The rrnCertificate
+     * @return The rrnCertificate
      */
     public String getRrnCertificate() {
         return rrnCertificate;
     }
 
     /**
-     * 
-     * @param rrnCertificate
-     *     The rrn_certificate
+     * @param rrnCertificate The rrn_certificate
      */
     public void setRrnCertificate(String rrnCertificate) {
         this.rrnCertificate = rrnCertificate;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.remoteloading;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class GclRemoteLoadingCcidRequest {
     private String apdu;
 
     /**
-     * 
-     * @return
-     *     The feature
+     * @return The feature
      */
     public String getFeature() {
         return feature;
     }
 
     /**
-     * 
-     * @param feature
-     *     The feature
+     * @param feature The feature
      */
     public void setFeature(String feature) {
         this.feature = feature;
@@ -43,18 +38,14 @@ public class GclRemoteLoadingCcidRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The apdu
+     * @return The apdu
      */
     public String getApdu() {
         return apdu;
     }
 
     /**
-     * 
-     * @param apdu
-     *     The apdu
+     * @param apdu The apdu
      */
     public void setApdu(String apdu) {
         this.apdu = apdu;

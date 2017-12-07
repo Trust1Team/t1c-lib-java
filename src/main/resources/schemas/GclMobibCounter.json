@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclMobibCounter",
-  "javaType" : "com.t1t.t1c.containers.smartcards.mobib.GclMobibCounter",
+  "javaType": "com.t1t.t1c.containers.smartcards.mobib.GclMobibCounter",
   "type": "object",
   "properties": {
     "time": {

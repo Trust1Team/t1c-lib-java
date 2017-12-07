@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclAventraAllData implements AllData
-{
+public class GclAventraAllData implements AllData {
 
     @SerializedName("applet_info")
     @Expose
@@ -34,18 +32,14 @@ public class GclAventraAllData implements AllData
     private String signingCertificate;
 
     /**
-     * 
-     * @return
-     *     The appletInfo
+     * @return The appletInfo
      */
     public GclAventraAppletInfo getAppletInfo() {
         return appletInfo;
     }
 
     /**
-     * 
-     * @param appletInfo
-     *     The applet_info
+     * @param appletInfo The applet_info
      */
     public void setAppletInfo(GclAventraAppletInfo appletInfo) {
         this.appletInfo = appletInfo;
@@ -57,18 +51,14 @@ public class GclAventraAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -80,18 +70,14 @@ public class GclAventraAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The encryptionCertificate
+     * @return The encryptionCertificate
      */
     public String getEncryptionCertificate() {
         return encryptionCertificate;
     }
 
     /**
-     * 
-     * @param encryptionCertificate
-     *     The encryption_certificate
+     * @param encryptionCertificate The encryption_certificate
      */
     public void setEncryptionCertificate(String encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
@@ -103,18 +89,14 @@ public class GclAventraAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The issuerCertificate
+     * @return The issuerCertificate
      */
     public String getIssuerCertificate() {
         return issuerCertificate;
     }
 
     /**
-     * 
-     * @param issuerCertificate
-     *     The issuer_certificate
+     * @param issuerCertificate The issuer_certificate
      */
     public void setIssuerCertificate(String issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
@@ -126,18 +108,14 @@ public class GclAventraAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificate
+     * @return The rootCertificate
      */
     public String getRootCertificate() {
         return rootCertificate;
     }
 
     /**
-     * 
-     * @param rootCertificate
-     *     The root_certificate
+     * @param rootCertificate The root_certificate
      */
     public void setRootCertificate(String rootCertificate) {
         this.rootCertificate = rootCertificate;
@@ -149,18 +127,14 @@ public class GclAventraAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;

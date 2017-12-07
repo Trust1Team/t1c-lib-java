@@ -16,7 +16,7 @@ import java.util.List;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, AllData, AllCertificates>{
+public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, AllData, AllCertificates> {
 
     private SafeNetContainerConfiguration safeNetConfig;
 

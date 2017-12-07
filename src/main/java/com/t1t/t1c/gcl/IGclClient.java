@@ -14,10 +14,16 @@ import java.util.List;
  */
 public interface IGclClient {
     GclStatus getInfo() throws GclClientException;
+
     List<GclContainer> getContainers() throws GclClientException;
+
     GclReader getReader(String readerId) throws GclClientException;
+
     List<GclReader> getReaders() throws GclClientException;
+
     List<GclReader> getReadersWithInsertedCard() throws GclClientException;
+
     List<GclReader> getReadersWithoutInsertedCard() throws GclClientException;
+
     String getPublicKey() throws GclAdminClientException;
 }

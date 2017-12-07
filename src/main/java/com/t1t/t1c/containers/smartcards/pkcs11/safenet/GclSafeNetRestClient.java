@@ -9,6 +9,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import java.util.List;
+
 /**
  * @Author Michallis Pashidis
  * @Since 2017

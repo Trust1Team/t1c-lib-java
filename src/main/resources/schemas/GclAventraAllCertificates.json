@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclAventraAllCertificates",
-  "javaType" : "com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates",
+  "javaType": "com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates",
   "javaInterfaces": [
     "com.t1t.t1c.model.AllCertificates"
   ],

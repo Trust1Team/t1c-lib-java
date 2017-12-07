@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient, DnieAllData, DnieAllCertificates> {
 
-    public DnieContainer (LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
+    public DnieContainer(LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
         super(config, reader, gclDniRestClient, null);
     }
 
@@ -104,7 +104,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo,  String... pin) throws DnieContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws DnieContainerException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
@@ -131,7 +131,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws DnieContainerException {
         try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())) ,parse);
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.dnieContainerException("could not retrieve authentication certificate", ex);
         }
@@ -139,7 +139,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     public T1cCertificate getIntermediateCertificate(Boolean... parse) throws DnieContainerException {
         try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId())) ,parse);
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.dnieContainerException("could not retrieve intermediate certificate", ex);
         }
@@ -147,7 +147,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     public T1cCertificate getSigningCertificate(Boolean... parse) throws DnieContainerException {
         try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())) ,parse);
+            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.dnieContainerException("could not retrieve signing certificate", ex);
         }

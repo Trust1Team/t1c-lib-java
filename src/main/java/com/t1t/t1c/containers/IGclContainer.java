@@ -7,5 +7,6 @@ package com.t1t.t1c.containers;
 public interface IGclContainer {
     /*Type Related*/
     ContainerType getType();
+
     String getTypeId();
 }

@@ -22,8 +22,6 @@ import java.util.Properties;
  * </ul>
  */
 public class T1cConfigParser implements Serializable {
-    /*Logger*/
-    private static Logger _LOG = LoggerFactory.getLogger(T1cConfigParser.class.getName());
     /*Uris*/
     private static final String URI_GATEWAY = "https://apim.t1t.be";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
@@ -33,7 +31,8 @@ public class T1cConfigParser implements Serializable {
     /*Custom configurations*/
     private static final int DEFAULT_POLLING_INTERVAL = 5;
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
-
+    /*Logger*/
+    private static Logger _LOG = LoggerFactory.getLogger(T1cConfigParser.class.getName());
     private static Config config;
     private LibConfig appConfig;
 
@@ -68,30 +67,47 @@ public class T1cConfigParser implements Serializable {
     public Environment getEnvironment() {
         return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);
     }
+
     public String getGCLClientURI() {
         return config.getString(IConfig.LIB_GCL_CLIENT_URI);
     }
+
     public String getConsmerApiKey() {
         return config.getString(IConfig.LIB_API_KEY);
     }
-    public String getGatewayUri() { return config.getString(IConfig.LIB_GATEWAY_URI); }
+
+    public String getGatewayUri() {
+        return config.getString(IConfig.LIB_GATEWAY_URI);
+    }
+
     public String getDsContextPath() {
         return config.getString(IConfig.LIB_DS_CONTEXT_PATH);
     }
-    public String getOcvContextPath() { return config.getString(IConfig.LIB_OCV_CONTEXT_PATH); }
+
+    public String getOcvContextPath() {
+        return config.getString(IConfig.LIB_OCV_CONTEXT_PATH);
+    }
+
     public Integer getDefaultPollingIntervalInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_INTERVAL);
     }
+
     public Integer getDefaultPollingTimeoutInSeconds() {
         return config.getInt(IConfig.LIB_DEFAULT_POLLING_TIMEOUT);
     }
+
     public Integer getDefaultSessionTimeout() {
         return config.getInt(IConfig.LIB_DEFAULT_SESSION_TIMEOUT);
     }
+
     public LibConfig getAppConfig() {
         return appConfig;
     }
-    public void setAppConfig(LibConfig appConfig) { this.appConfig = appConfig;resolveProperties(readProperties()); }
+
+    public void setAppConfig(LibConfig appConfig) {
+        this.appConfig = appConfig;
+        resolveProperties(readProperties());
+    }
 
     /**
      * Resolves compile time properties and adds them to the app config.
@@ -131,22 +147,27 @@ public class T1cConfigParser implements Serializable {
      * this is the case for managed T1C instances.
      */
     public void validateConfig() {
-        if (this.appConfig.getEnvironment()==null) this.appConfig.setEnvironment(Environment.PROD);
+        if (this.appConfig.getEnvironment() == null) this.appConfig.setEnvironment(Environment.PROD);
         if (StringUtils.isEmpty(this.appConfig.getGclClientUri())) this.appConfig.setGclClientUri(URI_T1C_GCL);
         if (StringUtils.isEmpty(this.appConfig.getOcvUri())) this.appConfig.setOcvUri(URI_GATEWAY);
         if (StringUtils.isEmpty(this.appConfig.getDsUri())) this.appConfig.setDsUri(URI_GATEWAY);
         if (StringUtils.isEmpty(this.appConfig.getDsContextPath())) this.appConfig.setDsContextPath(CONTEXT_DS);
         if (StringUtils.isEmpty(this.appConfig.getOcvContextPath())) this.appConfig.setOcvContextPath(CONTEXT_OCV);
-        if (StringUtils.isEmpty(this.appConfig.getApiKey())) this.appConfig.setApiKey(""); // for managed instances - when DS and OCV are not used
-        if (this.appConfig.getDefaultPollingIntervalInSeconds()==null) this.appConfig.setDefaultPollingIntervalInSeconds(DEFAULT_POLLING_INTERVAL);
-        if (this.appConfig.getDefaultPollingTimeoutInSeconds()==null) this.appConfig.setDefaultPollingTimeoutInSeconds(DEFAULT_POLLING_TIMEOUT);
-        if (this.appConfig.isHardwarePinPadForced()==null) this.appConfig.setHardwarePinPadForced(false);
-        if (this.appConfig.isTokenCompatible()==null) this.appConfig.setTokenCompatible(false);
-        if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0) this.appConfig.setSessionTimeout(60);
+        if (StringUtils.isEmpty(this.appConfig.getApiKey()))
+            this.appConfig.setApiKey(""); // for managed instances - when DS and OCV are not used
+        if (this.appConfig.getDefaultPollingIntervalInSeconds() == null)
+            this.appConfig.setDefaultPollingIntervalInSeconds(DEFAULT_POLLING_INTERVAL);
+        if (this.appConfig.getDefaultPollingTimeoutInSeconds() == null)
+            this.appConfig.setDefaultPollingTimeoutInSeconds(DEFAULT_POLLING_TIMEOUT);
+        if (this.appConfig.isHardwarePinPadForced() == null) this.appConfig.setHardwarePinPadForced(false);
+        if (this.appConfig.isTokenCompatible() == null) this.appConfig.setTokenCompatible(false);
+        if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0)
+            this.appConfig.setSessionTimeout(60);
     }
 
     /**
      * Parse compile time properties file
+     *
      * @return
      */
     private Properties readProperties() {

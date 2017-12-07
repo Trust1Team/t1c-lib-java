@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -26,18 +25,14 @@ public class DsDownloadRequest {
     private String manufacturer;
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public DsOs getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(DsOs os) {
         this.os = os;
@@ -49,18 +44,14 @@ public class DsDownloadRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The browser
+     * @return The browser
      */
     public DsBrowser getBrowser() {
         return browser;
     }
 
     /**
-     * 
-     * @param browser
-     *     The browser
+     * @param browser The browser
      */
     public void setBrowser(DsBrowser browser) {
         this.browser = browser;
@@ -72,18 +63,14 @@ public class DsDownloadRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The ua
+     * @return The ua
      */
     public String getUa() {
         return ua;
     }
 
     /**
-     * 
-     * @param ua
-     *     The ua
+     * @param ua The ua
      */
     public void setUa(String ua) {
         this.ua = ua;
@@ -95,18 +82,14 @@ public class DsDownloadRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The manufacturer
+     * @return The manufacturer
      */
     public String getManufacturer() {
         return manufacturer;
     }
 
     /**
-     * 
-     * @param manufacturer
-     *     The manufacturer
+     * @param manufacturer The manufacturer
      */
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;

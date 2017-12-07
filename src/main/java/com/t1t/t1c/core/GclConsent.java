@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclConsent {
     private Integer durationInDays;
 
     /**
-     * 
-     * @return
-     *     The title
+     * @return The title
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * 
-     * @param title
-     *     The title
+     * @param title The title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -46,18 +41,14 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The text
+     * @return The text
      */
     public String getText() {
         return text;
     }
 
     /**
-     * 
-     * @param text
-     *     The text
+     * @param text The text
      */
     public void setText(String text) {
         this.text = text;
@@ -69,18 +60,14 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The durationInDays
+     * @return The durationInDays
      */
     public Integer getDurationInDays() {
         return durationInDays;
     }
 
     /**
-     * 
-     * @param durationInDays
-     *     The durationInDays
+     * @param durationInDays The durationInDays
      */
     public void setDurationInDays(Integer durationInDays) {
         this.durationInDays = durationInDays;

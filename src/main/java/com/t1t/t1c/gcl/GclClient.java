@@ -21,7 +21,7 @@ import java.util.List;
 public class GclClient implements IGclClient {
 
     private static final Logger log = LoggerFactory.getLogger(GclClient.class);
-    
+
     private GclRestClient httpClient;
 
     public GclClient(GclRestClient httpClient) {

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.google.gson.annotations.Expose;
@@ -17,18 +16,14 @@ public class GclEmvAidRequest {
     private String aid;
 
     /**
-     * 
-     * @return
-     *     The aid
+     * @return The aid
      */
     public String getAid() {
         return aid;
     }
 
     /**
-     * 
-     * @param aid
-     *     The aid
+     * @param aid The aid
      */
     public void setAid(String aid) {
         this.aid = aid;

@@ -14,6 +14,7 @@ import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvApplication;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -30,14 +31,13 @@ import java.util.*;
  * @since 2017
  */
 public class JavaClientExample {
-    /*Keys*/
-    private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
     /*Uris*/
     private static final String URI_GATEWAY = "https://accapim.t1t.be";
     private static final String OCV_CONTEXT_PATH = "/trust1team/ocv-api/v1";
     private static final String DS_CONTEXT_PATH = "/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
-
+    /*Keys*/
+    private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
     private static T1cClient client;
 
     public static void main(String[] args) {
@@ -127,6 +127,7 @@ public class JavaClientExample {
             case OBERTHUR:
                 break;
             case OCRA:
+                ocraUseCases(reader);
                 break;
             case PIV:
                 break;
@@ -135,6 +136,29 @@ public class JavaClientExample {
                 break;
             case SAFENET:
                 break;
+        }
+    }
+
+    private static void ocraUseCases(GclReader reader) {
+        OcraContainer container = client.getOcraContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Read counter: " + container.readCounter());
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        if (StringUtils.isNotEmpty(pin)) {
+            try {
+                boolean pinVerified = container.verifyPin(pin);
+                if (pinVerified) {
+                    System.out.println("OTP: " + container.getChallengeOTP("kgg0MTQ4NTkzNZMA", pin));
+                }
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN verification failed: " + ex.getMessage());
+            }
         }
     }
 
@@ -200,7 +224,7 @@ public class JavaClientExample {
             Boolean pinVerified = container.verifyPin(pin);
             if (pinVerified) {
                 // Sign data
-                System.out.println("Signed hash: " + container.sign( "mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
                 // Authenticate data
                 String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
@@ -210,8 +234,7 @@ public class JavaClientExample {
                         .withHash(challenge)
                         .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
             }
-        }
-        catch (VerifyPinException ex) {
+        } catch (VerifyPinException ex) {
             System.out.println("PIN verification failed: " + ex.getMessage());
         }
     }
@@ -340,7 +363,7 @@ public class JavaClientExample {
         if (pinVerified) {
 
             // Sign data
-            System.out.println("Signed hash: " + container.sign( "mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
             // Authenticate data
             String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
@@ -390,7 +413,7 @@ public class JavaClientExample {
                     .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                     .withDigestAlgorithm(DigestAlgorithm.SHA1.getStringValue())
                     .withHash(challenge)
-                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA1,pin))).getResult());
+                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA1, pin))).getResult());
 
             StringBuilder sb = new StringBuilder();
             Iterator<T1cCertificate> it = container.getRootCertificates().iterator();
@@ -423,27 +446,27 @@ public class JavaClientExample {
 
         System.out.println("Executed APDU: " + container.executeApduCall(
                 new GclRemoteLoadingApdu()
-                    .withCla("F1")
-                    .withIns("95")
-                    .withP1("F7")
-                    .withP2("E4")
-                    .withData("FE0000040001300000")).toString()
+                        .withCla("F1")
+                        .withIns("95")
+                        .withP1("F7")
+                        .withP2("E4")
+                        .withData("FE0000040001300000")).toString()
         );
 
         System.out.println("Executed APDUs: " + container.executeApduCalls(
                 Arrays.asList(
-                    new GclRemoteLoadingApdu()
-                            .withCla("F1")
-                            .withIns("95")
-                            .withP1("F7")
-                            .withP2("E4")
-                            .withData("FE0000040001300000"),
-                    new GclRemoteLoadingApdu()
-                            .withCla("F1")
-                            .withIns("95")
-                            .withP1("F7")
-                            .withP2("E4")
-                            .withData("FE0000040001300000")
+                        new GclRemoteLoadingApdu()
+                                .withCla("F1")
+                                .withIns("95")
+                                .withP1("F7")
+                                .withP2("E4")
+                                .withData("FE0000040001300000"),
+                        new GclRemoteLoadingApdu()
+                                .withCla("F1")
+                                .withIns("95")
+                                .withP1("F7")
+                                .withP2("E4")
+                                .withData("FE0000040001300000")
                 )).toString()
         );
 

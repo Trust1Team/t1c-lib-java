@@ -23,7 +23,8 @@ public class LibConfig {
     // Dynamic properties
     private String jwt;
 
-    public LibConfig() { }
+    public LibConfig() {
+    }
 
     public LibConfig(Environment environment, String version, String build) {
         this.environment = environment;
@@ -103,29 +104,41 @@ public class LibConfig {
         this.jwt = jwt;
     }
 
-    public void setDsUri(String dsUri) { this.dsUri = dsUri; }
-
     public Integer getDefaultPollingIntervalInSeconds() {
         return defaultPollingIntervalInSeconds;
     }
 
-    public void setDefaultPollingIntervalInSeconds(Integer defaultPollingIntervalInSeconds) { this.defaultPollingIntervalInSeconds = defaultPollingIntervalInSeconds; }
+    public void setDefaultPollingIntervalInSeconds(Integer defaultPollingIntervalInSeconds) {
+        this.defaultPollingIntervalInSeconds = defaultPollingIntervalInSeconds;
+    }
 
     public Integer getDefaultPollingTimeoutInSeconds() {
         return defaultPollingTimeoutInSeconds;
     }
 
-    public void setDefaultPollingTimeoutInSeconds(Integer defaultPollingTimeoutInSeconds) { this.defaultPollingTimeoutInSeconds = defaultPollingTimeoutInSeconds; }
+    public void setDefaultPollingTimeoutInSeconds(Integer defaultPollingTimeoutInSeconds) {
+        this.defaultPollingTimeoutInSeconds = defaultPollingTimeoutInSeconds;
+    }
 
     public Boolean isHardwarePinPadForced() {
         return hardwarePinPadForced;
     }
 
-    public void setHardwarePinPadForced(Boolean hardwarePinPadForced) { this.hardwarePinPadForced = hardwarePinPadForced; }
+    public void setHardwarePinPadForced(Boolean hardwarePinPadForced) {
+        this.hardwarePinPadForced = hardwarePinPadForced;
+    }
 
-    public String getDsUri() { return this.dsUri; }
+    public String getDsUri() {
+        return this.dsUri;
+    }
 
-    public String getOcvUri() { return this.ocvUri; }
+    public void setDsUri(String dsUri) {
+        this.dsUri = dsUri;
+    }
+
+    public String getOcvUri() {
+        return this.ocvUri;
+    }
 
     public void setOcvUri(String ocvUri) {
         this.ocvUri = ocvUri;

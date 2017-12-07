@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
 import com.google.gson.annotations.Expose;
@@ -26,18 +25,14 @@ public class GclAventraAppletInfo {
     private String version;
 
     /**
-     * 
-     * @return
-     *     The changeCounter
+     * @return The changeCounter
      */
     public Integer getChangeCounter() {
         return changeCounter;
     }
 
     /**
-     * 
-     * @param changeCounter
-     *     The change_counter
+     * @param changeCounter The change_counter
      */
     public void setChangeCounter(Integer changeCounter) {
         this.changeCounter = changeCounter;
@@ -49,18 +44,14 @@ public class GclAventraAppletInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -72,18 +63,14 @@ public class GclAventraAppletInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The serial
+     * @return The serial
      */
     public String getSerial() {
         return serial;
     }
 
     /**
-     * 
-     * @param serial
-     *     The serial
+     * @param serial The serial
      */
     public void setSerial(String serial) {
         this.serial = serial;
@@ -95,18 +82,14 @@ public class GclAventraAppletInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;

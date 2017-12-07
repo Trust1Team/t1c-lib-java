@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclOberthurAllData",
-  "javaType" : "com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData",
   "javaInterfaces": [
     "com.t1t.t1c.model.AllData"
   ],

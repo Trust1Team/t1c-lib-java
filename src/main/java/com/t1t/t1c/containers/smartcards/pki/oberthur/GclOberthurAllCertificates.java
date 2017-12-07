@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
 import com.google.gson.annotations.Expose;
@@ -11,8 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclOberthurAllCertificates implements AllCertificates
-{
+public class GclOberthurAllCertificates implements AllCertificates {
 
     @SerializedName("authentication_certificate")
     @Expose
@@ -31,18 +29,14 @@ public class GclOberthurAllCertificates implements AllCertificates
     private String signingCertificate;
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -54,18 +48,14 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The encryptionCertificate
+     * @return The encryptionCertificate
      */
     public String getEncryptionCertificate() {
         return encryptionCertificate;
     }
 
     /**
-     * 
-     * @param encryptionCertificate
-     *     The encryption_certificate
+     * @param encryptionCertificate The encryption_certificate
      */
     public void setEncryptionCertificate(String encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
@@ -77,18 +67,14 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The issuerCertificate
+     * @return The issuerCertificate
      */
     public String getIssuerCertificate() {
         return issuerCertificate;
     }
 
     /**
-     * 
-     * @param issuerCertificate
-     *     The issuer_certificate
+     * @param issuerCertificate The issuer_certificate
      */
     public void setIssuerCertificate(String issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
@@ -100,18 +86,14 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The rootCertificate
+     * @return The rootCertificate
      */
     public String getRootCertificate() {
         return rootCertificate;
     }
 
     /**
-     * 
-     * @param rootCertificate
-     *     The root_certificate
+     * @param rootCertificate The root_certificate
      */
     public void setRootCertificate(String rootCertificate) {
         this.rootCertificate = rootCertificate;
@@ -123,18 +105,14 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;

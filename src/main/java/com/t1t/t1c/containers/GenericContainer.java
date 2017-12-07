@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * @author Guillaume Vandecasteele, Michallis
  * @since 2017
- *
+ * <p>
  * Virtual container.
- *
+ * <p>
  * //TODO
  */
 public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
@@ -25,9 +25,15 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     protected transient String pin;
     protected LibConfig config;
     protected ContainerType type;
+
     /*Instantiation*/
-    public GenericContainer() {}
-    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) { createInstance(config, reader, httpClient, pin); }
+    public GenericContainer() {
+    }
+
+    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) {
+        createInstance(config, reader, httpClient, pin);
+    }
+
     public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
 
     protected String createFilterParams(List<String> params) {

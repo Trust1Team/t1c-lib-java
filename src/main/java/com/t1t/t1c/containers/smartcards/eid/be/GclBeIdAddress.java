@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.google.gson.annotations.Expose;
@@ -32,18 +31,14 @@ public class GclBeIdAddress {
     private String zipcode;
 
     /**
-     * 
-     * @return
-     *     The municipality
+     * @return The municipality
      */
     public String getMunicipality() {
         return municipality;
     }
 
     /**
-     * 
-     * @param municipality
-     *     The municipality
+     * @param municipality The municipality
      */
     public void setMunicipality(String municipality) {
         this.municipality = municipality;
@@ -55,18 +50,14 @@ public class GclBeIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The rawData
+     * @return The rawData
      */
     public String getRawData() {
         return rawData;
     }
 
     /**
-     * 
-     * @param rawData
-     *     The raw_data
+     * @param rawData The raw_data
      */
     public void setRawData(String rawData) {
         this.rawData = rawData;
@@ -78,18 +69,14 @@ public class GclBeIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The signature
+     * @return The signature
      */
     public String getSignature() {
         return signature;
     }
 
     /**
-     * 
-     * @param signature
-     *     The signature
+     * @param signature The signature
      */
     public void setSignature(String signature) {
         this.signature = signature;
@@ -101,18 +88,14 @@ public class GclBeIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The streetAndNumber
+     * @return The streetAndNumber
      */
     public String getStreetAndNumber() {
         return streetAndNumber;
     }
 
     /**
-     * 
-     * @param streetAndNumber
-     *     The street_and_number
+     * @param streetAndNumber The street_and_number
      */
     public void setStreetAndNumber(String streetAndNumber) {
         this.streetAndNumber = streetAndNumber;
@@ -124,18 +107,14 @@ public class GclBeIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public Integer getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(Integer version) {
         this.version = version;
@@ -147,18 +126,14 @@ public class GclBeIdAddress {
     }
 
     /**
-     * 
-     * @return
-     *     The zipcode
+     * @return The zipcode
      */
     public String getZipcode() {
         return zipcode;
     }
 
     /**
-     * 
-     * @param zipcode
-     *     The zipcode
+     * @param zipcode The zipcode
      */
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;

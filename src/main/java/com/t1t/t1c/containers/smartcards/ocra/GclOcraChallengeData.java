@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.ocra;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class GclOcraChallengeData {
     private String pin;
 
     /**
-     * 
-     * @return
-     *     The challenge
+     * @return The challenge
      */
     public String getChallenge() {
         return challenge;
     }
 
     /**
-     * 
-     * @param challenge
-     *     The challenge
+     * @param challenge The challenge
      */
     public void setChallenge(String challenge) {
         this.challenge = challenge;
@@ -43,18 +38,14 @@ public class GclOcraChallengeData {
     }
 
     /**
-     * 
-     * @return
-     *     The pin
+     * @return The pin
      */
     public String getPin() {
         return pin;
     }
 
     /**
-     * 
-     * @param pin
-     *     The pin
+     * @param pin The pin
      */
     public void setPin(String pin) {
         this.pin = pin;

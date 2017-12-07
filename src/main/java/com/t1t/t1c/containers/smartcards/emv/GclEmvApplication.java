@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.emv;
 
 import com.google.gson.annotations.Expose;
@@ -23,18 +22,14 @@ public class GclEmvApplication {
     private Integer priority;
 
     /**
-     * 
-     * @return
-     *     The aid
+     * @return The aid
      */
     public String getAid() {
         return aid;
     }
 
     /**
-     * 
-     * @param aid
-     *     The aid
+     * @param aid The aid
      */
     public void setAid(String aid) {
         this.aid = aid;
@@ -46,18 +41,14 @@ public class GclEmvApplication {
     }
 
     /**
-     * 
-     * @return
-     *     The label
+     * @return The label
      */
     public String getLabel() {
         return label;
     }
 
     /**
-     * 
-     * @param label
-     *     The label
+     * @param label The label
      */
     public void setLabel(String label) {
         this.label = label;
@@ -69,18 +60,14 @@ public class GclEmvApplication {
     }
 
     /**
-     * 
-     * @return
-     *     The priority
+     * @return The priority
      */
     public Integer getPriority() {
         return priority;
     }
 
     /**
-     * 
-     * @param priority
-     *     The priority
+     * @param priority The priority
      */
     public void setPriority(Integer priority) {
         this.priority = priority;

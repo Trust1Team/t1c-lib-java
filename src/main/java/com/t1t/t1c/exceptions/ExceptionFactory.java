@@ -205,8 +205,7 @@ public final class ExceptionFactory {
     public static VerifyPinException verifyPinException(GclError error) {
         if (error != null) {
             return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode()));
-        }
-        else {
+        } else {
             return verifyPinException("No error message present, cannot determine cause");
         }
     }
@@ -259,7 +258,7 @@ public final class ExceptionFactory {
      * Creates a luxTrust container exception
      *
      * @param message the message
-     * @param cause the cause
+     * @param cause   the cause
      * @return LuxTrustContainerException
      */
     public static LuxTrustContainerException luxTrustContainerException(String message, RestException cause) {
@@ -325,6 +324,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a Mobib container exception
+     *
      * @param message
      * @param cause
      * @return
@@ -338,12 +338,13 @@ public final class ExceptionFactory {
 
     /**
      * Creates an OCRA container exception
+     *
      * @param message
      * @param cause
      * @return
      */
     public static OcraContainerException ocraContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with MOBIB container";
+        String errorMessage = "Communication error with OCRA container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new OcraContainerException(errorMessage, cause);
@@ -369,6 +370,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a SafeNet container exception
+     *
      * @param message
      * @return
      */
@@ -378,6 +380,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a SafeNet container exception
+     *
      * @param message
      * @param cause
      * @return
@@ -391,6 +394,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a GCL Core exception
+     *
      * @param message
      * @param cause
      * @return
@@ -404,6 +408,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates a remote loading container exception
+     *
      * @param message
      * @param cause
      * @return

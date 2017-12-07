@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -17,18 +16,14 @@ public class GclAdminActivation {
     private Boolean success;
 
     /**
-     * 
-     * @return
-     *     The success
+     * @return The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * 
-     * @param success
-     *     The success
+     * @param success The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;

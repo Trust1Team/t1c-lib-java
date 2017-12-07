@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.remoteloading;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class GclRemoteLoadingCcidFeature {
     private String id;
 
     /**
-     * 
-     * @return
-     *     The controlCode
+     * @return The controlCode
      */
     public Integer getControlCode() {
         return controlCode;
     }
 
     /**
-     * 
-     * @param controlCode
-     *     The control_code
+     * @param controlCode The control_code
      */
     public void setControlCode(Integer controlCode) {
         this.controlCode = controlCode;
@@ -43,18 +38,14 @@ public class GclRemoteLoadingCcidFeature {
     }
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(String id) {
         this.id = id;

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -22,18 +21,14 @@ public class GclCard {
     private List<String> description = new ArrayList<String>();
 
     /**
-     * 
-     * @return
-     *     The atr
+     * @return The atr
      */
     public String getAtr() {
         return atr;
     }
 
     /**
-     * 
-     * @param atr
-     *     The atr
+     * @param atr The atr
      */
     public void setAtr(String atr) {
         this.atr = atr;
@@ -45,18 +40,14 @@ public class GclCard {
     }
 
     /**
-     * 
-     * @return
-     *     The description
+     * @return The description
      */
     public List<String> getDescription() {
         return description;
     }
 
     /**
-     * 
-     * @param description
-     *     The description
+     * @param description The description
      */
     public void setDescription(List<String> description) {
         this.description = description;

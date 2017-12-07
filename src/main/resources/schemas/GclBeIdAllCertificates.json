@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclBeIdAllCertificates",
-  "javaType" : "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates",
   "javaInterfaces": [
     "com.t1t.t1c.model.AllCertificates"
   ],

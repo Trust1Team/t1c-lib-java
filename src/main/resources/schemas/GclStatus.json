@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
   "$id": "GclStatus",
-  "javaType" : "com.t1t.t1c.core.GclStatus",
+  "javaType": "com.t1t.t1c.core.GclStatus",
   "properties": {
     "activated": {
       "type": "boolean"

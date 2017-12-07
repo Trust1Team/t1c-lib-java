@@ -25,6 +25,7 @@ public class Core extends AbstractCore {
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
     private LibConfig config;
+
     public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, LibConfig config) {
         this.gclAdminRestClient = gclAdminRestClient;
         this.gclRestClient = gclRestClient;
@@ -103,7 +104,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclReader pollCardInserted (Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds)  throws GclCoreException{
+    public GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
         List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds, pollTimeoutInSeconds);
         return CollectionUtils.isNotEmpty(readers) ? readers.get(0) : null;
     }
@@ -114,7 +115,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws GclCoreException{
+    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws GclCoreException {
         return pollReadersWithCards(pollIntervalInSeconds, null);
     }
 
@@ -144,7 +145,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws GclCoreException{
+    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws GclCoreException {
         return pollReaders(pollIntervalInSeconds, null);
     }
 
@@ -205,7 +206,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclReader getReader(String readerId)  throws GclCoreException{
+    public GclReader getReader(String readerId) throws GclCoreException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
         try {
             return RestExecutor.returnData(gclRestClient.getCardReader(readerId));
@@ -224,7 +225,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> getReadersWithoutInsertedCard()  throws GclCoreException{
+    public List<GclReader> getReadersWithoutInsertedCard() throws GclCoreException {
         return getReaders(false);
     }
 

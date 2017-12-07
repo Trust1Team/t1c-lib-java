@@ -2,14 +2,22 @@ package com.t1t.t1c.containers.smartcards.ocra;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.Collections;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -27,19 +35,121 @@ public class OcraContainerTest extends AbstractTestClass {
     }
 
     @Test
+    public void getAllDataFilters() {
+        assertTrue(CollectionUtils.isNotEmpty(container.getAllDataFilters()));
+    }
+
+    @Test
+    public void getAllCertificateFilters() {
+        assertTrue(CollectionUtils.isEmpty(container.getAllCertificateFilters()));
+    }
+
+    @Test
     public void getAllData() {
+        GclOcraAllData data = container.getAllData();
+        assertNotNull(data);
+        assertNotNull(data.getCounter());
     }
 
     @Test
+    public void getAllDataFiltered() {
+        GclOcraAllData data = container.getAllData(Collections.singletonList("counter"));
+        assertNotNull(data);
+        assertNotNull(data.getCounter());
+    }
+
+    @Test
+    public void getAllDataParsed() {
+        GclOcraAllData data = container.getAllData(true);
+        assertNotNull(data);
+        assertNotNull(data.getCounter());
+    }
+
+    @Test(expected = OcraContainerException.class)
+    public void getAllDataWithRestException() {
+        GclOcraAllData data = container.getAllData(Collections.singletonList("throwException"));
+        assertNotNull(data);
+        assertNotNull(data.getCounter());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
     public void getAllCertificates() {
+        container.getAllCertificates();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAllCertificatesFiltered() {
+        container.getAllCertificates(Collections.singletonList("filter"));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAllCertificatesParsed() {
+        container.getAllCertificates(true);
     }
 
     @Test
-    public void getCounter() {
+    public void verifyPin() {
+        assertTrue(container.verifyPin("1111"));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void verifyPinIncorrect() {
+        container.verifyPin("1112");
     }
 
     @Test
-    public void challenge() {
+    public void verifyPinWithHardwarePinPad() {
+        assertTrue(container.verifyPin());
     }
 
+    @Test(expected = UnsupportedOperationException.class)
+    public void authenticate() {
+        container.authenticate(null, null, null);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void sign() {
+        container.sign(null, null, null);
+    }
+
+    @Test
+    public void getType() {
+        assertEquals(ContainerType.OCRA, container.getType());
+    }
+
+    @Test
+    public void getTypeId() {
+        assertEquals(ContainerType.OCRA.getId(), container.getTypeId());
+    }
+
+    @Test
+    public void getAllDataClass() {
+        assertEquals(GclOcraAllData.class, container.getAllDataClass());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAllCertificatesClass() {
+        container.getAllCertificatesClass();
+    }
+
+    @Test
+    public void getChallengeOTP() {
+        Long otp = container.getChallengeOTP("kgg0MTQ4NTkzNZMA", "1111");
+        assertNotNull(otp);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void getChallengeOTPWithWrongPin() {
+        container.getChallengeOTP("kgg0MTQ4NTkzNZMA", "1112");
+    }
+
+    @Test
+    public void getChallengeOTPWithHardwarePinPad() {
+        container.getChallengeOTP("kgg0MTQ4NTkzNZMA");
+    }
+
+    @Test
+    public void readCounter() {
+        assertTrue(StringUtils.isNotEmpty(container.readCounter()));
+    }
 }

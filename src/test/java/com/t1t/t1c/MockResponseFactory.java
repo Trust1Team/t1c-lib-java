@@ -52,11 +52,6 @@ import java.util.List;
  */
 public final class MockResponseFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(MockResponseFactory.class);
-
-    private static final String JSON_EXTENSION = ".json";
-    private static final String RESPONSE_RESOURCE_PATH = "/responses/";
-
     public static final String NO_CARD_READER_ID = "57a3e2e71c48ce00";
     public static final String AVENTRA_READER_ID = "57a3e2e71c48ce01";
     public static final String BEID_READER_ID = "57a3e2e71c48ce02";
@@ -72,9 +67,9 @@ public final class MockResponseFactory {
     public static final String PT_READER_ID = "57a3e2e71c48ce12";
     public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
     public static final String REMOTE_LOADING_READER_ID = "57a3e2e71c48ce14";
-
-
-
+    private static final Logger log = LoggerFactory.getLogger(MockResponseFactory.class);
+    private static final String JSON_EXTENSION = ".json";
+    private static final String RESPONSE_RESOURCE_PATH = "/responses/";
     private static final Gson GSON = new Gson();
 
     private MockResponseFactory() {
@@ -181,8 +176,7 @@ public final class MockResponseFactory {
             readers.add(getReaderWithCard(ContainerType.PIV, false));
             readers.add(getReaderWithCard(ContainerType.PT, false));
             readers.add(getReaderWithCard(null, false));
-        }
-        else if (onlyCardsInserted) {
+        } else if (onlyCardsInserted) {
             readers.add(getReaderWithCard(ContainerType.BEID, false));
             readers.add(getReaderWithCard(ContainerType.AVENTRA, false));
             readers.add(getReaderWithCard(ContainerType.DNIE, false));
@@ -994,12 +988,14 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclEmvPublicKeyCertificate> getGclEmvIccPublicKeyCertificateResponse(String aid) throws RestException {
-        if (!"A0000000048002".equals(aid)) throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
+        if (!"A0000000048002".equals(aid))
+            throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
         return getSuccessResponse(getGclEmvIccPublicKeyCertificate());
     }
 
     public static T1cResponse<GclEmvPublicKeyCertificate> getGclEmvIssuerPublicKeyCertificateResponse(String aid) throws RestException {
-        if (!"A0000000048002".equals(aid)) throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
+        if (!"A0000000048002".equals(aid))
+            throw ExceptionFactory.restException("wrong aid", 412, "https://localhost:10443/v1", null);
         return getSuccessResponse(getGclEmvIssuerPublicKeyCertificate());
     }
 
@@ -1156,6 +1152,42 @@ public final class MockResponseFactory {
 
     public static String getGclMobibPicture() {
         return "";
+    }
+
+    //
+    // OCRA responses
+    //
+
+    public static T1cResponse<GclOcraAllData> getGclOcraAllDataResponse(String filter) throws RestException {
+        List<String> filterParams = splitFilterParams(filter);
+        GclOcraAllData data = getGclOcraAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("counter")) data.setCounter(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<Long> getGclOcraChallengeResponse(String pin) throws RestException {
+        if (pin != null && !"1111".equals(pin)) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
+        return getSuccessResponse(1L);
+    }
+
+    public static T1cResponse<String> getGclOcraCounterResponse() throws RestException {
+        return getSuccessResponse(getGclOcraCounter());
+    }
+
+    public static GclOcraAllData getGclOcraAllData() {
+        return new GclOcraAllData().withCounter(getGclOcraCounter());
+    }
+
+    public static String getGclOcraCounter() {
+        return "zMzMzMzMzQM=";
     }
 
     // TODO clean up the rest of the responses below
@@ -1404,10 +1436,6 @@ public final class MockResponseFactory {
         return getSuccessResponse(GSON.fromJson(json, GclMobibAllData.class));
     }
 
-    public static T1cResponse<GclOcraAllData> getGclOcraAllDataResponse() {
-        return getSuccessResponse(new GclOcraAllData().withCounter("Data Counter"));
-    }
-
     public static T1cResponse<String> getStringResponse() {
         return getSuccessResponse("This is a String response");
     }
@@ -1459,7 +1487,8 @@ public final class MockResponseFactory {
         if (StringUtils.isEmpty(filter)) {
             return Collections.emptyList();
         }
-        if (filter.contains("throwException")) throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
+        if (filter.contains("throwException"))
+            throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
     }
 

@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -17,18 +16,14 @@ public class GclUpdatePublicKeyRequest {
     private String certificate;
 
     /**
-     * 
-     * @return
-     *     The certificate
+     * @return The certificate
      */
     public String getCertificate() {
         return certificate;
     }
 
     /**
-     * 
-     * @param certificate
-     *     The certificate
+     * @param certificate The certificate
      */
     public void setCertificate(String certificate) {
         this.certificate = certificate;

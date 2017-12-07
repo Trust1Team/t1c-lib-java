@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.google.gson.annotations.Expose;
@@ -32,18 +31,14 @@ public class GclDnieInfo {
     private String serialNumber;
 
     /**
-     * 
-     * @return
-     *     The firstLastName
+     * @return The firstLastName
      */
     public String getFirstLastName() {
         return firstLastName;
     }
 
     /**
-     * 
-     * @param firstLastName
-     *     The firstLastName
+     * @param firstLastName The firstLastName
      */
     public void setFirstLastName(String firstLastName) {
         this.firstLastName = firstLastName;
@@ -55,18 +50,14 @@ public class GclDnieInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The firstName
+     * @return The firstName
      */
     public String getFirstName() {
         return firstName;
     }
 
     /**
-     * 
-     * @param firstName
-     *     The firstName
+     * @param firstName The firstName
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -78,18 +69,14 @@ public class GclDnieInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The idesp
+     * @return The idesp
      */
     public String getIdesp() {
         return idesp;
     }
 
     /**
-     * 
-     * @param idesp
-     *     The idesp
+     * @param idesp The idesp
      */
     public void setIdesp(String idesp) {
         this.idesp = idesp;
@@ -101,18 +88,14 @@ public class GclDnieInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The number
+     * @return The number
      */
     public String getNumber() {
         return number;
     }
 
     /**
-     * 
-     * @param number
-     *     The number
+     * @param number The number
      */
     public void setNumber(String number) {
         this.number = number;
@@ -124,18 +107,14 @@ public class GclDnieInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The secondLastName
+     * @return The secondLastName
      */
     public String getSecondLastName() {
         return secondLastName;
     }
 
     /**
-     * 
-     * @param secondLastName
-     *     The secondLastName
+     * @param secondLastName The secondLastName
      */
     public void setSecondLastName(String secondLastName) {
         this.secondLastName = secondLastName;
@@ -147,18 +126,14 @@ public class GclDnieInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The serialNumber
+     * @return The serialNumber
      */
     public String getSerialNumber() {
         return serialNumber;
     }
 
     /**
-     * 
-     * @param serialNumber
-     *     The serialNumber
+     * @param serialNumber The serialNumber
      */
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
