@@ -1,9 +1,11 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
@@ -64,7 +66,7 @@ public class MobibContainerTest extends AbstractTestClass {
         assertNotNull(data.getPicture());
     }
 
-    @Test(expected = MobibContainerException.class)
+    @Test(expected = RestException.class)
     public void getAllDataWithRestException() {
         container.getAllData(Collections.singletonList("throwException"));
     }

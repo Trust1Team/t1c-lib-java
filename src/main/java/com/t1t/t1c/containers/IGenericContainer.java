@@ -1,6 +1,7 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
 
@@ -46,7 +47,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllData
      * @throws GenericContainerException: on failure
      */
-    V getAllData() throws GenericContainerException;
+    V getAllData() throws RestException;
 
     /**
      * Dumps all the data on the card
@@ -56,7 +57,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllData
      * @throws GenericContainerException: on failure
      */
-    V getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
+    V getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException;
 
     /**
      * Dumps all the data on the card
@@ -65,7 +66,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllData
      * @throws GenericContainerException: on failure
      */
-    V getAllData(Boolean... parseCertificates) throws GenericContainerException;
+    V getAllData(Boolean... parseCertificates) throws RestException;
 
     /**
      * Dumps all the certificates on the card
@@ -73,7 +74,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllCertificates
      * @throws GenericContainerException: on failure
      */
-    W getAllCertificates() throws GenericContainerException;
+    W getAllCertificates() throws RestException;
 
     /**
      * Dumps all the certificates on the card
@@ -83,7 +84,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllCertificates
      * @throws GenericContainerException: on failure
      */
-    W getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException;
+    W getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException;
 
     /**
      * Dumps all the certificates on the card
@@ -92,7 +93,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return AllCertificates
      * @throws GenericContainerException: on failure
      */
-    W getAllCertificates(Boolean... parseCertificates) throws GenericContainerException;
+    W getAllCertificates(Boolean... parseCertificates) throws RestException;
 
     /*Token Functionality*/
 
@@ -104,7 +105,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @throws GenericContainerException: on communication failure
      * @throws VerifyPinException:        if PIN is incorrect
      */
-    Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException;
+    Boolean verifyPin(String... pin) throws VerifyPinException, RestException;
 
     /**
      * Signs a hash with the card's authentication certificate
@@ -113,7 +114,7 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
      */
-    String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException;
+    String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
 
     /**
      * Signs a hash with the card's signing (non-repudiation) certificate
@@ -122,5 +123,5 @@ public interface IGenericContainer<V, W> extends IGclContainer {
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
      */
-    String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException;
+    String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
 }

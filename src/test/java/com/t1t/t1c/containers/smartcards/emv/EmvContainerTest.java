@@ -4,6 +4,7 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.AllCertificates;
@@ -69,7 +70,7 @@ public class EmvContainerTest extends AbstractTestClass {
         assertNotNull(cert.getRemainder());
     }
 
-    @Test(expected = EmvContainerException.class)
+    @Test(expected = RestException.class)
     public void getIccPublicKeyCertificateWithWrongAid() {
         container.getIccPublicKeyCertificate("A0000000048");
     }
@@ -83,7 +84,7 @@ public class EmvContainerTest extends AbstractTestClass {
         assertNotNull(cert.getRemainder());
     }
 
-    @Test(expected = EmvContainerException.class)
+    @Test(expected = RestException.class)
     public void getIssuerPublicKeyCertificateWithWrongAid() {
         container.getIssuerPublicKeyCertificate("A0000000048");
     }
@@ -114,7 +115,7 @@ public class EmvContainerTest extends AbstractTestClass {
         assertNotNull(data.getApplications());
     }
 
-    @Test(expected = EmvContainerException.class)
+    @Test(expected = RestException.class)
     public void getAllDataRestException() {
         container.getAllData(Collections.singletonList("throwException"));
     }

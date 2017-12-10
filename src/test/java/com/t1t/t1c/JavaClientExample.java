@@ -15,7 +15,9 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvApplication;
 import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
+import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -102,6 +104,7 @@ public class JavaClientExample {
 
         switch (type) {
             case AVENTRA:
+                aventraUseCases(reader);
                 break;
             case BEID:
                 remoteLoadingUseCases(reader);
@@ -125,6 +128,7 @@ public class JavaClientExample {
                 mobibUseCases(reader);
                 break;
             case OBERTHUR:
+                oberthurUseCases(reader);
                 break;
             case OCRA:
                 ocraUseCases(reader);
@@ -135,6 +139,131 @@ public class JavaClientExample {
                 ptIdUseCases(reader);
                 break;
             case SAFENET:
+                break;
+        }
+    }
+
+    private static void oberthurUseCases(GclReader reader) {
+        OberthurContainer container = client.getOberthurContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
+
+        System.out.println("Root certificate: " + container.getRootCertificate().getBase64());
+
+        System.out.println("Authentication certificate: " + container.getAuthenticationCertificate().getBase64());
+
+        System.out.println("Signing certificate: " + container.getSigningCertificate().getBase64());
+
+        System.out.println("Issuer certificate: " + container.getIssuerCertificate().getBase64());
+
+        System.out.println("Encryption certificate: " + container.getEncryptionCertificate().getBase64());
+
+        List<DigestAlgorithm> algoRefsForSigning = container.getAllAlgoRefsForSigning();
+        System.out.println("Algorithm references available for signing: " + algoRefsForSigning.toString());
+
+        List<DigestAlgorithm> algoRefsForAuthentication = container.getAllAlgoRefsForSigning();
+        System.out.println("Algorithm references available for authentication: " + algoRefsForAuthentication.toString());
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        if (StringUtils.isNotEmpty(pin)) {
+            try {
+                boolean pinVerified = container.verifyPin(pin);
+                System.out.println("PIN verified: " + pinVerified);
+
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                // Authenticate data
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
+
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN verification failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    private static void aventraUseCases(GclReader reader) {
+        AventraContainer container = client.getAventraContainer(reader);
+
+        System.out.println("Card data dump: " + container.getAllData().toString());
+
+        System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
+
+        System.out.println("Root certificate: " + container.getRootCertificate().getBase64());
+
+        System.out.println("Authentication certificate: " + container.getAuthenticationCertificate().getBase64());
+
+        System.out.println("Signing certificate: " + container.getSigningCertificate().getBase64());
+
+        System.out.println("Issuer certificate: " + container.getIssuerCertificate().getBase64());
+
+        System.out.println("Encryption certificate: " + container.getEncryptionCertificate().getBase64());
+
+        System.out.println("Key references: " + container.getAllKeyRefs());
+
+        List<DigestAlgorithm> algoRefsForSigning = container.getAllAlgoRefsForSigning();
+        System.out.println("Algorithm references available for signing: " + algoRefsForSigning.toString());
+
+        List<DigestAlgorithm> algoRefsForAuthentication = container.getAllAlgoRefsForSigning();
+        System.out.println("Algorithm references available for authentication: " + algoRefsForAuthentication.toString());
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        if (StringUtils.isNotEmpty(pin)) {
+            try {
+                boolean pinVerified = container.verifyPin(pin);
+                System.out.println("PIN verified: " + pinVerified);
+
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                // Authenticate data
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
+
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN verification failed: " + ex.getMessage());
+            }
+        }
+
+        Scanner resetPin = new Scanner(System.in);
+        System.out.print("Reset PIN? (Y/n): ");
+        String doReset = resetPin.nextLine();
+        switch (doReset) {
+            case "Y":
+                try {
+                    Scanner pukInput = new Scanner(System.in);
+                    System.out.print("PUK: ");
+                    String puk = pukInput.nextLine();
+                    Scanner newPinInput = new Scanner(System.in);
+                    System.out.print("PUK: ");
+                    String newPin = pukInput.nextLine();
+                    Scanner keyRefInput = new Scanner(System.in);
+                    System.out.print("PUK: ");
+                    String keyRef = pukInput.nextLine();
+                    System.out.println("PIN reset: " + container.resetPin(puk, newPin, keyRef));
+                } catch (VerifyPinException ex) {
+                    System.out.println("Invalid PUK");
+                }
+                break;
+            case "n":
+            default:
                 break;
         }
     }

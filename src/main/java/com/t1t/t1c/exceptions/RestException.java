@@ -4,7 +4,7 @@ package com.t1t.t1c.exceptions;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class RestException extends AbstractException {
+public class RestException extends AbstractRuntimeException {
 
     private Integer httpCode = 400;
     private String uri;

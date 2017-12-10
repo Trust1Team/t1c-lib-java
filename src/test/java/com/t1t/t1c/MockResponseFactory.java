@@ -21,8 +21,13 @@ import com.t1t.t1c.containers.smartcards.mobib.*;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraAllData;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllCertificates;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData;
 import com.t1t.t1c.core.GclCard;
 import com.t1t.t1c.core.GclContainer;
 import com.t1t.t1c.core.GclReader;
@@ -788,7 +793,14 @@ public final class MockResponseFactory {
         return getSuccessResponse(data);
     }
 
-    public static T1cResponse<GclPtIdAddress> getPtIdAddressResponse() {
+    public static T1cResponse<GclPtIdAddress> getPtIdAddressResponse(String pin) {
+        if (pin != null && !"1111".equals(pin)) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
         return getSuccessResponse(getPtIdAddress());
     }
 
@@ -1178,7 +1190,14 @@ public final class MockResponseFactory {
         return getSuccessResponse(1L);
     }
 
-    public static T1cResponse<String> getGclOcraCounterResponse() throws RestException {
+    public static T1cResponse<String> getGclOcraCounterResponse(String pin) throws RestException {
+        if (pin != null && !"1111".equals(pin)) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
         return getSuccessResponse(getGclOcraCounter());
     }
 
@@ -1188,6 +1207,235 @@ public final class MockResponseFactory {
 
     public static String getGclOcraCounter() {
         return "zMzMzMzMzQM=";
+    }
+
+    //
+    // Aventra responses
+    //
+
+    public static T1cResponse<Object> getGclAventraResetPinResponse(String puk) {
+        if (StringUtils.isNotEmpty(puk) && !puk.equals("1111")) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
+        return getSuccessResponseWithoutData();
+    }
+
+    public static T1cResponse<String> getGclAventraRootCertificateResponse() {
+        return getSuccessResponse(getGclAventraRootCertificate());
+    }
+
+    public static T1cResponse<String> getGclAventraAuthenticationCertificateResponse() {
+        return getSuccessResponse(getGclAventraAuthenticationCertificate());
+    }
+
+    public static T1cResponse<String> getGclAventraSigningCertificateResponse() {
+        return getSuccessResponse(getGclAventraSigningCertificate());
+    }
+
+    public static T1cResponse<String> getGclAventraEncryptionCertificateResponse() {
+        return getSuccessResponse(getGclAventraEncryptionCertificate());
+    }
+
+    public static T1cResponse<String> getGclAventraIssuerCertificateResponse() {
+        return getSuccessResponse(getGclAventraIssuerCertificate());
+    }
+
+    public static T1cResponse<List<String>> getGclAventraAuthenticationAlgoRefsResponse() {
+        return getSuccessResponse(getGclAventraAuthenticationAlgoRefs());
+    }
+
+    public static T1cResponse<List<String>> getGclAventraSignAlgoRefsResponse() {
+        return getSuccessResponse(getGclAventraSignAlgoRefs());
+    }
+
+    public static T1cResponse<GclAventraAllCertificates> getAventraAllCertificatesResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclAventraAllCertificates data = getGclAventraAllCertificates();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("root-certificate")) data.setRootCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("issuer-certificate")) data.setIssuerCertificate(null);
+            if (!filterParams.contains("encryption-certificate")) data.setEncryptionCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclAventraAllData> getGclAventraAllDataResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclAventraAllData data = getGclAventraAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("applet-info")) data.setAppletInfo(null);
+            if (!filterParams.contains("root-certificate")) data.setRootCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("issuer-certificate")) data.setIssuerCertificate(null);
+            if (!filterParams.contains("encryption-certificate")) data.setEncryptionCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static GclAventraAllData getGclAventraAllData() {
+        return new GclAventraAllData()
+                .withAppletInfo(getGclAventraAppletInfo())
+                .withRootCertificate(getGclAventraRootCertificate())
+                .withAuthenticationCertificate(getGclAventraAuthenticationCertificate())
+                .withSigningCertificate(getGclAventraSigningCertificate())
+                .withIssuerCertificate(getGclAventraIssuerCertificate())
+                .withEncryptionCertificate(getGclAventraEncryptionCertificate());
+    }
+
+    public static GclAventraAppletInfo getGclAventraAppletInfo() {
+        return new GclAventraAppletInfo()
+                .withChangeCounter(77)
+                .withName("MyEID")
+                .withSerial("00006064024054982647")
+                .withVersion("3.3.3");
+    }
+
+    public static GclAventraAllCertificates getGclAventraAllCertificates() {
+        return new GclAventraAllCertificates()
+                .withRootCertificate(getGclAventraRootCertificate())
+                .withAuthenticationCertificate(getGclAventraAuthenticationCertificate())
+                .withSigningCertificate(getGclAventraSigningCertificate())
+                .withIssuerCertificate(getGclAventraIssuerCertificate())
+                .withEncryptionCertificate(getGclAventraEncryptionCertificate());
+    }
+
+    public static List<String> getGclAventraSignAlgoRefs() {
+        return Arrays.asList("SHA1");
+    }
+
+    public static List<String> getGclAventraAuthenticationAlgoRefs() {
+        return Arrays.asList("SHA1", "SHA256", "SHA512");
+    }
+
+    public static String getGclAventraRootCertificate() {
+        return "MIIFujCCBKKgAwIBAgIIEVPWTD6qlpowDQYJKoZIhvcNAQELBQAwggEAMSIwIAYDVQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQwQgYDVQQLEztDb21tZmlkZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRlcyBOb3JnZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25seTEvMC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRFU1QxKTAnBgNVBAoTIENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQswCQYDVQQGEwJOTzAeFw0xMjEwMDIxMjUzNDRaFw0yMjEwMDMxMjUzNDRaMIIBADEiMCAGA1UEAxMZQ1BOIFJvb3QgU0hBMjU2IENBIC0gVEVTVDFEMEIGA1UECxM7Q29tbWZpZGVzIFRydXN0IEVudmlyb25tZW50KEMpIFRFU1QgMjAxMCBDb21tZmlkZXMgTm9yZ2UgQVMxKzApBgNVBAsTIkNQTiBURVNUIC0gRm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxLzAtBgNVBAsTJkNQTiBQcmltYXJ5IENlcnRpZmljYXRlIEF1dGhvcml0eSBURVNUMSkwJwYDVQQKEyBDb21tZmlkZXMgTm9yZ2UgQVMgLSA5ODggMzEyIDQ5NTELMAkGA1UEBhMCTk8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC33PFTNbpzg1KUaphis0QyJ4e2Ka/o2wzFmCthw46bmx/mMKH7hNxefMX7YU/IHJ4W23izKyxhAqGO2tjNXe/kz2ww9AFJvWKJqiWtBEAGybDQRueCePcmESZJ2nB+YZf3Yl091AjQwD2VZXosCjV73SkBm5hiTalYk0qpsfWq+Q9waXOvQ3uFw2Eg9TQxVAN3h4zgkfpQary0vwBaK2bBBDGi9SNyTEO5YUGPZ+fAvIvCLGzYsvZn22+ZyJXo64jv4m7LfZkp929hRh/F97lAlKaRD/SGuxEo48OVUq4GL1IB9EuUKQfeRyBET4XHq9c0CNoE053Zl/ehM5sAckuzAgMBAAGjggEyMIIBLjBABggrBgEFBQcBAQQ0MDIwMAYIKwYBBQUHMAGGJGh0dHA6Ly9vY3NwMS50ZXN0LmNvbW1maWRlcy5jb20vb2NzcDAdBgNVHQ4EFgQUHpAN9SpjZKZqH0lRW5jPrnwhRHIwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBQekA31KmNkpmofSVFbmM+ufCFEcjCBiAYDVR0fBIGAMH4wPaA7oDmGN2h0dHA6Ly9jcmwxLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNIQTI1Ni5jcmwwPaA7oDmGN2h0dHA6Ly9jcmwyLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNIQTI1Ni5jcmwwDgYDVR0PAQH/BAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IBAQB429FURBiQVTJyHLUsEAEAljKO7eyilDSSdBAu0iyIrA+1hXviQhalROsfBas/wZYvDd1xZQ80IlSHKrtqMf2+Jtl/2t2LMwFl+Ml7tA3/VCr2ClDWC2VTjUJxQ75Lo6QyOPqHnUZApWUkxxS03i89GI8XfAvtRU8OwKR8qTuWHLt16y3dPRtUVu58DGjYCeT97Tx0VnzHNBdWe7LCIms5gvTVZT845zcsedb0EmGo5hJMyhut4o9U9OcDHwoaF6GKPWupCoVxvZlqvSHQElqv2QzA1I8MsEAKDV3cqdJe5v/eL6Cg/qDdraVhCKRCTOefSW2OGfdxRzLzsBYjkCIx";
+    }
+
+    public static String getGclAventraAuthenticationCertificate() {
+        return "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";
+    }
+
+    public static String getGclAventraSigningCertificate() {
+        return "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";
+    }
+
+    public static String getGclAventraIssuerCertificate() {
+        return "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";
+    }
+
+    public static String getGclAventraEncryptionCertificate() {
+        return "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";
+    }
+
+    //
+    // Oberthur responses
+    //
+
+    public static T1cResponse<String> getGclOberthurRootCertificateResponse() {
+        return getSuccessResponse(getGclOberthurRootCertificate());
+    }
+
+    public static T1cResponse<String> getGclOberthurAuthenticationCertificateResponse() {
+        return getSuccessResponse(getGclOberthurAuthenticationCertificate());
+    }
+
+    public static T1cResponse<String> getGclOberthurSigningCertificateResponse() {
+        return getSuccessResponse(getGclOberthurSigningCertificate());
+    }
+
+    public static T1cResponse<String> getGclOberthurEncryptionCertificateResponse() {
+        return getSuccessResponse(getGclOberthurEncryptionCertificate());
+    }
+
+    public static T1cResponse<String> getGclOberthurIssuerCertificateResponse() {
+        return getSuccessResponse(getGclOberthurIssuerCertificate());
+    }
+
+    public static T1cResponse<List<String>> getGclOberthurAuthenticationAlgoRefsResponse() {
+        return getSuccessResponse(getGclOberthurAuthenticationAlgoRefs());
+    }
+
+    public static T1cResponse<List<String>> getGclOberthurSignAlgoRefsResponse() {
+        return getSuccessResponse(getGclOberthurSignAlgoRefs());
+    }
+
+    public static T1cResponse<GclOberthurAllCertificates> getOberthurAllCertificatesResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclOberthurAllCertificates data = getGclOberthurAllCertificates();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("root-certificate")) data.setRootCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("issuer-certificate")) data.setIssuerCertificate(null);
+            if (!filterParams.contains("encryption-certificate")) data.setEncryptionCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclOberthurAllData> getGclOberthurAllDataResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclOberthurAllData data = getGclOberthurAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("root-certificate")) data.setRootCertificate(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("issuer-certificate")) data.setIssuerCertificate(null);
+            if (!filterParams.contains("encryption-certificate")) data.setEncryptionCertificate(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static GclOberthurAllData getGclOberthurAllData() {
+        return new GclOberthurAllData()
+                .withRootCertificate(getGclOberthurRootCertificate())
+                .withAuthenticationCertificate(getGclOberthurAuthenticationCertificate())
+                .withSigningCertificate(getGclOberthurSigningCertificate())
+                .withIssuerCertificate(getGclOberthurIssuerCertificate())
+                .withEncryptionCertificate(getGclOberthurEncryptionCertificate());
+    }
+
+    public static GclOberthurAllCertificates getGclOberthurAllCertificates() {
+        return new GclOberthurAllCertificates()
+                .withRootCertificate(getGclOberthurRootCertificate())
+                .withAuthenticationCertificate(getGclOberthurAuthenticationCertificate())
+                .withSigningCertificate(getGclOberthurSigningCertificate())
+                .withIssuerCertificate(getGclOberthurIssuerCertificate())
+                .withEncryptionCertificate(getGclOberthurEncryptionCertificate());
+    }
+
+    public static List<String> getGclOberthurSignAlgoRefs() {
+        return Arrays.asList("SHA1", "SHA256");
+    }
+
+    public static List<String> getGclOberthurAuthenticationAlgoRefs() {
+        return Arrays.asList("SHA1", "SHA256");
+    }
+
+    public static String getGclOberthurRootCertificate() {
+        return "MIIFujCCBKKgAwIBAgIIEVPWTD6qlpowDQYJKoZIhvcNAQELBQAwggEAMSIwIAYDVQQDExlDUE4gUm9vdCBTSEEyNTYgQ0EgLSBURVNUMUQwQgYDVQQLEztDb21tZmlkZXMgVHJ1c3QgRW52aXJvbm1lbnQoQykgVEVTVCAyMDEwIENvbW1maWRlcyBOb3JnZSBBUzErMCkGA1UECxMiQ1BOIFRFU1QgLSBGb3IgYXV0aG9yaXplZCB1c2Ugb25seTEvMC0GA1UECxMmQ1BOIFByaW1hcnkgQ2VydGlmaWNhdGUgQXV0aG9yaXR5IFRFU1QxKTAnBgNVBAoTIENvbW1maWRlcyBOb3JnZSBBUyAtIDk4OCAzMTIgNDk1MQswCQYDVQQGEwJOTzAeFw0xMjEwMDIxMjUzNDRaFw0yMjEwMDMxMjUzNDRaMIIBADEiMCAGA1UEAxMZQ1BOIFJvb3QgU0hBMjU2IENBIC0gVEVTVDFEMEIGA1UECxM7Q29tbWZpZGVzIFRydXN0IEVudmlyb25tZW50KEMpIFRFU1QgMjAxMCBDb21tZmlkZXMgTm9yZ2UgQVMxKzApBgNVBAsTIkNQTiBURVNUIC0gRm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxLzAtBgNVBAsTJkNQTiBQcmltYXJ5IENlcnRpZmljYXRlIEF1dGhvcml0eSBURVNUMSkwJwYDVQQKEyBDb21tZmlkZXMgTm9yZ2UgQVMgLSA5ODggMzEyIDQ5NTELMAkGA1UEBhMCTk8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC33PFTNbpzg1KUaphis0QyJ4e2Ka/o2wzFmCthw46bmx/mMKH7hNxefMX7YU/IHJ4W23izKyxhAqGO2tjNXe/kz2ww9AFJvWKJqiWtBEAGybDQRueCePcmESZJ2nB+YZf3Yl091AjQwD2VZXosCjV73SkBm5hiTalYk0qpsfWq+Q9waXOvQ3uFw2Eg9TQxVAN3h4zgkfpQary0vwBaK2bBBDGi9SNyTEO5YUGPZ+fAvIvCLGzYsvZn22+ZyJXo64jv4m7LfZkp929hRh/F97lAlKaRD/SGuxEo48OVUq4GL1IB9EuUKQfeRyBET4XHq9c0CNoE053Zl/ehM5sAckuzAgMBAAGjggEyMIIBLjBABggrBgEFBQcBAQQ0MDIwMAYIKwYBBQUHMAGGJGh0dHA6Ly9vY3NwMS50ZXN0LmNvbW1maWRlcy5jb20vb2NzcDAdBgNVHQ4EFgQUHpAN9SpjZKZqH0lRW5jPrnwhRHIwDwYDVR0TAQH/BAUwAwEB/zAfBgNVHSMEGDAWgBQekA31KmNkpmofSVFbmM+ufCFEcjCBiAYDVR0fBIGAMH4wPaA7oDmGN2h0dHA6Ly9jcmwxLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNIQTI1Ni5jcmwwPaA7oDmGN2h0dHA6Ly9jcmwyLnRlc3QuY29tbWZpZGVzLmNvbS9Db21tZmlkZXNSb290LVNIQTI1Ni5jcmwwDgYDVR0PAQH/BAQDAgEGMA0GCSqGSIb3DQEBCwUAA4IBAQB429FURBiQVTJyHLUsEAEAljKO7eyilDSSdBAu0iyIrA+1hXviQhalROsfBas/wZYvDd1xZQ80IlSHKrtqMf2+Jtl/2t2LMwFl+Ml7tA3/VCr2ClDWC2VTjUJxQ75Lo6QyOPqHnUZApWUkxxS03i89GI8XfAvtRU8OwKR8qTuWHLt16y3dPRtUVu58DGjYCeT97Tx0VnzHNBdWe7LCIms5gvTVZT845zcsedb0EmGo5hJMyhut4o9U9OcDHwoaF6GKPWupCoVxvZlqvSHQElqv2QzA1I8MsEAKDV3cqdJe5v/eL6Cg/qDdraVhCKRCTOefSW2OGfdxRzLzsBYjkCIx";
+    }
+
+    public static String getGclOberthurAuthenticationCertificate() {
+        return "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";
+    }
+
+    public static String getGclOberthurSigningCertificate() {
+        return "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";
+    }
+
+    public static String getGclOberthurIssuerCertificate() {
+        return "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";
+    }
+
+    public static String getGclOberthurEncryptionCertificate() {
+        return "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";
     }
 
     // TODO clean up the rest of the responses below

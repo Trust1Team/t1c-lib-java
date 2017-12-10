@@ -4,6 +4,7 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -65,7 +66,7 @@ public class OcraContainerTest extends AbstractTestClass {
         assertNotNull(data.getCounter());
     }
 
-    @Test(expected = OcraContainerException.class)
+    @Test(expected = RestException.class)
     public void getAllDataWithRestException() {
         GclOcraAllData data = container.getAllData(Collections.singletonList("throwException"));
         assertNotNull(data);
@@ -151,5 +152,10 @@ public class OcraContainerTest extends AbstractTestClass {
     @Test
     public void readCounter() {
         assertTrue(StringUtils.isNotEmpty(container.readCounter()));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void readCounterWithWrongPin() {
+        container.readCounter("1112");
     }
 }

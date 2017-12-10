@@ -7,7 +7,6 @@ import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
-import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -54,47 +53,39 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public BeIdAllData getAllData() throws BeIdContainerException {
+    public BeIdAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public BeIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
-        try {
-            GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)));
-            return new BeIdAllData(data, parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
-        }
+    public BeIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)));
+        return new BeIdAllData(data, parseCertificates);
     }
 
     @Override
-    public BeIdAllData getAllData(Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public BeIdAllCertificates getAllCertificates() throws BeIdContainerException {
+    public BeIdAllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws BeIdContainerException {
-        try {
-            GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)));
-            return new BeIdAllCertificates(data, parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("could not retrieve all data", ex);
-        }
+    public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)));
+        return new BeIdAllCertificates(data, parseCertificates);
     }
 
     @Override
-    public BeIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws BeIdContainerException {
+    public BeIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws BeIdContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws VerifyPinException, RestException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
@@ -104,100 +95,65 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
             }
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.beIdContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws BeIdContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.beIdContainerException("Could not authenticate with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws BeIdContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.beIdContainerException("Could not authenticate with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
 
-    public GclBeIdRn getRnData() {
-        try {
-            return RestExecutor.returnData(httpClient.getRnData(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve RnData from BeId container", ex);
-        }
+    public GclBeIdRn getRnData() throws RestException {
+        return RestExecutor.returnData(httpClient.getRnData(getTypeId(), reader.getId()));
     }
 
-    public GclBeIdAddress getBeIdAddress() {
-        try {
-            return RestExecutor.returnData(httpClient.getBeIdAddress(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve address data from BeId container", ex);
-        }
+    public GclBeIdAddress getBeIdAddress() throws RestException {
+        return RestExecutor.returnData(httpClient.getBeIdAddress(getTypeId(), reader.getId()));
     }
 
-    public String getBeIdPicture() {
-        try {
-            return RestExecutor.returnData(httpClient.getBeIdPicture(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve picture data from BeId container", ex);
-        }
+    public String getBeIdPicture() throws RestException {
+        return RestExecutor.returnData(httpClient.getBeIdPicture(getTypeId(), reader.getId()));
     }
 
-    public T1cCertificate getRootCertificate(Boolean... parse) {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
+    public T1cCertificate getRootCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getCitizenCertificate(Boolean... parse) {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getCitizenCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
+    public T1cCertificate getCitizenCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getCitizenCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
+    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getRrnCertificate(Boolean... parse) {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRrnCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.beIdContainerException("Could not retrieve root certificate from container", ex);
-        }
+    public T1cCertificate getRrnCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRrnCertificate(getTypeId(), reader.getId())), parse);
     }
 
 

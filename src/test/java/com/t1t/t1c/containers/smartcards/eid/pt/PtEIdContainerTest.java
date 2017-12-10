@@ -73,7 +73,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataParsed() {
-        PtIdAllData data = container.getAllData(Collections.singletonList("root-authentication-certificate"), true);
+        PtIdAllData data = container.getAllData( true);
         assertNotNull(data);
         assertNotNull(data.getRootAuthenticationCertificate());
         assertNotNull(data.getRootAuthenticationCertificate().getParsed());
@@ -103,7 +103,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesParsed() {
-        PtIdAllCertificates certs = container.getAllCertificates(Collections.singletonList("root-authentication-certificate"), true);
+        PtIdAllCertificates certs = container.getAllCertificates(true);
         assertNotNull(certs);
         assertNotNull(certs.getRootAuthenticationCertificate());
         assertNotNull(certs.getRootAuthenticationCertificate().getParsed());
@@ -120,6 +120,11 @@ public class PtEIdContainerTest extends AbstractTestClass {
     }
 
     @Test
+    public void verifyPinWithHardwarePinPad() {
+        assertTrue(container.verifyPin());
+    }
+
+    @Test
     public void authenticate() {
         String authenticatedHash = container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(authenticatedHash);
@@ -131,6 +136,11 @@ public class PtEIdContainerTest extends AbstractTestClass {
     }
 
     @Test
+    public void authenticateWithHardwarePinPad() {
+        assertNotNull(container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256));
+    }
+
+    @Test
     public void sign() {
         String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(signedHash);
@@ -139,6 +149,11 @@ public class PtEIdContainerTest extends AbstractTestClass {
     @Test(expected = VerifyPinException.class)
     public void signPinIncorrect() {
         container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test
+    public void signWithHardwarePinPad() {
+        assertNotNull(container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256));
     }
 
     @Test
@@ -170,7 +185,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getPtIdDataWithoutPhoto() {
-        GclPtIdData data = container.getPtIdData(false);
+        GclPtIdData data = container.getPtIdData();
         assertNotNull(data);
         assertNull(data.getPhoto());
     }
@@ -237,7 +252,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getNonRepudiationCertificate() {
+    public void getAuthenticationCertificateParsed() {
         T1cCertificate cert = container.getAuthenticationCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getBase64());
@@ -245,8 +260,35 @@ public class PtEIdContainerTest extends AbstractTestClass {
     }
 
     @Test
+    public void getNonRepudiationCertificate() {
+        T1cCertificate cert = container.getNonRepudiationCertificate();
+        assertNotNull(cert);
+        assertNotNull(cert.getBase64());
+        assertNull(cert.getParsed());
+    }
+
+    @Test
+    public void getNonRepudiationCertificateParsed() {
+        T1cCertificate cert = container.getNonRepudiationCertificate(true);
+        assertNotNull(cert);
+        assertNotNull(cert.getBase64());
+        assertNotNull(cert.getParsed());
+    }
+
+    @Test
     public void getAddress() {
-        GclPtIdAddress address = container.getAddress("1234");
+        GclPtIdAddress address = container.getAddress("1111");
+        assertNotNull(address);
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void getAddressWithWrongPin() {
+        container.getAddress("1112");
+    }
+
+    @Test
+    public void getAddressWithHardwarePinPad() {
+        GclPtIdAddress address = container.getAddress();
         assertNotNull(address);
     }
 }

@@ -29,8 +29,8 @@ public class MockGclOcraRestClient extends AbstractMockRestClient<GclOcraRestCli
     }
 
     @Override
-    public Call<T1cResponse<String>> readCounter(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getGclOcraCounterResponse()).readCounter(containerId, readerId);
+    public Call<T1cResponse<String>> readCounter(String containerId, String readerId, String pin) throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getGclOcraCounterResponse(pin)).readCounter(containerId, readerId, pin);
     }
 
     @Override

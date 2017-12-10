@@ -31,7 +31,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pin) {
+    public LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pin) throws LuxIdContainerException {
         if (StringUtils.isEmpty(pin)) {
             throw ExceptionFactory.luxIdContainerException("PIN is required to initialize Lux ID container");
         }
@@ -54,47 +54,39 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     }
 
     @Override
-    public LuxIdAllData getAllData() throws LuxIdContainerException {
+    public LuxIdAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public LuxIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
-        try {
-            GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
-            return new LuxIdAllData(data, parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("could not retrieve all data", ex);
-        }
+    public LuxIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
+        return new LuxIdAllData(data, parseCertificates);
     }
 
     @Override
-    public LuxIdAllData getAllData(Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public LuxIdAllCertificates getAllCertificates() throws LuxIdContainerException {
+    public LuxIdAllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public LuxIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws LuxIdContainerException {
-        try {
-            GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
-            return new LuxIdAllCertificates(data, parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("could not retrieve all data", ex);
-        }
+    public LuxIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getTypeId(), reader.getId(), this.pin, createFilterParams(filterParams)));
+        return new LuxIdAllCertificates(data, parseCertificates);
     }
 
     @Override
-    public LuxIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws LuxIdContainerException {
+    public LuxIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws LuxIdContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
@@ -104,34 +96,31 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), this.pin)));
             }
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.luxIdContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws LuxIdContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), this.pin, PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.luxIdContainerException("Could not authenticate with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws LuxIdContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), this.pin, PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.luxIdContainerException("Could not authenticate with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
@@ -145,52 +134,28 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         return type.getId();
     }
 
-    public GclLuxIdBiometric getBiometric() throws LuxIdContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getLuxIdBiometric(getTypeId(), reader.getId(), pin));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve biometrics with container", ex);
-        }
+    public GclLuxIdBiometric getBiometric() throws RestException {
+        return RestExecutor.returnData(httpClient.getLuxIdBiometric(getTypeId(), reader.getId(), pin));
     }
 
-    public GclLuxIdPicture getPicture() throws LuxIdContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getLuxIdPicture(getTypeId(), reader.getId(), pin));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve picture with container", ex);
-        }
+    public GclLuxIdPicture getPicture() throws RestException {
+        return RestExecutor.returnData(httpClient.getLuxIdPicture(getTypeId(), reader.getId(), pin));
     }
 
-    public GclLuxIdSignatureImage getSignatureImage() throws LuxIdContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getLuxIdSignatureImage(getTypeId(), reader.getId(), pin));
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve signature image with container", ex);
-        }
+    public GclLuxIdSignatureImage getSignatureImage() throws RestException {
+        return RestExecutor.returnData(httpClient.getLuxIdSignatureImage(getTypeId(), reader.getId(), pin));
     }
 
-    public List<T1cCertificate> getRootCertificates(Boolean... parse) throws LuxIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getRootCertificates(getTypeId(), reader.getId(), pin)), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve root certificates from container", ex);
-        }
+    public List<T1cCertificate> getRootCertificates(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getRootCertificates(getTypeId(), reader.getId(), pin)), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws LuxIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId(), pin)), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve authentication certificate from container", ex);
-        }
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId(), pin)), parse);
     }
 
-    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) throws LuxIdContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId(), pin)), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.luxIdContainerException("Could not retrieve authentication certificate from container", ex);
-        }
+    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId(), pin)), parse);
     }
 
     @Override

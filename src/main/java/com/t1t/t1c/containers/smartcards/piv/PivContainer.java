@@ -1,14 +1,19 @@
 package com.t1t.t1c.containers.smartcards.piv;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.rest.RestExecutor;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -16,7 +21,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient, AllData, AllCertificates> {
+public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient, GclPivAllData, AllCertificates> {
 
     public PivContainer(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
         super(config, reader, httpClient, pin);
@@ -24,6 +29,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public PivContainer createInstance(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
+        Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN required to initialize PIV container");
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -43,18 +49,18 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     @Override
-    public AllData getAllData() throws GenericContainerException {
-        return null;
+    public GclPivAllData getAllData() throws GenericContainerException {
+        return getAllData(null, null);
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public GclPivAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin)));
     }
 
     @Override
-    public AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public GclPivAllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return getAllData(null, parseCertificates);
     }
 
     @Override
@@ -89,16 +95,16 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public ContainerType getType() {
-        return null;
+        return type;
     }
 
     @Override
     public String getTypeId() {
-        return null;
+        return type.getId();
     }
 
     @Override
-    public Class<AllData> getAllDataClass() {
+    public Class<GclPivAllData> getAllDataClass() {
         return null;
     }
 

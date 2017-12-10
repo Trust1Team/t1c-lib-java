@@ -1,16 +1,8 @@
 package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainerException;
-import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainerException;
-import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainerException;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
-import com.t1t.t1c.containers.smartcards.eid.pt.PtIdContainerException;
-import com.t1t.t1c.containers.smartcards.emv.EmvContainerException;
-import com.t1t.t1c.containers.smartcards.mobib.MobibContainerException;
-import com.t1t.t1c.containers.smartcards.ocra.OcraContainerException;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerException;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainerException;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -86,32 +78,6 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with Distribution Service";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new DsClientException(errorMessage, cause);
-    }
-
-    /**
-     * BE ID container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static BeIdContainerException beIdContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with BE ID container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        return new BeIdContainerException(errorMessage, cause);
-    }
-
-    /**
-     * BE ID container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static BeIdContainerException beIdContainerException(String message, GenericContainerException cause) {
-        String errorMessage = "Communication error with BE ID container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        return beIdContainerException(errorMessage, (RestException) cause.getCause());
     }
 
     /**
@@ -231,125 +197,10 @@ public final class ExceptionFactory {
     }
 
     /**
-     * Creates a lux ID container exception
-     *
-     * @param message
-     * @return
-     */
-    public static LuxIdContainerException luxIdContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with Lux ID container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new LuxIdContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates a lux ID container exception
-     *
-     * @return
-     */
-    public static LuxIdContainerException luxIdContainerException(String message) {
-        String errorMessage = "Communication error with Lux ID container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        return new LuxIdContainerException(errorMessage);
-    }
-
-    /**
-     * Creates a luxTrust container exception
-     *
+     * Creates an unsupported operation exception
      * @param message the message
-     * @param cause   the cause
-     * @return LuxTrustContainerException
+     * @return an UnsupportedOperationException
      */
-    public static LuxTrustContainerException luxTrustContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with LuxTrust container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new LuxTrustContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates a luxTrust container exception
-     *
-     * @param message the message
-     * @return LuxTrustContainerException
-     */
-    public static LuxTrustContainerException luxTrustContainerException(String message) {
-        String errorMessage = "Communication error with LuxTrust container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        return new LuxTrustContainerException(errorMessage);
-    }
-
-    /**
-     * Creates a DNIE container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static DnieContainerException dnieContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with DNIE container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new DnieContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates a PT ID container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static PtIdContainerException ptIdContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with PT ID container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new PtIdContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates an EMV container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static EmvContainerException emvContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with EMV container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new EmvContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates a Mobib container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static MobibContainerException mobibContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with MOBIB container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new MobibContainerException(errorMessage, cause);
-    }
-
-    /**
-     * Creates an OCRA container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static OcraContainerException ocraContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with OCRA container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new OcraContainerException(errorMessage, cause);
-    }
-
     public static UnsupportedOperationException unsupportedOperationException(String message) {
         return new UnsupportedOperationException(message);
     }
@@ -407,16 +258,13 @@ public final class ExceptionFactory {
     }
 
     /**
-     * Creates a remote loading container exception
+     * Creates a lux ID container exception
      *
-     * @param message
-     * @param cause
      * @return
      */
-    public static RemoteLoadingContainerException remoteLoadingContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with Remote Loading container";
+    public static LuxIdContainerException luxIdContainerException(String message) {
+        String errorMessage = "Communication error with Lux ID container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new RemoteLoadingContainerException(errorMessage, cause);
+        return new LuxIdContainerException(errorMessage);
     }
 }

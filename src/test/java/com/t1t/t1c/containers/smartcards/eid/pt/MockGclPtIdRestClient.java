@@ -96,11 +96,11 @@ public class MockGclPtIdRestClient extends AbstractMockRestClient<GclPtIdRestCli
 
     @Override
     public Call<T1cResponse<GclPtIdAddress>> getAddress(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse()).getAddress(containerId, readerId, request);
+        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse(request.getPin())).getAddress(containerId, readerId, request);
     }
 
     @Override
     public Call<T1cResponse<GclPtIdAddress>> getAddress(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse()).getAddress(containerId, readerId);
+        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse("1111")).getAddress(containerId, readerId);
     }
 }

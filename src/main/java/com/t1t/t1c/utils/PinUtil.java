@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.AbstractRuntimeException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import org.apache.commons.lang3.StringUtils;
@@ -40,15 +41,16 @@ public final class PinUtil {
         }
     }
 
-    public static void checkPinExceptionMessage(RestException ex) {
+    public static AbstractRuntimeException checkPinExceptionMessage(RestException ex) {
         if (StringUtils.isNotEmpty(ex.getJsonError())) {
             try {
                 GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                throw ExceptionFactory.verifyPinException(error);
+                return ExceptionFactory.verifyPinException(error);
             } catch (JsonSyntaxException e) {
                 log.error("Couldn't decode error message: ", e);
             }
         }
+        return ex;
     }
 
     public static GclAuthenticateOrSignData setPinIfPresent(GclAuthenticateOrSignData data, String... pin) {

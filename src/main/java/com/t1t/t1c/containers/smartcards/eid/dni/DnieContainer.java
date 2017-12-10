@@ -50,45 +50,38 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public DnieAllData getAllData() throws DnieContainerException {
+    public DnieAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public DnieAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws DnieContainerException {
-        try {
-            return new DnieAllData(RestExecutor.returnData(httpClient.getDnieAllData(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not dump card data", ex);
-        }
+    public DnieAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        return new DnieAllData(RestExecutor.returnData(httpClient.getDnieAllData(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+
     }
 
     @Override
-    public DnieAllData getAllData(Boolean... parseCertificates) throws DnieContainerException {
+    public DnieAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates() throws DnieContainerException {
+    public DnieAllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws DnieContainerException {
-        try {
-            return new DnieAllCertificates(RestExecutor.returnData(httpClient.getDnieAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not dump card certificates", ex);
-        }
+    public DnieAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        return new DnieAllCertificates(RestExecutor.returnData(httpClient.getDnieAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates(Boolean... parseCertificates) throws DnieContainerException {
+    public DnieAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws DnieContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
@@ -98,67 +91,48 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
             }
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.dnieContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws DnieContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.dnieContainerException("could not authenticate", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws DnieContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.dnieContainerException("could not sign", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws DnieContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not retrieve authentication certificate", ex);
-        }
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getIntermediateCertificate(Boolean... parse) throws DnieContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not retrieve intermediate certificate", ex);
-        }
+    public T1cCertificate getIntermediateCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public T1cCertificate getSigningCertificate(Boolean... parse) throws DnieContainerException {
-        try {
-            return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())), parse);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not retrieve signing certificate", ex);
-        }
+    public T1cCertificate getSigningCertificate(Boolean... parse) throws RestException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())), parse);
     }
 
-    public GclDnieInfo getInfo() throws DnieContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getDnieInfo(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.dnieContainerException("could not retrieve DNIE info", ex);
-        }
+    public GclDnieInfo getInfo() throws RestException {
+        return RestExecutor.returnData(httpClient.getDnieInfo(getTypeId(), reader.getId()));
     }
 
     @Override

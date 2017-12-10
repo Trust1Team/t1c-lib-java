@@ -339,9 +339,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
                         <!-- Aventra -->
                         <sourcePath>
-                            ${basedir}/src/main/resources/schemas/GclAventraAuthenticationAlgorithmReferences.json
-                        </sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraSignAlgorithmReferences.json
+                            ${basedir}/src/main/resources/schemas/GclAventraPinResetRequest.json
                         </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAppletInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllCertificates.json</sourcePath>

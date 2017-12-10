@@ -86,14 +86,14 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getNonRepudiationCertificate() {
-        T1cCertificate cert = container.getCitizenCertificate();
+        T1cCertificate cert = container.getNonRepudiationCertificate();
         assertNotNull(cert);
         assertNull(cert.getParsed());
     }
 
     @Test
     public void getNonRepudiationCertificateParsed() {
-        T1cCertificate cert = container.getCitizenCertificate(true);
+        T1cCertificate cert = container.getNonRepudiationCertificate(true);
         assertNotNull(cert);
         assertNotNull(cert.getParsed());
     }
@@ -170,7 +170,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataWithParsing() {
-        BeIdAllData data = container.getAllData(Arrays.asList("root-certificate"), true);
+        BeIdAllData data = container.getAllData( true);
         assertNotNull(data);
         assertNotNull(data.getRootCertificate());
         assertNotNull(data.getRootCertificate().getParsed());
@@ -200,7 +200,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesWithParsing() {
-        BeIdAllCertificates certs = container.getAllCertificates(Collections.singletonList("root-certificate"), true);
+        BeIdAllCertificates certs = container.getAllCertificates( true);
         assertNotNull(certs);
         assertNotNull(certs.getRootCertificate());
         assertNotNull(certs.getRootCertificate().getParsed());
@@ -253,5 +253,15 @@ public class BeIdContainerTest extends AbstractTestClass {
     public void getTypeId() {
         assertNotNull(container.getTypeId());
         assertEquals(ContainerType.BEID.getId(), container.getTypeId());
+    }
+
+    @Test
+    public void getAllDataClass() {
+        assertEquals(BeIdAllData.class, container.getAllDataClass());
+    }
+
+    @Test
+    public void getAllCertificatesClass() {
+        assertEquals(BeIdAllCertificates.class, container.getAllCertificatesClass());
     }
 }

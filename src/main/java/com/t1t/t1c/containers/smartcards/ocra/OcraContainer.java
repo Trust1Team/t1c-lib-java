@@ -49,41 +49,37 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public GclOcraAllData getAllData() throws OcraContainerException {
+    public GclOcraAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public GclOcraAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws OcraContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getOcraAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.ocraContainerException("could not dump card data", ex);
-        }
+    public GclOcraAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        return RestExecutor.returnData(httpClient.getOcraAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
     }
 
     @Override
-    public GclOcraAllData getAllData(Boolean... parseCertificates) throws OcraContainerException {
+    public GclOcraAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws OcraContainerException {
+    public AllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws OcraContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws OcraContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws OcraContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
@@ -93,18 +89,17 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
             }
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.ocraContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws OcraContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws OcraContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
@@ -128,7 +123,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public Long getChallengeOTP(String challenge, String... pin) throws OcraContainerException {
+    public Long getChallengeOTP(String challenge, String... pin) throws VerifyPinException, RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(challenge), "challenge must not be null or empty");
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
@@ -139,17 +134,16 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
             }
             return RestExecutor.returnData(httpClient.ocraChallenge(getTypeId(), reader.getId(), request));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.ocraContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public String readCounter() throws OcraContainerException {
+    public String readCounter(String... pin) throws VerifyPinException, RestException {
         try {
-            return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId()));
+            String pinToUse = pin != null && pin.length > 0 ? pin[0] : null;
+            return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId(), pinToUse));
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.ocraContainerException("could not retrieve read counter", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 }

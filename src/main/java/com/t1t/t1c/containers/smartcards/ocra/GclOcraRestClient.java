@@ -22,7 +22,7 @@ public interface GclOcraRestClient {
     Call<T1cResponse<Long>> ocraChallenge(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclOcraChallengeData request) throws RestException;
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/counter")
-    Call<T1cResponse<String>> readCounter(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException;
+    Call<T1cResponse<String>> readCounter(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("pin") String pin) throws RestException;
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
     Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request) throws RestException;

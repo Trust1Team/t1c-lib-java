@@ -46,51 +46,47 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public GclMobibAllData getAllData() throws MobibContainerException {
+    public GclMobibAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public GclMobibAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws MobibContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getMobibAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.mobibContainerException("could not dump card data", ex);
-        }
+    public GclMobibAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        return RestExecutor.returnData(httpClient.getMobibAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
     }
 
     @Override
-    public GclMobibAllData getAllData(Boolean... parseCertificates) throws MobibContainerException {
+    public GclMobibAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws MobibContainerException {
+    public AllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws MobibContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws MobibContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws MobibContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("container has no verify PIN capabilities");
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws MobibContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws MobibContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
@@ -114,35 +110,19 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public Boolean getStatus() {
-        try {
-            return RestExecutor.returnData(httpClient.getMobibStatus(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.mobibContainerException("could not retrieve MOBIB status", ex);
-        }
+    public Boolean getStatus() throws RestException {
+        return RestExecutor.returnData(httpClient.getMobibStatus(getTypeId(), reader.getId()));
     }
 
-    public String getPicture() {
-        try {
-            return RestExecutor.returnData(httpClient.getMobibPicture(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.mobibContainerException("could not retrieve picture", ex);
-        }
+    public String getPicture() throws RestException {
+        return RestExecutor.returnData(httpClient.getMobibPicture(getTypeId(), reader.getId()));
     }
 
-    public GclMobibCardIssuing getCardIssuing() {
-        try {
-            return RestExecutor.returnData(httpClient.getMobibCardIssuing(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.mobibContainerException("could not retrieve card issuing data", ex);
-        }
+    public GclMobibCardIssuing getCardIssuing() throws RestException {
+        return RestExecutor.returnData(httpClient.getMobibCardIssuing(getTypeId(), reader.getId()));
     }
 
-    public List<GclMobibContract> getContracts() {
-        try {
-            return RestExecutor.returnData(httpClient.getMobibContracts(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.mobibContainerException("could not retrieve contract data", ex);
-        }
+    public List<GclMobibContract> getContracts() throws RestException {
+        return RestExecutor.returnData(httpClient.getMobibContracts(getTypeId(), reader.getId()));
     }
 }

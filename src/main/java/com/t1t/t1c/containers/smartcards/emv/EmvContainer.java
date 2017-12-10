@@ -50,41 +50,37 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public GclEmvAllData getAllData() throws EmvContainerException {
+    public GclEmvAllData getAllData() throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public GclEmvAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws EmvContainerException {
-        try {
-            return RestExecutor.returnData(httpClient.getEmvAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("could not dump card data", ex);
-        }
+    public GclEmvAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+        return RestExecutor.returnData(httpClient.getEmvAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
     }
 
     @Override
-    public GclEmvAllData getAllData(Boolean... parseCertificates) throws EmvContainerException {
+    public GclEmvAllData getAllData(Boolean... parseCertificates) throws RestException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws EmvContainerException {
+    public AllCertificates getAllCertificates() throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws EmvContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws EmvContainerException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws EmvContainerException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
@@ -94,18 +90,17 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
             }
         } catch (RestException ex) {
-            PinUtil.checkPinExceptionMessage(ex);
-            throw ExceptionFactory.emvContainerException("Could not verify pin with container", ex);
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws EmvContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws EmvContainerException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no sign capabilities");
     }
 
@@ -129,37 +124,21 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public List<GclEmvApplication> getApplications() {
-        try {
-            return RestExecutor.returnData(httpClient.getEmvApplications(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("could not retrieve applications", ex);
-        }
+    public List<GclEmvApplication> getApplications() throws RestException {
+        return RestExecutor.returnData(httpClient.getEmvApplications(getTypeId(), reader.getId()));
     }
 
-    public GclEmvApplicationData getApplicationData() {
-        try {
-            return RestExecutor.returnData(httpClient.getEmvApplicationData(getTypeId(), reader.getId()));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("could not retrieve application data", ex);
-        }
+    public GclEmvApplicationData getApplicationData() throws RestException {
+        return RestExecutor.returnData(httpClient.getEmvApplicationData(getTypeId(), reader.getId()));
     }
 
-    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) {
-        try {
-            Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-            return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("could not retrieve issuer public key certificate", ex);
-        }
+    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) throws RestException {
+        Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
+        return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
     }
 
-    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) {
-        try {
-            Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-            return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
-        } catch (RestException ex) {
-            throw ExceptionFactory.emvContainerException("could not retrieve ICC public key certificate", ex);
-        }
+    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException {
+        Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
+        return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
     }
 }

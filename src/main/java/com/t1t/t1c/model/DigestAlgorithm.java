@@ -10,4 +10,9 @@ public enum DigestAlgorithm {
     public String getStringValue() {
         return this.name().toLowerCase();
     }
+
+    public static DigestAlgorithm getAlgoForRef(String ref) {
+        String parsed = ref.replace("-", "").toUpperCase();
+        return DigestAlgorithm.valueOf(parsed);
+    }
 }

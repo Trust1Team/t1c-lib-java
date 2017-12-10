@@ -1,35 +1,42 @@
-package com.t1t.t1c.containers.smartcards.pki.aventra;
+package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllData;
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdData;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
+import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
 
-public class AventraAllData implements AllData {
+public class OberthurAllData implements AllData, AllCertificates {
 
-    private GclAventraAppletInfo appletInfo;
     private T1cCertificate rootCertificate;
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public AventraAllData(GclAventraAllData data, Boolean... parseCertificates) {
-        this.appletInfo = data.getAppletInfo();
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificates);
-        this.issuerCertificate = CertificateUtil.createT1cCertificate(data.getIssuerCertificate(), parseCertificates);
-        this.encryptionCertificate = CertificateUtil.createT1cCertificate(data.getEncryptionCertificate(), parseCertificates);
+    public OberthurAllData(GclOberthurAllData data, Boolean... parseCertificates) {
+        this(data.getAuthenticationCertificate(),
+                data.getRootCertificate(),
+                data.getSigningCertificate(),
+                data.getIssuerCertificate(),
+                data.getEncryptionCertificate(), parseCertificates);
     }
 
-    public GclAventraAppletInfo getAppletInfo() {
-        return appletInfo;
+    public OberthurAllData(GclOberthurAllCertificates certs, Boolean... parseCertificates) {
+        this(certs.getAuthenticationCertificate(),
+                certs.getRootCertificate(),
+                certs.getSigningCertificate(),
+                certs.getIssuerCertificate(),
+                certs.getEncryptionCertificate(), parseCertificates);
     }
 
-    public void setAppletInfo(GclAventraAppletInfo appletInfo) {
-        this.appletInfo = appletInfo;
+    public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean... parseCertificates) {
+        this.authenticationCertificate = CertificateUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
+        this.rootCertificate = CertificateUtil.createT1cCertificate(rootCertificate, parseCertificates);
+        this.signingCertificate = CertificateUtil.createT1cCertificate(signingCertificate, parseCertificates);
+        this.issuerCertificate = CertificateUtil.createT1cCertificate(issuerCertificate, parseCertificates);
+        this.encryptionCertificate = CertificateUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
     }
 
     public T1cCertificate getRootCertificate() {
@@ -75,11 +82,10 @@ public class AventraAllData implements AllData {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AventraAllData)) return false;
+        if (!(o instanceof OberthurAllData)) return false;
 
-        AventraAllData that = (AventraAllData) o;
+        OberthurAllData that = (OberthurAllData) o;
 
-        if (appletInfo != null ? !appletInfo.equals(that.appletInfo) : that.appletInfo != null) return false;
         if (rootCertificate != null ? !rootCertificate.equals(that.rootCertificate) : that.rootCertificate != null)
             return false;
         if (authenticationCertificate != null ? !authenticationCertificate.equals(that.authenticationCertificate) : that.authenticationCertificate != null)
@@ -93,8 +99,7 @@ public class AventraAllData implements AllData {
 
     @Override
     public int hashCode() {
-        int result = appletInfo != null ? appletInfo.hashCode() : 0;
-        result = 31 * result + (rootCertificate != null ? rootCertificate.hashCode() : 0);
+        int result = rootCertificate != null ? rootCertificate.hashCode() : 0;
         result = 31 * result + (authenticationCertificate != null ? authenticationCertificate.hashCode() : 0);
         result = 31 * result + (signingCertificate != null ? signingCertificate.hashCode() : 0);
         result = 31 * result + (issuerCertificate != null ? issuerCertificate.hashCode() : 0);
@@ -104,9 +109,8 @@ public class AventraAllData implements AllData {
 
     @Override
     public String toString() {
-        return "AventraAllData{" +
-                "appletInfo=" + appletInfo +
-                ", rootCertificate=" + rootCertificate +
+        return "OberthurAllData{" +
+                "rootCertificate=" + rootCertificate +
                 ", authenticationCertificate=" + authenticationCertificate +
                 ", signingCertificate=" + signingCertificate +
                 ", issuerCertificate=" + issuerCertificate +

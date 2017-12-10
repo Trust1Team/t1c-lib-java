@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclAventraPinResetRequest",
+  "javaType": "com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraPinResetRequest",
+  "type": "object",
+  "properties": {
+    "puk": {
+      "type": "string"
+    },
+    "new_pin": {
+      "type": "string"
+    },
+    "private_key_reference": {
+      "type": "string"
+    }
+  }
+}
