@@ -176,14 +176,4 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
     public T1cCertificate getEncryptionCertificate(Boolean... parse) throws RestException {
         return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getTypeId(), reader.getId())), parse);
     }
-
-    private List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
-        List<DigestAlgorithm> returnValue = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(algoRefs)) {
-            for (String algoRef : algoRefs) {
-                returnValue.add(DigestAlgorithm.getAlgoForRef(algoRef));
-            }
-        }
-        return returnValue;
-    }
 }

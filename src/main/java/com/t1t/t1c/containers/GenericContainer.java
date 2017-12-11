@@ -58,4 +58,14 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
         }
         return returnValue;
     }
+
+    protected List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
+        List<DigestAlgorithm> returnValue = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(algoRefs)) {
+            for (String algoRef : algoRefs) {
+                returnValue.add(DigestAlgorithm.getAlgoForRef(algoRef));
+            }
+        }
+        return returnValue;
+    }
 }
