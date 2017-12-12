@@ -1,6 +1,6 @@
 # Trust1Connector Java Client
 [![][t1c-logo]][Trust1Connector-url]
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77339306e39544b7bab98c68cd3a40c5)](https://www.codacy.com/app/Trust1Team/t1c-lib-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/t1c-lib-java&amp;utm_campaign=Badge_Grade)
 
 The T1C Java Client, integrate java applications with the Trust1Connector(R).
 
