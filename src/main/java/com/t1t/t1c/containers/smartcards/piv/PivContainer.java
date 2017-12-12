@@ -60,7 +60,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public PivAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return new PivAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin), createFilterParams(filterParams))));
+        return new PivAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin), createFilterParams(filterParams))), parseCertificates);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public PivAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return new PivAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin), createFilterParams(filterParams))));
+        return new PivAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin), createFilterParams(filterParams))), parseCertificates);
     }
 
     @Override

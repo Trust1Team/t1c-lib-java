@@ -92,12 +92,12 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
 
     @Override
     public ContainerType getType() {
-        return null;
+        return type;
     }
 
     @Override
     public String getTypeId() {
-        return null;
+        return type.getId();
     }
 
     @Override

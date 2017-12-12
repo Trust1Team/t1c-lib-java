@@ -10,6 +10,7 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,7 +80,7 @@ public class PivContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataParsed() {
-        PivAllData data = container.getAllData();
+        PivAllData data = container.getAllData(true);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
         assertNotNull(data.getAuthenticationCertificate().getBase64());
@@ -115,7 +116,7 @@ public class PivContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesParsed() {
-        PivAllCertificates certs = container.getAllCertificates();
+        PivAllCertificates certs = container.getAllCertificates(true);
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
         assertNotNull(certs.getAuthenticationCertificate().getBase64());
@@ -252,5 +253,120 @@ public class PivContainerTest extends AbstractTestClass {
     @Test
     public void getAllAlgoRefsForSigning() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllAlgoRefsForSigning()));
+    }
+
+    @Test
+    public void testGclPivAllCertificates() {
+        GclPivAllCertificates certs = MockResponseFactory.getGclPivAllCertificates();
+        certs.setSigningCertificate("new");
+        assertEquals("new", certs.getSigningCertificate());
+        certs.setAuthenticationCertificate("new2");
+        assertEquals("new2", certs.getAuthenticationCertificate());
+        certs = MockResponseFactory.getGclPivAllCertificates();
+        GclPivAllCertificates certs2 = MockResponseFactory.getGclPivAllCertificates();
+        assertEquals(certs, certs);
+        assertEquals(certs, certs2);
+        assertEquals(certs.hashCode(), certs2.hashCode());
+        assertTrue(StringUtils.isNotEmpty(certs.toString()));
+        assertNotEquals(certs, "string");
+    }
+
+    @Test
+    public void testGclPivAllData() {
+        GclPivAllData data = MockResponseFactory.getGclPivAllData();
+        data.setSigningCertificate("new");
+        assertEquals("new", data.getSigningCertificate());
+        data.setAuthenticationCertificate("new2");
+        assertEquals("new2", data.getAuthenticationCertificate());
+        GclPivPrintedInformation print = new GclPivPrintedInformation().withAgencyCardSerialNumber("1");
+        data.setPrintedInformation(print);
+        assertEquals(print, data.getPrintedInformation());
+        GclPivFacialImage img = new GclPivFacialImage().withImage("img");
+        data.setFacialImage(img);
+        assertEquals(img, data.getFacialImage());
+        data = MockResponseFactory.getGclPivAllData();
+        GclPivAllData data2 = MockResponseFactory.getGclPivAllData();
+        assertEquals(data, data);
+        assertEquals(data, data2);
+        assertEquals(data.hashCode(), data2.hashCode());
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+        assertNotEquals(data, "string");
+    }
+
+    @Test
+    public void testFacialImage() {
+        GclPivFacialImage img = MockResponseFactory.getGclPivFacialImage();
+        GclPivFacialImage img2 = MockResponseFactory.getGclPivFacialImage();
+        assertEquals(img, img);
+        assertEquals(img, img2);
+        assertEquals(img.hashCode(), img2.hashCode());
+        assertNotEquals(img, "string");
+        assertTrue(StringUtils.isNotEmpty(img.toString()));
+        img.setImage("new");
+        assertEquals("new", img.getImage());
+    }
+
+    @Test
+    public void testPrintedInfo() {
+        GclPivPrintedInformation info = MockResponseFactory.getGclPivPrintedInformation();
+        GclPivPrintedInformation info2 = MockResponseFactory.getGclPivPrintedInformation();
+        assertEquals(info, info);
+        assertEquals(info, info2);
+        assertEquals(info.hashCode(), info2.hashCode());
+        assertNotEquals(info, "string");
+        info.setAgencyCardSerialNumber("1");
+        assertEquals("1", info.getAgencyCardSerialNumber());
+        info.setEmployeeAffiliation("2");
+        assertEquals("2", info.getEmployeeAffiliation());
+        info.setExpirationDate("3");
+        assertEquals("3", info.getExpirationDate());
+        info.setIssuerIdentification("4");
+        assertEquals("4", info.getIssuerIdentification());
+        info.setName("5");
+        assertEquals("5", info.getName());
+        info.setOrganizationAffiliationLine1("6");
+        assertEquals("6", info.getOrganizationAffiliationLine1());
+        info.setOrganizationAffiliationLine2("7");
+        assertEquals("7", info.getOrganizationAffiliationLine2());
+    }
+
+    @Test
+    public void testPivAllData() {
+        PivAllData data = new PivAllData(MockResponseFactory.getGclPivAllData());
+        T1cCertificate oldSign = data.getSigningCertificate();
+        T1cCertificate oldAuth = data.getAuthenticationCertificate();
+        GclPivPrintedInformation oldInf = data.getPrintedInformation();
+        GclPivFacialImage oldFac = data.getFacialImage();
+        T1cCertificate newCert = new T1cCertificate().withBase64("cert");
+        data.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, data.getAuthenticationCertificate());
+        assertEquals(data.withAuthenticationCertificate(oldAuth), data);
+        data.setSigningCertificate(newCert);
+        assertEquals(newCert, data.getSigningCertificate());
+        assertEquals(data.withSigningCertificate(oldSign), data);
+        GclPivFacialImage newFac = new GclPivFacialImage().withImage("img");
+        data.setFacialImage(newFac);
+        assertEquals(newFac, data.getFacialImage());
+        assertEquals(data.withFacialImage(oldFac), data);
+        GclPivPrintedInformation newInfo = new GclPivPrintedInformation().withAgencyCardSerialNumber("2");
+        data.setPrintedInformation(newInfo);
+        assertEquals(newInfo, data.getPrintedInformation());
+        assertEquals(data.withPrintedInformation(oldInf), data);
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+    }
+
+    @Test
+    public void testPivAllCertificates() {
+        PivAllCertificates certs = new PivAllCertificates(MockResponseFactory.getGclPivAllCertificates());
+        T1cCertificate oldSign = certs.getSigningCertificate();
+        T1cCertificate oldAuth = certs.getAuthenticationCertificate();
+        T1cCertificate newCert = new T1cCertificate().withBase64("cert");
+        certs.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, certs.getAuthenticationCertificate());
+        assertEquals(certs.withAuthenticationCertificate(oldAuth), certs);
+        certs.setSigningCertificate(newCert);
+        assertEquals(newCert, certs.getSigningCertificate());
+        assertEquals(certs.withSigningCertificate(oldSign), certs);
+        assertTrue(StringUtils.isNotEmpty(certs.toString()));
     }
 }

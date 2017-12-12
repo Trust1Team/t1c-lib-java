@@ -19,6 +19,10 @@ import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdData;
 import com.t1t.t1c.containers.smartcards.emv.*;
 import com.t1t.t1c.containers.smartcards.mobib.*;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraAllData;
+import com.t1t.t1c.containers.smartcards.piv.GclPivAllCertificates;
+import com.t1t.t1c.containers.smartcards.piv.GclPivAllData;
+import com.t1t.t1c.containers.smartcards.piv.GclPivFacialImage;
+import com.t1t.t1c.containers.smartcards.piv.GclPivPrintedInformation;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates;
@@ -1438,6 +1442,104 @@ public final class MockResponseFactory {
         return "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";
     }
 
+    //
+    // PIV responses
+    //
+
+    public static T1cResponse<String> getGclPivAuthenticationCertificateResponse() {
+        return getSuccessResponse(getGclPivAuthenticationCertificate());
+    }
+
+    public static T1cResponse<String> getGclPivSigningCertificateResponse() {
+        return getSuccessResponse(getGclPivSigningCertificate());
+    }
+
+    public static T1cResponse<GclPivPrintedInformation> getGclPivPrintedInformationResponse() {
+        return getSuccessResponse(getGclPivPrintedInformation());
+    }
+
+    public static GclPivPrintedInformation getGclPivPrintedInformation() {
+        return new GclPivPrintedInformation()
+                .withAgencyCardSerialNumber("12345")
+                .withEmployeeAffiliation("CEO")
+                .withExpirationDate("2020DEC01")
+                .withIssuerIdentification("T1T")
+                .withName("Thibaut Delhaye")
+                .withOrganizationAffiliationLine1("")
+                .withOrganizationAffiliationLine2("");
+    }
+
+    public static T1cResponse<GclPivFacialImage> getGclPivFacialImageResponse() {
+        return getSuccessResponse(getGclPivFacialImage());
+    }
+
+    public static T1cResponse<GclPivAllData> getGclPivAllDataResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclPivAllData data = getGclPivAllData();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("printed-information")) data.setPrintedInformation(null);
+            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
+            if (!filterParams.contains("facial-image")) data.setFacialImage(null);
+        }
+        return getSuccessResponse(data);
+    }
+
+    public static T1cResponse<GclPivAllCertificates> getGclPivAllCertificatesResponse(String filter) {
+        List<String> filterParams = splitFilterParams(filter);
+        GclPivAllCertificates certs = getGclPivAllCertificates();
+        if (!filterParams.isEmpty()) {
+            if (!filterParams.contains("authentication-certificate")) certs.setAuthenticationCertificate(null);
+            if (!filterParams.contains("signing-certificate")) certs.setSigningCertificate(null);
+        }
+        return getSuccessResponse(certs);
+    }
+
+    public static T1cResponse<List<String>> getGclPivAuthenticationAlgoRefsResponse() {
+        return getSuccessResponse(getGclPivAuthenticationAlgoRefs());
+    }
+
+    public static T1cResponse<List<String>> getGclPivSignAlgoRefsResponse() {
+        return getSuccessResponse(getGclPivSignAlgoRefs());
+    }
+
+    public static List<String> getGclPivSignAlgoRefs() {
+        return Collections.singletonList("SHA1");
+    }
+
+    public static List<String> getGclPivAuthenticationAlgoRefs() {
+        return Arrays.asList("SHA1", "SHA256", "SHA512");
+    }
+
+    public static GclPivAllData getGclPivAllData() {
+        return new GclPivAllData()
+                .withAuthenticationCertificate(getGclPivAuthenticationCertificate())
+                .withSigningCertificate(getGclPivSigningCertificate())
+                .withPrintedInformation(getGclPivPrintedInformation())
+                .withFacialImage(getGclPivFacialImage());
+    }
+
+    public static GclPivAllCertificates getGclPivAllCertificates() {
+        return new GclPivAllCertificates()
+                .withAuthenticationCertificate(getGclPivAuthenticationCertificate())
+                .withSigningCertificate(getGclPivSigningCertificate());
+    }
+
+    public static String getGclPivAuthenticationCertificate() {
+        //TODO - provide test certificates of PIV instead
+        return getGclAventraAuthenticationCertificate();
+    }
+
+    public static String getGclPivSigningCertificate() {
+        //TODO - provide test certificates of PIV instead
+        return getGclAventraSigningCertificate();
+    }
+
+    public static GclPivFacialImage getGclPivFacialImage() {
+        //TODO - provide actual PIV picture data
+        return new GclPivFacialImage().withImage(getBeIdPicture());
+    }
+
     // TODO clean up the rest of the responses below
 
     public static T1cResponse<String> getPublicKeyResponseDer() {
@@ -1464,233 +1566,6 @@ public final class MockResponseFactory {
         return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
     }
 
-    public static T1cResponse<String> getCertificateResponse() {
-        return new T1cResponse<String>().withSuccess(true).withData("MIIFjjCCA3agAwIBAgIIOyEC3pZbHakwDQYJKoZIhvcNAQEFBQAwKDELMAkGA1UEBhMCQkUxGTAXBgNVBAMTEEJlbGdpdW0gUm9vdCBDQTMwHhcNMTMwNjI2MTIwMDAwWhcNMjgwMTI4MTIwMDAwWjAoMQswCQYDVQQGEwJCRTEZMBcGA1UEAxMQQmVsZ2l1bSBSb290IENBMzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAKjyAZ2Lg8kHoIX7JLc3BeZ1Tzy9MEv7Bnr59xcJezc/xJJdO4V3bwMltKFfNvqsQ5H/GQADFJ0GmTLLPDI5AoeUjBubRZ9hwruUuQ11+vhtoVhuEuZUxofEIU2yJtiSOONwpo/GIb9C4YZ5h+7ltDpC3MvsFyyordpzgwqSHvFwTCmls5SpU05UbF7ZVPcfVf24A5IgHLpZTgQfAvnzPlm++eJY+sNoNzTBoe6iZphmPbxuPNcJ6slV8qMQQk50/g+KmoPpHX4AvoTr4/7TMTvuK8jS1dEn+fdVKdx9qo9ZZRHFW/TXEn5SrNUu99xhzlE/WBurrVwFoKCWCjmO0CnekJlw0NTr3HBTG5D4AiDjNFUYaIcGJk/ha9rzHzY+WpGdoFZxhbP83ZGeoqkgBr8UzfOFCY8cyUN2db6hpIaK6Nuoho6QWnn+TSNh5Hjui5miqpGxS73gYlT2Qww16h8gFTJQ49fiS+QHlwRw5cqFuqfFLE3nFFF9KIamS4TSe7T4dNGY2VbHzpaGVT4wy+fl7gWsfaUkvhM4b00DzgDiJ9BHiKytNLmzoa3Sneij/CKur0dJ5OdMiAqUpSd0Oe8pdIbmQm1oP5cjckiQjxx7+vSxWtacpGowWK8+7oEsYc+7fLt3GD6q/O5Xi440Pd/sFJmfqRf3C1PPMdBqXcwjAgMBAAGjgbswgbgwDgYDVR0PAQH/BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wQgYDVR0gBDswOTA3BgVgOAoBATAuMCwGCCsGAQUFBwIBFiBodHRwOi8vcmVwb3NpdG9yeS5laWQuYmVsZ2l1bS5iZTAdBgNVHQ4EFgQUuLxsAI9bGYWdJQGc8BncQI7QOCswEQYJYIZIAYb4QgEBBAQDAgAHMB8GA1UdIwQYMBaAFLi8bACPWxmFnSUBnPAZ3ECO0DgrMA0GCSqGSIb3DQEBBQUAA4ICAQBFYjv/mKX+VcyxEacckgx4L8XvFkIFPXzjEnDnAtCCkROU/k5n1jjVK+ODOn+Q4kJg6Nd7K47+zTXcrSe1tB2gVMsyaCN9scy4phLX1qT48sThCjUtooxfIoRycpdlf14HcUPCYlASTCapZU0MnAbzfpzxm49Ik/A2JWxAhxXVRHwOu3TMGiQ4W/VyVawxjwQMO8TneBDombmkXsI9bI0OxWUh2A5dKlqu0sYvE0dz8xDxr9ZkmZqYcPIKizCZlaP1ZsSlCi5S31gn3EUP+fd21q6ZXgU+50/qgoh/0UUaHRpedPQBES/FYc2IQZ2XjhmeTwM+9Lk7tnzHeHp3dgCoOfceyPUaVkWiXMWcNAvvkDVELvXfJpRxwcRfS5Ks5oafOfj81RzGUbmpwl2usOeCRwdWE8gPvbfWNQQC8MJquDl5HdeuzUesTXUqXeEkyAOo6YnF3g0qGcLI9NXusji1egRUZ7B4XCvG52lTB7Wgd/wVFzS3f4mAmYTGJXH+N/lrBBGKuTJ5XncJaliFUKxGP6VmNyaaLUF5IlTqC9CGHPLSXOgDokt2G9pNwFm2t7AcpwAmegkMNpgcgTd+qk2yljEaT8wf953jUAFedbpN3tX/3i+uvHOOmWjQOxJg2lVKkC+bkWa2FrTBDdrlEWVaLrY+M+xeIctrC0WnP7u4xg==");
-    }
-
-    public static T1cResponse<GclDnieInfo> getDnieInfoResponse() {
-        return new T1cResponse<GclDnieInfo>().withSuccess(true)
-                .withData(new GclDnieInfo()
-                        .withFirstLastName("Doe")
-                        .withFirstName("John")
-                        .withSecondLastName("Doe")
-                        .withIdesp("IDesp")
-                        .withNumber("1234")
-                        .withSerialNumber("5678"));
-    }
-
-    public static T1cResponse<GclDnieAllData> getDnieAllDataResponse() {
-        String cert = getCertificateResponse().getData();
-        return new T1cResponse<GclDnieAllData>().withSuccess(true)
-                .withData(new GclDnieAllData()
-                        .withIntermediateCertificate(cert)
-                        .withSigningCertificate(cert)
-                        .withInfo(getDnieInfoResponse().getData())
-                        .withAuthenticationCertificate(cert));
-    }
-
-    public static T1cResponse<GclDnieAllCertificates> getDnieAllCertificatesResponse() {
-        String cert = getCertificateResponse().getData();
-        return new T1cResponse<GclDnieAllCertificates>().withSuccess(true)
-                .withData(new GclDnieAllCertificates()
-                        .withIntermediateCertificate(cert)
-                        .withSigningCertificate(cert)
-                        .withAuthenticationCertificate(cert));
-    }
-
-    public static T1cResponse<GclPtIdAllCertificates> getPtIdAllCertificatesResponsse() {
-        String cert = getCertificateResponse().getData();
-        return new T1cResponse<GclPtIdAllCertificates>().withSuccess(true)
-                .withData(new GclPtIdAllCertificates()
-                        .withRootCertificate(cert)
-                        .withAuthenticationCertificate(cert)
-                        .withNonRepudiationCertificate(cert)
-                        .withRootAuthenticationCertificate(cert)
-                        .withRootNonRepudiationCertificate(cert));
-    }
-
-    public static T1cResponse<List<GclEmvApplication>> getEmvApplicationResponse() {
-        GclEmvApplication app = new GclEmvApplication().withAid("123").withPriority(0);
-        return new T1cResponse<List<GclEmvApplication>>().withSuccess(true)
-                .withData(Arrays.asList(app, app));
-    }
-
-    public static T1cResponse<GclEmvApplicationData> getEmvAppDataResponse() {
-        GclEmvApplicationData appData = new GclEmvApplicationData().withCountry("Belgium").withCountryCode("BE").withEffectiveDate("1/1/2000").withExpirationDate("1/1/2100").withLanguage("FR").withName("name").withPan("pan");
-        return new T1cResponse<GclEmvApplicationData>().withSuccess(true).withData(appData);
-    }
-
-    public static T1cResponse<GclEmvAllData> getEmvAllDataResponse() {
-        GclEmvAllData data = new GclEmvAllData().withApplicationData(getEmvAppDataResponse().getData()).withApplications(getEmvApplicationResponse().getData());
-        return new T1cResponse<GclEmvAllData>().withSuccess(true).withData(data);
-    }
-
-    public static T1cResponse<GclEmvPublicKeyCertificate> getEmvCertResponse(GclEmvAidRequest request) {
-        GclEmvPublicKeyCertificate cert = new GclEmvPublicKeyCertificate().withData("data").withExponent("exponent").withRemainder("remainder");
-        return getSuccessResponse(cert);
-    }
-
-    public static T1cResponse<Boolean> getBooleanResponse() {
-        return getSuccessResponse(true);
-    }
-
-    public static T1cResponse<GclMobibCardIssuing> getMobibCardIssuingResponse() {
-        String json = "{\n" +
-                "\"card_expiration_date\": \"2016-01-31\",\n" +
-                "\"card_holder_birth_date\": \"1964-07-23\",\n" +
-                "\"card_holder_end_date\": \"2016-01-31\",\n" +
-                "\"card_holder_id\": \"6060575401800002365\",\n" +
-                "\"card_holder_name\": \"MIAO- ERH WANG LIU \",\n" +
-                "\"card_holder_start_date\": \"2012-02-11\",\n" +
-                "\"card_revalidation_date\": \"2012-02-10\",\n" +
-                "\"card_type\": 1,\n" +
-                "\"company_id\": 18,\n" +
-                "\"gender\": 1,\n" +
-                "\"language\": 2,\n" +
-                "\"version\": 1\n" +
-                "}";
-        return getSuccessResponse(GSON.fromJson(json, GclMobibCardIssuing.class));
-    }
-
-    public static T1cResponse<List<GclMobibContract>> getMobibContractResponse() {
-        String json = "{\n" +
-                "\"authenticator_kvc\": 17,\n" +
-                "\"authenticator_value\": 587,\n" +
-                "\"journey_interchanges_allowed\": false, \n" +
-                "\"passengers_max\": 7,\n" +
-                "\"period_journeys\": {\n" +
-                "\"max_number_of_trips\": 13,\n" +
-                "\"period\": 2\n" +
-                "},\n" +
-                "\"price_amount\": 500,\n" +
-                "\"provider\": 1,\n" +
-                "\"restrict_code\": 5,\n" +
-                "\"restrict_time\": 2,\n" +
-                "\"sale_date\": \"2014-03-06\",\n" +
-                "\"sale_sam_count\": 15,\n" +
-                "\"sale_sam_id\": 25,\n" +
-                "\"spatials\": [\n" +
-                "{\n" +
-                "\"type\": 7\n" +
-                "}\n" +
-                "],\n" +
-                "\"tariff\": {\n" +
-                "\"counter\": {\n" +
-                "\"time\": \"2017-02-21T06:20:00\",\n" +
-                "\"type\": 4\n" +
-                "},\n" +
-                "\"multimodal\": true,\n" +
-                "\"nameref\": 231\n" +
-                "},\n" +
-                "\"validity_duration\": {\n" +
-                "\"unit\": 2,\n" +
-                "\"value\": 7\n" +
-                "},\n" +
-                "\"validity_start_date\": \"2014-03-06\",\n" +
-                "\"vehicle_class_allowed\": 1,\n" +
-                "\"version\": 4\n" +
-                "}";
-        GclMobibContract contract = GSON.fromJson(json, GclMobibContract.class);
-        List<GclMobibContract> contracts = Arrays.asList(contract, contract);
-        return getSuccessResponse(contracts);
-    }
-
-    public static T1cResponse<GclMobibAllData> getMobibAllDataResponse() {
-        String json = "{\n" +
-                "\"active\": true,\n" +
-                "\"card-issuing\": {\n" +
-                "\"card_expiration_date\": \"2016-01-31\",\n" +
-                "\"card_holder_birth_date\": \"1964-07-23\",\n" +
-                "\"card_holder_end_date\": \"2016-01-31\",\n" +
-                "\"card_holder_id\": \"6060575401800002365\",\n" +
-                "\"card_holder_name\": \"MIAO- ERH WANG LIU \",\n" +
-                "\"card_holder_start_date\": \"2012-02-11\",\n" +
-                "\"card_revalidation_date\": \"2012-02-10\",\n" +
-                "\"card_type\": 1,\n" +
-                "\"company_id\": 18,\n" +
-                "\"gender\": 1,\n" +
-                "\"language\": 2,\n" +
-                "\"version\": 1\n" +
-                "},\n" +
-                "\"contracts\": [\n" +
-                "{\n" +
-                "\"authenticator_kvc\": 17,\n" +
-                "\"authenticator_value\": 587,\n" +
-                "\"journey_interchanges_allowed\": false,\n" +
-                "\"passengers_max\": 7,\n" +
-                "\"period_journeys\": {\n" +
-                "\"max_number_of_trips\": 13,\n" +
-                "\"period\": 2\n" +
-                "},\n" +
-                "\"price_amount\": 500,\n" +
-                "\"provider\": 1,\n" +
-                "\"restrict_code\": 5,\n" +
-                "\"restrict_time\": 2,\n" +
-                "\"sale_date\": \"2014-03-06\",\n" +
-                "\"sale_sam_count\": 15,\n" +
-                "\"sale_sam_id\": 25,\n" +
-                "\"spatials\": [\n" +
-                "{\n" +
-                "\"type\": 7\n" +
-                "}\n" +
-                "],\n" +
-                "\"tariff\": {\n" +
-                "\"counter\": {\n" +
-                "\"time\": \"2017-02-21T06:20:00\",\n" +
-                "\"type\": 4\n" +
-                "},\n" +
-                "\"multimodal\": true,\n" +
-                "\"nameref\": 231\n" +
-                "},\n" +
-                "\"validity_duration\": {\n" +
-                "\"unit\": 2,\n" +
-                "\"value\": 7\n" +
-                "},\n" +
-                "\"validity_start_date\": \"2014-03-06\",\n" +
-                "\"vehicle_class_allowed\": 1,\n" +
-                "\"version\": 4\n" +
-                "},\n" +
-                "{\n" +
-                "\"authenticator_kvc\": 18,\n" +
-                "\"authenticator_value\": 588,\n" +
-                "\"journey_interchanges_allowed\": false,\n" +
-                "\"passengers_max\": 7,\n" +
-                "\"price_amount\": 1000,\n" +
-                "\"provider\": 1,\n" +
-                "\"sale_date\": \"2017-02-06\",\n" +
-                "\"sale_sam_count\": 1,\n" +
-                "\"sale_sam_id\": 2,\n" +
-                "\"spatials\": [\n" +
-                "{\n" +
-                "\"type\": 0\n" +
-                "}\n" +
-                "],\n" +
-                "\"tariff\": {\n" +
-                "\"counter\": {\n" +
-                "\"journeys\": \"4\",\n" +
-                "\"type\": 5\n" +
-                "},\n" +
-                "\"multimodal\": true,\n" +
-                "\"nameref\": 2\n" +
-                "},\n" +
-                "\"validity_start_date\": \"2017-02-06\",\n" +
-                "\"vehicle_class_allowed\": 1,\n" +
-                "\"version\": 4\n" +
-                "}\n" +
-                "\n" +
-                "],\n" +
-                "\"picture\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==\"\n" +
-                "}";
-        return getSuccessResponse(GSON.fromJson(json, GclMobibAllData.class));
-    }
-
-    public static T1cResponse<String> getStringResponse() {
-        return getSuccessResponse("This is a String response");
-    }
-
-    public static T1cResponse<List<String>> getStringListResponse() {
-        return getSuccessResponse(Arrays.asList("This is a String response", "This is a second String response"));
-    }
 
     public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
         String json = "{\n" +
@@ -1724,10 +1599,6 @@ public final class MockResponseFactory {
         }
         slots.add(GSON.fromJson(jsonWithToken, GclSafeNetSlot.class));
         return getSuccessResponse(slots);
-    }
-
-    private static T1cCertificate getT1cCertificate() {
-        return new T1cCertificate().withBase64(getCertificateResponse().getData());
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {

@@ -48,12 +48,20 @@ public class PivAllCertificates implements AllCertificates {
     /**
      * @param signingCertificate The signing certificate
      */
-    public void setCitizenCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
     public PivAllCertificates withSigningCertificate(T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "PivAllCertificates{" +
+                "authenticationCertificate=" + authenticationCertificate +
+                ", signingCertificate=" + signingCertificate +
+                '}';
     }
 }
