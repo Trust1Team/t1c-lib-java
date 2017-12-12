@@ -158,7 +158,7 @@ public class T1cClient implements IT1cClient {
      */
     private void initSecurityContext() {
         try {
-            if (StringUtils.isBlank(core.getPubKey().getData())) {
+            if (StringUtils.isBlank(core.getPubKey())) {
                 String publicKey = dsClient.getPublicKey();
                 if (!core.setPubKey(publicKey)) {
                     throw ExceptionFactory.initializationException("Could not set GCL public key");

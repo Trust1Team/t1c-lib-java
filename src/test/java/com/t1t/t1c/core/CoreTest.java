@@ -52,7 +52,7 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getPubKey() {
-        String publicKey = core.getPubKey().getData();
+        String publicKey = core.getPubKey();
         assertEquals(MockResponseFactory.getGclAdminCertificate(), publicKey);
     }
 

@@ -26,7 +26,7 @@ public class MockGclRestClient implements GclRestClient {
     }
 
     @Override
-    public Call<T1cResponse<GclPubKey>> getPublicKey() {
+    public Call<T1cResponse<String>> getPublicKey() {
         return delegate.returningResponse(MockResponseFactory.getGclAdminCertificateResponse()).getPublicKey();
     }
 
