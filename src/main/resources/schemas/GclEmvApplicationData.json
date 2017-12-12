@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclEmvApplicationData",
+  "javaType": "com.t1t.t1c.containers.smartcards.emv.GclEmvApplicationData",
   "type": "object",
   "properties": {
     "country": {

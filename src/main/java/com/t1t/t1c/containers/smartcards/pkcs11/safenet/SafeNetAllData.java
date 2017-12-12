@@ -1,9 +1,6 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclSafeNetSlot;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -15,17 +12,16 @@ public class SafeNetAllData implements AllData {
 
     private List<GclSafeNetSlot> slots;
 
+    public SafeNetAllData(List<GclSafeNetSlot> slots) {
+        this.slots = slots;
+    }
+
     public List<GclSafeNetSlot> getSlots() {
         return slots;
     }
 
     public void setSlots(List<GclSafeNetSlot> slots) {
         this.slots = slots;
-    }
-
-    public SafeNetAllData withSlots(List<GclSafeNetSlot> slots) {
-        this.slots = slots;
-        return this;
     }
 
     @Override

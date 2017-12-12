@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclAdminActivation",
+  "javaType": "com.t1t.t1c.core.GclAdminActivation",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    }
+  }
+}

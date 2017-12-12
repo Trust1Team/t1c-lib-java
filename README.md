@@ -1,12 +1,18 @@
 # Trust1Connector Java Client
 [![][t1c-logo]][Trust1Connector-url]
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5bc9a3d8c6344eb81a6c09b2f8b3ae2)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/t1c-distribution-api&amp;utm_campaign=Badge_Grade)
-
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77339306e39544b7bab98c68cd3a40c5)](https://www.codacy.com/app/Trust1Team/t1c-lib-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/t1c-lib-java&amp;utm_campaign=Badge_Grade)
 
 The T1C Java Client, integrate java applications with the Trust1Connector(R).
 
 ## Summary
-TBD
+The Java library implements a native application interface towards the Trust1Connector solution.
+The client library has a rest client that addresses the different use cases, integrates with an optional distribution service
+and provides optionally additional support for validation uses cases:
+- validation certificate chain
+- validate digital signature
+
+The Java client is a product following a community driven roadmap. Feel free to post issues, changes or enhancements. 
+If you want to join the development, you can contact: development@trust1team.com 
 
 ## Documentation ##
 TBD

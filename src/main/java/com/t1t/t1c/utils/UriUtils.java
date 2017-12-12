@@ -9,6 +9,10 @@ public final class UriUtils {
     private UriUtils() {
     }
 
+    public static String constructURI(String uri, String contextPath) {
+        return uriFinalSlashAppender(uriFinalSlashAppender(uri) + uriLeadingSlashRemover(contextPath));
+    }
+
     public static String uriFinalSlashAppender(String uri) {
         if (!uri.endsWith("/")) return uri + "/";
         else return uri;

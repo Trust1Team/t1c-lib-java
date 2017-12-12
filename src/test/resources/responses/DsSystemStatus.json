@@ -1,0 +1,17 @@
+{
+  "configFile": "application_acc",
+  "build": "2017-11-27 20:16:50",
+  "version": "0.5.6",
+  "environemnt": "ACC",
+  "storageAppName": "[[Trust1Team-GCL-Distribution/1.0]]",
+  "storageServiceAccount": "t1c-ds-acc@t1t-saas-signbox.iam.gserviceaccount.com",
+  "storageCertPath": "/usr/local/t1c-ds/t1t-saas-signbox-baf665c1dc48.p12",
+  "storageBucket": "gcl-distro",
+  "storageDownloadPrefix": "https://storage.googleapis.com/gcl-distro/",
+  "fileOsx": "Trust1Connector.dmg",
+  "fileWin32": "Trust1Connector_x86.msi",
+  "fileWin64": "Trust1Connector_x64.msi",
+  "fileDefaultVersion": "v1.2.5",
+  "securityEnabled": "false",
+  "securityPrivateKeyAvailable": true
+}

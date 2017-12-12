@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+      "id": "card-readers",
+      "name": "Reader",
+      "version": "1.4.0"
+    },
+    {
+      "id": "luxtrust",
+      "name": "LuxTrust",
+      "version": "0.0.0.10"
+    },
+    {
+      "id": "ocra",
+      "name": "Ocra",
+      "version": "0.0.0.2"
+    },
+    {
+      "id": "dnie",
+      "name": "Spanish DNIe",
+      "version": "0.0.0.3"
+    },
+    {
+      "id": "safenet",
+      "name": "SafeNet",
+      "version": "0.0.0.2"
+    },
+    {
+      "id": "luxeid",
+      "name": "LuxembourgEid",
+      "version": "0.0.0.11"
+    },
+    {
+      "id": "mobib",
+      "name": "Mobib",
+      "version": "0.0.0.7"
+    },
+    {
+      "id": "piv",
+      "name": "Piv",
+      "version": "0.0.0.2"
+    },
+    {
+      "id": "oberthur",
+      "name": "Oberthur",
+      "version": "0.0.0.3"
+    },
+    {
+      "id": "aventra",
+      "name": "Aventra",
+      "version": "0.0.0.5"
+    },
+    {
+      "id": "beid",
+      "name": "BelgiumEid",
+      "version": "0.0.0.10"
+    },
+    {
+      "id": "pteid",
+      "name": "Pteid",
+      "version": "0.0.0.2"
+    },
+    {
+      "id": "emv",
+      "name": "Emv",
+      "version": "0.0.0.6"
+    },
+    {
+      "id": "readerapi",
+      "name": "ReaderApi",
+      "version": "0.0.0.6"
+    }
+  ],
+  "success": true
+}

@@ -1,21 +1,18 @@
 package com.t1t.t1c.gcl;
 
+import com.t1t.t1c.core.GclContainer;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.exceptions.GclAdminClientException;
 import com.t1t.t1c.exceptions.GclClientException;
-import com.t1t.t1c.model.rest.GclConsent;
-import com.t1t.t1c.model.rest.GclContainer;
-import com.t1t.t1c.model.rest.GclReader;
-import com.t1t.t1c.model.rest.GclStatus;
 
 import java.util.List;
 
 /**
- * @author Guillaume Vandecasteele
- * @since 2017
+ * @Author Michallis Pashidis
+ * @Since 2017
  */
 public interface IGclClient {
-
-    String getUrl();
-
     GclStatus getInfo() throws GclClientException;
 
     List<GclContainer> getContainers() throws GclClientException;
@@ -28,6 +25,5 @@ public interface IGclClient {
 
     List<GclReader> getReadersWithoutInsertedCard() throws GclClientException;
 
-    boolean getConsent(GclConsent consent);
-
+    String getPublicKey() throws GclAdminClientException;
 }

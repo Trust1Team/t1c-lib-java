@@ -2,6 +2,7 @@
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclMobibContract",
+  "javaType": "com.t1t.t1c.containers.smartcards.mobib.GclMobibContract",
   "type": "object",
   "properties": {
     "authenticator_kvc": {
@@ -13,12 +14,11 @@
     "journey_interchanges_allowed": {
       "type": "boolean"
     },
-    "passengers_max": {
+    "operator_map": {
       "type": "integer"
     },
-    "period_journeys": {
-      "type": "object",
-      "$ref": "GclMobibPeriodJourneys.json"
+    "passengers_max": {
+      "type": "integer"
     },
     "price_amount": {
       "type": "integer"
@@ -51,6 +51,9 @@
     "tariff": {
       "type": "object",
       "$ref": "GclMobibTariff.json"
+    },
+    "type_id": {
+      "type": "integer"
     },
     "validity_duration": {
       "type": "object",

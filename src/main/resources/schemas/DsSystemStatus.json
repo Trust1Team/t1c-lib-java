@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "DsSystemStatus",
+  "javaType": "com.t1t.t1c.ds.DsSystemStatus",
+  "type": "object",
+  "properties": {
+    "configFile": {
+      "type": "string"
+    },
+    "build": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "environemnt": {
+      "type": "string"
+    },
+    "storageAppName": {
+      "type": "string"
+    },
+    "storageServiceAccount": {
+      "type": "string"
+    },
+    "storageCertPath": {
+      "type": "string"
+    },
+    "storageBucket": {
+      "type": "string"
+    },
+    "storageDownloadPrefix": {
+      "type": "string"
+    },
+    "fileOsx": {
+      "type": "string"
+    },
+    "fileWin32": {
+      "type": "string"
+    },
+    "fileWin64": {
+      "type": "string"
+    },
+    "fileDefaultVersion": {
+      "type": "string"
+    },
+    "securityEnabled": {
+      "type": "string"
+    },
+    "securityPrivateKeyAvailable": {
+      "type": "boolean"
+    }
+  }
+}

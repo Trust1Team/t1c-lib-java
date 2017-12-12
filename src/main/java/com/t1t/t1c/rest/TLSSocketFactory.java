@@ -1,15 +1,11 @@
 package com.t1t.t1c.rest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
@@ -68,8 +64,8 @@ public class TLSSocketFactory extends SSLSocketFactory {
     }
 
     private Socket enableTLSOnSocket(Socket socket) {
-        if(socket != null && (socket instanceof SSLSocket)) {
-            ((SSLSocket)socket).setEnabledProtocols(new String[] {"TLSv1.1", "TLSv1.2"});
+        if (socket != null && (socket instanceof SSLSocket)) {
+            ((SSLSocket) socket).setEnabledProtocols(new String[]{"TLSv1.1", "TLSv1.2"});
         }
         return socket;
     }

@@ -1,8 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.rest.GclBeIDAllCertificates;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
 
 /**
@@ -17,7 +16,7 @@ public class BeIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllCertificates(GclBeIDAllCertificates certs, boolean... parseCertificate) {
+    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean... parseCertificate) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = CertificateUtil.createT1cCertificate(certs.getCitizenCertificate(), parseCertificate);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(certs.getNonRepudiationCertificate(), parseCertificate);

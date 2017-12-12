@@ -1,22 +1,19 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "DsDeviceRegistrationRequest",
+  "javaType": "com.t1t.t1c.ds.DsDeviceRegistrationRequest",
   "type": "object",
-  "id": "DsDeviceRegistrationRequest",
   "properties": {
+    "os": {
+      "type": "object",
+      "$ref": "DsOs.json"
+    },
     "managed": {
       "type": "boolean"
     },
     "browser": {
       "type": "object",
       "$ref": "DsBrowser.json"
-    },
-    "java": {
-      "type": "object",
-      "$ref": "DsJava.json"
-    },
-    "os": {
-      "type": "object",
-      "$ref": "DsOs.json"
     },
     "ua": {
       "type": "string"

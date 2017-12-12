@@ -1,10 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclBeIdAddress;
-import com.t1t.t1c.model.rest.GclBeIdAllData;
-import com.t1t.t1c.model.rest.GclBeIdRn;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
 
 public class BeIdAllData implements AllData {
@@ -18,7 +15,7 @@ public class BeIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllData(GclBeIdAllData data, boolean... parseCertificate) {
+    public BeIdAllData(GclBeIdAllData data, Boolean... parseCertificate) {
         this.address = data.getAddress();
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = CertificateUtil.createT1cCertificate(data.getCitizenCertificate(), parseCertificate);

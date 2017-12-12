@@ -1,13 +1,12 @@
 package com.t1t.t1c.mock;
 
+import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.model.rest.GclUpdatePublicKeyRequest;
-import com.t1t.t1c.rest.GclAdminRestClient;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
-import static com.t1t.t1c.MockResponseFactory.getPublicKeyResponseDer;
-import static com.t1t.t1c.MockResponseFactory.getSuccessResponse;
+import static com.t1t.t1c.MockResponseFactory.getSuccessResponseWithoutData;
 
 /**
  * @author Guillaume Vandecasteele
@@ -23,16 +22,11 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
 
     @Override
     public Call<T1cResponse<Object>> activate() {
-        return delegate.returningResponse(getSuccessResponse()).activate();
-    }
-
-    @Override
-    public Call<T1cResponse<String>> getPublicKey() {
-        return delegate.returningResponse(getPublicKeyResponseDer()).getPublicKey();
+        return delegate.returningResponse(getSuccessResponseWithoutData()).activate();
     }
 
     @Override
     public Call<T1cResponse<Object>> setPublicKey(GclUpdatePublicKeyRequest request) {
-        return delegate.returningResponse(getSuccessResponse()).activate();
+        return delegate.returningResponse(getSuccessResponseWithoutData()).activate();
     }
 }

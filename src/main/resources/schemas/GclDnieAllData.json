@@ -1,20 +1,24 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
   "$id": "GclDnieAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
   "type": "object",
   "properties": {
     "authentication_certificate": {
       "type": "string"
+    },
+    "info": {
+      "type": "object",
+      "$ref": "GclDnieInfo.json"
     },
     "intermediate_certificate": {
       "type": "string"
     },
     "signing_certificate": {
       "type": "string"
-    },
-    "info": {
-      "type": "object",
-      "$ref": "GclDnieInfo.json"
     }
   }
 }

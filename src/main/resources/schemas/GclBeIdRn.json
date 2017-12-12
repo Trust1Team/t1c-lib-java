@@ -1,7 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclBeIdRn",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn",
   "type": "object",
-  "$id": "BeIdRegNat",
   "properties": {
     "birth_date": {
       "type": "string"

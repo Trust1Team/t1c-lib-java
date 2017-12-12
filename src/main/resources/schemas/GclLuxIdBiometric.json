@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-06/schema#",
   "type": "object",
   "$id": "GclLuxIdBiometric",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdBiometric",
   "properties": {
     "birthDate": {
       "type": "string"
@@ -31,6 +32,9 @@
       "type": "string"
     },
     "validityStartDate": {
+      "type": "string"
+    },
+    "raw_data": {
       "type": "string"
     }
   }

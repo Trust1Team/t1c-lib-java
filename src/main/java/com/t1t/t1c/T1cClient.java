@@ -1,37 +1,38 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.agent.IAgent;
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.configuration.T1cConfigParser;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
-import com.t1t.t1c.containers.readerapi.IReaderApiContainer;
-import com.t1t.t1c.containers.remoteloading.belfius.IBelfiusContainer;
-import com.t1t.t1c.containers.smartcards.eid.be.IBeIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.esp.IDnieContainer;
-import com.t1t.t1c.containers.smartcards.eid.lux.ILuxIdContainer;
-import com.t1t.t1c.containers.smartcards.eid.pt.IPtEIdContainer;
-import com.t1t.t1c.containers.smartcards.emv.IEmvContainer;
-import com.t1t.t1c.containers.smartcards.mobib.IMobibContainer;
-import com.t1t.t1c.containers.smartcards.ocra.IOcraContainer;
-import com.t1t.t1c.containers.smartcards.piv.IPivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ISafeNetContainer;
+import com.t1t.t1c.containers.IGenericContainer;
+import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
+import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
+import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
+import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
+import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
+import com.t1t.t1c.containers.smartcards.piv.PivContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
-import com.t1t.t1c.containers.smartcards.pki.aventra.IAventraContainer;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.ILuxTrustContainer;
-import com.t1t.t1c.containers.smartcards.pki.oberthur.IOberthurContainer;
+import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
+import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
+import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.Core;
-import com.t1t.t1c.ds.IDsClient;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.core.ICore;
+import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllData;
+import com.t1t.t1c.exceptions.GclCoreException;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
-import com.t1t.t1c.model.rest.*;
 import com.t1t.t1c.ocv.IOcvClient;
-import com.t1t.t1c.services.FactoryService;
-import com.t1t.t1c.services.GenericService;
-import com.t1t.t1c.services.IGenericService;
+import com.t1t.t1c.ocv.OcvClient;
+import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,235 +41,52 @@ import java.nio.file.Path;
 import java.util.List;
 
 /**
- * Created by michallispashidis on 02/11/2017.
+ * @Author Michallis Pashidis
+ * @Since 2017
+ * <p>
+ * The T1C client is responsible to provide the client interfaces for:
+ * <ul>
+ * <li>T1C-DS: Distribution server</li>
+ * <li>OCV-API</li>
+ * <li>T1C-GCL-Core Interface</li>
+ * <li>T1C-GCL-Admin Interface</li>
+ * <li>T1C-Generic Interface</li>
+ * <li>T1C-Container interfaces</li>
+ * </ul>
+ * <p>
+ * The T1C client provides a connection factory object instance to be shared by all underlying containers.
  */
 public class T1cClient implements IT1cClient {
-
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
+    private ConnectionFactory connFactory;
+    /*General clients*/
+    private IDsClient dsClient;
+    private IOcvClient ocvClient;
+    /*Core and container clients*/
+    private ICore core;
 
-    private Core core;
-    private IGenericService genericService;
-
-
+    /*Constructors*/
     public T1cClient(LibConfig config) {
-        init(config, null, false);
+        init(config, null);
     }
 
     public T1cClient(Path toConfigurationFile) {
-        init(null, toConfigurationFile, false);
+        init(null, toConfigurationFile);
     }
 
-    @Override
-    public Core getCore() {
-        return this.core;
+    //TODO implement pin constraint in safe way
+    private static String getPin(String... pin) {
+        return (pin == null || pin.length == 0) ? "" : pin[0];
     }
 
-    @Override
-    public IGenericService getGenericService() {
-        return genericService;
-    }
-
-    @Override
-    public LibConfig getConfig() {
-        return FactoryService.getConfig();
-    }
-
-    @Override
-    public IAgent getAgent() {
-        return FactoryService.getAgent();
-    }
-
-    @Override
-    public IDsClient getDsClient() {
-        return FactoryService.getDsClient();
-    }
-
-    @Override
-    public IOcvClient getOcvClient() {
-        return FactoryService.getOcvClient();
-    }
-
-    @Override
-    public GenericContainer getGenericContainerFor(String readerId) {
-        return genericService.getGenericContainerFor(readerId);
-    }
-
-    @Override
-    public IBeIdContainer getBeIdContainer(String readerId) {
-        return FactoryService.getBeIdContainer(readerId);
-    }
-
-    @Override
-    public ILuxIdContainer getLuxIdContainer(String readerId, String pin) {
-        return FactoryService.getLuxIdContainer(readerId, pin);
-    }
-
-    @Override
-    public ILuxTrustContainer getLuxTrustContainer(String readerId, String pin) {
-        return FactoryService.getLuxTrustContainer(readerId, pin);
-    }
-
-    @Override
-    public IDnieContainer getDnieContainer(String readerId) {
-        return FactoryService.getDnieContainer(readerId);
-    }
-
-    @Override
-    public IPtEIdContainer getPtIdContainer(String readerId) {
-        return FactoryService.getPtIdContainer(readerId);
-    }
-
-    @Override
-    public IEmvContainer getEmvContainer(String readerId) {
-        return FactoryService.getEmvContainer(readerId);
-    }
-
-    @Override
-    public IMobibContainer getMobibContainer(String readerId) {
-        return FactoryService.getMobibContainer(readerId);
-    }
-
-    @Override
-    public IOcraContainer getOcraContainer(String readerId) {
-        return FactoryService.getOcraContainer(readerId);
-    }
-
-    @Override
-    public IAventraContainer getAventraContainer(String readerId) {
-        return FactoryService.getAventraContainer(readerId);
-    }
-
-    @Override
-    public IOberthurContainer getOberthurContainer(String readerId) {
-        return FactoryService.getOberthurContainer(readerId);
-    }
-
-    @Override
-    public IPivContainer getPivContainer(String readerId) {
-        return FactoryService.getPivContainer(readerId);
-    }
-
-    @Override
-    public ISafeNetContainer getSafeNetContainer(String readerId) {
-        return FactoryService.getSafeNetContainer(readerId);
-    }
-
-    @Override
-    public ISafeNetContainer getSafeNetContainer(String readerId, SafeNetContainerConfiguration configuration) {
-        return FactoryService.getSafeNetContainer(readerId, configuration);
-    }
-
-    @Override
-    public IReaderApiContainer getReaderContainer(String readerId) {
-        return FactoryService.getReaderContainer(readerId);
-    }
-
-    @Override
-    public IBelfiusContainer getBelfiusContainer(String readerId) {
-        return FactoryService.getBelfiusContainer(readerId);
-    }
-
-    @Override
-    public ContainerType getContainerFor(String readerId) {
-        return genericService.getContainerTypeFor(readerId);
-    }
-
-    @Override
-    public String getDownloadLink() {
-        return genericService.getDownloadLink();
-    }
-
-    @Override
-    public AllData dumpData(String readerId) {
-        return genericService.dumpData(readerId, null, null);
-    }
-
-    @Override
-    public AllData dumpData(String readerId, List<String> filterParameters) {
-        return dumpData(readerId, null, filterParameters);
-    }
-
-    @Override
-    public AllData dumpData(String readerId, String pin) {
-        return genericService.dumpData(readerId, pin, null);
-    }
-
-    @Override
-    public AllData dumpData(String readerId, String pin, List<String> filterParameters) {
-        return genericService.dumpData(readerId, pin, filterParameters);
-    }
-
-    @Override
-    public List<GclReader> getAuthenticateCapableReaders() {
-        return genericService.getAuthenticationCapableReaders();
-    }
-
-    @Override
-    public List<GclReader> getSignCapableReaders() {
-        return genericService.getSignCapableReaders();
-    }
-
-    @Override
-    public List<GclReader> getPinVerificationCapableReaders() {
-        return genericService.getPinVerificationCapableReaders();
-    }
-
-    @Override
-    public String authenticate(String readerId, GclAuthenticateOrSignData data, String... pin) {
-        return genericService.authenticate(readerId, data, pin);
-    }
-
-    @Override
-    public String sign(String readerId, GclAuthenticateOrSignData data, String... pin) {
-        return genericService.sign(readerId, data, pin);
-    }
-
-    @Override
-    public boolean verifyPin(String readerId, String... pin) throws VerifyPinException {
-        return genericService.verifyPin(readerId, pin);
-    }
-
-    @Override
-    public String exchangeApiKeyForToken() {
-        String jwt = null;
-        try {
-            jwt = getDsClient().getJWT();
-        } catch (DsClientException ex) {
-            log.error("Exception happened during JWT exchange: ", ex);
-        }
-        if (StringUtils.isNotEmpty(jwt)) {
-            LibConfig conf = getConfig();
-            conf.setJwt(jwt);
-            FactoryService.setConfig(conf);
-        }
-        return jwt;
-    }
-
-    @Override
-    public String refreshJwt() {
-        LibConfig conf = getConfig();
-        String jwt = null;
-        try {
-            if (StringUtils.isNotEmpty(conf.getJwt())) {
-                jwt = getDsClient().refreshJWT(conf.getJwt());
-            } else {
-                jwt = getDsClient().getJWT();
-            }
-        } catch (DsClientException ex) {
-            log.error("Error happened during JWT refresh: ", ex);
-        }
-        if (StringUtils.isNotEmpty(jwt)) {
-            conf.setJwt(jwt);
-            FactoryService.setConfig(conf);
-        }
-        return jwt;
-    }
-
-    //
-    // Initialization methods
-    //
-
-    private void init(LibConfig config, Path toConfigurationFile, boolean automatic) {
+    /**
+     * Initialisation of the T1C Java client
+     *
+     * @param config
+     * @param toConfigurationFile
+     */
+    private void init(LibConfig config, Path toConfigurationFile) {
+        // Configure
         T1cConfigParser clientConfig = null;
         if (config != null) {
             clientConfig = new T1cConfigParser(config);
@@ -279,26 +97,76 @@ public class T1cClient implements IT1cClient {
             if (config == null) throw ExceptionFactory.initializationException("Could not initialize config");
         }
 
-        FactoryService.setConfig(config);
+        // Instantiate connections
+        connFactory = new ConnectionFactory(config);
 
-        this.core = new Core(config);
-        this.genericService = new GenericService();
+        // Set core, ds and ocv client
+        resetCore();
+        resetDs();
+        resetOcv();
 
-        if (!automatic) {
+        // Set generic service
+        //this.genericService = new GenericService(); //TODO implement generic service
+
+        // Initialize public key for instance and register towards DS
+        if (StringUtils.isEmpty(config.getApiKey())) return;
+        try {
             initSecurityContext();
             registerAndActivate();
+        } catch (GclCoreException ex) {
+            throw ExceptionFactory.initializationException(ex.getMessage());
         }
+    }
+
+    /**
+     * The core uses the gclRestClient and gclAdminRestClient.
+     */
+    private void resetCore() {
+        this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getConfig());
+    }
+
+    private void resetDs() {
+        this.dsClient = new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
+    }
+
+    private void resetOcv() {
+        this.ocvClient = new OcvClient(connFactory.getOcvRestClient(), connFactory.getConfig());
+    }
+
+    /**
+     * Reset containers
+     *
+     * @return
+     */
+
+
+    public String exchangeApiKeyForToken() {
+        String jwt = null;
+        try {
+            jwt = getDsClient().getJWT();
+        } catch (DsClientException ex) {
+            log.error("Exception happened during JWT exchange: ", ex);
+        }
+        if (StringUtils.isNotEmpty(jwt)) {
+            connFactory.getConfig().setJwt(jwt);
+        }
+        return jwt;
     }
 
     /**
      * Initialize the security context by setting the GCL's public key if necessary
      */
     private void initSecurityContext() {
-        if (StringUtils.isBlank(core.getPubKey())) {
-            String publicKey = FactoryService.getDsClient().getPublicKey();
-            if (!FactoryService.getGclAdminClient().setPublicKey(publicKey)) {
-                throw ExceptionFactory.initializationException("Could not set GCL public key");
+        try {
+            if (StringUtils.isBlank(core.getPubKey())) {
+                String publicKey = dsClient.getPublicKey();
+                if (!core.setPubKey(publicKey)) {
+                    throw ExceptionFactory.initializationException("Could not set GCL public key");
+                }
             }
+        } catch (GclCoreException ex) {
+            log.error(ex.getCause().getMessage());
+            throw ExceptionFactory.initializationException(ex.getMessage());
         }
     }
 
@@ -308,9 +176,9 @@ public class T1cClient implements IT1cClient {
     private void registerAndActivate() {
         GclStatus gclInfo = core.getInfo();
         PlatformInfo platformInfo = core.getPlatformInfo();
-        LibConfig config = FactoryService.getConfig();
+        LibConfig config = connFactory.getConfig();
         config.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
-        FactoryService.setConfig(config);
+        connFactory.setConfig(config);
 
         DsDeviceRegistrationRequest registration = new DsDeviceRegistrationRequest()
                 .withActivated(gclInfo.getActivated())
@@ -329,22 +197,61 @@ public class T1cClient implements IT1cClient {
                 .withVersion(gclInfo.getVersion());
 
         if (!gclInfo.getActivated()) {
-            String token = FactoryService.getDsClient().register(gclInfo.getUid(), registration);
+            String token = dsClient.register(gclInfo.getUid(), registration);
             if (StringUtils.isNotBlank(token)) {
-                config = config.withJwt(token);
-                FactoryService.setConfig(config);
+                config.setJwt(token);
+                connFactory.setConfig(config);
             }
             boolean activated = core.activate();
             gclInfo.setActivated(activated);
             registration.setActivated(activated);
             if (activated) {
-                FactoryService.getDsClient().sync(gclInfo.getUid(), registration);
+                dsClient.register(gclInfo.getUid(), registration);
             }
 
         } else if (!gclInfo.getManaged()) {
-            FactoryService.getDsClient().sync(gclInfo.getUid(), registration);
+            dsClient.register(gclInfo.getUid(), registration);
         }
     }
+
+/*    public GenericContainer getGenericContainer(String reader, String... pin) {
+        return getGenericContainer(reader, ContainerUtil.determineContainer(gclClient.getReader(reader).getCard()), pin);
+    }*/
+
+
+/*    private GenericContainer getGenericContainer(String reader, ContainerType type, String... pin) {
+        switch (type) {
+            case BEID:
+                return new BeIdContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclBeidRestClient.class));
+            case LUXID:
+                return new LuxIdContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclLuxIdRestClient.class), getPin(pin));
+            case LUXTRUST:
+                return new LuxTrustContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class), getPin(pin));
+            case DNIE:
+                return new DnieContainer(reader, RestServiceBuilder.getContainerRestClient(config, GclDniRestClient.class));
+            //TODO
+*//*            case EMV:
+                return getEmvContainer(reader);
+            case PT:
+                return getPtIdContainer(reader);
+            case MOBIB:
+                return getMobibContainer(reader);
+            case OCRA:
+                return getOcraContainer(reader);
+            case AVENTRA:
+                return getAventraContainer(reader);
+            case OBERTHUR:
+                return getOberthurContainer(reader);
+            case PIV:
+                return getPivContainer(reader);
+            case READER_API:
+                return getReaderContainer(reader);
+            case SAFENET:
+                return getSafeNetContainer(reader);*//*
+            default:
+                throw ExceptionFactory.unsupportedOperationException("No container for type found");
+        }
+    }*/
 
     /**
      * Determines if the GCL version is token compatible
@@ -361,5 +268,185 @@ public class T1cClient implements IT1cClient {
         }
         return false;
     }
+
+    public String refreshJwt() {
+        String jwt = null;
+        try {
+            jwt = (StringUtils.isNotEmpty(connFactory.getConfig().getJwt())) ? getDsClient().refreshJWT(connFactory.getConfig().getJwt()) : getDsClient().getJWT();
+        } catch (DsClientException ex) {
+            log.error("Error happened during JWT refresh: ", ex);
+        }
+        if (StringUtils.isNotEmpty(jwt)) {
+            connFactory.getConfig().setJwt(jwt);
+        }
+        return jwt;
+    }
+
+    @Override
+    public ICore getCore() {
+        return core;
+    }
+
+    @Override
+    public ConnectionFactory getConnectionFactory() {
+        return connFactory;
+    }
+
+    @Override
+    public IDsClient getDsClient() {
+        return dsClient;
+    }
+
+    @Override
+    public IOcvClient getOcvClient() {
+        return ocvClient;
+    }
+
+    @Override
+    public BeIdContainer getBeIdContainer(GclReader reader) {
+        return new BeIdContainer(connFactory.getConfig(), reader, connFactory.getGclBeIdRestClient());
+    }
+
+    @Override
+    public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) {
+        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin));
+    }
+
+    @Override
+    public LuxTrustContainer getLuxTrustContainer(GclReader reader) {
+        return new LuxTrustContainer(connFactory.getConfig(), reader, connFactory.getGclLuxTrustRestClient());
+    }
+
+    @Override
+    public DnieContainer getDnieContainer(GclReader reader) {
+        return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient());
+    }
+
+    @Override
+    public EmvContainer getEmvContainer(GclReader reader) {
+        return new EmvContainer(connFactory.getConfig(), reader, connFactory.getGclEmvRestClient());
+    }
+
+    @Override
+    public MobibContainer getMobibContainer(GclReader reader) {
+        return new MobibContainer(connFactory.getConfig(), reader, connFactory.getGclMobibRestClient());
+    }
+
+    @Override
+    public OcraContainer getOcraContainer(GclReader reader) {
+        return new OcraContainer(connFactory.getConfig(), reader, connFactory.getGclOcraRestClient());
+    }
+
+    @Override
+    public AventraContainer getAventraContainer(GclReader reader) {
+        return new AventraContainer(connFactory.getConfig(), reader, connFactory.getGclAventraRestClient());
+    }
+
+    @Override
+    public OberthurContainer getOberthurContainer(GclReader reader) {
+        return new OberthurContainer(connFactory.getConfig(), reader, connFactory.getGclOberthurRestClient());
+    }
+
+    @Override
+    public PivContainer getPivContainer(GclReader reader, String pin) {
+        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pin);
+    }
+
+    @Override
+    public PtEIdContainer getPtIdContainer(GclReader reader) {
+        return new PtEIdContainer(connFactory.getConfig(), reader, connFactory.getGclPtRestClient());
+    }
+
+    @Override
+    public SafeNetContainer getSafeNetContainer(GclReader reader) {
+        return getSafeNetContainer(reader, new SafeNetContainerConfiguration());
+    }
+
+    @Override
+    public SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration) {
+        return new SafeNetContainer(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
+    }
+
+    @Override
+    public RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader) {
+        return new RemoteLoadingContainer(connFactory.getConfig(), reader, connFactory.getGclRemoteLoadingRestClient());
+    }
+
+    @Override
+    public ReaderApiContainer getReaderApiContainer() {
+        return new ReaderApiContainer();
+    }
+
+    @Override
+    public IGenericContainer getGenericContainer(GclReader reader, String... pin) {
+        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
+        IGenericContainer container;
+        switch (type) {
+            case AVENTRA:
+                container = getAventraContainer(reader);
+                break;
+            case BEID:
+                container = getBeIdContainer(reader);
+                break;
+            case DNIE:
+                container = getDnieContainer(reader);
+                break;
+            case EMV:
+                container = getEmvContainer(reader);
+                break;
+            case LUXID:
+                String luxPinToUse = getPin(pin);
+                Preconditions.checkArgument(StringUtils.isNotEmpty(luxPinToUse), "Cannot instantiate generic container for this reader without PIN");
+                container = getLuxIdContainer(reader, luxPinToUse);
+                break;
+            case LUXTRUST:
+                container = getLuxTrustContainer(reader);
+                break;
+            case MOBIB:
+                container = getMobibContainer(reader);
+                break;
+            case OBERTHUR:
+                container = getOberthurContainer(reader);
+                break;
+            case OCRA:
+                container = getOcraContainer(reader);
+                break;
+            case PIV:
+                String pivPinToUse = getPin(pin);
+                Preconditions.checkArgument(StringUtils.isNotEmpty(pivPinToUse), "Cannot instantiate generic container for this reader without PIN");
+                container = getPivContainer(reader, pivPinToUse);
+                break;
+            case PT:
+                container = getPtIdContainer(reader);
+                break;
+            case SAFENET:
+                container = getSafeNetContainer(reader, new SafeNetContainerConfiguration());
+                break;
+            default:
+                throw ExceptionFactory.genericContainerException("No generic container available for this reader");
+        }
+        return container;
+    }
+
+    @Override
+    public String getDownloadLink() {
+        return getDsClient().getDownloadLink();
+    }
+
+    @Override
+    public List<GclReader> getAuthenticateCapableReaders() {
+        return getCore().getAuthenticationCapableReaders();
+    }
+
+    @Override
+    public List<GclReader> getSignCapableReaders() {
+        return getCore().getSignCapableReaders();
+    }
+
+    @Override
+    public List<GclReader> getPinVerificationCapableReaders() {
+        return getCore().getPinVerificationCapableReaders();
+    }
+
 }
 

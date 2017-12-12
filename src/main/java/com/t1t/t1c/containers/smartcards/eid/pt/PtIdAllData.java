@@ -1,9 +1,7 @@
 package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.rest.GclPtIdAllData;
-import com.t1t.t1c.model.rest.GclPtIdData;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;
 
 public class PtIdAllData implements AllData {
@@ -15,7 +13,7 @@ public class PtIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public PtIdAllData(GclPtIdAllData data, boolean... parseCertificates) {
+    public PtIdAllData(GclPtIdAllData data, Boolean... parseCertificates) {
         this.id = data.getId();
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
@@ -24,7 +22,7 @@ public class PtIdAllData implements AllData {
         ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
         ;
-        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootAuthenticationCertificate(), parseCertificates);
+        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootNonRepudiationCertificate(), parseCertificates);
         ;
     }
 

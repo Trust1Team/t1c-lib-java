@@ -1,7 +1,7 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
 import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.rest.T1cCertificate;
+import com.t1t.t1c.model.T1cCertificate;
 
 import java.util.List;
 
@@ -13,17 +13,16 @@ public class SafeNetCertificates implements AllCertificates {
 
     private List<T1cCertificate> certificates;
 
+    public SafeNetCertificates(List<T1cCertificate> certificates) {
+        this.certificates = certificates;
+    }
+
     public List<T1cCertificate> getCertificates() {
         return certificates;
     }
 
     public void setCertificates(List<T1cCertificate> certificates) {
         this.certificates = certificates;
-    }
-
-    public SafeNetCertificates withCertificates(List<T1cCertificate> certificates) {
-        this.certificates = certificates;
-        return this;
     }
 
     @Override
