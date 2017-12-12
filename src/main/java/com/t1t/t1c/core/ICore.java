@@ -40,7 +40,7 @@ public interface ICore {
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    String getPubKey() throws GclCoreException;
+    GclPubKey getPubKey() throws GclCoreException;
 
     /**
      * Set the public key for the installed T1C-GCL.

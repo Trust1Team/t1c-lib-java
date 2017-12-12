@@ -56,7 +56,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public String getPubKey() throws GclCoreException {
+    public GclPubKey getPubKey() throws GclCoreException {
         try {
             return RestExecutor.returnData(gclRestClient.getPublicKey());
         } catch (RestException ex) {

@@ -18,7 +18,7 @@ public interface GclRestClient {
     Call<T1cResponse<GclStatus>> getV1Status();
 
     @GET("admin/certificate")
-    Call<T1cResponse<String>> getPublicKey();
+    Call<T1cResponse<GclPubKey>> getPublicKey();
 
     @GET("card-readers")
     Call<T1cResponse<List<GclReader>>> getCardReaders();
