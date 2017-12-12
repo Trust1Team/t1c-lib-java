@@ -8,6 +8,8 @@ import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
+import java.util.List;
+
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
@@ -19,7 +21,12 @@ public class MockGclPivRestClient extends AbstractMockRestClient<GclPivRestClien
     }
 
     @Override
-    public Call<T1cResponse<GclPivAllData>> getAllData(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
+    public Call<T1cResponse<GclPivAllData>> getAllData(String containerId, String readerId, GclVerifyPinRequest request, String filter) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<GclPivAllCertificates>> getAllCertificates(String containerId, String readerId, GclVerifyPinRequest request, String filter) throws RestException {
         return null;
     }
 
@@ -29,22 +36,47 @@ public class MockGclPivRestClient extends AbstractMockRestClient<GclPivRestClien
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin, GclVerifyPinRequest request) throws RestException {
+    public Call<T1cResponse<GclPivFacialImage>> getFacialImage(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, String pin) throws RestException {
+    public Call<T1cResponse<String>> getAuthenticationCertificate(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) throws RestException {
+    public Call<T1cResponse<String>> getSigningCertificate(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
         return null;
     }
 
     @Override
-    public Call<T1cResponse<String>> sign(String containerId, String readerId, String pin, GclAuthenticateOrSignData request) throws RestException {
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, GclVerifyPinRequest request) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<String>> authenticate(String containerId, String readerId, GclAuthenticateOrSignData request) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<String>> sign(String containerId, String readerId, GclAuthenticateOrSignData request) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<List<String>>> getAuthenticationAlgoRefs(String containerId, String readerId) throws RestException {
+        return null;
+    }
+
+    @Override
+    public Call<T1cResponse<List<String>>> getSignAlgoRefs(String containerId, String readerId) throws RestException {
         return null;
     }
 }

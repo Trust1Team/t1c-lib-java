@@ -331,7 +331,9 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
                         <!-- PIV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivFacialImage.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivPrintedInformation.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllCertificates.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllData.json</sourcePath>
                         <!-- SAFENET -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>

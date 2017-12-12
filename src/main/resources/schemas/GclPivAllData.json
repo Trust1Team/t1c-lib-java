@@ -18,7 +18,8 @@
       "type": "string"
     },
     "facial_image": {
-      "type": "string"
+      "type": "object",
+      "$ref": "GclPivFacialImage.json"
     }
   }
 }

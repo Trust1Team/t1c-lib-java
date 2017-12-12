@@ -192,14 +192,4 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
-
-    private List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
-        List<DigestAlgorithm> returnValue = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(algoRefs)) {
-            for (String algoRef : algoRefs) {
-                returnValue.add(DigestAlgorithm.getAlgoForRef(algoRef));
-            }
-        }
-        return returnValue;
-    }
 }

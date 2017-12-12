@@ -3,6 +3,8 @@ package com.t1t.t1c.containers.smartcards.eid.dni;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllCertificates;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -10,6 +12,7 @@ import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -250,5 +253,108 @@ public class DnieContainerTest extends AbstractTestClass {
     @Test
     public void getAllCertificateClass() {
         assertEquals(DnieAllCertificates.class, container.getAllCertificatesClass());
+    }
+
+    @Test
+    public void testBeIdAllCerts() {
+        DnieAllCertificates certs = container.getAllCertificates();
+        T1cCertificate oldAuth = certs.getAuthenticationCertificate();
+        T1cCertificate oldInterm = certs.getIntermediateCertificate();
+        T1cCertificate oldSign = certs.getSigningCertificate();
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+
+        certs.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, certs.getAuthenticationCertificate());
+        assertEquals(certs.withAuthenticationCertificate(oldAuth), certs);
+
+        certs.setIntermediateCertificate(newCert);
+        assertEquals(newCert, certs.getIntermediateCertificate());
+        assertEquals(certs.withIntermediateCertificate(oldInterm), certs);
+
+        certs.setSigningCertificate(newCert);
+        assertEquals(newCert, certs.getSigningCertificate());
+        assertEquals(certs.withSigningCertificate(oldSign), certs);
+    }
+
+    @Test
+    public void testBeIdAllData() {
+        DnieAllData data = container.getAllData();
+        T1cCertificate oldAuth = data.getAuthenticationCertificate();
+        T1cCertificate oldInterm = data.getIntermediateCertificate();
+        T1cCertificate oldSign = data.getSigningCertificate();
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+
+        data.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, data.getAuthenticationCertificate());
+        assertEquals(data.withAuthenticationCertificate(oldAuth), data);
+
+        data.setIntermediateCertificate(newCert);
+        assertEquals(newCert, data.getIntermediateCertificate());
+        assertEquals(data.withIntermediateCertificate(oldInterm), data);
+
+        data.setSigningCertificate(newCert);
+        assertEquals(newCert, data.getSigningCertificate());
+        assertEquals(data.withSigningCertificate(oldSign), data);
+
+        GclDnieInfo info = new GclDnieInfo();
+        data.setInfo(info);
+        assertEquals(info, data.getInfo());
+        assertEquals(data.withInfo(new GclDnieInfo().withFirstLastName("F")), data);
+
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+    }
+
+    @Test
+    public void testGclDnieAllCertificates() {
+        GclDnieAllCertificates obj1 = MockResponseFactory.getDnieAllCertificates();
+        obj1.setAuthenticationCertificate("auth");
+        assertEquals("auth", obj1.getAuthenticationCertificate());
+        obj1.setIntermediateCertificate("interm");
+        assertEquals("interm", obj1.getIntermediateCertificate());
+        obj1.setSigningCertificate("sign");
+        assertEquals("sign", obj1.getSigningCertificate());
+        obj1 = MockResponseFactory.getDnieAllCertificates();
+        GclDnieAllCertificates obj2 = MockResponseFactory.getDnieAllCertificates();
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertEquals(obj1, obj1);
+        assertEquals(obj1, obj2);
+        assertNotEquals(obj1, "string");
+        assertTrue(StringUtils.isNotEmpty(obj1.toString()));
+    }
+
+    @Test
+    public void testGclDnieAllData() {
+        GclDnieAllData obj1 = MockResponseFactory.getDnieAllData();
+        GclDnieInfo info = new GclDnieInfo().withIdesp("1");
+        obj1.setInfo(info);
+        assertEquals(info, obj1.getInfo());
+        obj1.setSigningCertificate("sign");
+        assertEquals("sign", obj1.getSigningCertificate());
+        obj1 = MockResponseFactory.getDnieAllData();
+        GclDnieAllData obj2 = MockResponseFactory.getDnieAllData();
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertEquals(obj1, obj1);
+        assertEquals(obj1, obj2);
+        assertNotEquals(obj1, "string");
+        assertTrue(StringUtils.isNotEmpty(obj1.toString()));
+    }
+
+    @Test
+    public void testGclDnieInfo() {
+        GclDnieInfo info = MockResponseFactory.getGclDnieInfo();
+        info.setFirstLastName("first");
+        assertEquals("first", info.getFirstLastName());
+        info.setFirstName("first");
+        assertEquals("first", info.getFirstName());
+        info.setIdesp("idesp");
+        assertEquals("idesp", info.getIdesp());
+        info.setNumber("number");
+        assertEquals("number", info.getNumber());
+        info.setSecondLastName("second");
+        assertEquals("second", info.getSecondLastName());
+        info.setSerialNumber("number");
+        assertEquals("number", info.getSerialNumber());
+
+        assertNotEquals(info, "string");
     }
 }

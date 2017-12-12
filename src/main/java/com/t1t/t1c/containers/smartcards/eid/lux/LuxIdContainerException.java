@@ -14,10 +14,6 @@ public class LuxIdContainerException extends GenericContainerException {
         super(message);
     }
 
-    public LuxIdContainerException(String message, RestException cause) {
-        super(message, cause);
-    }
-
     @Override
     public Integer getErrorCode() {
         return ErrorCodes.LUXID_CONTAINER_REST_ERROR;

@@ -4,6 +4,8 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.ErrorCodes;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -14,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -257,5 +260,177 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test(expected = LuxIdContainerException.class)
     public void createInstance() {
         container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), null);
+    }
+
+    @Test
+    public void testGclLuxIdAllCertificates() {
+        GclLuxIdAllCertificates certs = MockResponseFactory.getGclLuxIdAllCertificates();
+        certs.setAuthenticationCertificate("auth");
+        assertEquals("auth", certs.getAuthenticationCertificate());
+        certs.setNonRepudiationCertificate("nonr");
+        assertEquals("nonr", certs.getNonRepudiationCertificate());
+        assertTrue(StringUtils.isNotEmpty(certs.toString()));
+        certs = MockResponseFactory.getGclLuxIdAllCertificates();
+        GclLuxIdAllCertificates certs2 = MockResponseFactory.getGclLuxIdAllCertificates();
+        assertEquals(certs, certs);
+        assertEquals(certs.hashCode(), certs2.hashCode());
+        assertEquals(certs, certs2);
+        assertNotEquals(certs, "string");
+    }
+
+    @Test
+    public void testGclLuxIdAllData() {
+        GclLuxIdAllData data = MockResponseFactory.getGclLuxIdAllData();
+        data.setSignatureObject("obj");
+        assertEquals("obj", data.getSignatureObject());
+        GclLuxIdBiometric bio = new GclLuxIdBiometric().withBirthDate("1");
+        data.setBiometric(bio);
+        assertEquals(bio, data.getBiometric());
+        List<String> rootCerts = Arrays.asList("cert1", "cert2");
+        data.setRootCertificates(rootCerts);
+        assertEquals(rootCerts, data.getRootCertificates());
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+        data = MockResponseFactory.getGclLuxIdAllData();
+        GclLuxIdAllData data2 = MockResponseFactory.getGclLuxIdAllData();
+        assertEquals(data, data);
+        assertEquals(data.hashCode(), data2.hashCode());
+        assertEquals(data, data2);
+        assertNotEquals(data, "string");
+    }
+
+    @Test
+    public void testGcLLuxIdBiometric() {
+        GclLuxIdBiometric bio = MockResponseFactory.getGclLuxIdBiometric();
+        bio.setBirthDate("1");
+        assertEquals("1", bio.getBirthDate());
+        bio.setDocumentNumber("2");
+        assertEquals("2", bio.getDocumentNumber());
+        bio.setDocumentType("3");
+        assertEquals("3", bio.getDocumentType());
+        bio.setFirstName("4");
+        assertEquals("4", bio.getFirstName());
+        bio.setGender("5");
+        assertEquals("5", bio.getGender());
+        bio.setIssuingState("6");
+        assertEquals("6", bio.getIssuingState());
+        bio.setLastName("7");
+        assertEquals("7", bio.getLastName());
+        bio.setNationality("8");
+        assertEquals("8", bio.getNationality());
+        bio.setRawData("9");
+        assertEquals("9", bio.getRawData());
+        bio.setValidityEndDate("10");
+        assertEquals("10", bio.getValidityEndDate());
+        bio.setValidityStartDate("11");
+        assertEquals("11", bio.getValidityStartDate());
+        bio = MockResponseFactory.getGclLuxIdBiometric();
+        GclLuxIdBiometric bio2 = MockResponseFactory.getGclLuxIdBiometric();
+        assertEquals(bio, bio);
+        assertEquals(bio.hashCode(), bio2.hashCode());
+        assertEquals(bio, bio2);
+        assertNotEquals(bio, "string");
+    }
+
+    @Test
+    public void testGclLuxIdPicture() {
+        GclLuxIdPicture pic = MockResponseFactory.getGclLuxIdPicture();
+        pic.setHeight(1);
+        assertEquals(Integer.valueOf(1), pic.getHeight());
+        pic.setWidth(2);
+        assertEquals(Integer.valueOf(2), pic.getWidth());
+        pic.setImage("img");
+        assertEquals("img", pic.getImage());
+        pic.setRawData("raw");
+        assertEquals("raw", pic.getRawData());
+        pic = MockResponseFactory.getGclLuxIdPicture();
+        GclLuxIdPicture pic2 = MockResponseFactory.getGclLuxIdPicture();
+        assertEquals(pic, pic);
+        assertEquals(pic.hashCode(), pic2.hashCode());
+        assertEquals(pic, pic2);
+        assertNotEquals(pic, "string");
+    }
+
+    @Test
+    public void testGclLuxIdSignature() {
+        GclLuxIdSignatureImage pic = MockResponseFactory.getGclLuxIdSignatureImage();
+        pic.setImage("img");
+        assertEquals("img", pic.getImage());
+        pic.setRawData("raw");
+        assertEquals("raw", pic.getRawData());
+        pic = MockResponseFactory.getGclLuxIdSignatureImage();
+        GclLuxIdSignatureImage pic2 = MockResponseFactory.getGclLuxIdSignatureImage();
+        assertEquals(pic, pic);
+        assertEquals(pic.hashCode(), pic2.hashCode());
+        assertEquals(pic, pic2);
+        assertNotEquals(pic, "string");
+    }
+
+    @Test
+    public void testLuxIdAllCertificates() {
+        LuxIdAllCertificates certs = container.getAllCertificates();
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+        List<T1cCertificate> oldRootCerts = certs.getRootCertificates();
+        T1cCertificate oldAuth = certs.getAuthenticationCertificate();
+        T1cCertificate oldNon = certs.getNonRepudiationCertificate();
+        certs.setRootCertificates(Arrays.asList(newCert, newCert));
+        assertEquals(Arrays.asList(newCert, newCert), certs.getRootCertificates());
+        assertEquals(certs.withRootCertificates(oldRootCerts), certs);
+        certs.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, certs.getAuthenticationCertificate());
+        assertEquals(certs.withAuthenticationCertificate(oldAuth), certs);
+        certs.setNonRepudiationCertificate(newCert);
+        assertEquals(newCert, certs.getNonRepudiationCertificate());
+        assertEquals(certs.withNonRepudiationCertificate(oldNon), certs);
+
+        assertTrue(StringUtils.isNotEmpty(certs.toString()));
+    }
+
+    @Test
+    public void testLuxIdAllData() {
+        LuxIdAllData data = container.getAllData();
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+        List<T1cCertificate> oldRootCerts = data.getRootCertificates();
+        T1cCertificate oldAuth = data.getAuthenticationCertificate();
+        T1cCertificate oldNon = data.getNonRepudiationCertificate();
+        GclLuxIdBiometric oldBio = data.getBiometric();
+        GclLuxIdSignatureImage oldSig = data.getSignatureImage();
+        GclLuxIdPicture oldPic = data.getPicture();
+        String oldSigObj = data.getSignatureObject();
+        data.setRootCertificates(Arrays.asList(newCert, newCert));
+        assertEquals(Arrays.asList(newCert, newCert), data.getRootCertificates());
+        assertEquals(data.withRootCertificates(oldRootCerts), data);
+        data.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, data.getAuthenticationCertificate());
+        assertEquals(data.withAuthenticationCertificate(oldAuth), data);
+        data.setNonRepudiationCertificate(newCert);
+        assertEquals(newCert, data.getNonRepudiationCertificate());
+        assertEquals(data.withNonRepudiationCertificate(oldNon), data);
+
+        GclLuxIdBiometric bio = new GclLuxIdBiometric().withBirthDate("1");
+        data.setBiometric(bio);
+        assertEquals(bio, data.getBiometric());
+        assertEquals(data.withBiometric(oldBio), data);
+
+        GclLuxIdSignatureImage img = new GclLuxIdSignatureImage().withImage("img");
+        data.setSignatureImage(img);
+        assertEquals(img, data.getSignatureImage());
+        assertEquals(data.withSignatureImage(oldSig), data);
+
+        GclLuxIdPicture pic = new GclLuxIdPicture().withImage("pic");
+        data.setPicture(pic);
+        assertEquals(pic, data.getPicture());
+        assertEquals(data.withPicture(oldPic), data);
+
+        data.setSignatureObject("obj");
+        assertEquals("obj", data.getSignatureObject());
+        assertEquals(data.withSignatureObject(oldSigObj), data);
+
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+    }
+
+    @Test
+    public void testLuxIdContainerException() {
+        LuxIdContainerException ex = ExceptionFactory.luxIdContainerException("message");
+        assertEquals(Integer.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
     }
 }

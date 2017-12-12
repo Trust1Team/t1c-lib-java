@@ -403,7 +403,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(getBeIdRrnCertificate());
     }
 
-    private static GclBeIdAllData getGclBeIdAllData() {
+    public static GclBeIdAllData getGclBeIdAllData() {
         return new GclBeIdAllData()
                 .withAddress(getGclBeIdAddress())
                 .withPicture(getBeIdPicture())
@@ -415,7 +415,7 @@ public final class MockResponseFactory {
                 .withRrnCertificate(getBeIdRrnCertificate());
     }
 
-    private static GclBeIdAllCertificates getGclBeIdAllCertificates() {
+    public static GclBeIdAllCertificates getGclBeIdAllCertificates() {
         return new GclBeIdAllCertificates()
                 .withRootCertificate(getBeIdRootCertificate())
                 .withCitizenCertificate(getBeIdCitizenCertificate())

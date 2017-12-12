@@ -11,6 +11,7 @@ import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -233,6 +234,11 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
+    public void authenticateWithHardwarePinPad() {
+        assertNotNull(container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256));
+    }
+
+    @Test
     public void sign() {
         String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
         assertNotNull(signedHash);
@@ -241,6 +247,11 @@ public class BeIdContainerTest extends AbstractTestClass {
     @Test(expected = VerifyPinException.class)
     public void signPinIncorrect() {
         container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
+    }
+
+    @Test
+    public void signWithHardwarePinPad() {
+        assertNotNull(container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256));
     }
 
     @Test
@@ -263,5 +274,201 @@ public class BeIdContainerTest extends AbstractTestClass {
     @Test
     public void getAllCertificatesClass() {
         assertEquals(BeIdAllCertificates.class, container.getAllCertificatesClass());
+    }
+
+    @Test
+    public void testBeIdAllCerts() {
+        BeIdAllCertificates certs = container.getAllCertificates();
+        T1cCertificate oldAuth = certs.getAuthenticationCertificate();
+        T1cCertificate oldRoot = certs.getAuthenticationCertificate();
+        T1cCertificate oldCitizen = certs.getAuthenticationCertificate();
+        T1cCertificate oldNonRep = certs.getAuthenticationCertificate();
+        T1cCertificate oldRrn = certs.getAuthenticationCertificate();
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+
+        certs.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, certs.getAuthenticationCertificate());
+        assertEquals(certs.withAuthenticationCertificate(oldAuth), certs);
+
+        certs.setRootCertificate(newCert);
+        assertEquals(newCert, certs.getRootCertificate());
+        assertEquals(certs.withRootCertificate(oldRoot), certs);
+
+        certs.setCitizenCertificate(newCert);
+        assertEquals(newCert, certs.getCitizenCertificate());
+        assertEquals(certs.withCitizenCertificate(oldCitizen), certs);
+
+        certs.setNonRepudiationCertificate(newCert);
+        assertEquals(newCert, certs.getNonRepudiationCertificate());
+        assertEquals(certs.withNonRepudiationCertificate(oldNonRep), certs);
+
+        certs.setRrnCertificate(newCert);
+        assertEquals(newCert, certs.getRrnCertificate());
+        assertEquals(certs.withRrnCertificate(oldRrn), certs);
+
+        assertTrue(StringUtils.isNotEmpty(container.getAllCertificates().toString()));
+    }
+
+    @Test
+    public void testBeIdAllDataClass() {
+        BeIdAllData data = container.getAllData();
+        T1cCertificate oldAuth = data.getAuthenticationCertificate();
+        T1cCertificate oldRoot = data.getAuthenticationCertificate();
+        T1cCertificate oldCitizen = data.getAuthenticationCertificate();
+        T1cCertificate oldNonRep = data.getAuthenticationCertificate();
+        T1cCertificate oldRrn = data.getAuthenticationCertificate();
+        GclBeIdAddress oldAddress = data.getAddress();
+        String oldPic = data.getPicture();
+        GclBeIdRn oldRn = data.getRn();
+
+        T1cCertificate newCert = new T1cCertificate().withBase64("base");
+
+        data.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, data.getAuthenticationCertificate());
+        assertEquals(data.withAuthenticationCertificate(oldAuth), data);
+
+        data.setRootCertificate(newCert);
+        assertEquals(newCert, data.getRootCertificate());
+        assertEquals(data.withRootCertificate(oldRoot), data);
+
+        data.setCitizenCertificate(newCert);
+        assertEquals(newCert, data.getCitizenCertificate());
+        assertEquals(data.withCitizenCertificate(oldCitizen), data);
+
+        data.setNonRepudiationCertificate(newCert);
+        assertEquals(newCert, data.getNonRepudiationCertificate());
+        assertEquals(data.withNonRepudiationCertificate(oldNonRep), data);
+
+        data.setRrnCertificate(newCert);
+        assertEquals(newCert, data.getRrnCertificate());
+        assertEquals(data.withRrnCertificate(oldRrn), data);
+
+        data.setPicture("picture");
+        assertEquals("picture", data.getPicture());
+        assertEquals(data.withPicture(oldPic), data);
+
+        GclBeIdRn newRn = new GclBeIdRn().withCardNumber("1");
+        data.setRn(newRn);
+        assertEquals(newRn, data.getRn());
+        assertEquals(data.withRn(oldRn), data);
+
+        GclBeIdAddress newAddress = new GclBeIdAddress().withMunicipality("Brussels");
+        data.setAddress(newAddress);
+        assertEquals(newAddress, data.getAddress());
+        assertEquals(data.withAddress(oldAddress), data);
+
+        assertTrue(StringUtils.isNotEmpty(data.toString()));
+    }
+
+    @Test
+    public void testGclBeIdAddress() {
+        GclBeIdAddress address = container.getBeIdAddress();
+        address.setMunicipality("municipality");
+        assertEquals("municipality", address.getMunicipality());
+        address.setRawData("raw");
+        assertEquals("raw", address.getRawData());
+        address.setSignature("sign");
+        assertEquals("sign", address.getSignature());
+        address.setStreetAndNumber("street");
+        assertEquals("street", address.getStreetAndNumber());
+        address.setVersion(1);
+        assertEquals(Integer.valueOf(1), address.getVersion());
+        address.setZipcode("1000");
+        assertEquals("1000", address.getZipcode());
+        assertEquals(address.withMunicipality("Brussels"), address);
+        assertEquals(address.withRawData("rawdata"), address);
+        assertEquals(address.withSignature("signature"), address);
+        assertEquals(address.withStreetAndNumber("street 1"), address);
+        assertEquals(address.withVersion(2), address);
+        assertEquals(address.withZipcode("9000"), address);
+        GclBeIdAddress obj1 = new GclBeIdAddress().withZipcode("1000");
+        GclBeIdAddress obj2 = new GclBeIdAddress().withZipcode("1000");
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertTrue(StringUtils.isNotEmpty(address.toString()));
+
+        assertNotEquals(obj1, "string");
+    }
+
+    @Test
+    public void testGclBeIdAllCertificates() {
+        GclBeIdAllCertificates obj1 = MockResponseFactory.getGclBeIdAllCertificates();
+        obj1.setCitizenCertificate("citizen");
+        assertEquals("citizen", obj1.getCitizenCertificate());
+        obj1.setNonRepudiationCertificate("non-rep");
+        assertEquals("non-rep", obj1.getNonRepudiationCertificate());
+        obj1 = MockResponseFactory.getGclBeIdAllCertificates();
+        GclBeIdAllCertificates obj2 = MockResponseFactory.getGclBeIdAllCertificates();
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertEquals(obj1, obj1);
+        assertEquals(obj1, obj2);
+        assertNotEquals(obj1, "string");
+        assertTrue(StringUtils.isNotEmpty(obj1.toString()));
+    }
+
+    @Test
+    public void testGclBeIdAllData() {
+        GclBeIdAllData obj1 = MockResponseFactory.getGclBeIdAllData();
+        obj1.setRootCertificate("root");
+        assertEquals("root", obj1.getRootCertificate());
+        GclBeIdRn rn = new GclBeIdRn().withCardNumber("1");
+        obj1.setRn(rn);
+        assertEquals(rn, obj1.getRn());
+        obj1 = MockResponseFactory.getGclBeIdAllData();
+        GclBeIdAllData obj2 = MockResponseFactory.getGclBeIdAllData();
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertEquals(obj1, obj2);
+        assertNotEquals(obj1, "string");
+        assertEquals(obj1, obj1);
+        assertTrue(StringUtils.isNotEmpty(obj1.toString()));
+    }
+
+    @Test
+    public void testGclBeIdRn() {
+        GclBeIdRn obj1 = container.getRnData();
+        obj1.setBirthDate("date");
+        assertEquals("date", obj1.getBirthDate());
+        obj1.setBirthLocation("Ghent");
+        assertEquals("Ghent", obj1.getBirthLocation());
+        obj1.setCardDeliveryMunicipality("Ghent");
+        assertEquals("Ghent", obj1.getCardDeliveryMunicipality());
+        obj1.setCardNumber("1");
+        assertEquals("1", obj1.getCardNumber());
+        obj1.setCardValidityDateBegin("2");
+        assertEquals("2", obj1.getCardValidityDateBegin());
+        obj1.setCardValidityDateEnd("3");
+        assertEquals("3", obj1.getCardValidityDateEnd());
+        obj1.setChipNumber("3");
+        assertEquals("3", obj1.getChipNumber());
+        obj1.setDocumentType("0");
+        assertEquals("0", obj1.getDocumentType());
+        obj1.setFirstNames("J");
+        assertEquals("J", obj1.getFirstNames());
+        obj1.setName("d");
+        assertEquals("d", obj1.getName());
+        obj1.setNationalNumber("1");
+        assertEquals("1", obj1.getNationalNumber());
+        obj1.setNationality("b");
+        assertEquals("b", obj1.getNationality());
+        obj1.setNobleCondition("1");
+        assertEquals("1", obj1.getNobleCondition());
+        obj1.setPictureHash("h");
+        assertEquals("h", obj1.getPictureHash());
+        obj1.setRawData("raw");
+        assertEquals("raw", obj1.getRawData());
+        obj1.setSex("f");
+        assertEquals("f", obj1.getSex());
+        obj1.setSignature("sig");
+        assertEquals("sig", obj1.getSignature());
+        obj1.setSpecialStatus("2");
+        assertEquals("2", obj1.getSpecialStatus());
+        obj1.setThirdName("f");
+        assertEquals("f", obj1.getThirdName());
+        obj1.setVersion(1);
+        assertEquals(Integer.valueOf(1), obj1.getVersion());
+        obj1 = MockResponseFactory.getGclBeIdRnData();
+        GclBeIdRn obj2 = MockResponseFactory.getGclBeIdRnData();
+        assertEquals(obj1.hashCode(), obj2.hashCode());
+        assertEquals(obj1, obj2);
+        assertNotEquals(obj1, "string");
     }
 }
