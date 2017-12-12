@@ -16,6 +16,9 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -44,6 +47,9 @@ public class JavaClientExample {
     private static T1cClient client;
 
     public static void main(String[] args) {
+
+        SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
+        System.out.println(config.getMac().toFile().getAbsolutePath());
         /*Config*/
         LibConfig conf = new LibConfig();
         conf.setEnvironment(Environment.DEV);
@@ -141,7 +147,32 @@ public class JavaClientExample {
                 ptIdUseCases(reader);
                 break;
             case SAFENET:
+                safeNetUseCases(reader);
                 break;
+        }
+    }
+
+    private static void safeNetUseCases(GclReader reader) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Please provide PIN: ");
+        String pin = scanner.nextLine();
+
+        SafeNetContainer container = client.getSafeNetContainer(reader);
+
+        System.out.println("Container data dump: " + container.getAllData().toString());
+
+        System.out.println("SafeNet info: " + container.getSafeNetInfo().toString());
+
+        List<GclSafeNetSlot> slots = container.getSafeNetSlots();
+        try {
+            for (GclSafeNetSlot slot : slots) {
+                System.out.println("SafeNet slot: " + slot.toString());
+                if (StringUtils.isNotEmpty(pin)) {
+                    System.out.println("Slot certificates: " + container.getSafeNetCertificates(slot.getSlotId(), pin));
+                }
+            }
+        } catch (VerifyPinException ex) {
+            System.out.println("PIN verification failed: " + ex.getMessage());
         }
     }
 

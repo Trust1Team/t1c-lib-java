@@ -128,6 +128,10 @@ public abstract class AbstractTestClass {
         return client;
     }
 
+    protected GclSafeNetRestClient getSafeNetRestClient() {
+        return gclSafeNetRestClient;
+    }
+
     @After
     public void cleanUp() {
         client = null;

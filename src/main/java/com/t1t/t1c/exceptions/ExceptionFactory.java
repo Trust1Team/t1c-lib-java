@@ -2,7 +2,6 @@ package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerException;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -217,30 +216,6 @@ public final class ExceptionFactory {
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
         return new OcvClientException(errorMessage, cause);
-    }
-
-    /**
-     * Creates a SafeNet container exception
-     *
-     * @param message
-     * @return
-     */
-    public static SafeNetContainerException safeNetContainerException(String message) {
-        return new SafeNetContainerException(message);
-    }
-
-    /**
-     * Creates a SafeNet container exception
-     *
-     * @param message
-     * @param cause
-     * @return
-     */
-    public static SafeNetContainerException safeNetContainerException(String message, RestException cause) {
-        String errorMessage = "Communication error with SafeNet Container";
-        if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
-        if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
-        return new SafeNetContainerException(errorMessage, cause);
     }
 
     /**

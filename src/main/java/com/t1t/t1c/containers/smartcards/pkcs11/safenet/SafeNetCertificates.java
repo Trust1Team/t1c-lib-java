@@ -13,17 +13,16 @@ public class SafeNetCertificates implements AllCertificates {
 
     private List<T1cCertificate> certificates;
 
+    public SafeNetCertificates(List<T1cCertificate> certificates) {
+        this.certificates = certificates;
+    }
+
     public List<T1cCertificate> getCertificates() {
         return certificates;
     }
 
     public void setCertificates(List<T1cCertificate> certificates) {
         this.certificates = certificates;
-    }
-
-    public SafeNetCertificates withCertificates(List<T1cCertificate> certificates) {
-        this.certificates = certificates;
-        return this;
     }
 
     @Override

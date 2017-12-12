@@ -12,17 +12,16 @@ public class SafeNetAllData implements AllData {
 
     private List<GclSafeNetSlot> slots;
 
+    public SafeNetAllData(List<GclSafeNetSlot> slots) {
+        this.slots = slots;
+    }
+
     public List<GclSafeNetSlot> getSlots() {
         return slots;
     }
 
     public void setSlots(List<GclSafeNetSlot> slots) {
         this.slots = slots;
-    }
-
-    public SafeNetAllData withSlots(List<GclSafeNetSlot> slots) {
-        this.slots = slots;
-        return this;
     }
 
     @Override

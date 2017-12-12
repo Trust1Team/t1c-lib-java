@@ -1,28 +1,44 @@
 package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllCertificates;
-import com.t1t.t1c.model.AllData;
-import com.t1t.t1c.model.DigestAlgorithm;
-
+import com.t1t.t1c.model.*;
+import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PinUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
+import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, AllData, AllCertificates> {
+public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, SafeNetAllData, AllCertificates> {
 
-    private SafeNetContainerConfiguration safeNetConfig;
+    private String modulePath;
+
+    // Default constructor for testing purposes
+    public SafeNetContainer(GclReader reader, GclSafeNetRestClient httpClient) {
+        this.config = new LibConfig();
+        this.reader = reader;
+        this.httpClient = httpClient;
+        this.type = ContainerType.SAFENET;
+        this.modulePath = "/usr/local/lib/libeTPkcs11.dylib";
+    }
 
     public SafeNetContainer(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, SafeNetContainerConfiguration safeNetConfig) {
         super(config, reader, httpClient, null);
-        this.safeNetConfig = safeNetConfig;
+        configureModulePath(safeNetConfig);
     }
 
     @Override
@@ -32,62 +48,65 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         this.httpClient = httpClient;
         this.pin = pin;
         this.type = ContainerType.SAFENET;
+        if (this.modulePath == null) {
+            configureModulePath(new SafeNetContainerConfiguration());
+        }
         return this;
     }
 
     @Override
     public List<String> getAllDataFilters() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<String> getAllCertificateFilters() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
-    public AllData getAllData() throws GenericContainerException {
-        return null;
+    public SafeNetAllData getAllData() throws GenericContainerException {
+        return new SafeNetAllData(getSafeNetSlots());
     }
 
     @Override
-    public AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public SafeNetAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+        return getAllData();
     }
 
     @Override
-    public AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+    public SafeNetAllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+        return getAllData();
     }
 
     @Override
     public AllCertificates getAllCertificates() throws GenericContainerException {
-        return null;
+        throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
     @Override
     public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        return getAllCertificates();
     }
 
     @Override
     public AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
-        return null;
+        return getAllCertificates();
     }
 
     @Override
     public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        return null;
+        throw ExceptionFactory.unsupportedOperationException("Container does not have PIN verification implementation");
     }
 
     @Override
     public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
-        return null;
+        throw ExceptionFactory.unsupportedOperationException("Container does not have authentication implementation");
     }
 
     @Override
     public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
-        return null;
+        throw ExceptionFactory.unsupportedOperationException("Container does not have signing implementation");
     }
 
     @Override
@@ -101,39 +120,62 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public Class<AllData> getAllDataClass() {
-        return null;
+    public Class<SafeNetAllData> getAllDataClass() {
+        return SafeNetAllData.class;
     }
 
     @Override
     public Class<AllCertificates> getAllCertificatesClass() {
-        return null;
+        throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
-    /*    public SafeNetContainer(String reader, ContainerRestClient httpClient, SafeNetContainerConfiguration configuration) {
-        super(reader, ContainerType.SAFENET, httpClient);
-        if (configuration != null) {
-            safeNetConfig = configuration;
-            boolean driverExists = false;
-            if (SystemUtils.IS_OS_WINDOWS) {
-                module = safeNetConfig.getWindows().toString();
-                driverExists = safeNetConfig.getWindows().toFile().exists();
-            } else if (SystemUtils.IS_OS_MAC) {
-                module = safeNetConfig.getMac().toString();
-                driverExists = safeNetConfig.getMac().toFile().exists();
-            } else if (SystemUtils.IS_OS_LINUX) {
-                module = safeNetConfig.getLinux().toString();
-                driverExists = safeNetConfig.getLinux().toFile().exists();
-            } else {
-                throw ExceptionFactory.unsupportedOperationException("Unsupported OS: " + SystemUtils.OS_NAME);
-            }
-            if (!driverExists && getConfig().getEnvironment() != Environment.DEV) {
-                throw ExceptionFactory.safeNetContainerException("SafeNet container could not find driver at configured location: " + this.module);
-            }
+    public SafeNetCertificates getSafeNetCertificates(Integer slotId, String pin, Boolean... parse) throws VerifyPinException, RestException {
+        Preconditions.checkNotNull(slotId, "slotId must be provided");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
+        try {
+            return new SafeNetCertificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getSafeNetCertificates(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath).withSlotId(slotId).withPin(pin))), parse));
+        } catch (RestException ex) {
+            throw PinUtil.checkPinExceptionMessage(ex);
         }
-        else {
-            throw ExceptionFactory.safeNetContainerException("SafeNet container configuration not set");
-        }
-    }*/
+    }
 
+    public GclSafeNetInfo getSafeNetInfo() throws RestException {
+        return RestExecutor.returnData(httpClient.getSafeNetInfo(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath)));
+    }
+
+    public List<GclSafeNetSlot> getSafeNetSlots() throws RestException {
+        return getSafeNetSlots(null);
+    }
+
+    public List<GclSafeNetSlot> getSafeNetSlotsWithTokensPresent(boolean tokenPresent) throws RestException {
+        return getSafeNetSlots(tokenPresent);
+    }
+
+    public String getModulePath() {
+        return modulePath;
+    }
+
+    private List<GclSafeNetSlot> getSafeNetSlots(Boolean tokenPresent) {
+        return RestExecutor.returnData(httpClient.getSafeNetSlots(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath), tokenPresent));
+    }
+
+    private void configureModulePath(SafeNetContainerConfiguration safeNetConfig) {
+        File driver = null;
+        SafeNetContainerConfiguration containerConfig = safeNetConfig;
+        if (containerConfig == null) {
+            containerConfig = new SafeNetContainerConfiguration();
+        }
+        if (SystemUtils.IS_OS_MAC) {
+            driver = containerConfig.getMac().toFile();
+        }
+        if (SystemUtils.IS_OS_WINDOWS) {
+            driver = containerConfig.getWindows().toFile();
+        }
+        if (SystemUtils.IS_OS_LINUX) {
+            driver = containerConfig.getLinux().toFile();
+        }
+        Preconditions.checkArgument(driver != null, "No configuration found for OS: " + SystemUtils.OS_NAME);
+        Preconditions.checkArgument(driver.exists(), "Driver not found: " + driver.getAbsolutePath());
+        modulePath = driver.getAbsolutePath();
+    }
 }

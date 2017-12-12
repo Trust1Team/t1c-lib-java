@@ -1540,6 +1540,70 @@ public final class MockResponseFactory {
         return new GclPivFacialImage().withImage(getBeIdPicture());
     }
 
+    //
+    // SafeNet responses
+    //
+
+    public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
+        return getSuccessResponse(getGclSafeNetInfo());
+    }
+
+    public static T1cResponse<List<GclSafeNetSlot>> getSafeNetSlotsResponse(Boolean tokenPresent) {
+        List<GclSafeNetSlot> slots;
+        if (tokenPresent == null) {
+            slots = Arrays.asList(getGclSafeNetSlotWithToken(), getGclSafeNetSlotWithoutToken());
+        } else if (tokenPresent) {
+            slots = Collections.singletonList(getGclSafeNetSlotWithToken());
+        } else {
+            slots = Collections.singletonList(getGclSafeNetSlotWithoutToken());
+        }
+        return getSuccessResponse(slots);
+    }
+
+    public static T1cResponse<List<String>> getSafeNetCertificatesResponse(String pin) {
+        if (!"1111".equals(pin)) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+                    "  \"code\": 103,\n" +
+                    "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
+                    "  \"success\": false\n" +
+                    "}");
+        }
+        return getSuccessResponse(getSafeNetCertificates());
+    }
+
+    public static List<String> getSafeNetCertificates() {
+        //TODO - Return actual SafeNet test certificates
+        return getLuxTrustRootCertificates();
+    }
+
+    public static GclSafeNetInfo getGclSafeNetInfo() {
+        return new GclSafeNetInfo()
+                .withCryptokiVersion("2.20")
+                .withManufacturerId("SafeNet, Inc.")
+                .withFlags(7)
+                .withLibraryDescription("SafeNet eToken PKCS#11")
+                .withLibraryVersion("9.1");
+    }
+
+    public static GclSafeNetSlot getGclSafeNetSlotWithToken() {
+        return new GclSafeNetSlot()
+                .withSlotId(0)
+                .withDescription("SafeNet eToken 5100")
+                .withFlags(1)
+                .withHardwareVersion("2.0")
+                .withFirmwareVersion("0.0");
+    }
+
+    public static GclSafeNetSlot getGclSafeNetSlotWithoutToken() {
+        return new GclSafeNetSlot()
+                .withSlotId(0)
+                .withDescription("SafeNet eToken 5100")
+                .withFlags(0)
+                .withHardwareVersion("2.0")
+                .withFirmwareVersion("0.0");
+    }
+
+
     // TODO clean up the rest of the responses below
 
     public static T1cResponse<String> getPublicKeyResponseDer() {
@@ -1564,41 +1628,6 @@ public final class MockResponseFactory {
 
     public static DsDownloadPath getDownloadPath() {
         return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
-    }
-
-
-    public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
-        String json = "{\n" +
-                "\"cryptoki_version\": \"2.20\",\n" +
-                "\"manufacturer_id\": \"SafeNet, Inc.\",\n" +
-                "\"flags\": 7,\n" +
-                "\"library_description\": \"SafeNet eToken PKCS#11\",\n" +
-                "\"library_version\": \"9.1\"\n" +
-                "}";
-        return getSuccessResponse(GSON.fromJson(json, GclSafeNetInfo.class));
-    }
-
-    public static T1cResponse<List<GclSafeNetSlot>> getSafeNetSlotsResponse(Boolean tokenPresent) {
-        List<GclSafeNetSlot> slots = new ArrayList<>();
-        String jsonWithToken = "{\n" +
-                "\"slot_id\": 0,\n" +
-                "\"description\": \"SafeNet eToken 5100\",\n" +
-                "\"flags\": 7,\n" +
-                "\"hardware_version\": \"2.0\",\n" +
-                "\"firmware_version\": \"0.0\"\n" +
-                "}";
-        if (tokenPresent == null || !tokenPresent) {
-            String jsonWithoutToken = "{\n" +
-                    "\"slot_id\": 1,\n" +
-                    "\"description\": \"\",\n" +
-                    "\"flags\": 2,\n" +
-                    "\"hardware_version\": \"2.0\",\n" +
-                    "\"firmware_version\": \"0.0\"\n" +
-                    "}";
-            slots.add(GSON.fromJson(jsonWithoutToken, GclSafeNetSlot.class));
-        }
-        slots.add(GSON.fromJson(jsonWithToken, GclSafeNetSlot.class));
-        return getSuccessResponse(slots);
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {
