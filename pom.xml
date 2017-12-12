@@ -4,7 +4,7 @@
 
     <groupId>com.t1t.t1c</groupId>
     <artifactId>Connector</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Connector</name>
@@ -364,6 +364,7 @@
                         </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPubKey.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json
                         </sourcePath>
                         <!-- More to come -->
@@ -377,7 +378,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <!--Uncomment the goal in order to generate kong model-->
+                        <!--Uncomment the goal in order to generate t1c model-->
                         <!--<goals>
                             <goal>generate</goal>
                         </goals>-->
@@ -407,9 +408,6 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <!--            <properties>
-                            <appconfig.file>application</appconfig.file>
-                        </properties>-->
         </profile>
     </profiles>
 

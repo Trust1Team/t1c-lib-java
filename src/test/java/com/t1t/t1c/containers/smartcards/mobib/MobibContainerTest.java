@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
