@@ -19,7 +19,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -171,7 +170,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataWithParsing() {
-        BeIdAllData data = container.getAllData( true);
+        BeIdAllData data = container.getAllData(true);
         assertNotNull(data);
         assertNotNull(data.getRootCertificate());
         assertNotNull(data.getRootCertificate().getParsed());
@@ -201,7 +200,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesWithParsing() {
-        BeIdAllCertificates certs = container.getAllCertificates( true);
+        BeIdAllCertificates certs = container.getAllCertificates(true);
         assertNotNull(certs);
         assertNotNull(certs.getRootCertificate());
         assertNotNull(certs.getRootCertificate().getParsed());

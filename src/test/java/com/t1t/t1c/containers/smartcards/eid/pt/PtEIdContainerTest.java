@@ -18,7 +18,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.Assert.*;
 
@@ -73,7 +72,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataParsed() {
-        PtIdAllData data = container.getAllData( true);
+        PtIdAllData data = container.getAllData(true);
         assertNotNull(data);
         assertNotNull(data.getRootAuthenticationCertificate());
         assertNotNull(data.getRootAuthenticationCertificate().getParsed());

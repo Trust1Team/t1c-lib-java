@@ -2,7 +2,6 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.exceptions.RestException;
 
 /**
  * @author Guillaume Vandecasteele

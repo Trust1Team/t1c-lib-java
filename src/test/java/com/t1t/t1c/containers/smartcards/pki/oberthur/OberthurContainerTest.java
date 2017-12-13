@@ -3,8 +3,6 @@ package com.t1t.t1c.containers.smartcards.pki.oberthur;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.pki.aventra.AventraAllCertificates;
-import com.t1t.t1c.containers.smartcards.pki.aventra.AventraAllData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;

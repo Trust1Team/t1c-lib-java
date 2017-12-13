@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclAventraPinResetRequest {
@@ -22,18 +22,14 @@ public class GclAventraPinResetRequest {
     private String privateKeyReference;
 
     /**
-     * 
-     * @return
-     *     The puk
+     * @return The puk
      */
     public String getPuk() {
         return puk;
     }
 
     /**
-     * 
-     * @param puk
-     *     The puk
+     * @param puk The puk
      */
     public void setPuk(String puk) {
         this.puk = puk;
@@ -45,18 +41,14 @@ public class GclAventraPinResetRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The newPin
+     * @return The newPin
      */
     public String getNewPin() {
         return newPin;
     }
 
     /**
-     * 
-     * @param newPin
-     *     The new_pin
+     * @param newPin The new_pin
      */
     public void setNewPin(String newPin) {
         this.newPin = newPin;
@@ -68,18 +60,14 @@ public class GclAventraPinResetRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The privateKeyReference
+     * @return The privateKeyReference
      */
     public String getPrivateKeyReference() {
         return privateKeyReference;
     }
 
     /**
-     * 
-     * @param privateKeyReference
-     *     The private_key_reference
+     * @param privateKeyReference The private_key_reference
      */
     public void setPrivateKeyReference(String privateKeyReference) {
         this.privateKeyReference = privateKeyReference;

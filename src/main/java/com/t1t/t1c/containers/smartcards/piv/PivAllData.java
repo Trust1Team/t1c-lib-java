@@ -6,12 +6,12 @@ import com.t1t.t1c.utils.CertificateUtil;
 
 public class PivAllData implements AllData {
 
-    
+
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
     private GclPivFacialImage facialImage;
     private GclPivPrintedInformation printedInformation;
-    
+
     public PivAllData(GclPivAllData data, Boolean... parseCertificate) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.signingCertificate = CertificateUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
@@ -56,7 +56,7 @@ public class PivAllData implements AllData {
         this.signingCertificate = signingCertificate;
         return this;
     }
-    
+
 
     /**
      * @return The facialImage

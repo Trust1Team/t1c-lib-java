@@ -197,6 +197,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates an unsupported operation exception
+     *
      * @param message the message
      * @return an UnsupportedOperationException
      */

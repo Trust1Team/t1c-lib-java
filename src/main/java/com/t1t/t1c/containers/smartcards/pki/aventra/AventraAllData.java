@@ -1,7 +1,5 @@
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAllData;
-import com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdData;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;

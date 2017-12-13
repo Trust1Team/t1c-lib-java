@@ -2,11 +2,9 @@ package com.t1t.t1c.containers;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
-import com.t1t.t1c.rest.RestExecutor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 

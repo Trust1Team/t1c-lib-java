@@ -36,7 +36,7 @@ public class LibConfig {
         return version;
     }
 
-    void setVersion(String version) {
+    public void setVersion(String version) {
         this.version = version;
     }
 
@@ -44,7 +44,7 @@ public class LibConfig {
         return build;
     }
 
-    void setBuild(String build) {
+    public void setBuild(String build) {
         this.build = build;
     }
 

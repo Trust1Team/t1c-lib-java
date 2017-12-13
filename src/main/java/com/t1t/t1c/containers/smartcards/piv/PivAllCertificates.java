@@ -1,6 +1,5 @@
 package com.t1t.t1c.containers.smartcards.piv;
 
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.utils.CertificateUtil;

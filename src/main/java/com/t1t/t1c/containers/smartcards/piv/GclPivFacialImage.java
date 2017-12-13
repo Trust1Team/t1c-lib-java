@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.containers.smartcards.piv;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclPivFacialImage {
@@ -16,18 +16,14 @@ public class GclPivFacialImage {
     private String image;
 
     /**
-     * 
-     * @return
-     *     The image
+     * @return The image
      */
     public String getImage() {
         return image;
     }
 
     /**
-     * 
-     * @param image
-     *     The image
+     * @param image The image
      */
     public void setImage(String image) {
         this.image = image;

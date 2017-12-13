@@ -1,7 +1,5 @@
 package com.t1t.t1c.containers.smartcards.pki.aventra;
 
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
-import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;

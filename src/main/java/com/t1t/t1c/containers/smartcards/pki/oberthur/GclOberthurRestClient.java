@@ -1,7 +1,5 @@
 package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
-import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates;
-import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;

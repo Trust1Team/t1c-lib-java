@@ -3,8 +3,6 @@ package com.t1t.t1c.containers.smartcards.eid.dni;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllCertificates;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;

@@ -16,12 +16,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -75,7 +73,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllData() {
-        LuxIdAllData data =  container.getAllData();
+        LuxIdAllData data = container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getNonRepudiationCertificate());
         assertNotNull(data.getAuthenticationCertificate());
@@ -87,7 +85,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataFiltered() {
-        LuxIdAllData data =  container.getAllData(Arrays.asList("biometric", "root-certificates"));
+        LuxIdAllData data = container.getAllData(Arrays.asList("biometric", "root-certificates"));
         assertNotNull(data);
         assertNull(data.getNonRepudiationCertificate());
         assertNull(data.getAuthenticationCertificate());
@@ -99,7 +97,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataParsed() {
-        LuxIdAllData data = container.getAllData( true);
+        LuxIdAllData data = container.getAllData(true);
         assertNotNull(data);
         assertNotNull(data.getAuthenticationCertificate());
         assertNotNull(data.getAuthenticationCertificate().getParsed());
@@ -116,7 +114,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesFiltered() {
-        LuxIdAllCertificates certs =  container.getAllCertificates(Arrays.asList("authentication-certificate", "non-repudiation-certificate"));
+        LuxIdAllCertificates certs = container.getAllCertificates(Arrays.asList("authentication-certificate", "non-repudiation-certificate"));
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
         assertNull(certs.getRootCertificates());
@@ -125,7 +123,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllCertificatesParsed() {
-        LuxIdAllCertificates certs =  container.getAllCertificates(true);
+        LuxIdAllCertificates certs = container.getAllCertificates(true);
         assertNotNull(certs);
         assertNotNull(certs.getAuthenticationCertificate());
         assertNotNull(certs.getAuthenticationCertificate().getParsed());

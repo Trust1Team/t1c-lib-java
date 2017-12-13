@@ -7,11 +7,8 @@ import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
@@ -141,7 +138,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     public Class<PivAllCertificates> getAllCertificatesClass() {
         return PivAllCertificates.class;
     }
-    
+
     public GclPivPrintedInformation getPrintedInformation() throws RestException {
         return RestExecutor.returnData(httpClient.getPrintedInformation(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPin(this.pin)));
     }

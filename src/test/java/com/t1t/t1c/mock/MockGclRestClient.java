@@ -1,7 +1,10 @@
 package com.t1t.t1c.mock;
 
 import com.t1t.t1c.MockResponseFactory;
-import com.t1t.t1c.core.*;
+import com.t1t.t1c.core.GclContainer;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.GclRestClient;
+import com.t1t.t1c.core.GclStatus;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;

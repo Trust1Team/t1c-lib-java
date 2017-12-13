@@ -1,7 +1,5 @@
 package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
-import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
-import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;

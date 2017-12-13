@@ -35,7 +35,7 @@ public final class ErrorCodes {
     public static final int GCL_ADMIN_REST_ERROR                        = 2002;
     public static final int DS_REST_ERROR                               = 2003;
     public static final int GENERIC_CONTAINER_EXCEPTION                 = 2004;
-    public static final int AVENTRA_CONTAINER_REST_ERROR                   = 2005;
+    public static final int AVENTRA_CONTAINER_REST_ERROR                = 2005;
     public static final int LUXID_CONTAINER_REST_ERROR                  = 2006;
     public static final int LUXTRUST_CONTAINER_REST_ERROR               = 2007;
     public static final int DNIE_CONTAINER_REST_ERROR                   = 2008;

@@ -1,7 +1,5 @@
-
 package com.t1t.t1c.containers.smartcards.piv;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.t1t.t1c.model.AllData;
@@ -9,9 +7,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
-public class GclPivAllData implements AllData
-{
+public class GclPivAllData implements AllData {
 
     @SerializedName("printed_information")
     @Expose
@@ -27,18 +26,14 @@ public class GclPivAllData implements AllData
     private GclPivFacialImage facialImage;
 
     /**
-     * 
-     * @return
-     *     The printedInformation
+     * @return The printedInformation
      */
     public GclPivPrintedInformation getPrintedInformation() {
         return printedInformation;
     }
 
     /**
-     * 
-     * @param printedInformation
-     *     The printed_information
+     * @param printedInformation The printed_information
      */
     public void setPrintedInformation(GclPivPrintedInformation printedInformation) {
         this.printedInformation = printedInformation;
@@ -50,18 +45,14 @@ public class GclPivAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The authenticationCertificate
+     * @return The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * 
-     * @param authenticationCertificate
-     *     The authentication_certificate
+     * @param authenticationCertificate The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -73,18 +64,14 @@ public class GclPivAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The signingCertificate
+     * @return The signingCertificate
      */
     public String getSigningCertificate() {
         return signingCertificate;
     }
 
     /**
-     * 
-     * @param signingCertificate
-     *     The signing_certificate
+     * @param signingCertificate The signing_certificate
      */
     public void setSigningCertificate(String signingCertificate) {
         this.signingCertificate = signingCertificate;
@@ -96,18 +83,14 @@ public class GclPivAllData implements AllData
     }
 
     /**
-     * 
-     * @return
-     *     The facialImage
+     * @return The facialImage
      */
     public GclPivFacialImage getFacialImage() {
         return facialImage;
     }
 
     /**
-     * 
-     * @param facialImage
-     *     The facial_image
+     * @param facialImage The facial_image
      */
     public void setFacialImage(GclPivFacialImage facialImage) {
         this.facialImage = facialImage;
