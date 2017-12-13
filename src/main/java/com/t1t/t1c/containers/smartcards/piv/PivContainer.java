@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -161,6 +162,12 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     public List<DigestAlgorithm> getAllAlgoRefsForSigning() throws RestException {
         return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getTypeId(), reader.getId())));
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        //TODO
+        return null;
     }
 
     /*public List<String> getAllKeyRefs() {

@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -179,5 +180,10 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         Preconditions.checkArgument(driver != null, "No configuration found for OS: " + SystemUtils.OS_NAME);
         Preconditions.checkArgument(driver.exists(), "Driver not found: " + driver.getAbsolutePath());
         modulePath = driver.getAbsolutePath();
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not implement data dump");
     }
 }

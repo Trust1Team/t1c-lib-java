@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -15,8 +16,7 @@ import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -26,6 +26,7 @@ import java.util.List;
 public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestClient, BeIdAllData, BeIdAllCertificates> {
 
     private static final String PRIVATE_KEY_REFERENCE = "non-repudiation";
+    private static final String SPACE = " ";
 
     public BeIdContainer(LibConfig config, GclReader reader, GclBeIdRestClient gclBeIdRestClient) {
         super(config, reader, gclBeIdRestClient, null);
@@ -175,5 +176,62 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     @Override
     public Class<BeIdAllCertificates> getAllCertificatesClass() {
         return BeIdAllCertificates.class;
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        BeIdAllData allData = getAllData(true);
+        GclBeIdRn rn = allData.getRn();
+        data.setDateOfBirth(rn.getBirthDate());
+        data.setNationality(rn.getNationality());
+        data.setGivenName(rn.getFirstNames() + SPACE + rn.getThirdName());
+        data.setSurName(rn.getName());
+        data.setFullName(data.getGivenName() + SPACE + rn.getName());
+        GclBeIdAddress address = allData.getAddress();
+        data.setStreetAndNumber(address.getStreetAndNumber());
+        data.setMunicipality(address.getMunicipality());
+        data.setZipCode(address.getZipcode());
+        data.setBase64Picture(allData.getPicture());
+        data.setAuthenticationCertificateChain(getAuthenticationCertificateChain(allData));
+        data.setSigningCertificateChain(getSigningCertificateChain(allData));
+        List<Map<Integer, T1cCertificate>> certChains = new ArrayList<>();
+        certChains.add(data.getAuthenticationCertificateChain());
+        certChains.add(data.getSigningCertificateChain());
+        certChains.add(getCitizenCertificateChain(allData));
+        certChains.add(getRrnCertificateChain(allData));
+        data.setCertificateChains(certChains);
+        data.setAllCertificates(getCertificatesMap(allData));
+        return data;
+    }
+
+    private Map<Integer, T1cCertificate> getAuthenticationCertificateChain(BeIdAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate(), allData.getAuthenticationCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getSigningCertificateChain(BeIdAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate(), allData.getNonRepudiationCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getRrnCertificateChain(BeIdAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getRrnCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getCitizenCertificateChain(BeIdAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<String, T1cCertificate> getCertificatesMap(BeIdAllData allData) {
+        Map<String, T1cCertificate> certs = new HashMap<>();
+        certs.put("root-certificate", allData.getRootCertificate());
+        certs.put("citizen-certificate", allData.getCitizenCertificate());
+        certs.put("rrn-certificate", allData.getRrnCertificate());
+        certs.put("authentication-certificate", allData.getAuthenticationCertificate());
+        certs.put("non-repudiation-certificate", allData.getNonRepudiationCertificate());
+        return certs;
     }
 }

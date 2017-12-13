@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -184,5 +185,11 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        //TODO
+        return null;
     }
 }

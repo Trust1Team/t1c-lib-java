@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -140,5 +141,11 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
         return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        //TODO
+        return null;
     }
 }

@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -17,8 +19,7 @@ import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -166,5 +167,40 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     @Override
     public Class<LuxIdAllCertificates> getAllCertificatesClass() {
         return LuxIdAllCertificates.class;
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        LuxIdAllData allData = getAllData(true);
+        //TODO continue populating object
+        return data;
+    }
+
+    private Map<Integer, T1cCertificate> getAuthenticationCertificateChain(LuxIdAllData allData) {
+        List<T1cCertificate> certs = new ArrayList<>(allData.getRootCertificates());
+        certs.add(allData.getAuthenticationCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getSigningCertificateChain(LuxIdAllData allData) {
+        List<T1cCertificate> certs = new ArrayList<>(allData.getRootCertificates());
+        certs.add(getNonRepudiationCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getRootCertificatesChain(LuxIdAllData allData) {
+        List<T1cCertificate> certs = new ArrayList<>(allData.getRootCertificates());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<String, T1cCertificate> getCertificatesMap(LuxIdAllData allData) {
+        Map<String, T1cCertificate> certs = new HashMap<>();
+        for (int i = 0; i < allData.getRootCertificates().size(); i++) {
+            certs.put("root-certificate-" + i + 1, allData.getRootCertificates().get(i));
+        }
+        certs.put("authentication-certificate", allData.getAuthenticationCertificate());
+        certs.put("non-repudiation-certificate", allData.getNonRepudiationCertificate());
+        return certs;
     }
 }

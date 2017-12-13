@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -16,13 +18,17 @@ import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient, DnieAllData, DnieAllCertificates> {
+
+    private static final String SPACE = " ";
 
     public DnieContainer(LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
         super(config, reader, gclDniRestClient, null);
@@ -152,5 +158,38 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     @Override
     public Class<DnieAllCertificates> getAllCertificatesClass() {
         return DnieAllCertificates.class;
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        DnieAllData allData = getAllData(true);
+        data.setAllCertificates(getCertificatesMap(allData));
+        data.setSigningCertificateChain(getSigningCertificateChain(allData));
+        data.setAuthenticationCertificateChain(getAuthenticationCertificateChain(allData));
+        data.setCertificateChains(Arrays.asList(data.getAuthenticationCertificateChain(), data.getSigningCertificateChain()));
+        GclDnieInfo info = allData.getInfo();
+        data.setGivenName(info.getFirstName());
+        data.setSurName(info.getFirstLastName() + SPACE + info.getSecondLastName());
+        data.setFullName(info.getFirstName() + SPACE + data.getSurName());
+        return data;
+    }
+
+    private Map<Integer, T1cCertificate> getAuthenticationCertificateChain(DnieAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getIntermediateCertificate(), allData.getAuthenticationCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<Integer, T1cCertificate> getSigningCertificateChain(DnieAllData allData) {
+        List<T1cCertificate> certs = Arrays.asList(allData.getIntermediateCertificate(), allData.getSigningCertificate());
+        return CertificateUtil.orderCertificates(certs);
+    }
+
+    private Map<String, T1cCertificate> getCertificatesMap(DnieAllData allData) {
+        Map<String, T1cCertificate> certs = new HashMap<>();
+        certs.put("intermediate-certificate", allData.getIntermediateCertificate());
+        certs.put("authentication-certificate", allData.getAuthenticationCertificate());
+        certs.put("signing-certificate", allData.getSigningCertificate());
+        return certs;
     }
 }

@@ -243,4 +243,8 @@ public final class ExceptionFactory {
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new LuxIdContainerException(errorMessage);
     }
+
+    public static CertificateOrderingException certificateOrderingException(String message) {
+        return new CertificateOrderingException(message);
+    }
 }

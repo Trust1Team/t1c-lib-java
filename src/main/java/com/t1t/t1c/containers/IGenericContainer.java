@@ -1,5 +1,6 @@
 package com.t1t.t1c.containers;
 
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -126,4 +127,12 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @throws GenericContainerException: on failure
      */
     String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
+
+    /**
+     * Dumps the available container data
+     * @return the container data
+     * @throws RestException: on communication failure
+     * @throws UnsupportedOperationException: if the container has no data to dump
+     */
+    ContainerData dumpData() throws RestException, UnsupportedOperationException;
 }
