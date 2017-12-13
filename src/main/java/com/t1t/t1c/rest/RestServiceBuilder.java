@@ -71,7 +71,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getDsUri(), config.getDsContextPath()), DsRestClient.class, config.getApiKey(), null);
+        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(UriUtils.constructURI(config.getOcvUri(), config.getOcvContextPath()), OcvRestClient.class, config.getApiKey(), null);
+        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), null);
     }
 
     /**
@@ -200,12 +200,12 @@ public final class RestServiceBuilder {
         X509TrustManager x509TrustManager = new X509TrustManager() {
             @Override
             public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
+                // Do nothing
             }
 
             @Override
             public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
-
+                // Do nothing
             }
 
             @Override

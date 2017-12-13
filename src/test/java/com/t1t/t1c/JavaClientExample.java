@@ -24,6 +24,7 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
@@ -38,25 +39,20 @@ import java.util.*;
  */
 public class JavaClientExample {
     /*Uris*/
-    private static final String URI_GATEWAY = "https://accapim.t1t.be";
-    private static final String OCV_CONTEXT_PATH = "/trust1team/ocv-api/v1";
-    private static final String DS_CONTEXT_PATH = "/trust1team/gclds/v1";
+    private static final String OCV_URI = "https://accapim.t1t.be/trust1team/ocv-api/v1";
+    private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
     private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
     private static T1cClient client;
 
     public static void main(String[] args) {
-
-        SafeNetContainerConfiguration config = new SafeNetContainerConfiguration();
-        System.out.println(config.getMac().toFile().getAbsolutePath());
+        
         /*Config*/
         LibConfig conf = new LibConfig();
         conf.setEnvironment(Environment.DEV);
-        conf.setDsUri(URI_GATEWAY);
-        conf.setOcvUri(URI_GATEWAY);
-        conf.setOcvContextPath(OCV_CONTEXT_PATH);
-        conf.setDsContextPath(DS_CONTEXT_PATH);
+        conf.setDsUri(DS_URI);
+        conf.setOcvUri(OCV_URI);
         conf.setGclClientUri(URI_T1C_GCL);
         conf.setApiKey(API_KEY);
         conf.setHardwarePinPadForced(false);
@@ -93,8 +89,10 @@ public class JavaClientExample {
         System.out.print("Provide PIN (optional, press enter to skip): ");
         String pin = scan.nextLine();
         IGenericContainer container = client.getGenericContainer(reader, pin);
-        System.out.println("Data dump: " + container.getAllData());
+        AllData data = container.getAllData();
+        System.out.println("Data dump: " + data);
         System.out.println("Certificate dump: " + container.getAllCertificates());
+
         boolean pinVerified = container.verifyPin(pin);
         System.out.println("PIN verified: " + pinVerified);
         if (pinVerified) {
@@ -105,6 +103,7 @@ public class JavaClientExample {
             System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
         }
     }
+
 
     private static void executeReaderSpecificContainerFunctionality(GclReader reader) {
         ContainerType type = ContainerUtil.determineContainer(reader.getCard());

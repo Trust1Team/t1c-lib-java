@@ -1,5 +1,12 @@
 package com.t1t.t1c.configuration;
 
+import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.utils.UriUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
 /**
  * Created by michallispashidis on 04/11/2017.
  */
@@ -10,8 +17,10 @@ public class LibConfig {
     // Custom properties
     private Environment environment;
     private String gclClientUri;
+    private String dsDomain;
     private String dsUri;
     private String dsContextPath;
+    private String ocvDomain;
     private String ocvUri;
     private String ocvContextPath;
     private String apiKey;
@@ -72,19 +81,91 @@ public class LibConfig {
         this.gclClientUri = gclClientUri;
     }
 
+    public String getDsDomain() {
+        if (StringUtils.isEmpty(dsDomain) && StringUtils.isNotEmpty(dsUri)) {
+            try {
+                dsDomain = UriUtils.getDomain(dsUri);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid OCV uri: " + dsUri);
+            }
+        }
+        return dsDomain;
+    }
+
+    public void setDsDomain(String dsDomain) {
+        if (StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
+            try {
+                dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
+            }
+        }
+        this.dsDomain = dsDomain;
+    }
+
     public String getDsContextPath() {
+        if (StringUtils.isEmpty(dsContextPath) && StringUtils.isNotEmpty(dsUri)) {
+            try {
+                dsContextPath = UriUtils.getContextPath(dsUri);
+            } catch (MalformedURLException ex) {
+                throw ExceptionFactory.configException("Invalid OCV uri: " + dsUri);
+            }
+        }
         return dsContextPath;
     }
 
     public void setDsContextPath(String dsContextPath) {
+        if (StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
+            try {
+                dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
+            }
+        }
         this.dsContextPath = dsContextPath;
     }
 
+    public String getOcvDomain() {
+        if (StringUtils.isEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvUri)) {
+            try {
+                ocvDomain = UriUtils.getDomain(ocvUri);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid OCV uri: " + ocvUri);
+            }
+        }
+        return ocvDomain;
+    }
+
+    public void setOcvDomain(String ocvDomain) {
+        if (StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
+            try {
+                ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
+            }
+        }
+        this.ocvDomain = ocvDomain;
+    }
+
     public String getOcvContextPath() {
+        if (StringUtils.isEmpty(ocvContextPath) && StringUtils.isNotEmpty(ocvUri)) {
+            try {
+                ocvContextPath = UriUtils.getContextPath(ocvUri);
+            } catch (MalformedURLException ex) {
+                throw ExceptionFactory.configException("Invalid OCV uri: " + ocvUri);
+            }
+        }
         return ocvContextPath;
     }
 
     public void setOcvContextPath(String ocvContextPath) {
+        if (StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
+            try {
+                ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
+            }
+        }
         this.ocvContextPath = ocvContextPath;
     }
 
@@ -129,18 +210,52 @@ public class LibConfig {
     }
 
     public String getDsUri() {
+        if (StringUtils.isEmpty(dsUri) && StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
+            try {
+                this.dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
+            }
+        }
         return this.dsUri;
     }
 
     public void setDsUri(String dsUri) {
+        if (StringUtils.isNotEmpty(dsUri)) {
+            try {
+                String domain = UriUtils.getDomain(dsUri);
+                String contextPath = UriUtils.getContextPath(dsUri);
+                dsDomain = domain;
+                dsContextPath = contextPath;
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI: " + dsUri);
+            }
+        }
         this.dsUri = dsUri;
     }
 
     public String getOcvUri() {
+        if (StringUtils.isEmpty(ocvUri) && StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
+            try {
+                this.ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
+            }
+        }
         return this.ocvUri;
     }
 
     public void setOcvUri(String ocvUri) {
+        if (StringUtils.isNotEmpty(ocvUri)) {
+            try {
+                String domain = UriUtils.getDomain(ocvUri);
+                String contextPath = UriUtils.getContextPath(ocvUri);
+                ocvDomain = domain;
+                ocvContextPath = contextPath;
+            } catch (MalformedURLException | URISyntaxException ex) {
+                throw ExceptionFactory.configException("Invalid URI: " + ocvUri);
+            }
+        }
         this.ocvUri = ocvUri;
     }
 

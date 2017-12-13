@@ -3,6 +3,8 @@ package com.t1t.t1c.containers;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.model.AllCertificates;
+import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 
 import java.util.List;
@@ -11,7 +13,7 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public interface IGenericContainer<V, W> extends IGclContainer {
+public interface IGenericContainer<V extends AllData, W extends AllCertificates> extends IGclContainer {
     /**
      * Returns the implementation class of the AllData interface
      *
