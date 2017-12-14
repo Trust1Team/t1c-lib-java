@@ -179,7 +179,19 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        BeIdAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getNonRepudiationCertificate(), certs.getCitizenCertificate(), certs.getRootCertificate());
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        BeIdAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getAuthenticationCertificate(), certs.getCitizenCertificate(), certs.getRootCertificate());
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         BeIdAllData allData = getAllData(true);
         GclBeIdRn rn = allData.getRn();
@@ -188,41 +200,25 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
         data.setGivenName(rn.getFirstNames() + SPACE + rn.getThirdName());
         data.setSurName(rn.getName());
         data.setFullName(data.getGivenName() + SPACE + rn.getName());
+        data.setGender(rn.getSex());
         GclBeIdAddress address = allData.getAddress();
         data.setStreetAndNumber(address.getStreetAndNumber());
         data.setMunicipality(address.getMunicipality());
         data.setZipCode(address.getZipcode());
         data.setBase64Picture(allData.getPicture());
-        data.setAuthenticationCertificateChain(getAuthenticationCertificateChain(allData));
-        data.setSigningCertificateChain(getSigningCertificateChain(allData));
+        data.setDocumentId(rn.getCardNumber());
+        data.setValidityStartDate(rn.getCardValidityDateBegin());
+        data.setValidityEndDate(rn.getCardValidityDateEnd());
+        data.setAuthenticationCertificateChain(orderCertificates(allData.getAuthenticationCertificate(), allData.getCitizenCertificate(), allData.getRootCertificate()));
+        data.setSigningCertificateChain(orderCertificates(allData.getNonRepudiationCertificate(), allData.getCitizenCertificate(), allData.getRootCertificate()));
         List<Map<Integer, T1cCertificate>> certChains = new ArrayList<>();
         certChains.add(data.getAuthenticationCertificateChain());
         certChains.add(data.getSigningCertificateChain());
-        certChains.add(getCitizenCertificateChain(allData));
-        certChains.add(getRrnCertificateChain(allData));
+        certChains.add(orderCertificates(allData.getCitizenCertificate(), allData.getRootCertificate()));
+        certChains.add(orderCertificates(allData.getRrnCertificate(), allData.getRootCertificate()));
         data.setCertificateChains(certChains);
         data.setAllCertificates(getCertificatesMap(allData));
         return data;
-    }
-
-    private Map<Integer, T1cCertificate> getAuthenticationCertificateChain(BeIdAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate(), allData.getAuthenticationCertificate());
-        return CertificateUtil.orderCertificates(certs);
-    }
-
-    private Map<Integer, T1cCertificate> getSigningCertificateChain(BeIdAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate(), allData.getNonRepudiationCertificate());
-        return CertificateUtil.orderCertificates(certs);
-    }
-
-    private Map<Integer, T1cCertificate> getRrnCertificateChain(BeIdAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getRrnCertificate());
-        return CertificateUtil.orderCertificates(certs);
-    }
-
-    private Map<Integer, T1cCertificate> getCitizenCertificateChain(BeIdAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getRootCertificate(), allData.getCitizenCertificate());
-        return CertificateUtil.orderCertificates(certs);
     }
 
     private Map<String, T1cCertificate> getCertificatesMap(BeIdAllData allData) {

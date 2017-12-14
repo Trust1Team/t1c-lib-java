@@ -10,11 +10,13 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -128,8 +130,28 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
-        //TODO
-        return null;
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        GclMobibAllData allData = getAllData(true);
+
+        data.setFullName(allData.getCardIssuing().getCardHolderName());
+        data.setDateOfBirth(allData.getCardIssuing().getCardHolderBirthDate());
+
+        data.setBase64Picture(allData.getPicture());
+        data.setValidityStartDate(allData.getCardIssuing().getCardHolderStartDate());
+        data.setValidityEndDate(allData.getCardIssuing().getCardExpirationDate());
+        data.setDocumentId(allData.getCardIssuing().getCardHolderId());
+
+        return data;
     }
 }

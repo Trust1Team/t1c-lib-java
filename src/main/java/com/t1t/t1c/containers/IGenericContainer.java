@@ -1,14 +1,17 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.exceptions.CertificateOrderingException;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.T1cCertificate;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -129,10 +132,30 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
     String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
 
     /**
+     * Returns the certificate chain used for signing, if present
+     *
+     * @return An ordered map with the leaf certificate with key 0
+     * @throws VerifyPinException: If a wrong PIN is provided
+     * @throws RestException: On communication failure with the GCL
+     */
+    Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException;
+
+    /**
+     * Returns the certificate chain used for authentication, if present
+     *
+     * @return An ordered map with the leaf certificate with key 0
+     * @throws VerifyPinException: If a wrong PIN is provided
+     * @throws RestException: On communication failure with the GCL
+     */
+    Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException;
+
+    /**
      * Dumps the available container data
+     *
+     * @param pin An optional PIN
      * @return the container data
      * @throws RestException: on communication failure
      * @throws UnsupportedOperationException: if the container has no data to dump
      */
-    ContainerData dumpData() throws RestException, UnsupportedOperationException;
+    ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException;
 }

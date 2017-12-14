@@ -27,8 +27,8 @@ public class MockGclOberthurRestClient extends AbstractMockRestClient<GclOberthu
     }
 
     @Override
-    public Call<T1cResponse<GclOberthurAllCertificates>> getAllCertificates(String containerId, String readerId, String filter) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getOberthurAllCertificatesResponse(filter)).getAllCertificates(containerId, readerId, filter);
+    public Call<T1cResponse<GclOberthurAllData>> getAllCertificates(String containerId, String readerId, String filter) throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getGclOberthurAllDataResponse(filter)).getAllCertificates(containerId, readerId, filter);
     }
 
     @Override

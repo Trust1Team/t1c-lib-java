@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -21,6 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -430,5 +432,42 @@ public class LuxIdContainerTest extends AbstractTestClass {
     public void testLuxIdContainerException() {
         LuxIdContainerException ex = ExceptionFactory.luxIdContainerException("message");
         assertEquals(Integer.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
+    }
+
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getGivenName());
+        assertNotNull(data.getSurName());
+        assertNotNull(data.getFullName());
+        assertNotNull(data.getDateOfBirth());
+        assertNotNull(data.getGender());
+
+        assertNotNull(data.getNationality());
+        assertNotNull(data.getBase64Picture());
+        assertNotNull(data.getValidityStartDate());
+        assertNotNull(data.getValidityEndDate());
+        assertNotNull(data.getDocumentId());
+        assertNotNull(data.getBase64SignatureImage());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

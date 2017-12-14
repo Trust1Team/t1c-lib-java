@@ -1,9 +1,11 @@
 package com.t1t.t1c.utils;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.exceptions.CertificateOrderingException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.model.T1cCertificate;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,8 +82,10 @@ public final class CertificateUtil {
      * @param certificates list of certificates
      * @return an ordered certificate chain
      * @throws CertificateOrderingException: If multiple root or leaf certificates are deteced, making it impossible to generate a certificate chain
+     * @throws IllegalArgumentException: If the list of certificates is empty or null
      */
     public static Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certificates) throws CertificateOrderingException {
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(certificates), "List of certificates must not be empty");
         Map<X509Certificate, T1cCertificate> x509Map = new HashMap<>();
         List<X509Certificate> certs = new ArrayList<>();
         for (T1cCertificate cert : certificates) {

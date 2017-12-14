@@ -1,8 +1,6 @@
 package com.t1t.t1c.containers.smartcards;
 
 import com.t1t.t1c.model.T1cCertificate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -13,29 +11,28 @@ import java.util.Map;
  */
 public class ContainerData {
 
-    private String fullName;
     private String givenName;
     private String surName;
+    private String fullName;
     private String dateOfBirth;
+    private String gender;
+
     private String streetAndNumber;
     private String municipality;
     private String zipCode;
     private String country;
+
     private String nationality;
     private String base64Picture;
+    private String validityStartDate;
+    private String validityEndDate;
+    private String documentId;
+    private String base64SignatureImage;
     private Map<Integer, T1cCertificate> authenticationCertificateChain;
     private Map<Integer, T1cCertificate> signingCertificateChain;
     private List<Map<Integer, T1cCertificate>> certificateChains;
     private Map<String, T1cCertificate> allCertificates;
 
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getGivenName() {
         return givenName;
@@ -53,12 +50,28 @@ public class ContainerData {
         this.surName = surName;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getDateOfBirth() {
         return dateOfBirth;
     }
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getStreetAndNumber() {
@@ -109,6 +122,38 @@ public class ContainerData {
         this.base64Picture = base64Picture;
     }
 
+    public String getValidityStartDate() {
+        return validityStartDate;
+    }
+
+    public void setValidityStartDate(String validityStartDate) {
+        this.validityStartDate = validityStartDate;
+    }
+
+    public String getValidityEndDate() {
+        return validityEndDate;
+    }
+
+    public void setValidityEndDate(String validityEndDate) {
+        this.validityEndDate = validityEndDate;
+    }
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    public String getBase64SignatureImage() {
+        return base64SignatureImage;
+    }
+
+    public void setBase64SignatureImage(String base64SignatureImage) {
+        this.base64SignatureImage = base64SignatureImage;
+    }
+
     public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() {
         return authenticationCertificateChain;
     }
@@ -139,5 +184,30 @@ public class ContainerData {
 
     public void setAllCertificates(Map<String, T1cCertificate> allCertificates) {
         this.allCertificates = allCertificates;
+    }
+
+    @Override
+    public String toString() {
+        return "ContainerData{" +
+                "givenName='" + givenName + '\'' +
+                ", surName='" + surName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", gender='" + gender + '\'' +
+                ", streetAndNumber='" + streetAndNumber + '\'' +
+                ", municipality='" + municipality + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", country='" + country + '\'' +
+                ", nationality='" + nationality + '\'' +
+                ", base64Picture='" + base64Picture + '\'' +
+                ", validityStartDate='" + validityStartDate + '\'' +
+                ", validityEndDate='" + validityEndDate + '\'' +
+                ", documentId='" + documentId + '\'' +
+                ", base64SignatureImage='" + base64SignatureImage + '\'' +
+                ", authenticationCertificateChain=" + authenticationCertificateChain +
+                ", signingCertificateChain=" + signingCertificateChain +
+                ", certificateChains=" + certificateChains +
+                ", allCertificates=" + allCertificates +
+                '}';
     }
 }

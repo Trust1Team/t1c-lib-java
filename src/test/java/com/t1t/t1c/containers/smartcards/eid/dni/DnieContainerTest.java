@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.eid.dni;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -10,6 +11,7 @@ import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -354,5 +357,35 @@ public class DnieContainerTest extends AbstractTestClass {
         assertEquals("number", info.getSerialNumber());
 
         assertNotEquals(info, "string");
+    }
+
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getGivenName());
+        assertNotNull(data.getSurName());
+        assertNotNull(data.getFullName());
+
+        assertNotNull(data.getDocumentId());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

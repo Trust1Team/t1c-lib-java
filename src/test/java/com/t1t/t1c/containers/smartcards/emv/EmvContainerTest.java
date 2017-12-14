@@ -3,21 +3,26 @@ package com.t1t.t1c.containers.smartcards.emv;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.AllCertificates;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -183,5 +188,117 @@ public class EmvContainerTest extends AbstractTestClass {
     @Test(expected = UnsupportedOperationException.class)
     public void getAllCertificateClass() {
         assertEquals(AllCertificates.class, container.getAllCertificatesClass());
+    }
+
+    @Test
+    public void testAidRequest() {
+        GclEmvAidRequest obj = new GclEmvAidRequest();
+        GclEmvAidRequest obj2 = new GclEmvAidRequest();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        obj.setAid("2");
+        assertEquals("2", obj.getAid());
+    }
+
+    @Test
+    public void testAllData() {
+        GclEmvAllData obj = new GclEmvAllData();
+        GclEmvAllData obj2 = new GclEmvAllData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        GclEmvApplicationData appData = new GclEmvApplicationData();
+        obj.setApplicationData(appData);
+        assertEquals(appData, obj.getApplicationData());
+        List<GclEmvApplication> apps = Collections.singletonList(new GclEmvApplication());
+        obj.setApplications(apps);
+        assertEquals(apps, obj.getApplications());
+    }
+
+    @Test
+    public void testApplication() {
+        GclEmvApplication obj = new GclEmvApplication();
+        GclEmvApplication obj2 = new GclEmvApplication();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        obj.setAid("a");
+        assertEquals("a", obj.getAid());
+        obj.setLabel("l");
+        assertEquals("l", obj.getLabel());
+        obj.setPriority(1);
+        assertEquals(Integer.valueOf(1), obj.getPriority());
+    }
+
+    @Test
+    public void testApplicationData() {
+        GclEmvApplicationData obj = new GclEmvApplicationData();
+        GclEmvApplicationData obj2 = new GclEmvApplicationData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        obj.setCountry("c");
+        assertEquals("c", obj.getCountry());
+        obj.setCountryCode("cc");
+        assertEquals("cc", obj.getCountryCode());
+        obj.setEffectiveDate("e");
+        assertEquals("e", obj.getEffectiveDate());
+        obj.setExpirationDate("ex");
+        assertEquals("ex", obj.getExpirationDate());
+        obj.setName("n");
+        assertEquals("n", obj.getName());
+        obj.setPan("p");
+        assertEquals("p", obj.getPan());
+        obj.setLanguage("l");
+        assertEquals("l", obj.getLanguage());
+    }
+
+    @Test
+    public void testPubKeyCertificate() {
+        GclEmvPublicKeyCertificate obj = new GclEmvPublicKeyCertificate();
+        GclEmvPublicKeyCertificate obj2 = new GclEmvPublicKeyCertificate();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        obj.setData("d");
+        assertEquals("d", obj.getData());
+        obj.setExponent("e");
+        assertEquals("e", obj.getExponent());
+        obj.setRemainder("r");
+        assertEquals("r", obj.getRemainder());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getSigningCertificateChain() {
+        container.getSigningCertificateChain();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAuthenticationCertificateChain() {
+        container.getAuthenticationCertificateChain();
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+
+        assertNotNull(data.getFullName());
+        assertNotNull(data.getCountry());
+
+        assertNotNull(data.getValidityStartDate());
+        assertNotNull(data.getValidityEndDate());
+        assertNotNull(data.getDocumentId());
     }
 }

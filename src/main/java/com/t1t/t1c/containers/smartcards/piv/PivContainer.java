@@ -18,7 +18,9 @@ import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -165,9 +167,46 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     @Override
-    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
-        //TODO
-        return null;
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        return getCertChainMap(getSigningCertificate(true));
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        return getCertChainMap(getAuthenticationCertificate(true));
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        PivAllData allData = getAllData(true);
+        GclPivPrintedInformation info = allData.getPrintedInformation();
+        data.setFullName(info.getName());;
+
+        if (allData.getFacialImage() != null) {
+            data.setBase64Picture(allData.getFacialImage().getImage());
+        }
+        data.setValidityEndDate(info.getExpirationDate());
+        data.setDocumentId(info.getAgencyCardSerialNumber());
+
+        data.setAuthenticationCertificateChain(getCertChainMap(allData.getAuthenticationCertificate()));
+        data.setSigningCertificateChain(getCertChainMap(allData.getSigningCertificate()));
+        data.setCertificateChains(Arrays.asList(data.getSigningCertificateChain(), data.getAuthenticationCertificateChain()));
+        data.setAllCertificates(getAllCertificatesMap(allData));
+        return data;
+    }
+
+    private Map<Integer, T1cCertificate> getCertChainMap(T1cCertificate cert) throws VerifyPinException, RestException {
+        Map<Integer, T1cCertificate> certChain = new HashMap<>();
+        certChain.put(0, cert);
+        return certChain;
+    }
+
+    private Map<String, T1cCertificate> getAllCertificatesMap(PivAllData data) {
+        Map<String, T1cCertificate> certMap = new HashMap<>();
+        certMap.put("authentication-certificate", data.getAuthenticationCertificate());
+        certMap.put("signing-certificate", data.getSigningCertificate());
+        return certMap;
     }
 
     /*public List<String> getAllKeyRefs() {

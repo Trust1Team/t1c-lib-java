@@ -28,8 +28,6 @@ import java.util.Map;
  */
 public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient, DnieAllData, DnieAllCertificates> {
 
-    private static final String SPACE = " ";
-
     public DnieContainer(LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
         super(config, reader, gclDniRestClient, null);
     }
@@ -161,28 +159,31 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public ContainerData dumpData() throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         DnieAllData allData = getAllData(true);
         data.setAllCertificates(getCertificatesMap(allData));
-        data.setSigningCertificateChain(getSigningCertificateChain(allData));
-        data.setAuthenticationCertificateChain(getAuthenticationCertificateChain(allData));
+        data.setSigningCertificateChain(orderCertificates(allData.getIntermediateCertificate(), allData.getSigningCertificate()));
+        data.setAuthenticationCertificateChain(orderCertificates(allData.getIntermediateCertificate(), allData.getSigningCertificate())) ;
         data.setCertificateChains(Arrays.asList(data.getAuthenticationCertificateChain(), data.getSigningCertificateChain()));
         GclDnieInfo info = allData.getInfo();
         data.setGivenName(info.getFirstName());
-        data.setSurName(info.getFirstLastName() + SPACE + info.getSecondLastName());
-        data.setFullName(info.getFirstName() + SPACE + data.getSurName());
+        data.setSurName(info.getFirstLastName() + " " + info.getSecondLastName());
+        data.setFullName(info.getFirstName() + " " + data.getSurName());
+        data.setDocumentId(info.getSerialNumber());
         return data;
     }
 
-    private Map<Integer, T1cCertificate> getAuthenticationCertificateChain(DnieAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getIntermediateCertificate(), allData.getAuthenticationCertificate());
-        return CertificateUtil.orderCertificates(certs);
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        DnieAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getSigningCertificate(), certs.getIntermediateCertificate());
     }
 
-    private Map<Integer, T1cCertificate> getSigningCertificateChain(DnieAllData allData) {
-        List<T1cCertificate> certs = Arrays.asList(allData.getIntermediateCertificate(), allData.getSigningCertificate());
-        return CertificateUtil.orderCertificates(certs);
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        DnieAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getAuthenticationCertificate(), certs.getIntermediateCertificate());
     }
 
     private Map<String, T1cCertificate> getCertificatesMap(DnieAllData allData) {

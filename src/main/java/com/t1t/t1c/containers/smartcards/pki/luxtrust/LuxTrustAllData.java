@@ -65,30 +65,6 @@ public class LuxTrustAllData implements AllData {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LuxTrustAllData)) return false;
-
-        LuxTrustAllData that = (LuxTrustAllData) o;
-
-        if (activated != null ? !activated.equals(that.activated) : that.activated != null) return false;
-        if (authenticationCertificate != null ? !authenticationCertificate.equals(that.authenticationCertificate) : that.authenticationCertificate != null)
-            return false;
-        if (signingCertificate != null ? !signingCertificate.equals(that.signingCertificate) : that.signingCertificate != null)
-            return false;
-        return rootCertificates != null ? rootCertificates.equals(that.rootCertificates) : that.rootCertificates == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = activated != null ? activated.hashCode() : 0;
-        result = 31 * result + (authenticationCertificate != null ? authenticationCertificate.hashCode() : 0);
-        result = 31 * result + (signingCertificate != null ? signingCertificate.hashCode() : 0);
-        result = 31 * result + (rootCertificates != null ? rootCertificates.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "LuxTrustAllData{" +
                 "activated=" + activated +

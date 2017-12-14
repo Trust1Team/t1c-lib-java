@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.piv;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -19,6 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -368,5 +370,35 @@ public class PivContainerTest extends AbstractTestClass {
         assertEquals(newCert, certs.getSigningCertificate());
         assertEquals(certs.withSigningCertificate(oldSign), certs);
         assertTrue(StringUtils.isNotEmpty(certs.toString()));
+    }
+
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getFullName());
+
+        assertNotNull(data.getBase64Picture());
+        assertNotNull(data.getValidityEndDate());
+        assertNotNull(data.getDocumentId());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

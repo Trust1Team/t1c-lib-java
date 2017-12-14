@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.eid.be;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -19,6 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -469,5 +471,45 @@ public class BeIdContainerTest extends AbstractTestClass {
         assertEquals(obj1.hashCode(), obj2.hashCode());
         assertEquals(obj1, obj2);
         assertNotEquals(obj1, "string");
+    }
+    
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+    
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getGivenName());
+        assertNotNull(data.getSurName());
+        assertNotNull(data.getFullName());
+        assertNotNull(data.getDateOfBirth());
+        assertNotNull(data.getGender());
+
+        assertNotNull(data.getStreetAndNumber());
+        assertNotNull(data.getMunicipality());
+        assertNotNull(data.getZipCode());
+
+        assertNotNull(data.getNationality());
+        assertNotNull(data.getBase64Picture());
+        assertNotNull(data.getValidityStartDate());
+        assertNotNull(data.getValidityEndDate());
+        assertNotNull(data.getDocumentId());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

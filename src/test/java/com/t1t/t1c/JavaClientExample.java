@@ -89,18 +89,27 @@ public class JavaClientExample {
         System.out.print("Provide PIN (optional, press enter to skip): ");
         String pin = scan.nextLine();
         IGenericContainer container = client.getGenericContainer(reader, pin);
-        AllData data = container.getAllData();
-        System.out.println("Data dump: " + data);
-        System.out.println("Certificate dump: " + container.getAllCertificates());
+        // This returns a marker interface, the return value still needs to be cast to the correct class
+        //System.out.println("Container all data: " + container.getAllData());
+        //System.out.println("Container Certificates: " + container.getAllCertificates());
 
-        boolean pinVerified = container.verifyPin(pin);
-        System.out.println("PIN verified: " + pinVerified);
-        if (pinVerified) {
-            // Sign data
-            System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+        System.out.println("Generic data dump: " + container.dumpData());
 
-            // Authenticate data
-            System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+        //System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
+        //System.out.println("Signing chain: " + container.getSigningCertificateChain());
+
+        if (StringUtils.isNotBlank(pin)) {
+            try {
+                System.out.println("PIN verified: " + container.verifyPin(pin));
+
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                // Authenticate data
+                System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN verification failed: " + ex.getMessage());
+            }
         }
     }
 
