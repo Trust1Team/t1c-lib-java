@@ -5,7 +5,6 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -17,7 +16,6 @@ import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;

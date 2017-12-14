@@ -306,7 +306,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
         assertNotNull(signChain);
         assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
     }
-    
+
     @Test
     public void testAddress() {
         GclPtIdAddress ad = MockResponseFactory.getPtIdAddress();
@@ -541,7 +541,6 @@ public class PtEIdContainerTest extends AbstractTestClass {
         data.setValidityEndDate("28");
         assertEquals("28", data.getValidityEndDate());
     }
-
 
 
     @Test

@@ -6,8 +6,6 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdAllCertificates;
-import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdAllData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;

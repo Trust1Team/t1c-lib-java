@@ -1,12 +1,9 @@
 package com.t1t.t1c.containers.smartcards.mobib;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.containers.smartcards.emv.GclEmvApplicationData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -19,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -266,7 +262,7 @@ public class MobibContainerTest extends AbstractTestClass {
         assertEquals(obj.hashCode(), obj2.hashCode());
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
-        
+
         obj.setAuthenticatorKvc(1);
         assertEquals(Integer.valueOf(1), obj.getAuthenticatorKvc());
 

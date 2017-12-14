@@ -4,7 +4,6 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraPinResetRequest;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -262,7 +261,8 @@ public class LuxTrustContainerTest extends AbstractTestClass {
     @Test
     public void testAllCertificates() {
         LuxTrustAllCertificates obj = new LuxTrustAllCertificates(MockResponseFactory.getGclLuxTrustAllCertificates());
-        assertTrue(StringUtils.isNotEmpty(obj.toString()));List<T1cCertificate> rootCerts = Collections.singletonList(new T1cCertificate().withBase64("root"));
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        List<T1cCertificate> rootCerts = Collections.singletonList(new T1cCertificate().withBase64("root"));
         obj.setRootCertificates(rootCerts);
         assertEquals(rootCerts, obj.getRootCertificates());
         T1cCertificate newCert = new T1cCertificate().withBase64("new");

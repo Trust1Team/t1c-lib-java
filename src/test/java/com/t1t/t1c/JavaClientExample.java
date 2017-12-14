@@ -18,13 +18,11 @@ import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
@@ -43,11 +41,11 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
+    private static String API_KEY = "**REMOVED**";
     private static T1cClient client;
 
     public static void main(String[] args) {
-        
+
         /*Config*/
         LibConfig conf = new LibConfig();
         conf.setEnvironment(Environment.DEV);
@@ -90,13 +88,13 @@ public class JavaClientExample {
         String pin = scan.nextLine();
         IGenericContainer container = client.getGenericContainer(reader, pin);
         // This returns a marker interface, the return value still needs to be cast to the correct class
-        //System.out.println("Container all data: " + container.getAllData());
-        //System.out.println("Container Certificates: " + container.getAllCertificates());
+        System.out.println("Container all data: " + container.getAllData());
+        System.out.println("Container Certificates: " + container.getAllCertificates());
 
         System.out.println("Generic data dump: " + container.dumpData());
 
-        //System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
-        //System.out.println("Signing chain: " + container.getSigningCertificateChain());
+        System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
+        System.out.println("Signing chain: " + container.getSigningCertificateChain());
 
         if (StringUtils.isNotBlank(pin)) {
             try {

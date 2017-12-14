@@ -70,8 +70,7 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     protected Map<Integer, T1cCertificate> orderCertificates(T1cCertificate... certs) {
         if (certs == null || certs.length == 0) {
             return Collections.emptyMap();
-        }
-        else return orderCertificates(Arrays.asList(certs));
+        } else return orderCertificates(Arrays.asList(certs));
     }
 
     protected Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certs) {

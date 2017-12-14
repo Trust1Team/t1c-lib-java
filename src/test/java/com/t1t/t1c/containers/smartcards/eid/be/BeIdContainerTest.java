@@ -472,7 +472,7 @@ public class BeIdContainerTest extends AbstractTestClass {
         assertEquals(obj1, obj2);
         assertNotEquals(obj1, "string");
     }
-    
+
     @Test
     public void getSigningCertificateChain() {
         Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
@@ -486,7 +486,7 @@ public class BeIdContainerTest extends AbstractTestClass {
         assertNotNull(signChain);
         assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
     }
-    
+
     @Test
     public void testGenericDataDump() {
         ContainerData data = container.dumpData();

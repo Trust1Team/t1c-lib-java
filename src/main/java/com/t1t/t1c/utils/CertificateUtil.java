@@ -79,10 +79,11 @@ public final class CertificateUtil {
 
     /**
      * Order a list of certificates. The leaf certificate will always have 0 as key.
+     *
      * @param certificates list of certificates
      * @return an ordered certificate chain
      * @throws CertificateOrderingException: If multiple root or leaf certificates are deteced, making it impossible to generate a certificate chain
-     * @throws IllegalArgumentException: If the list of certificates is empty or null
+     * @throws IllegalArgumentException:     If the list of certificates is empty or null
      */
     public static Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certificates) throws CertificateOrderingException {
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(certificates), "List of certificates must not be empty");
@@ -97,21 +98,21 @@ public final class CertificateUtil {
         Map<Integer, T1cCertificate> certificateMap = new HashMap<>();
         X509Certificate certChain = certs.get(0);
         certs.remove(certChain);
-        LinkedList<X509Certificate> chainList= new LinkedList<>();
+        LinkedList<X509Certificate> chainList = new LinkedList<>();
         chainList.add(certChain);
         Principal certIssuer = certChain.getIssuerDN();
         Principal certSubject = certChain.getSubjectDN();
-        while(!certs.isEmpty()){
+        while (!certs.isEmpty()) {
             List<X509Certificate> tempcerts = new ArrayList<>(certs);
-            for (X509Certificate cert : tempcerts){
-                if(cert.getIssuerDN().equals(certSubject)){
+            for (X509Certificate cert : tempcerts) {
+                if (cert.getIssuerDN().equals(certSubject)) {
                     chainList.addFirst(cert);
                     certSubject = cert.getSubjectDN();
                     certs.remove(cert);
                     continue;
                 }
 
-                if(cert.getSubjectDN().equals(certIssuer)){
+                if (cert.getSubjectDN().equals(certIssuer)) {
                     chainList.addLast(cert);
                     certIssuer = cert.getIssuerDN();
                     certs.remove(cert);
@@ -129,6 +130,7 @@ public final class CertificateUtil {
 
     /**
      * Utility method that checks a list of certificates for multiple root or leaf certficates. If multiple are present, creating a certificate chain becomes impossible
+     *
      * @param certs list of certificates
      * @throws CertificateOrderingException: if the list contains more than 1 root certificate or more than 1 leaf certificate
      */
@@ -140,10 +142,9 @@ public final class CertificateUtil {
             issuers.add(cert.getIssuerDN());
             subjects.add(cert.getSubjectDN());
             if (cert.getSubjectDN().equals(cert.getIssuerDN())) {
-                if (rootCert != null)  {
+                if (rootCert != null) {
                     throw ExceptionFactory.certificateOrderingException("Multiple root certificates detected");
-                }
-                else {
+                } else {
                     rootCert = cert;
                 }
             }
@@ -153,8 +154,7 @@ public final class CertificateUtil {
             if (!issuers.contains(cert.getSubjectDN())) {
                 if (leafCert != null) {
                     throw ExceptionFactory.certificateOrderingException("Multiple leaf certificates detected");
-                }
-                else {
+                } else {
                     leafCert = cert;
                 }
             }

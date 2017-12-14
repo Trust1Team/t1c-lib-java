@@ -1,7 +1,6 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.exceptions.CertificateOrderingException;
 import com.t1t.t1c.exceptions.GenericContainerException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -136,7 +135,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @return An ordered map with the leaf certificate with key 0
      * @throws VerifyPinException: If a wrong PIN is provided
-     * @throws RestException: On communication failure with the GCL
+     * @throws RestException:      On communication failure with the GCL
      */
     Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException;
 
@@ -145,7 +144,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @return An ordered map with the leaf certificate with key 0
      * @throws VerifyPinException: If a wrong PIN is provided
-     * @throws RestException: On communication failure with the GCL
+     * @throws RestException:      On communication failure with the GCL
      */
     Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException;
 
@@ -154,7 +153,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @param pin An optional PIN
      * @return the container data
-     * @throws RestException: on communication failure
+     * @throws RestException:                 on communication failure
      * @throws UnsupportedOperationException: if the container has no data to dump
      */
     ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException;

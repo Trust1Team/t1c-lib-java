@@ -1,6 +1,5 @@
 package com.t1t.t1c;
 
-import com.google.gson.Gson;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidFeature;
 import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCommand;
