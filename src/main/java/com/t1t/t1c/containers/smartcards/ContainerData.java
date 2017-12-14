@@ -28,6 +28,7 @@ public class ContainerData {
     private String validityEndDate;
     private String documentId;
     private String base64SignatureImage;
+
     private Map<Integer, T1cCertificate> authenticationCertificateChain;
     private Map<Integer, T1cCertificate> signingCertificateChain;
     private List<Map<Integer, T1cCertificate>> certificateChains;
