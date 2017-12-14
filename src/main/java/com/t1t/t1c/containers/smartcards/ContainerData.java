@@ -171,10 +171,12 @@ public class ContainerData {
         this.signingCertificateChain = signingCertificateChain;
     }
 
+    @Deprecated
     public List<Map<Integer, T1cCertificate>> getCertificateChains() {
         return certificateChains;
     }
 
+    @Deprecated
     public void setCertificateChains(List<Map<Integer, T1cCertificate>> certificateChains) {
         this.certificateChains = certificateChains;
     }
