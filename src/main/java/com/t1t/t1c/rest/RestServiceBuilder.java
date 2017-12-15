@@ -152,8 +152,6 @@ public final class RestServiceBuilder {
     private static OkHttpClient gethttpClient(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
-        okHttpBuilder.sslSocketFactory(new TLSSocketFactory());
-
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
         final boolean jwtPresent = StringUtils.isNotBlank(jwt);
 

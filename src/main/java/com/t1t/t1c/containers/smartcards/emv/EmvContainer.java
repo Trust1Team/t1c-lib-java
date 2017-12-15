@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -11,6 +12,7 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -140,5 +143,31 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
         return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        GclEmvAllData allData = getAllData(true);
+
+        data.setFullName(allData.getApplicationData().getName());
+
+        data.setCountry(allData.getApplicationData().getCountry());
+
+        data.setValidityStartDate(allData.getApplicationData().getEffectiveDate());
+        data.setValidityEndDate(allData.getApplicationData().getExpirationDate());
+        data.setDocumentId(allData.getApplicationData().getPan());
+
+        return data;
     }
 }

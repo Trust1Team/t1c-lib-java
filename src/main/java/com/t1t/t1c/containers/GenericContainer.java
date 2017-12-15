@@ -5,12 +5,12 @@ import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.T1cCertificate;
+import com.t1t.t1c.utils.CertificateUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
@@ -65,5 +65,15 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
             }
         }
         return returnValue;
+    }
+
+    protected Map<Integer, T1cCertificate> orderCertificates(T1cCertificate... certs) {
+        if (certs == null || certs.length == 0) {
+            return Collections.emptyMap();
+        } else return orderCertificates(Arrays.asList(certs));
+    }
+
+    protected Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certs) {
+        return CertificateUtil.orderCertificates(certs);
     }
 }

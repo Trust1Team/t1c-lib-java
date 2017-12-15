@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.pki.aventra;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -10,6 +11,7 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -328,5 +331,153 @@ public class AventraContainerTest extends AbstractTestClass {
     @Test(expected = IllegalArgumentException.class)
     public void resetPinWithWrongKeyRef() {
         assertTrue(container.resetPin("1111", "1111", "wrong"));
+    }
+
+    @Test
+    public void testAllCertificates() {
+        AventraAllCertificates obj = new AventraAllCertificates(MockResponseFactory.getGclAventraAllCertificates());
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        T1cCertificate newCert = new T1cCertificate().withBase64("new");
+        obj.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, obj.getAuthenticationCertificate());
+        obj.setRootCertificate(newCert);
+        assertEquals(newCert, obj.getRootCertificate());
+        obj.setIssuerCertificate(newCert);
+        assertEquals(newCert, obj.getIssuerCertificate());
+        obj.setEncryptionCertificate(newCert);
+        assertEquals(newCert, obj.getEncryptionCertificate());
+        obj.setSigningCertificate(newCert);
+        assertEquals(newCert, obj.getSigningCertificate());
+    }
+
+    @Test
+    public void testAllData() {
+        AventraAllData obj = new AventraAllData(MockResponseFactory.getGclAventraAllData());
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        T1cCertificate newCert = new T1cCertificate().withBase64("new");
+        obj.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, obj.getAuthenticationCertificate());
+        obj.setRootCertificate(newCert);
+        assertEquals(newCert, obj.getRootCertificate());
+        obj.setIssuerCertificate(newCert);
+        assertEquals(newCert, obj.getIssuerCertificate());
+        obj.setEncryptionCertificate(newCert);
+        assertEquals(newCert, obj.getEncryptionCertificate());
+        obj.setSigningCertificate(newCert);
+        assertEquals(newCert, obj.getSigningCertificate());
+        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1);
+        obj.setAppletInfo(info);
+        assertEquals(info, obj.getAppletInfo());
+    }
+
+    @Test
+    public void testGclAllCertificates() {
+        GclAventraAllCertificates obj = new GclAventraAllCertificates();
+        GclAventraAllCertificates obj2 = new GclAventraAllCertificates();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setRootCertificate("r");
+        assertEquals("r", obj.getRootCertificate());
+        obj.setIssuerCertificate("i");
+        assertEquals("i", obj.getIssuerCertificate());
+        obj.setAuthenticationCertificate("a");
+        assertEquals("a", obj.getAuthenticationCertificate());
+        obj.setSigningCertificate("s");
+        assertEquals("s", obj.getSigningCertificate());
+        obj.setEncryptionCertificate("e");
+        assertEquals("e", obj.getEncryptionCertificate());
+    }
+
+    @Test
+    public void testGclAllData() {
+        GclAventraAllData obj = new GclAventraAllData();
+        GclAventraAllData obj2 = new GclAventraAllData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1);
+        obj.setAppletInfo(info);
+        assertEquals(info, obj.getAppletInfo());
+        obj.setRootCertificate("r");
+        assertEquals("r", obj.getRootCertificate());
+        obj.setIssuerCertificate("i");
+        assertEquals("i", obj.getIssuerCertificate());
+        obj.setAuthenticationCertificate("a");
+        assertEquals("a", obj.getAuthenticationCertificate());
+        obj.setSigningCertificate("s");
+        assertEquals("s", obj.getSigningCertificate());
+        obj.setEncryptionCertificate("e");
+        assertEquals("e", obj.getEncryptionCertificate());
+    }
+
+    @Test
+    public void testAppletInfo() {
+        GclAventraAppletInfo obj = new GclAventraAppletInfo();
+        GclAventraAppletInfo obj2 = new GclAventraAppletInfo();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setChangeCounter(1);
+        assertEquals(Integer.valueOf(1), obj.getChangeCounter());
+        obj.setName("n");
+        assertEquals("n", obj.getName());
+        obj.setSerial("s");
+        assertEquals("s", obj.getSerial());
+        obj.setVersion("v");
+        assertEquals("v", obj.getVersion());
+    }
+
+    @Test
+    public void testPinResetRequest() {
+        GclAventraPinResetRequest obj = new GclAventraPinResetRequest();
+        GclAventraPinResetRequest obj2 = new GclAventraPinResetRequest();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setNewPin("n");
+        assertEquals("n", obj.getNewPin());
+        obj.setPuk("p");
+        assertEquals("p", obj.getPuk());
+        obj.setPrivateKeyReference("r");
+        assertEquals("r", obj.getPrivateKeyReference());
+    }
+
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getDocumentId());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

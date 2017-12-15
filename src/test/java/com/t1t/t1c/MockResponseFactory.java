@@ -1,6 +1,5 @@
 package com.t1t.t1c;
 
-import com.google.gson.Gson;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidFeature;
 import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCommand;
@@ -33,7 +32,6 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
-import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData;
 import com.t1t.t1c.core.GclCard;
 import com.t1t.t1c.core.GclContainer;
@@ -81,7 +79,6 @@ public final class MockResponseFactory {
     private static final Logger log = LoggerFactory.getLogger(MockResponseFactory.class);
     private static final String JSON_EXTENSION = ".json";
     private static final String RESPONSE_RESOURCE_PATH = "/responses/";
-    private static final Gson GSON = new Gson();
 
     private MockResponseFactory() {
     }
@@ -547,8 +544,8 @@ public final class MockResponseFactory {
                 .withPicture(getGclLuxIdPicture())
                 .withSignatureImage(getGclLuxIdSignatureImage())
                 .withRootCertificates(getGclLuxIdRootCertificates())
-                .withAuthenticationCertificate(getBeIdAuthenticationCertificate())
-                .withNonRepudiationCertificate(getBeIdNonRepudiationCertificate())
+                .withAuthenticationCertificate(getLuxIdAuthenticationCertificate())
+                .withNonRepudiationCertificate(getLuxIdNonRepudiationCertificate())
                 .withSignatureObject(getGclLuxIdSignatureObject());
     }
 
@@ -1372,19 +1369,6 @@ public final class MockResponseFactory {
         return getSuccessResponse(getGclOberthurSignAlgoRefs());
     }
 
-    public static T1cResponse<GclOberthurAllCertificates> getOberthurAllCertificatesResponse(String filter) {
-        List<String> filterParams = splitFilterParams(filter);
-        GclOberthurAllCertificates data = getGclOberthurAllCertificates();
-        if (!filterParams.isEmpty()) {
-            if (!filterParams.contains("root-certificate")) data.setRootCertificate(null);
-            if (!filterParams.contains("authentication-certificate")) data.setAuthenticationCertificate(null);
-            if (!filterParams.contains("signing-certificate")) data.setSigningCertificate(null);
-            if (!filterParams.contains("issuer-certificate")) data.setIssuerCertificate(null);
-            if (!filterParams.contains("encryption-certificate")) data.setEncryptionCertificate(null);
-        }
-        return getSuccessResponse(data);
-    }
-
     public static T1cResponse<GclOberthurAllData> getGclOberthurAllDataResponse(String filter) {
         List<String> filterParams = splitFilterParams(filter);
         GclOberthurAllData data = getGclOberthurAllData();
@@ -1400,15 +1384,6 @@ public final class MockResponseFactory {
 
     public static GclOberthurAllData getGclOberthurAllData() {
         return new GclOberthurAllData()
-                .withRootCertificate(getGclOberthurRootCertificate())
-                .withAuthenticationCertificate(getGclOberthurAuthenticationCertificate())
-                .withSigningCertificate(getGclOberthurSigningCertificate())
-                .withIssuerCertificate(getGclOberthurIssuerCertificate())
-                .withEncryptionCertificate(getGclOberthurEncryptionCertificate());
-    }
-
-    public static GclOberthurAllCertificates getGclOberthurAllCertificates() {
-        return new GclOberthurAllCertificates()
                 .withRootCertificate(getGclOberthurRootCertificate())
                 .withAuthenticationCertificate(getGclOberthurAuthenticationCertificate())
                 .withSigningCertificate(getGclOberthurSigningCertificate())

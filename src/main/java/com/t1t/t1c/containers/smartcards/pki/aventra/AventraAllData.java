@@ -71,36 +71,6 @@ public class AventraAllData implements AllData {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AventraAllData)) return false;
-
-        AventraAllData that = (AventraAllData) o;
-
-        if (appletInfo != null ? !appletInfo.equals(that.appletInfo) : that.appletInfo != null) return false;
-        if (rootCertificate != null ? !rootCertificate.equals(that.rootCertificate) : that.rootCertificate != null)
-            return false;
-        if (authenticationCertificate != null ? !authenticationCertificate.equals(that.authenticationCertificate) : that.authenticationCertificate != null)
-            return false;
-        if (signingCertificate != null ? !signingCertificate.equals(that.signingCertificate) : that.signingCertificate != null)
-            return false;
-        if (issuerCertificate != null ? !issuerCertificate.equals(that.issuerCertificate) : that.issuerCertificate != null)
-            return false;
-        return encryptionCertificate != null ? encryptionCertificate.equals(that.encryptionCertificate) : that.encryptionCertificate == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = appletInfo != null ? appletInfo.hashCode() : 0;
-        result = 31 * result + (rootCertificate != null ? rootCertificate.hashCode() : 0);
-        result = 31 * result + (authenticationCertificate != null ? authenticationCertificate.hashCode() : 0);
-        result = 31 * result + (signingCertificate != null ? signingCertificate.hashCode() : 0);
-        result = 31 * result + (issuerCertificate != null ? issuerCertificate.hashCode() : 0);
-        result = 31 * result + (encryptionCertificate != null ? encryptionCertificate.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "AventraAllData{" +
                 "appletInfo=" + appletInfo +

@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -16,8 +17,7 @@ import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -156,5 +156,52 @@ public class LuxTrustContainer extends GenericContainer<LuxTrustContainer, GclLu
     @Override
     public Class<LuxTrustAllCertificates> getAllCertificatesClass() {
         return LuxTrustAllCertificates.class;
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        LuxTrustAllData allData = getAllData(true);
+        data.setAllCertificates(getCertificatesMap(allData));
+        data.setAuthenticationCertificateChain(getCertChain(allData.getRootCertificates(), allData.getAuthenticationCertificate()));
+        data.setSigningCertificateChain(getCertChain(allData.getRootCertificates(), allData.getSigningCertificate()));
+        List<Map<Integer, T1cCertificate>> certChains = new ArrayList<>();
+        certChains.add(getCertChain(allData.getRootCertificates()));
+        certChains.add(data.getAuthenticationCertificateChain());
+        certChains.add(data.getSigningCertificateChain());
+        data.setCertificateChains(certChains);
+        return data;
+    }
+
+    private Map<Integer, T1cCertificate> getCertChain(List<T1cCertificate> rootCerts, T1cCertificate... additionalCerts) {
+        List<T1cCertificate> collatedCerts = new ArrayList<>(rootCerts);
+        collatedCerts.addAll(Arrays.asList(additionalCerts));
+        return orderCertificates(collatedCerts);
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        LuxTrustAllCertificates certs = getAllCertificates(true);
+        List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
+        certsToOrder.add(certs.getSigningCertificate());
+        return orderCertificates(certsToOrder);
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        LuxTrustAllCertificates certs = getAllCertificates(true);
+        List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
+        certsToOrder.add(certs.getAuthenticationCertificate());
+        return orderCertificates(certsToOrder);
+    }
+
+    private Map<String, T1cCertificate> getCertificatesMap(LuxTrustAllData allData) {
+        Map<String, T1cCertificate> certs = new HashMap<>();
+        for (int i = 0; i < allData.getRootCertificates().size(); i++) {
+            certs.put("root-certificate-" + i + 1, allData.getRootCertificates().get(i));
+        }
+        certs.put("authentication-certificate", allData.getAuthenticationCertificate());
+        certs.put("signing-certificate", allData.getSigningCertificate());
+        return certs;
     }
 }

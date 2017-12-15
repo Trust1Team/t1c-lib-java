@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Guillaume Vandecasteele
@@ -136,8 +137,12 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetSafenetContainer() {
-        SafeNetContainer container = getClient().getSafeNetContainer(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(false));
-        assertNotNull(container);
+        try {
+            SafeNetContainer container = getClient().getSafeNetContainer(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(false));
+            assertNotNull(container);
+        } catch (IllegalArgumentException ex) {
+            assertTrue(ex.getMessage().contains("Driver not found"));
+        }
     }
 
     @Test

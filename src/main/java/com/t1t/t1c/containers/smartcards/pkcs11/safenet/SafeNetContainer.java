@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -11,6 +12,7 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
@@ -20,6 +22,7 @@ import org.apache.commons.lang3.SystemUtils;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Michallis Pashidis
@@ -179,5 +182,20 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         Preconditions.checkArgument(driver != null, "No configuration found for OS: " + SystemUtils.OS_NAME);
         Preconditions.checkArgument(driver.exists(), "Driver not found: " + driver.getAbsolutePath());
         modulePath = driver.getAbsolutePath();
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not provide data dump");
     }
 }

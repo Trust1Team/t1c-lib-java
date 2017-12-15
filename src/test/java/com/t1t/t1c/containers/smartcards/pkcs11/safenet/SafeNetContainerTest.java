@@ -316,4 +316,19 @@ public class SafeNetContainerTest extends AbstractTestClass {
         assertEquals(mac, conf.getMac());
         assertEquals(conf.withMac(Paths.get("mac")), conf);
     }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getSigningCertificateChain() {
+        container.getSigningCertificateChain();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAuthenticationCertificateChain() {
+        container.getAuthenticationCertificateChain();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testGenericDataDump() {
+        container.dumpData();
+    }
 }

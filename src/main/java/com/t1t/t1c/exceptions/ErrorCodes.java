@@ -83,4 +83,12 @@ public final class ErrorCodes {
     public static final int CORE_ERROR                                  = 6000;
 
     public static final String CORE_ERROR_INFO                          = "coreError";
+
+    //
+    // Certificate related
+    //
+
+    public static final int CERTIFICATE_ORDERING_ERROR                  = 7000;
+
+    public static final String CERTIFICATE_ORDERING_ERROR_INFO          = "certificateOrderingError";
 }

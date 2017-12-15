@@ -23,7 +23,7 @@ public interface GclOberthurRestClient {
     Call<T1cResponse<GclOberthurAllData>> getAllData(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter) throws RestException;
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
-    Call<T1cResponse<GclOberthurAllCertificates>> getAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter) throws RestException;
+    Call<T1cResponse<GclOberthurAllData>> getAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter) throws RestException;
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
     Call<T1cResponse<Object>> verifyPin(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request) throws RestException;

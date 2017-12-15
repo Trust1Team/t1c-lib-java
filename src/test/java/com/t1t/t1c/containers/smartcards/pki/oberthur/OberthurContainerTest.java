@@ -3,6 +3,8 @@ package com.t1t.t1c.containers.smartcards.pki.oberthur;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -10,6 +12,7 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -306,5 +310,70 @@ public class OberthurContainerTest extends AbstractTestClass {
         assertNotNull(cert);
         assertNotNull(cert.getBase64());
         assertNotNull(cert.getParsed());
+    }
+
+    @Test
+    public void testAllData() {
+        OberthurAllData obj = new OberthurAllData(MockResponseFactory.getGclOberthurAllData());
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+        T1cCertificate newCert = new T1cCertificate().withBase64("new");
+        obj.setAuthenticationCertificate(newCert);
+        assertEquals(newCert, obj.getAuthenticationCertificate());
+        obj.setRootCertificate(newCert);
+        assertEquals(newCert, obj.getRootCertificate());
+        obj.setIssuerCertificate(newCert);
+        assertEquals(newCert, obj.getIssuerCertificate());
+        obj.setEncryptionCertificate(newCert);
+        assertEquals(newCert, obj.getEncryptionCertificate());
+        obj.setSigningCertificate(newCert);
+        assertEquals(newCert, obj.getSigningCertificate());
+        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1);
+    }
+
+    @Test
+    public void testGclAllData() {
+        GclOberthurAllData obj = new GclOberthurAllData();
+        GclOberthurAllData obj2 = new GclOberthurAllData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setRootCertificate("r");
+        assertEquals("r", obj.getRootCertificate());
+        obj.setIssuerCertificate("i");
+        assertEquals("i", obj.getIssuerCertificate());
+        obj.setAuthenticationCertificate("a");
+        assertEquals("a", obj.getAuthenticationCertificate());
+        obj.setSigningCertificate("s");
+        assertEquals("s", obj.getSigningCertificate());
+        obj.setEncryptionCertificate("e");
+        assertEquals("e", obj.getEncryptionCertificate());
+    }
+
+    @Test
+    public void getSigningCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getSigningCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void getAuthenticationCertificateChain() {
+        Map<Integer, T1cCertificate> signChain = container.getAuthenticationCertificateChain();
+        assertNotNull(signChain);
+        assertTrue(CollectionUtils.isNotEmpty(signChain.entrySet()));
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData();
+        assertNotNull(data);
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getCertificateChains());
+        assertNotNull(data.getAllCertificates());
     }
 }

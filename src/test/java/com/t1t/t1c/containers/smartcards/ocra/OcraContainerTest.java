@@ -158,4 +158,51 @@ public class OcraContainerTest extends AbstractTestClass {
     public void readCounterWithWrongPin() {
         container.readCounter("1112");
     }
+
+    @Test
+    public void testAllData() {
+        GclOcraAllData obj = new GclOcraAllData();
+        GclOcraAllData obj2 = new GclOcraAllData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setCounter("s");
+        assertEquals("s", obj.getCounter());
+    }
+
+    @Test
+    public void testChallenge() {
+        GclOcraChallengeData obj = new GclOcraChallengeData();
+        GclOcraChallengeData obj2 = new GclOcraChallengeData();
+        assertEquals(obj, obj);
+        assertEquals(obj, obj2);
+        assertEquals(obj.hashCode(), obj2.hashCode());
+        assertNotEquals(obj, "string");
+        assertTrue(StringUtils.isNotEmpty(obj.toString()));
+
+        obj.setPin("pin");
+        assertEquals("pin", obj.getPin());
+        assertEquals(obj.withPin("pin2"), obj);
+
+        obj.setChallenge("challenge");
+        assertEquals("challenge", obj.getChallenge());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getSigningCertificateChain() {
+        container.getSigningCertificateChain();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAuthenticationCertificateChain() {
+        container.getAuthenticationCertificateChain();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testGenericDataDump() {
+        container.dumpData();
+    }
 }

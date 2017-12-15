@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -14,15 +15,21 @@ import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient, PtIdAllData, PtIdAllCertificates> {
+
+    private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
     public PtEIdContainer(LibConfig config, GclReader reader, GclPtIdRestClient httpClient) {
         super(config, reader, httpClient, null);
@@ -181,5 +188,57 @@ public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRest
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        PtIdAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getRootNonRepudiationCertificate(), certs.getNonRepudiationCertificate());
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        PtIdAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getRootAuthenticationCertificate(), certs.getAuthenticationCertificate());
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        PtIdAllData allData = getAllData(true);
+        GclPtIdData id = allData.getId();
+        if (pin != null) {
+            GclPtIdAddress address = getAddress(pin);
+            data.setMunicipality(address.getMunicipalityDescription());
+            data.setStreetAndNumber(address.getStreetType() + " " + address.getStreetName() + " " + address.getDoorNo());
+            data.setZipCode(address.getZip4() + "-" + address.getZip3());
+        }
+        data.setGivenName(id.getName());
+        data.setSurName(id.getSurname());
+        data.setFullName(id.getName() + " " + id.getSurname());
+        data.setDateOfBirth(id.getDateOfBirth());
+        data.setGender(id.getGender());
+
+        data.setNationality(id.getNationality());
+        data.setBase64Picture(id.getPhoto());
+        data.setValidityStartDate(id.getValidityBeginDate());
+        data.setValidityEndDate(id.getValidityEndDate());
+        data.setDocumentId(id.getDocumentNumber());
+
+        data.setAuthenticationCertificateChain(orderCertificates(allData.getAuthenticationCertificate(), allData.getRootAuthenticationCertificate()));
+        data.setSigningCertificateChain(orderCertificates(allData.getNonRepudiationCertificate(), allData.getRootNonRepudiationCertificate()));
+        data.setCertificateChains(Arrays.asList(data.getAuthenticationCertificateChain(), data.getSigningCertificateChain()));
+        data.setAllCertificates(getAllCertificatesMap(allData));
+        return data;
+    }
+
+    private Map<String, T1cCertificate> getAllCertificatesMap(PtIdAllData data) {
+        Map<String, T1cCertificate> certMap = new HashMap<>();
+        certMap.put("root-certificate", data.getRootCertificate());
+        certMap.put("root-authentication-certificate", data.getRootAuthenticationCertificate());
+        certMap.put("root-non-repudiation-certificate", data.getRootNonRepudiationCertificate());
+        certMap.put("authentication-certificate", data.getAuthenticationCertificate());
+        certMap.put("non-repudiation-certificate", data.getNonRepudiationCertificate());
+        return certMap;
     }
 }

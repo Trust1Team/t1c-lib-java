@@ -21,14 +21,6 @@ public class OberthurAllData implements AllData, AllCertificates {
                 data.getEncryptionCertificate(), parseCertificates);
     }
 
-    public OberthurAllData(GclOberthurAllCertificates certs, Boolean... parseCertificates) {
-        this(certs.getAuthenticationCertificate(),
-                certs.getRootCertificate(),
-                certs.getSigningCertificate(),
-                certs.getIssuerCertificate(),
-                certs.getEncryptionCertificate(), parseCertificates);
-    }
-
     public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean... parseCertificates) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
         this.rootCertificate = CertificateUtil.createT1cCertificate(rootCertificate, parseCertificates);
@@ -75,34 +67,6 @@ public class OberthurAllData implements AllData, AllCertificates {
 
     public void setEncryptionCertificate(T1cCertificate encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OberthurAllData)) return false;
-
-        OberthurAllData that = (OberthurAllData) o;
-
-        if (rootCertificate != null ? !rootCertificate.equals(that.rootCertificate) : that.rootCertificate != null)
-            return false;
-        if (authenticationCertificate != null ? !authenticationCertificate.equals(that.authenticationCertificate) : that.authenticationCertificate != null)
-            return false;
-        if (signingCertificate != null ? !signingCertificate.equals(that.signingCertificate) : that.signingCertificate != null)
-            return false;
-        if (issuerCertificate != null ? !issuerCertificate.equals(that.issuerCertificate) : that.issuerCertificate != null)
-            return false;
-        return encryptionCertificate != null ? encryptionCertificate.equals(that.encryptionCertificate) : that.encryptionCertificate == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = rootCertificate != null ? rootCertificate.hashCode() : 0;
-        result = 31 * result + (authenticationCertificate != null ? authenticationCertificate.hashCode() : 0);
-        result = 31 * result + (signingCertificate != null ? signingCertificate.hashCode() : 0);
-        result = 31 * result + (issuerCertificate != null ? issuerCertificate.hashCode() : 0);
-        result = 31 * result + (encryptionCertificate != null ? encryptionCertificate.hashCode() : 0);
-        return result;
     }
 
     @Override

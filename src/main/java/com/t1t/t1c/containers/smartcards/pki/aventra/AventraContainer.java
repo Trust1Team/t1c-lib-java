@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
@@ -18,7 +19,9 @@ import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -184,5 +187,40 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+        AventraAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getAuthenticationCertificate());
+    }
+
+    @Override
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+        AventraAllCertificates certs = getAllCertificates(true);
+        return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getSigningCertificate());
+    }
+
+    @Override
+    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+        ContainerData data = new ContainerData();
+        AventraAllData allData = getAllData(true);
+        data.setDocumentId(allData.getAppletInfo().getSerial());
+
+        data.setAuthenticationCertificateChain(orderCertificates(allData.getRootCertificate(), allData.getIssuerCertificate(), allData.getAuthenticationCertificate()));
+        data.setSigningCertificateChain(orderCertificates(allData.getRootCertificate(), allData.getIssuerCertificate(), allData.getSigningCertificate()));
+        data.setCertificateChains(Arrays.asList(data.getAuthenticationCertificateChain(), data.getSigningCertificateChain(), orderCertificates(allData.getRootCertificate(), allData.getIssuerCertificate(), allData.getEncryptionCertificate())));
+        data.setAllCertificates(getCertMap(allData));
+        return data;
+    }
+
+    private Map<String, T1cCertificate> getCertMap(AventraAllData data) {
+        Map<String, T1cCertificate> certMap = new HashMap<>();
+        certMap.put("root-certificate", data.getRootCertificate());
+        certMap.put("issuer-certificate", data.getIssuerCertificate());
+        certMap.put("authentication-certificate", data.getAuthenticationCertificate());
+        certMap.put("signing-certificate", data.getSigningCertificate());
+        certMap.put("encryption-certificate", data.getEncryptionCertificate());
+        return certMap;
     }
 }

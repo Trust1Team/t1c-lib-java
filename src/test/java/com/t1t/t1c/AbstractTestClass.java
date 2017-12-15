@@ -146,6 +146,7 @@ public abstract class AbstractTestClass {
         conf.setDsUri("https://accapim.t1t.be/trust1team/gclds/v1/");
         conf.setOcvUri("https://accapim.t1t.be/trust1team/ocv-api/v1/");
         conf.setApiKey("7de3b216-ade2-4391-b2e2-86b80bac4d7d");
+        conf.setSessionTimeout(40);
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);
         conf.setHardwarePinPadForced(false);
