@@ -1,0 +1,17 @@
+{
+  "ocspResponse": {
+    "status": true,
+    "ocspLocation": "http://ocsp.eid.belgium.be/2"
+  },
+  "crlResponse": {
+    "version": "2",
+    "signatureAlgorithm": "RSA_SHA1",
+    "status": true,
+    "issuerCertificate": "C=BE,CN=Citizen CA,SERIALNUMBER=201410",
+    "crlLocations": [
+      "http://crl.eid.belgium.be/eidc201410.crl",
+      "http://crl.eid.belgium.be/belgium3.crl"
+    ],
+    "productionDate": "Wed Nov 29 12:56:56 UTC 2017"
+  }
+}

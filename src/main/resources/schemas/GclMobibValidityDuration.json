@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclMobibValidityDuration",
+  "javaType": "com.t1t.t1c.containers.smartcards.mobib.GclMobibValidityDuration",
+  "type": "object",
+  "properties": {
+    "unit": {
+      "type": "integer"
+    },
+    "value": {
+      "type": "integer"
+    }
+  }
+}

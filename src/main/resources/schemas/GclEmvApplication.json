@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclEmvApplication",
+  "javaType": "com.t1t.t1c.containers.smartcards.emv.GclEmvApplication",
+  "type": "object",
+  "properties": {
+    "aid": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "priority": {
+      "type": "integer"
+    }
+  }
+}

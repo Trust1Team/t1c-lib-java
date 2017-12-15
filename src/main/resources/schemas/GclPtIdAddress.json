@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclPtIdAddress",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.pt.GclPtIdAddress",
+  "type": "object",
+  "properties": {
+    "abbr_building_type": {
+      "type": "string"
+    },
+    "abbr_street_type": {
+      "type": "string"
+    },
+    "building_type": {
+      "type": "string"
+    },
+    "civil_parish": {
+      "type": "string"
+    },
+    "civil_parish_description": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "district_description": {
+      "type": "string"
+    },
+    "door_no": {
+      "type": "string"
+    },
+    "floor": {
+      "type": "string"
+    },
+    "gen_address_num": {
+      "type": "string"
+    },
+    "is_national": {
+      "type": "boolean"
+    },
+    "locality": {
+      "type": "string"
+    },
+    "municipality": {
+      "type": "string"
+    },
+    "municipality_description": {
+      "type": "string"
+    },
+    "place": {
+      "type": "string"
+    },
+    "postal_locality": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "side": {
+      "type": "string"
+    },
+    "street_name": {
+      "type": "string"
+    },
+    "street_type": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "zip3": {
+      "type": "string"
+    },
+    "zip4": {
+      "type": "string"
+    }
+  }
+}

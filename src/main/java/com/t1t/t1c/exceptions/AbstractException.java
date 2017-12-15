@@ -3,29 +3,31 @@ package com.t1t.t1c.exceptions;
 
 /**
  * Created by michallispashidis on 31/10/2017.
- *
+ * <p>
  * Base class for all T1C errors coming out of the REST layer.
  */
-public abstract class AbstractException extends RuntimeException {
+public abstract class AbstractException extends Exception {
 
     private transient String serverStack;
-    
+
     /**
      * Constructor.
      */
     public AbstractException() {
     }
-    
+
     /**
      * Constructor.
+     *
      * @param message the exception message
      */
     public AbstractException(String message) {
         super(message);
     }
-    
+
     /**
      * Constructor.
+     *
      * @param cause the exception cause
      */
     public AbstractException(Throwable cause) {
@@ -34,8 +36,9 @@ public abstract class AbstractException extends RuntimeException {
 
     /**
      * Constructor.
+     *
      * @param message the exception message
-     * @param cause the exception cause
+     * @param cause   the exception cause
      */
     public AbstractException(String message, Throwable cause) {
         super(message, cause);
@@ -58,12 +61,12 @@ public abstract class AbstractException extends RuntimeException {
     /**
      * @return the httpCode
      */
-    public abstract int getHttpCode();
+    public abstract Integer getHttpCode();
 
     /**
      * @return the errorCode
      */
-    public abstract int getErrorCode();
+    public abstract Integer getErrorCode();
 
     /**
      * @return the moreInfo

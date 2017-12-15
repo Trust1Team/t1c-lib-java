@@ -1,0 +1,25 @@
+{
+  "data": {
+    "birth_date": "01 JAN  1980",
+    "birth_location": "Gent",
+    "card_delivery_municipality": "Gent",
+    "card_number": "111111111111",
+    "card_validity_date_begin": "01.01.2015",
+    "card_validity_date_end": "01.01.2100",
+    "chip_number": "534C479040110001123175F912924239",
+    "document_type": "01",
+    "first_names": "John John",
+    "name": "Doe",
+    "national_number": "800101111112",
+    "nationality": "Belg",
+    "noble_condition": "",
+    "picture_hash": "588331D8A6F6B4812B4E953982AA5616FE29C03A",
+    "raw_data": "MTExMTExMTExMTExAhBTTEdAEQESMXUSQjkDDQowMS4wMS4yMDE1BA0KMDEuMDEuMjEwMAUER2VudAYLODAwMTAxMTExMTIHDQpEb2VKb2huIEpvaG4NCgRCZWxnCwRHZW50DAwwMSBKQU4gIDE5ODANCgFNDg8CMDEQATARFFgx2KYrTjlWFik6",
+    "sex": "M",
+    "signature": "tRdHRSu/OxNTV2O8fpikBxxxxxxxxxxBck4NttikWWto98Kax2dgxYl8mYJ8USB90R9yeUJOZCHCwvYVnEIaglTNgci3D0BOhK4b+xVLgogxsXPVnIHBhM99v5tVXoIu9DVUXrlCmkGJm1X/qUBTAouu6tzs2TimF5yUXOKFQAsoHNIr+Id7DDMiJ6QEhUE3BBy3tfb+Fr7VYBWpvq2daHpP8Se2vXAvZ6lOh56xgsNHthaLA1l4Wlro7pgBGvlXPDMnU/uFI3/0XaGC3UWs6izzWUkqsE3swvCdwfGkKRhaTIe9LWF898TUoZqs8/5GDt1qMARL/lB5Qbw==",
+    "special_status": "0",
+    "third_name": "P",
+    "version": 0
+  },
+  "success": true
+}

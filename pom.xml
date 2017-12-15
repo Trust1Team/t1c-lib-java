@@ -1,10 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.t1t.t1c</groupId>
     <artifactId>Connector</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
 
     <name>Connector</name>
@@ -57,14 +57,27 @@
         <version.junit>4.12</version.junit>
         <version.mockito.all>1.10.19</version.mockito.all>
         <version.hamcrest.all>1.3</version.hamcrest.all>
-        <version.powermock.junit4>1.6.4</version.powermock.junit4>
+        <version.powermock.junit4>1.7.3</version.powermock.junit4>
+        <version.easymock>3.5</version.easymock>
         <version.javassist>3.20.0-GA</version.javassist>
+        <version.okhttp.mock>3.9.1</version.okhttp.mock>
         <!--Logging-->
         <version.slf4j.api>1.7.2</version.slf4j.api>
         <version.slf4j.log4j.adapter>1.7.25</version.slf4j.log4j.adapter>
         <version.org.log4j>1.2.17</version.org.log4j>
         <!--Application specific-->
-        <version.gson>2.8.2</version.gson>
+
+        <version.retrofit>2.3.0</version.retrofit>
+        <version.commons.lang>3.6</version.commons.lang>
+        <version.jackson>2.9.0</version.jackson>
+        <version.commons-lang3>3.6</version.commons-lang3>
+        <version.commons.collections>4.1</version.commons.collections>
+        <version.commons.io>1.3.2</version.commons.io>
+        <version.jackson-databind>2.0.0</version.jackson-databind>
+        <version.commons.codec>1.10</version.commons.codec>
+        <version.jose4j>0.6.2</version.jose4j>
+        <!-- Guava versions above 20.0 require java 1.8 -->
+        <version.guava>20.0</version.guava>
     </properties>
 
     <dependencies>
@@ -87,6 +100,20 @@
             <version>${version.hamcrest.all}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit-mock</artifactId>
+            <version>${version.retrofit}</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>mockwebserver</artifactId>
+            <version>${version.okhttp.mock}</version>
+            <scope>test</scope>
+        </dependency>
 
         <!--Powermock-->
         <dependency>
@@ -106,6 +133,18 @@
                     <artifactId>javassist</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-easymock</artifactId>
+            <version>${version.powermock.junit4}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>${version.easymock}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
@@ -137,12 +176,66 @@
             <version>${version.typesafe.config}</version>
         </dependency>
         <!--Application specific-->
-        <!--    <dependency>
-              <groupId>com.google.code.gson</groupId>
-              <artifactId>gson</artifactId>
-              <version>${version.gson}</version>
-            </dependency>-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${version.commons-lang3}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${version.commons.collections}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-gson</artifactId>
+            <version>${version.retrofit}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${version.commons.io}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${version.jackson}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${version.commons.codec}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bitbucket.b_c</groupId>
+            <artifactId>jose4j</artifactId>
+            <version>${version.jose4j}</version>
+        </dependency>
 
+        <!--jsonschema dependencies-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${version.jackson-databind}</version>
+        </dependency>
+
+        <!--Codacy dependencies-->
+        <dependency>
+            <groupId>com.codacy</groupId>
+            <artifactId>codacy-coverage-reporter</artifactId>
+            <version>2.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>
@@ -159,6 +252,196 @@
         </resources>
         <plugins>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.9</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>COMPLEXITY</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.60</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.gavinmogan</groupId>
+                <artifactId>codacy-maven-plugin</artifactId>
+                <version>1.0.3</version>
+                <configuration>
+                    <apiToken>afe78ff8334f48bfb329ebd3cbb6d7f4</apiToken>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!--See: https://github.com/joelittlejohn/jsonschema2pojo/wiki/Reference-->
+                <!--See: https://jsonschema.net/#/editor-->
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <addCompileSourceRoot>true</addCompileSourceRoot>
+                    <!--<sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>-->
+                    <!--We didn't provided the sourceDirectory, because alphabetical order makes nomenclature of classes bug out-->
+                    <sourcePaths>
+                        <!-- DS -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsJava.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsBrowser.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsOs.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDevice.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDeviceRegistrationRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadPath.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsSystemStatus.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsPublicKey.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsToken.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsTokenRefreshRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsError.json</sourcePath>
+                        <!-- OCV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvChallengeVerificationRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificate.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvOcspResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCrlResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
+                        </sourcePath>
+                        <!-- GCL core -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainer.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclStatus.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <!-- BE ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIDAllCertificates.json</sourcePath>
+                        <!-- DNIE -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDnieAllCertificates.json</sourcePath>
+                        <!-- Lux ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdBiometric.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdPicture.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdSignatureImage.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxIdAllCertificates.json</sourcePath>
+                        <!-- PT ID -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAddress.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPtIdAllCertificates.json</sourcePath>
+                        <!-- EMV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplication.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvApplicationData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvPublicKeyCertificate.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclEmvAidRequest.json</sourcePath>
+                        <!-- MOBIB -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibSpatial.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCardIssuing.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibValidityDuration.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibCounter.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibTariff.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibContract.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclMobibAllData.json</sourcePath>
+                        <!-- OCRA -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOcraChallengeData.json</sourcePath>
+                        <!-- PIV -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivFacialImage.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivPrintedInformation.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllData.json</sourcePath>
+                        <!-- SAFENET -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
+                        <!-- Aventra -->
+                        <sourcePath>
+                            ${basedir}/src/main/resources/schemas/GclAventraPinResetRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAppletInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAventraAllData.json</sourcePath>
+                        <!-- LUXTRUST -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLuxTrustAllData.json</sourcePath>
+                        <!-- OBERTHUR -->
+                        <sourcePath>
+                            ${basedir}/src/main/resources/schemas/GclOberthurAuthenticationAlgorithmReferences.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurSignAlgorithmReferences.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllCertificates.json</sourcePath>
+                        <!-- REMOTE LOADING -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingApdu.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommand.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommandRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json
+                        </sourcePath>
+                        <!-- More to come -->
+                    </sourcePaths>
+                    <excludes></excludes>
+                    <targetPackage>com.t1t.t1c.model.rest</targetPackage>
+                    <sourceType>jsonschema</sourceType>
+                    <annotationStyle>gson</annotationStyle>
+                    <generateBuilders>true</generateBuilders>
+                    <useCommonsLang3>true</useCommonsLang3>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!--Uncomment the goal in order to generate t1c model-->
+                        <!--<goals>
+                            <goal>generate</goal>
+                        </goals>-->
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
@@ -168,8 +451,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${version.compiler.plugin}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -181,9 +464,26 @@
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <properties>
-                <appconfig.file>application</appconfig.file>
-            </properties>
         </profile>
     </profiles>
+
+    <!--Repositories -->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <url>https://repo.t1t.be/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <!-- repository to deploy to JAVA -->
+    <distributionManagement>
+        <repository>
+            <id>Releases</id>
+            <url>https://repo.t1t.be/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>Snapshots</id>
+            <url>https://repo.t1t.be/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

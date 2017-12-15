@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclInfo",
+  "javaType": "com.t1t.t1c.core.GclInfo",
+  "type": "object",
+  "properties": {
+    "activated": {
+      "type": "boolean"
+    },
+    "arch": {
+      "type": "string"
+    },
+    "citrix": {
+      "type": "boolean"
+    },
+    "consent": {
+      "type": "boolean"
+    },
+    "log_level": {
+      "type": "string"
+    },
+    "managed": {
+      "type": "boolean"
+    },
+    "os": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    }
+  }
+}

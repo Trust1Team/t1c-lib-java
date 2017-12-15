@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "javaType": "com.t1t.t1c.ds.DsDownloadRequest",
+  "id": "DsDownloadRequest",
+  "properties": {
+    "os": {
+      "type": "object",
+      "$ref": "DsOs.json"
+    },
+    "browser": {
+      "type": "object",
+      "$ref": "DsBrowser.json"
+    },
+    "ua": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    }
+  }
+}

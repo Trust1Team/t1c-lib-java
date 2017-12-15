@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "DsDownloadPath",
+  "javaType": "com.t1t.t1c.ds.DsDownloadPath",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "fileName": {
+      "type": "string"
+    }
+  }
+}

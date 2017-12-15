@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclEmvApplicationData",
+  "javaType": "com.t1t.t1c.containers.smartcards.emv.GclEmvApplicationData",
+  "type": "object",
+  "properties": {
+    "country": {
+      "type": "string"
+    },
+    "country_code": {
+      "type": "string"
+    },
+    "effective_date": {
+      "type": "string"
+    },
+    "expiration_date": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "pan": {
+      "type": "string"
+    }
+  }
+}

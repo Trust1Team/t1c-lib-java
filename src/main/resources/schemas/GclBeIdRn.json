@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclBeIdRn",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn",
+  "type": "object",
+  "properties": {
+    "birth_date": {
+      "type": "string"
+    },
+    "birth_location": {
+      "type": "string"
+    },
+    "card_delivery_municipality": {
+      "type": "string"
+    },
+    "card_number": {
+      "type": "string"
+    },
+    "card_validity_date_begin": {
+      "type": "string"
+    },
+    "card_validity_date_end": {
+      "type": "string"
+    },
+    "chip_number": {
+      "type": "string"
+    },
+    "document_type": {
+      "type": "string"
+    },
+    "first_names": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "national_number": {
+      "type": "string"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "noble_condition": {
+      "type": "string"
+    },
+    "picture_hash": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "sex": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "special_status": {
+      "type": "string"
+    },
+    "third_name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    }
+  }
+}

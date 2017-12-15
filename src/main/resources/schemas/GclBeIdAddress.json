@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclBeIdAddress",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress",
+  "type": "object",
+  "properties": {
+    "municipality": {
+      "type": "string"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "street_and_number": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "zipcode": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "data": {
+    "card": {
+      "atr": "3B9813400AA503010101AD1311",
+      "description": [
+        "Belgium Electronic ID card"
+      ]
+    },
+    "id": "57a3e2e71c48cee9",
+    "name": "Bit4id miniLector",
+    "pinpad": false
+  },
+  "success": true
+}

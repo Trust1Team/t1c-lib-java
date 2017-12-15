@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "OcvChallengeRequest",
+  "javaType": "com.t1t.t1c.ocv.OcvChallengeRequest",
+  "type": "object",
+  "properties": {
+    "digestAlgorithm": {
+      "type": "string"
+    },
+    "hash": {
+      "type": "string"
+    }
+  }
+}

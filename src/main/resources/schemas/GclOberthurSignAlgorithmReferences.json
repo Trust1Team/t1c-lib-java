@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclOberthurSignAlgorithmReferences",
+  "javaType": "com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurSignAlgorithmReferences",
+  "type": "array",
+  "items": {
+    "type": "string"
+  }
+}

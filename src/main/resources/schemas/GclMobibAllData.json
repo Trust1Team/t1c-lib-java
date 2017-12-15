@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclMobibAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.mobib.GclMobibAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
+  "type": "object",
+  "properties": {
+    "active": {
+      "type": "boolean"
+    },
+    "card-issuing": {
+      "type": "object",
+      "$ref": "GclMobibCardIssuing.json"
+    },
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclMobibContract.json"
+      }
+    },
+    "picture": {
+      "type": "string"
+    }
+  }
+}

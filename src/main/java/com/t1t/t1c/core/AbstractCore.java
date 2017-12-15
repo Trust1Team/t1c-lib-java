@@ -1,8 +1,10 @@
 package com.t1t.t1c.core;
 
 /**
- * Created by michallispashidis on 31/10/2017.
+ * @Author Michallis Pashidis
+ * @Since 2017
+ * <p>
+ * Marker interface at the moment, support for multi core on roadmap.
  */
-public abstract class AbstractCore {
-
+public abstract class AbstractCore implements ICore {
 }

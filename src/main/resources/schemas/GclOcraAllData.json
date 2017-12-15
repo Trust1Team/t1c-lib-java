@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclOcraAllData",
+  "javaType": "com.t1t.t1c.containers.smartcards.ocra.GclOcraAllData",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllData"
+  ],
+  "type": "object",
+  "properties": {
+    "counter": {
+      "type": "string"
+    }
+  }
+}

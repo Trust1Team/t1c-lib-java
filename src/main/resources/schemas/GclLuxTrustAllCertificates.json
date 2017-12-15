@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "GclLuxTrustAllCertificates",
+  "javaType": "com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates",
+  "javaInterfaces": [
+    "com.t1t.t1c.model.AllCertificates"
+  ],
+  "properties": {
+    "authentication_certificate": {
+      "type": "string"
+    },
+    "signing_certificate": {
+      "type": "string"
+    },
+    "root_certificates": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "data": {
+    "agency_card_serial_number": "12345",
+    "employee_affiliation": "CEO",
+    "expiration_date": "2020DEC01",
+    "issuer_identification": "T1T",
+    "name": "Thibaut Delhaye",
+    "organization_affiliation_line_1": "",
+    "organization_affiliation_line_2": ""
+  },
+  "success": true
+}

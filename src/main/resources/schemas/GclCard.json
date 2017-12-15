@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclCard",
+  "$id": "GclCardResponse",
+  "properties": {
+    "atr": {
+      "type": "string"
+    },
+    "description": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

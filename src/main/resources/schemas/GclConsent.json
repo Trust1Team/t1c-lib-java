@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "$id": "GclConsent",
+  "javaType": "com.t1t.t1c.core.GclConsent",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "durationInDays": {
+      "type": "integer"
+    }
+  }
+}
