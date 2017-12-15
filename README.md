@@ -23,9 +23,14 @@ TBD
 ## Development Environment IDE
 TBD
 
-## Development Docker
-TBD
+## Coverage using Jococo and Codacy
+```bash
+export CODACY_PROJECT_TOKEN=<codacy-project-token>
+java --add-modules=java.activation -cp codacy-coverage-reporter-2.0.1-assembly.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml
+```
+The '--add-modules' is needed only for java 9 to include the java.activation module.
 
+The commands above should be done manually, on develop or master branch.
 ## License
 
 ```
