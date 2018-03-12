@@ -111,9 +111,15 @@ public class DsClient implements IDsClient {
     @Override
     public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
-            return RestExecutor.executeCall(dsRestClient.register(deviceId, request)).getToken();
+            if (!request.getActivated()) {
+                return RestExecutor.executeCall(dsRestClient.register(deviceId, request)).getToken();
+            } else {
+                return RestExecutor.executeCall(dsRestClient.sync(deviceId, request)).getToken();
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
         }
     }
+
+
 }

@@ -43,7 +43,7 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "2cc27598-2af7-48af-a2df-c7352e5368ff";
+    private static String API_KEY = "INSERT_API_KEY_HERE";
     private static T1cClient client;
 
     public static void main(String[] args) {

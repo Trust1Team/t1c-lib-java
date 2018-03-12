@@ -4,7 +4,7 @@
 
     <groupId>com.t1t.t1c</groupId>
     <artifactId>Connector</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Connector</name>
@@ -47,8 +47,8 @@
         <!--General-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
         <version.compiler.plugin>3.1</version.compiler.plugin>
         <version.ear.plugin>3.0.2</version.ear.plugin>
         <buildNumber>${maven.build.timestamp}</buildNumber>
