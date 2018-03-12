@@ -29,6 +29,9 @@ public class LibConfig {
     private Boolean hardwarePinPadForced = false;
     private Boolean tokenCompatible = false;
     private Integer sessionTimeout;
+    private Boolean citrix;
+    private Integer agentPort;
+    private Boolean consentRequired = false;
     // Dynamic properties
     private String jwt;
 
@@ -265,5 +268,29 @@ public class LibConfig {
 
     public void setSessionTimeout(Integer sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
+    }
+
+    public Boolean getCitrix() {
+        return citrix;
+    }
+
+    public void setCitrix(Boolean citrix) {
+        this.citrix = citrix;
+    }
+
+    public Integer getAgentPort() {
+        return agentPort;
+    }
+
+    public void setAgentPort(Integer agentPort) {
+        this.agentPort = agentPort;
+    }
+
+    public Boolean getConsentRequired() {
+        return consentRequired;
+    }
+
+    public void setConsentRequired(Boolean consentRequired) {
+        this.consentRequired = consentRequired;
     }
 }

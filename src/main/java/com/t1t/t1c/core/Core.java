@@ -14,7 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Michallis Pashidis
@@ -24,12 +26,14 @@ public class Core extends AbstractCore {
     private static final Logger log = LoggerFactory.getLogger(Core.class);
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
+    private GclCitrixRestClient gclCitrixRestClient;
     private LibConfig config;
 
-    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, LibConfig config) {
+    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, GclCitrixRestClient gclCitrixRestClient, LibConfig config) {
         this.gclAdminRestClient = gclAdminRestClient;
         this.gclRestClient = gclRestClient;
         this.config = config;
+        this.gclCitrixRestClient = gclCitrixRestClient;
     }
 
     @Override
@@ -58,7 +62,11 @@ public class Core extends AbstractCore {
     @Override
     public String getPubKey() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getPublicKey());
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getPublicKey(config.getAgentPort()));
+            } else {
+                return RestExecutor.returnData(gclRestClient.getPublicKey());
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
         }
@@ -209,7 +217,11 @@ public class Core extends AbstractCore {
     public GclReader getReader(String readerId) throws GclCoreException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
         try {
-            return RestExecutor.returnData(gclRestClient.getCardReader(readerId));
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardReader(config.getAgentPort(), readerId));
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardReader(readerId));
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving reader with id \"" + readerId + "\"", ex);
         }
@@ -218,7 +230,11 @@ public class Core extends AbstractCore {
     @Override
     public List<GclReader> getReaders() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getCardReaders());
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardReaders(config.getAgentPort()));
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardReaders());
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers", ex);
         }
@@ -234,9 +250,31 @@ public class Core extends AbstractCore {
         return getReaders(true);
     }
 
+    @Override
+    public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
+        if (config.getCitrix()) {
+            try {
+                return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams));
+            } catch (RestException ex) {
+                throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+            }
+        } else {
+            throw ExceptionFactory.unsupportedOperationException("if on a Citrix environment, \"citrix\" must be set to true in the configuration");
+        }
+    }
+
+    @Override
+    public List<GclAgent> getAgents() throws GclCoreException {
+        return getAgents(Collections.<String, String>emptyMap());
+    }
+
     private List<GclReader> getReaders(boolean cardInserted) {
         try {
-            return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted));
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardInsertedReaders(config.getAgentPort(), cardInserted));
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted));
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers without cards", ex);
         }
@@ -258,6 +296,10 @@ public class Core extends AbstractCore {
             timeout = pollTimeoutInSeconds;
         }
         return 1000 * timeout;
+    }
+
+    private boolean checkCitrix() {
+        return config.getCitrix() && config.getAgentPort() != null;
     }
 
 /*    //TODO

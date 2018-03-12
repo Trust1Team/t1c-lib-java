@@ -5,8 +5,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
@@ -31,5 +33,8 @@ public interface GclRestClient {
 
     @GET("plugins")
     Call<T1cResponse<List<GclContainer>>> getContainers();
+
+    @GET("agent")
+    Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String,String> filters);
 
 }

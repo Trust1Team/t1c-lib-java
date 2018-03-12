@@ -42,15 +42,9 @@ public final class PinUtil {
     }
 
     public static AbstractRuntimeException checkPinExceptionMessage(RestException ex) {
-        if (StringUtils.isNotEmpty(ex.getJsonError())) {
-            try {
-                GclError error = new Gson().fromJson(ex.getJsonError(), GclError.class);
-                return ExceptionFactory.verifyPinException(error);
-            } catch (JsonSyntaxException e) {
-                log.error("Couldn't decode error message: ", e);
-            }
-        }
-        return ex;
+        if (ex.getGclError() != null) {
+            return ExceptionFactory.verifyPinException(ex.getGclError());
+        } else return ex;
     }
 
     public static GclAuthenticateOrSignData setPinIfPresent(GclAuthenticateOrSignData data, String... pin) {

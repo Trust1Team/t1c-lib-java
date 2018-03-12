@@ -22,6 +22,7 @@ import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfigur
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
+import com.t1t.t1c.core.GclAgent;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
@@ -43,13 +44,14 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "INSERT_API_KEY_HERE";
+    private static String API_KEY = "44865b13-f94b-45e6-b1cf-2f12d4bd547d";
     private static T1cClient client;
+    private static LibConfig conf;
 
     public static void main(String[] args) {
 
         /*Config*/
-        LibConfig conf = new LibConfig();
+        conf = new LibConfig();
         conf.setEnvironment(Environment.DEV);
         conf.setDsUri(DS_URI);
         conf.setOcvUri(OCV_URI);
@@ -61,26 +63,55 @@ public class JavaClientExample {
 
         /*Instantiate client*/
         client = new T1cClient(conf);
+        showMenu();
+    }
 
-        // Poll reader for insterted cards and get first available
-        GclReader reader = client.getCore().pollCardInserted();
-
+    private static void showMenu() {
         Scanner scan = new Scanner(System.in);
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
+        System.out.println("3. Select Citrix agent");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
         String choice = scan.nextLine();
         switch (choice) {
             case "1":
-                executeGenericContainerFunctionality(reader);
+                // Poll reader for insterted cards and get first available
+                executeGenericContainerFunctionality(client.getCore().pollCardInserted());
                 break;
             case "2":
-                executeReaderSpecificContainerFunctionality(reader);
+                // Poll reader for insterted cards and get first available
+                executeReaderSpecificContainerFunctionality(client.getCore().pollCardInserted());
                 break;
+            case "3":
+                executeCitrixFunctionality();
             default:
                 throw new IllegalArgumentException("Invalid choice");
+        }
+    }
+
+    private static void executeCitrixFunctionality() {
+        List<GclAgent> agents = client.getCore().getAgents();
+        Scanner scan = new Scanner(System.in);
+        System.out.println("==================== Available agents (username) ====================");
+        for (int i = 0; i < agents.size(); i++) {
+            System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
+        }
+        System.out.println("=====================================================================");
+        System.out.print("Please make a choice (any other value to quit): ");
+        String input = scan.nextLine();
+        try {
+            Integer choice = Integer.valueOf(input);
+            if (choice >= 0 && choice < agents.size()) {
+                GclAgent chosenAgent = agents.get(choice);
+                conf.setCitrix(true);
+                conf.setAgentPort(chosenAgent.getPort());
+                conf.setConsentRequired(true);
+                showMenu();
+            }
+        } catch (NumberFormatException ex) {
+            // Do nothing
         }
     }
 

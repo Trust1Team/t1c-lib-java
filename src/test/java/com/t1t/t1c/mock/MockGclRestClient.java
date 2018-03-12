@@ -1,15 +1,13 @@
 package com.t1t.t1c.mock;
 
 import com.t1t.t1c.MockResponseFactory;
-import com.t1t.t1c.core.GclContainer;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclRestClient;
-import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -51,5 +49,10 @@ public class MockGclRestClient implements GclRestClient {
     @Override
     public Call<T1cResponse<List<GclContainer>>> getContainers() {
         return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getContainers();
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
+        return delegate.returningResponse(MockResponseFactory.getAgents(filters)).getAgents(filters);
     }
 }

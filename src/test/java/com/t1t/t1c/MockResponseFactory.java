@@ -33,10 +33,7 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData;
-import com.t1t.t1c.core.GclCard;
-import com.t1t.t1c.core.GclContainer;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.DsDevice;
 import com.t1t.t1c.ds.DsDownloadPath;
 import com.t1t.t1c.ds.DsToken;
@@ -48,12 +45,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import retrofit2.Call;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -1607,6 +1602,32 @@ public final class MockResponseFactory {
         return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
     }
 
+    public static T1cResponse<List<GclAgent>> getAgents(Map<String, String> filters) {
+        List<GclAgent> agents = new ArrayList<>();
+        GclAgent johnDoe = new GclAgent()
+                .withChallenge("2cd89c9f-d1e5-4648-a850-6ddf9313d052")
+                .withHostname("macbook")
+                .withLastUpdate("2018-03-12T14:09:41.521521")
+                .withMetadata(Collections.<String, String>emptyMap())
+                .withPort(57061)
+                .withUsername("johndoe");
+        GclAgent janeDoe = new GclAgent()
+                .withChallenge("43244235-d1e5-gfd548-a850-6hthrf9313po34")
+                .withHostname("macbook")
+                .withLastUpdate("2018-03-12T14:15:41.521521")
+                .withMetadata(Collections.<String, String>emptyMap())
+                .withPort(57043)
+                .withUsername("janedoe");
+        if (filters.isEmpty()) {
+            agents.add(janeDoe);
+            agents.add(johnDoe);
+        } else if (filters.containsKey("username")) {
+            if (filters.get("username").equals("johndoe")) agents.add(johnDoe);
+            else if (filters.get("username").equals("janedoe")) agents.add(janeDoe);
+        }
+        return getSuccessResponse(agents);
+    }
+
     private static List<String> splitFilterParams(String filter) throws RestException {
         // To mock rest exceptions, if filter contains "throwException", we throw a RestException
         if (StringUtils.isEmpty(filter)) {
@@ -1615,14 +1636,5 @@ public final class MockResponseFactory {
         if (filter.contains("throwException"))
             throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
-    }
-
-    public static MockResponse getMockResponseForResource(int httpStatusCode, String resourceFilename) {
-        try {
-            return new MockResponse().setResponseCode(httpStatusCode).setBody(IOUtils.toString(MockResponseFactory.class.getResourceAsStream(RESPONSE_RESOURCE_PATH + resourceFilename + JSON_EXTENSION)));
-        } catch (IOException ex) {
-            log.warn("Failed to retrieve JSON response {}: {}", resourceFilename, ex);
-            return new MockResponse();
-        }
     }
 }

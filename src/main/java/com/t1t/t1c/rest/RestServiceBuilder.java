@@ -3,11 +3,13 @@ package com.t1t.t1c.rest;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclCitrixRestClient;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.utils.UriUtils;
+import cool.graph.cuid.Cuid;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,6 +39,7 @@ public final class RestServiceBuilder {
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
+    private static final String CITRIX_AGENT_PATH = "agent/%s/";
 
     private RestServiceBuilder() {
     }
@@ -49,7 +52,18 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null, config.getConsentRequired());
+    }
+
+    /**
+     * GCL Rest client communicates over TLS to T1C-GCL (local). Client specific for Citrix agents
+     * No apikey or JWT required.
+     *
+     * @param config
+     * @return
+     */
+    public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
+        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, null, null, config.getConsentRequired());
     }
 
     /**
@@ -60,7 +74,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt());
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt(), config.getConsentRequired());
     }
 
     /**
@@ -84,7 +98,13 @@ public final class RestServiceBuilder {
      * @return
      */
     public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
-        return getLocalClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null);
+        String uri;
+        if (config.getCitrix() && config.getAgentPort() != null) {
+            uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + String.format(CITRIX_AGENT_PATH, config.getAgentPort()) + ContainerRestClient.CONTAINER_CONTEXT_PATH);
+        } else {
+            uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH);
+        }
+        return getLocalClient(uri, clazz, null, null, config.getConsentRequired());
     }
 
     /**
@@ -123,10 +143,10 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt, Boolean consentRequired) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(getHttpClientSkipTLS(apikey, jwt))
+                    .client(getHttpClientSkipTLS(apikey, jwt, consentRequired))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -192,7 +212,7 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final String apikey, final String jwt, Boolean consentRequired) throws NoSuchAlgorithmException, CertificateException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
@@ -242,6 +262,18 @@ public final class RestServiceBuilder {
                 }
             });
         }
+        okHttpBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request.Builder requestBuilder = chain.request().newBuilder();
+                requestBuilder.addHeader("origin", "https://localhost");
+                String cuid = Cuid.createCuid();
+                String calc = cuid.substring(1, 9);
+                
+                requestBuilder.addHeader("X-Authentication-Token", Cuid.createCuid());
+                return chain.proceed(requestBuilder.build());
+            }
+        });
 
         return okHttpBuilder
                 // Set timeouts a little higher, because reading data from cards can take time

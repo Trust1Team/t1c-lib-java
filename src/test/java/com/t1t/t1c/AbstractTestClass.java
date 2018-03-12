@@ -29,13 +29,11 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.MockGclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.MockGclOberthurRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclCitrixRestClient;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.factories.ConnectionFactory;
-import com.t1t.t1c.mock.MockDsRestClient;
-import com.t1t.t1c.mock.MockGclRestAdminClient;
-import com.t1t.t1c.mock.MockGclRestClient;
-import com.t1t.t1c.mock.MockOcvRestClient;
+import com.t1t.t1c.mock.*;
 import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.rest.MockRestServiceBuilder;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -104,6 +102,8 @@ public abstract class AbstractTestClass {
     private GclOberthurRestClient gclOberthurRestClient;
     @Mock
     private GclRemoteLoadingRestClient gclRemoteLoadingRestClient;
+    @Mock
+    private GclCitrixRestClient gclCitrixRestClient;
 
     @Before
     public void init() {
@@ -193,6 +193,7 @@ public abstract class AbstractTestClass {
     private void mockRestClients() {
         dsRestClient = new MockDsRestClient(mockRestClient(DsRestClient.class, config.getDsUri(), config.getApiKey(), null));
         gclRestClient = new MockGclRestClient(mockRestClient(GclRestClient.class, config.getGclClientUri(), null, config.getJwt()));
+        gclCitrixRestClient = new MockGclCitrixRestClient(mockRestClient(GclCitrixRestClient.class, config.getGclClientUri(), null, config.getJwt()));
         gclAdminRestClient = new MockGclRestAdminClient(mockRestClient(GclAdminRestClient.class, config.getGclClientUri(), null, config.getJwt()));
         ocvRestClient = new MockOcvRestClient(mockRestClient(OcvRestClient.class, config.getOcvUri(), config.getApiKey(), null));
         gclBeIdRestClient = new MockGclBeIdRestClient(mockRestClient(GclBeIdRestClient.class, config.getGclClientUri(), null, null));

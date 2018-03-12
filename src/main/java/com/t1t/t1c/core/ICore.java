@@ -4,6 +4,7 @@ import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -205,4 +206,19 @@ public interface ICore {
      * @throws GclCoreException: on failure
      */
     List<GclReader> getPinVerificationCapableReaders() throws GclCoreException;
+
+    /**
+     * Get list of available agents, matching the provided String filter parameters
+     * @param filterParams values to filter
+     * @return
+     * @throws GclCoreException
+     */
+    List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException;
+
+    /**
+     * Get list of available agents
+     * @return
+     * @throws GclCoreException
+     */
+    List<GclAgent> getAgents() throws GclCoreException;
 }

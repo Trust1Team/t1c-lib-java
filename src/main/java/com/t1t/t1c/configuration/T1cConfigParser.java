@@ -163,6 +163,7 @@ public class T1cConfigParser implements Serializable {
         if (this.appConfig.isTokenCompatible() == null) this.appConfig.setTokenCompatible(false);
         if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0)
             this.appConfig.setSessionTimeout(60);
+        if (this.appConfig.getCitrix() == null) this.appConfig.setCitrix(false);
     }
 
     /**
