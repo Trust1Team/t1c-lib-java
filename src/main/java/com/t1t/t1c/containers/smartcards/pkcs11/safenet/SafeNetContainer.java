@@ -6,10 +6,7 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.GenericContainerException;
-import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.exceptions.VerifyPinException;
+import com.t1t.t1c.exceptions.*;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
@@ -134,25 +131,25 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
-    public SafeNetCertificates getSafeNetCertificates(Integer slotId, String pin, Boolean... parse) throws VerifyPinException, RestException {
+    public SafeNetCertificates getSafeNetCertificates(Integer slotId, String pin, Boolean... parse) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
-            return new SafeNetCertificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getSafeNetCertificates(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath).withSlotId(slotId).withPin(pin))), parse));
+            return new SafeNetCertificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getSafeNetCertificates(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public GclSafeNetInfo getSafeNetInfo() throws RestException {
-        return RestExecutor.returnData(httpClient.getSafeNetInfo(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath)));
+    public GclSafeNetInfo getSafeNetInfo() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getSafeNetInfo(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath)), config.isConsentRequired());
     }
 
-    public List<GclSafeNetSlot> getSafeNetSlots() throws RestException {
+    public List<GclSafeNetSlot> getSafeNetSlots() throws RestException, NoConsentException {
         return getSafeNetSlots(null);
     }
 
-    public List<GclSafeNetSlot> getSafeNetSlotsWithTokensPresent(boolean tokenPresent) throws RestException {
+    public List<GclSafeNetSlot> getSafeNetSlotsWithTokensPresent(boolean tokenPresent) throws RestException, NoConsentException {
         return getSafeNetSlots(tokenPresent);
     }
 
@@ -161,7 +158,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     private List<GclSafeNetSlot> getSafeNetSlots(Boolean tokenPresent) {
-        return RestExecutor.returnData(httpClient.getSafeNetSlots(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath), tokenPresent));
+        return RestExecutor.returnData(httpClient.getSafeNetSlots(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
     private void configureModulePath(SafeNetContainerConfiguration safeNetConfig) {
@@ -185,17 +182,17 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide data dump");
     }
 }

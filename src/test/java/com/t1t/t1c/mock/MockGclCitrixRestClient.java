@@ -2,9 +2,8 @@ package com.t1t.t1c.mock;
 
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.core.*;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -24,8 +23,13 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
     }
 
     @Override
-    public Call<T1cResponse<GclStatus>> getV1Status() {
+    public Call<T1cResponse<GclInfo>> getV1Status() {
         return delegate.returningResponse(MockResponseFactory.getGclV1StatusResponse()).getV1Status();
+    }
+
+    @Override
+    public Call<T1cResponse<GclInfo>> getV2Status() throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getGclV1StatusResponse()).getV2Status();
     }
 
     @Override
@@ -49,12 +53,22 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
     }
 
     @Override
-    public Call<T1cResponse<List<GclContainer>>> getContainers() {
-        return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getContainers();
+    public Call<T1cResponse<List<GclContainer>>> getV1Containers() {
+        return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getV1Containers();
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclContainer>>> getV2Containers() throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getV2Containers();
     }
 
     @Override
     public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
         return delegate.returningResponse(MockResponseFactory.getAgents(filters)).getAgents(filters);
+    }
+
+    @Override
+    public Call<T1cResponse<Boolean>> getConsent(Integer agentPort, GclConsent request) {
+        return delegate.returningResponse(MockResponseFactory.getConsentResponse()).getConsent(agentPort, request);
     }
 }

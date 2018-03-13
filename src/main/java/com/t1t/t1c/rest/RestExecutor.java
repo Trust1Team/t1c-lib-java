@@ -2,6 +2,7 @@ package com.t1t.t1c.rest;
 
 import com.google.gson.Gson;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import okhttp3.MediaType;
@@ -20,7 +21,7 @@ import java.io.IOException;
 public class RestExecutor {
     private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
-    public static final synchronized <T> T executeCall(Call<T> call) throws RestException {
+    public static final synchronized <T> T executeCall(Call<T> call, boolean consentRequired) throws RestException, NoConsentException {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
@@ -53,6 +54,9 @@ public class RestExecutor {
                         url = response.raw().request().url().toString();
                     }
                 }
+                if (consentRequired && httpCode != null && httpCode == 401) {
+                    throw ExceptionFactory.noConsentException(message.toString(), httpCode, url);
+                }
                 throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
         } catch (IOException ex) {
@@ -61,9 +65,9 @@ public class RestExecutor {
         }
     }
 
-    public static synchronized <T> T returnData(Call<T1cResponse<T>> call) throws RestException {
+    public static synchronized <T> T returnData(Call<T1cResponse<T>> call, boolean consentRequired) throws RestException, NoConsentException {
         if (call != null) {
-            T1cResponse<T> response = executeCall(call);
+            T1cResponse<T> response = executeCall(call, consentRequired);
             if (isCallSuccessful(response)) {
                 return response.getData();
             } else {

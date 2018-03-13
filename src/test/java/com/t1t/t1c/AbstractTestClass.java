@@ -114,6 +114,7 @@ public abstract class AbstractTestClass {
 
         setMocksBeforeConfigReset();
         setMocksBeforeConfigReset();
+        setMocksBeforeConfigReset();
 
         replayAll();
 
@@ -149,6 +150,8 @@ public abstract class AbstractTestClass {
         conf.setSessionTimeout(40);
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);
+        conf.setDefaultConsentDuration(1);
+        conf.setDefaultConsentTimeout(30);
         conf.setHardwarePinPadForced(false);
         this.config = conf;
     }
@@ -174,6 +177,7 @@ public abstract class AbstractTestClass {
         expect(RestServiceBuilder.getDsRestClient(config)).andReturn(dsRestClient);
         expect(RestServiceBuilder.getGclAdminRestClient(config)).andReturn(gclAdminRestClient);
         expect(RestServiceBuilder.getGclRestClient(config)).andReturn(gclRestClient);
+        expect(RestServiceBuilder.getGclCitrixRestClient(config)).andReturn(gclCitrixRestClient);
         expect(RestServiceBuilder.getOcvRestClient(config)).andReturn(ocvRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclBeIdRestClient.class)).andReturn(gclBeIdRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclDniRestClient.class)).andReturn(gclDniRestClient);

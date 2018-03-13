@@ -7,6 +7,7 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +64,7 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getInfo() {
-        GclStatus info = core.getInfo();
+        GclInfo info = core.getInfo();
         assertEquals(MockResponseFactory.getGclV1Status(), info);
     }
 
@@ -235,5 +236,17 @@ public class CoreTest extends AbstractTestClass {
     public void getReadersWithInsertedCard() {
         List<GclReader> readers = core.getReadersWithInsertedCard();
         assertEquals(MockResponseFactory.getGclReaders(true), readers);
+    }
+
+    @Test
+    public void getAgents() {
+        List<GclAgent> agents = core.getAgents();
+        assertTrue(CollectionUtils.isNotEmpty(agents));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getUsername()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getChallenge()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getHostname()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getLastUpdate()));
+        assertNotNull(agents.get(0).getPort());
+        assertNotNull(agents.get(0).getMetadata());
     }
 }

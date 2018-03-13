@@ -169,7 +169,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testReadersCanSign() {
-        List<GclReader> readersThatCanSign = getClient().getAuthenticateCapableReaders();
+        List<GclReader> readersThatCanSign = getClient().getSignCapableReaders();
         assertEquals(8, readersThatCanSign.size());
     }
 

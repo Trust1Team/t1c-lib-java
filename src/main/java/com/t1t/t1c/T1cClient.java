@@ -99,7 +99,10 @@ public class T1cClient implements IT1cClient {
         connFactory = new ConnectionFactory(validatedConfig);
         // Set citrix from core info
         resetCore();
-        validatedConfig.setCitrix(core.getInfo().getCitrix());
+        GclInfo gclInfo = core.getInfo();
+        validatedConfig.setCitrix(gclInfo.getCitrix());
+        validatedConfig.setConsentRequired(gclInfo.getConsent());
+        validatedConfig.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
         connFactory.setConfig(new T1cConfigParser(validatedConfig).getAppConfig());
 
         // Set core, ds and ocv client
@@ -114,7 +117,7 @@ public class T1cClient implements IT1cClient {
         if (StringUtils.isEmpty(config.getApiKey())) return;
         try {
             initSecurityContext();
-            registerAndActivate();
+            registerAndActivate(gclInfo);
         } catch (GclCoreException ex) {
             throw ExceptionFactory.initializationException(ex.getMessage());
         }
@@ -132,7 +135,7 @@ public class T1cClient implements IT1cClient {
     }
 
     private void resetOcv() {
-        this.ocvClient = new OcvClient(connFactory.getOcvRestClient(), connFactory.getConfig());
+        this.ocvClient = new OcvClient(connFactory.getOcvRestClient());
     }
 
     /**
@@ -182,8 +185,7 @@ public class T1cClient implements IT1cClient {
     /**
      * Register and activate the GCL with the distribution server if necessary
      */
-    private void registerAndActivate() {
-        GclStatus gclInfo = core.getInfo();
+    private void registerAndActivate(GclInfo gclInfo) {
         PlatformInfo platformInfo = core.getPlatformInfo();
         LibConfig config = connFactory.getConfig();
         config.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));

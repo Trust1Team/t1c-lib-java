@@ -3,6 +3,7 @@ package com.t1t.t1c.exceptions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
 import com.t1t.t1c.core.GclError;
+import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -244,7 +245,23 @@ public final class ExceptionFactory {
         return new LuxIdContainerException(errorMessage);
     }
 
+    /**
+     * Creates a CertificateOrderingException
+     * @param message the message
+     * @return an exception
+     */
     public static CertificateOrderingException certificateOrderingException(String message) {
         return new CertificateOrderingException(message);
+    }
+
+    /**
+     * Creates a NoConsentException
+     * @param message the message
+     * @param httpCode the http code
+     * @param url the url for which consent is required
+     * @return an exception
+     */
+    public static NoConsentException noConsentException(String message, Integer httpCode, String url) {
+        return new NoConsentException(message, httpCode, url);
     }
 }

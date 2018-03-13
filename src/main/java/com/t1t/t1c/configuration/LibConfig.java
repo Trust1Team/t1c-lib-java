@@ -32,6 +32,8 @@ public class LibConfig {
     private Boolean citrix;
     private Integer agentPort;
     private Boolean consentRequired = false;
+    private Integer defaultConsentDuration;
+    private Integer defaultConsentTimeout;
     // Dynamic properties
     private String jwt;
 
@@ -286,11 +288,27 @@ public class LibConfig {
         this.agentPort = agentPort;
     }
 
-    public Boolean getConsentRequired() {
+    public Boolean isConsentRequired() {
         return consentRequired;
     }
 
     public void setConsentRequired(Boolean consentRequired) {
         this.consentRequired = consentRequired;
+    }
+
+    public Integer getDefaultConsentDuration() {
+        return defaultConsentDuration;
+    }
+
+    public void setDefaultConsentDuration(Integer defaultConsentDuration) {
+        this.defaultConsentDuration = defaultConsentDuration;
+    }
+
+    public Integer getDefaultConsentTimeout() {
+        return defaultConsentTimeout;
+    }
+
+    public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
+        this.defaultConsentTimeout = defaultConsentTimeout;
     }
 }

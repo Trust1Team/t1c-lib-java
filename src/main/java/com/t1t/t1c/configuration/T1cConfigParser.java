@@ -164,6 +164,8 @@ public class T1cConfigParser implements Serializable {
         if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0)
             this.appConfig.setSessionTimeout(60);
         if (this.appConfig.getCitrix() == null) this.appConfig.setCitrix(false);
+        if (this.appConfig.getDefaultConsentDuration() == null) this.appConfig.setDefaultConsentDuration(1);
+        if (this.appConfig.getDefaultConsentTimeout() == null) this.appConfig.setDefaultConsentTimeout(30);
     }
 
     /**

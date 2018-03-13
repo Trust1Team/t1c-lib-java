@@ -71,9 +71,6 @@ public final class MockResponseFactory {
     public static final String PT_READER_ID = "57a3e2e71c48ce12";
     public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
     public static final String REMOTE_LOADING_READER_ID = "57a3e2e71c48ce14";
-    private static final Logger log = LoggerFactory.getLogger(MockResponseFactory.class);
-    private static final String JSON_EXTENSION = ".json";
-    private static final String RESPONSE_RESOURCE_PATH = "/responses/";
 
     private MockResponseFactory() {
     }
@@ -92,11 +89,15 @@ public final class MockResponseFactory {
     // GCL Core
     //
 
+    public static T1cResponse<Boolean> getConsentResponse() {
+        return getSuccessResponse(true);
+    }
+
     public static T1cResponse<String> getGclAdminCertificateResponse() {
         return getSuccessResponse(getGclAdminCertificate());
     }
 
-    public static T1cResponse<GclStatus> getGclV1StatusResponse() {
+    public static T1cResponse<GclInfo> getGclV1StatusResponse() {
         return getSuccessResponse(getGclV1Status());
     }
 
@@ -294,11 +295,12 @@ public final class MockResponseFactory {
         return new GclReader().withName("Bit4id miniLector").withPinpad(pinPad).withId(id).withCard(card);
     }
 
-    public static GclStatus getGclV1Status() {
-        return new GclStatus()
+    public static GclInfo getGclV1Status() {
+        return new GclInfo()
                 .withActivated(true)
                 .withArch("x86_64")
                 .withCitrix(false)
+                .withConsent(false)
                 .withLogLevel("info")
                 .withManaged(false)
                 .withOs("10.13.1")

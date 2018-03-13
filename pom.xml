@@ -355,7 +355,6 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
                         <!-- BE ID -->

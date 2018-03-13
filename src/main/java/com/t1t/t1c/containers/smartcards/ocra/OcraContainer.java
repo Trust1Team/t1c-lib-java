@@ -8,6 +8,7 @@ import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
@@ -52,44 +53,44 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public GclOcraAllData getAllData() throws RestException {
+    public GclOcraAllData getAllData() throws RestException, NoConsentException {
         return getAllData(null, null);
     }
 
     @Override
-    public GclOcraAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return RestExecutor.returnData(httpClient.getOcraAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
+    public GclOcraAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getOcraAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public GclOcraAllData getAllData(Boolean... parseCertificates) throws RestException {
+    public GclOcraAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws RestException {
+    public AllCertificates getAllCertificates() throws RestException, NoConsentException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0]))));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0])), config.isConsentRequired()));
             } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
@@ -97,12 +98,12 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws RestException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws RestException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
@@ -126,7 +127,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public Long getChallengeOTP(String challenge, String... pin) throws VerifyPinException, RestException {
+    public Long getChallengeOTP(String challenge, String... pin) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(challenge), "challenge must not be null or empty");
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
@@ -135,33 +136,33 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
                 request.setPin(pin[0]);
             }
-            return RestExecutor.returnData(httpClient.ocraChallenge(getTypeId(), reader.getId(), request));
+            return RestExecutor.returnData(httpClient.ocraChallenge(getTypeId(), reader.getId(), request), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public String readCounter(String... pin) throws VerifyPinException, RestException {
+    public String readCounter(String... pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             String pinToUse = pin != null && pin.length > 0 ? pin[0] : null;
-            return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId(), pinToUse));
+            return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId(), pinToUse), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
         throw ExceptionFactory.unsupportedOperationException("Container does not implement data dump");
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 }

@@ -17,19 +17,16 @@ import java.util.List;
  * @since 2017
  */
 public class OcvClient implements IOcvClient {
-    private static final Logger log = LoggerFactory.getLogger(OcvClient.class);
     private OcvRestClient ocvRestClient;
-    private LibConfig config;
 
-    public OcvClient(OcvRestClient ocvRestClient, LibConfig config) {
+    public OcvClient(OcvRestClient ocvRestClient) {
         this.ocvRestClient = ocvRestClient;
-        this.config = config;
     }
 
     @Override
     public OcvChallengeRequest getChallenge(DigestAlgorithm digestAlgorithm) throws OcvClientException {
         try {
-            return RestExecutor.executeCall(ocvRestClient.getChallenge(digestAlgorithm.toString().toLowerCase()));
+            return RestExecutor.executeCall(ocvRestClient.getChallenge(digestAlgorithm.toString().toLowerCase()), false);
         } catch (RestException ex) {
             throw ExceptionFactory.ocvException("Could not retrieve challenge", ex);
         }
@@ -38,7 +35,7 @@ public class OcvClient implements IOcvClient {
     @Override
     public OcvChallengeVerificationResponse verifyChallenge(OcvChallengeVerificationRequest request) throws OcvClientException {
         try {
-            return RestExecutor.executeCall(ocvRestClient.verifyChallenge(request));
+            return RestExecutor.executeCall(ocvRestClient.verifyChallenge(request), false);
         } catch (RestException ex) {
             throw ExceptionFactory.ocvException("Could not verify challenge", ex);
         }
@@ -55,7 +52,7 @@ public class OcvClient implements IOcvClient {
             }
             OcvCertificateChainValidationRequest request = new OcvCertificateChainValidationRequest().withCertificateChain(orderedCertificates);
             try {
-                return RestExecutor.executeCall(ocvRestClient.validateCertificateChain(request));
+                return RestExecutor.executeCall(ocvRestClient.validateCertificateChain(request), false);
             } catch (RestException ex) {
                 throw ExceptionFactory.ocvException("Could not validate certificate chain", ex);
             }

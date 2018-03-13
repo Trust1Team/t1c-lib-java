@@ -23,7 +23,9 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.GclAgent;
+import com.t1t.t1c.core.GclConsent;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -72,6 +74,8 @@ public class JavaClientExample {
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
         System.out.println("3. Select Citrix agent");
+        System.out.println("4. Grant consent");
+        System.out.println("5. Exit");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
         String choice = scan.nextLine();
@@ -86,20 +90,35 @@ public class JavaClientExample {
                 break;
             case "3":
                 executeCitrixFunctionality();
+                break;
+            case "4":
+                grantConsent();
+                break;
+            case "5":
+                // Do nothing
+                break;
             default:
-                throw new IllegalArgumentException("Invalid choice");
+                System.out.println("Invalid choice");
+                showMenu();
         }
+    }
+
+    private static void grantConsent() {
+        System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 45));
+        showMenu();
     }
 
     private static void executeCitrixFunctionality() {
         List<GclAgent> agents = client.getCore().getAgents();
         Scanner scan = new Scanner(System.in);
         System.out.println("==================== Available agents (username) ====================");
-        for (int i = 0; i < agents.size(); i++) {
+        int i;
+        for (i = 0; i < agents.size(); i++) {
             System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
         }
+        System.out.println(i + ". Back");
         System.out.println("=====================================================================");
-        System.out.print("Please make a choice (any other value to quit): ");
+        System.out.print("Please make a choice: ");
         String input = scan.nextLine();
         try {
             Integer choice = Integer.valueOf(input);
@@ -109,85 +128,99 @@ public class JavaClientExample {
                 conf.setAgentPort(chosenAgent.getPort());
                 conf.setConsentRequired(true);
                 showMenu();
+            } else if (choice != i) {
+                System.out.println("Invalid choice");
+                executeCitrixFunctionality();
+            } else {
+                showMenu();
             }
         } catch (NumberFormatException ex) {
-            // Do nothing
+            System.out.println("Invalid choice");
+            executeCitrixFunctionality();
         }
     }
 
     private static void executeGenericContainerFunctionality(GclReader reader) {
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Provide PIN (optional, press enter to skip): ");
-        String pin = scan.nextLine();
-        IGenericContainer container = client.getGenericContainer(reader, pin);
-        // This returns a marker interface, the return value still needs to be cast to the correct class
-        System.out.println("Container all data: " + container.getAllData());
-        System.out.println("Container Certificates: " + container.getAllCertificates());
+        try {
+            Scanner scan = new Scanner(System.in);
+            System.out.print("Provide PIN (optional, press enter to skip): ");
+            String pin = scan.nextLine();
+            IGenericContainer container = client.getGenericContainer(reader, pin);
+            // This returns a marker interface, the return value still needs to be cast to the correct class
+            System.out.println("Container all data: " + container.getAllData());
+            System.out.println("Container Certificates: " + container.getAllCertificates());
 
-        System.out.println("Generic data dump: " + container.dumpData());
+            System.out.println("Generic data dump: " + container.dumpData());
 
-        System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
-        System.out.println("Signing chain: " + container.getSigningCertificateChain());
+            System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
+            System.out.println("Signing chain: " + container.getSigningCertificateChain());
 
-        if (StringUtils.isNotBlank(pin)) {
-            try {
-                System.out.println("PIN verified: " + container.verifyPin(pin));
+            if (StringUtils.isNotBlank(pin)) {
+                try {
+                    System.out.println("PIN verified: " + container.verifyPin(pin));
 
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+                    // Sign data
+                    System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
 
-                // Authenticate data
-                System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-            } catch (VerifyPinException ex) {
-                System.out.println("PIN verification failed: " + ex.getMessage());
+                    // Authenticate data
+                    System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+                } catch (VerifyPinException ex) {
+                    System.out.println("PIN verification failed: " + ex.getMessage());
+                }
             }
+        } catch (NoConsentException ex) {
+            System.out.println("Consent required: Grant consent and try again");
         }
     }
 
 
     private static void executeReaderSpecificContainerFunctionality(GclReader reader) {
-        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
+        try {
+            ContainerType type = ContainerUtil.determineContainer(reader.getCard());
 
-        switch (type) {
-            case AVENTRA:
-                aventraUseCases(reader);
-                break;
-            case BEID:
-                remoteLoadingUseCases(reader);
-                beIdUseCases(reader);
-                break;
-            case DNIE:
-                dnieUseCases(reader);
-                break;
-            case EMV:
-                emvUseCases(reader);
-                break;
-            case EST:
-                break;
-            case LUXID:
-                luxIdUseCases(reader);
-                break;
-            case LUXTRUST:
-                luxTrustUseCases(reader);
-                break;
-            case MOBIB:
-                mobibUseCases(reader);
-                break;
-            case OBERTHUR:
-                oberthurUseCases(reader);
-                break;
-            case OCRA:
-                ocraUseCases(reader);
-                break;
-            case PIV:
-                pivUseCases(reader);
-                break;
-            case PT:
-                ptIdUseCases(reader);
-                break;
-            case SAFENET:
-                safeNetUseCases(reader);
-                break;
+            switch (type) {
+                case AVENTRA:
+                    aventraUseCases(reader);
+                    break;
+                case BEID:
+                    remoteLoadingUseCases(reader);
+                    beIdUseCases(reader);
+                    break;
+                case DNIE:
+                    dnieUseCases(reader);
+                    break;
+                case EMV:
+                    emvUseCases(reader);
+                    break;
+                case EST:
+                    break;
+                case LUXID:
+                    luxIdUseCases(reader);
+                    break;
+                case LUXTRUST:
+                    luxTrustUseCases(reader);
+                    break;
+                case MOBIB:
+                    mobibUseCases(reader);
+                    break;
+                case OBERTHUR:
+                    oberthurUseCases(reader);
+                    break;
+                case OCRA:
+                    ocraUseCases(reader);
+                    break;
+                case PIV:
+                    pivUseCases(reader);
+                    break;
+                case PT:
+                    ptIdUseCases(reader);
+                    break;
+                case SAFENET:
+                    safeNetUseCases(reader);
+                    break;
+            }
+        } catch (NoConsentException ex) {
+            System.out.println("Consent required: Grant consent and try again");
         }
     }
 
