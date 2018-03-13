@@ -115,6 +115,7 @@ public abstract class AbstractTestClass {
         setMocksBeforeConfigReset();
         setMocksBeforeConfigReset();
         setMocksBeforeConfigReset();
+        setMocksBeforeConfigReset();
 
         replayAll();
 
@@ -173,7 +174,7 @@ public abstract class AbstractTestClass {
         return behavior;
     }
 
-    private void setMocksBeforeConfigReset() {
+    protected void setMocksBeforeConfigReset() {
         expect(RestServiceBuilder.getDsRestClient(config)).andReturn(dsRestClient);
         expect(RestServiceBuilder.getGclAdminRestClient(config)).andReturn(gclAdminRestClient);
         expect(RestServiceBuilder.getGclRestClient(config)).andReturn(gclRestClient);

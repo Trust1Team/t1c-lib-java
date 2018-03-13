@@ -288,9 +288,4 @@ public final class RestServiceBuilder {
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .build();
     }
-
-    private static TrustManagerFactory getTrustManagerFactory() throws NoSuchAlgorithmException {
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        return TrustManagerFactory.getInstance(tmfAlgorithm);
-    }
 }

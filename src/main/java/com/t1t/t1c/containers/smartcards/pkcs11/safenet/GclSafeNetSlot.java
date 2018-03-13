@@ -137,7 +137,7 @@ public class GclSafeNetSlot {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclSafeNetSlot) == false) {
+        if (!(other instanceof GclSafeNetSlot)) {
             return false;
         }
         GclSafeNetSlot rhs = ((GclSafeNetSlot) other);

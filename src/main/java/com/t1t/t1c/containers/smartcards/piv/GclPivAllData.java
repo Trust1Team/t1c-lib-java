@@ -116,7 +116,7 @@ public class GclPivAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPivAllData) == false) {
+        if (!(other instanceof GclPivAllData)) {
             return false;
         }
         GclPivAllData rhs = ((GclPivAllData) other);

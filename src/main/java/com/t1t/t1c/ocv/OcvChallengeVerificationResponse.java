@@ -93,7 +93,7 @@ public class OcvChallengeVerificationResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvChallengeVerificationResponse) == false) {
+        if (!(other instanceof OcvChallengeVerificationResponse)) {
             return false;
         }
         OcvChallengeVerificationResponse rhs = ((OcvChallengeVerificationResponse) other);

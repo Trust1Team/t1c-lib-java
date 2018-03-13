@@ -183,7 +183,6 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
         PivAllData allData = getAllData(true);
         GclPivPrintedInformation info = allData.getPrintedInformation();
         data.setFullName(info.getName());
-        ;
 
         if (allData.getFacialImage() != null) {
             data.setBase64Picture(allData.getFacialImage().getImage());

@@ -161,7 +161,7 @@ public class OcvCrlResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvCrlResponse) == false) {
+        if (!(other instanceof OcvCrlResponse)) {
             return false;
         }
         OcvCrlResponse rhs = ((OcvCrlResponse) other);

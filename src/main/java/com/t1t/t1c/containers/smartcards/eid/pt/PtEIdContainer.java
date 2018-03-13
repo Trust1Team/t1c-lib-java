@@ -16,8 +16,6 @@ import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,8 +27,6 @@ import java.util.Map;
  * @since 2017
  */
 public class PtEIdContainer extends GenericContainer<PtEIdContainer, GclPtIdRestClient, PtIdAllData, PtIdAllCertificates> {
-
-    private static final Logger log = LoggerFactory.getLogger(PtEIdContainer.class);
 
     public PtEIdContainer(LibConfig config, GclReader reader, GclPtIdRestClient httpClient) {
         super(config, reader, httpClient, null);

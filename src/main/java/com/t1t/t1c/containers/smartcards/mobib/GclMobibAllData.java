@@ -118,7 +118,7 @@ public class GclMobibAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibAllData) == false) {
+        if (!(other instanceof GclMobibAllData)) {
             return false;
         }
         GclMobibAllData rhs = ((GclMobibAllData) other);

@@ -71,7 +71,7 @@ public class DsBrowser {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsBrowser) == false) {
+        if (!(other instanceof DsBrowser)) {
             return false;
         }
         DsBrowser rhs = ((DsBrowser) other);

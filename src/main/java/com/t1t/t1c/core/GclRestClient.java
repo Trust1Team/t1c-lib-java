@@ -40,7 +40,7 @@ public interface GclRestClient {
     Call<T1cResponse<List<GclContainer>>> getV2Containers() throws RestException;
 
     @GET("agent")
-    Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String,String> filters) throws RestException;
+    Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;
 
     @POST("consent")
     Call<T1cResponse<Boolean>> getConsent(@Body GclConsent request);

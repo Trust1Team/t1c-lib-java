@@ -291,7 +291,7 @@ public class GclMobibCardIssuing {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibCardIssuing) == false) {
+        if (!(other instanceof GclMobibCardIssuing)) {
             return false;
         }
         GclMobibCardIssuing rhs = ((GclMobibCardIssuing) other);

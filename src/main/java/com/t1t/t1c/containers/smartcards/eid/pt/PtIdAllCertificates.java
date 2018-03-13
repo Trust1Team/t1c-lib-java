@@ -15,13 +15,9 @@ public class PtIdAllCertificates implements AllCertificates {
     public PtIdAllCertificates(GclPtIdAllCertificates certificates, Boolean... parseCertificates) {
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
-        ;
         this.rootAuthenticationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);
-        ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(certificates.getRootCertificate(), parseCertificates);
-        ;
         this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(certificates.getRootNonRepudiationCertificate(), parseCertificates);
-        ;
     }
 
     /**

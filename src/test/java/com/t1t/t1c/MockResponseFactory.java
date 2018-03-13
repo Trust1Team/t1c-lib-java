@@ -40,14 +40,8 @@ import com.t1t.t1c.ds.DsToken;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
-import okhttp3.mockwebserver.MockResponse;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import retrofit2.Call;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -1173,9 +1167,7 @@ public final class MockResponseFactory {
     public static T1cResponse<GclOcraAllData> getGclOcraAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclOcraAllData data = getGclOcraAllData();
-        if (!filterParams.isEmpty()) {
-            if (!filterParams.contains("counter")) data.setCounter(null);
-        }
+        if (!filterParams.isEmpty() && !filterParams.contains("counter")) data.setCounter(null);
         return getSuccessResponse(data);
     }
 
@@ -1214,7 +1206,7 @@ public final class MockResponseFactory {
     //
 
     public static T1cResponse<Object> getGclAventraResetPinResponse(String puk) {
-        if (StringUtils.isNotEmpty(puk) && !puk.equals("1111")) {
+        if (StringUtils.isNotEmpty(puk) && !"1111".equals(puk)) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +

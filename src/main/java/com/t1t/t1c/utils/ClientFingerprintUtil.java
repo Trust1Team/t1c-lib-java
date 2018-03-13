@@ -20,19 +20,14 @@ public final class ClientFingerprintUtil {
     private static final String JLIB_AUTH_TOKEN_LOCATION = "t1c-java-lib-id-token";
     private static final String ENCODING = "UTF-8";
 
-    private ClientFingerprintUtil() {}
-
-    public static void main(String[] args) {
-        String fingerprint = createFingerprint();
-        System.out.println("Generated token: " + fingerprint);
-        System.out.println("Validate fingerprint: " + validateFingerprint(fingerprint));
+    private ClientFingerprintUtil() {
     }
 
     public static String getClientFingerPrint() {
         File tokenFile = Paths.get(JLIB_AUTH_TOKEN_LOCATION).toFile();
         if (tokenFile.exists()) {
             try {
-                String token = FileUtils.readFileToString(tokenFile,ENCODING);
+                String token = FileUtils.readFileToString(tokenFile, ENCODING);
                 if (validateFingerprint(token)) {
                     return token;
                 } else {

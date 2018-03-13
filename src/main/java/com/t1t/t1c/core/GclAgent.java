@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -33,18 +32,14 @@ public class GclAgent {
     private String username;
 
     /**
-     * 
-     * @return
-     *     The challenge
+     * @return The challenge
      */
     public String getChallenge() {
         return challenge;
     }
 
     /**
-     * 
-     * @param challenge
-     *     The challenge
+     * @param challenge The challenge
      */
     public void setChallenge(String challenge) {
         this.challenge = challenge;
@@ -56,18 +51,14 @@ public class GclAgent {
     }
 
     /**
-     * 
-     * @return
-     *     The hostname
+     * @return The hostname
      */
     public String getHostname() {
         return hostname;
     }
 
     /**
-     * 
-     * @param hostname
-     *     The hostname
+     * @param hostname The hostname
      */
     public void setHostname(String hostname) {
         this.hostname = hostname;
@@ -79,18 +70,14 @@ public class GclAgent {
     }
 
     /**
-     * 
-     * @return
-     *     The lastUpdate
+     * @return The lastUpdate
      */
     public String getLastUpdate() {
         return lastUpdate;
     }
 
     /**
-     * 
-     * @param lastUpdate
-     *     The last_update
+     * @param lastUpdate The last_update
      */
     public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
@@ -102,18 +89,14 @@ public class GclAgent {
     }
 
     /**
-     * 
-     * @return
-     *     The metadata
+     * @return The metadata
      */
     public Map<String, String> getMetadata() {
         return metadata;
     }
 
     /**
-     * 
-     * @param metadata
-     *     The metadata
+     * @param metadata The metadata
      */
     public void setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
@@ -125,18 +108,14 @@ public class GclAgent {
     }
 
     /**
-     * 
-     * @return
-     *     The port
+     * @return The port
      */
     public Integer getPort() {
         return port;
     }
 
     /**
-     * 
-     * @param port
-     *     The port
+     * @param port The port
      */
     public void setPort(Integer port) {
         this.port = port;
@@ -148,18 +127,14 @@ public class GclAgent {
     }
 
     /**
-     * 
-     * @return
-     *     The username
+     * @return The username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * 
-     * @param username
-     *     The username
+     * @param username The username
      */
     public void setUsername(String username) {
         this.username = username;
@@ -185,7 +160,7 @@ public class GclAgent {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAgent) == false) {
+        if (!(other instanceof GclAgent)) {
             return false;
         }
         GclAgent rhs = ((GclAgent) other);

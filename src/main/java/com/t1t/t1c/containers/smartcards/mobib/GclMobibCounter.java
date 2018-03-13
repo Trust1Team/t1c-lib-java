@@ -93,7 +93,7 @@ public class GclMobibCounter {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibCounter) == false) {
+        if (!(other instanceof GclMobibCounter)) {
             return false;
         }
         GclMobibCounter rhs = ((GclMobibCounter) other);

@@ -93,7 +93,7 @@ public class GclSafeNetRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclSafeNetRequest) == false) {
+        if (!(other instanceof GclSafeNetRequest)) {
             return false;
         }
         GclSafeNetRequest rhs = ((GclSafeNetRequest) other);

@@ -278,19 +278,14 @@ public class Core extends AbstractCore {
         Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
         Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
         Preconditions.checkArgument(timeoutInSeconds == null || timeoutInSeconds <= config.getDefaultConsentTimeout(), "Consent dialog timeout may not exceed default value!");
-        Integer duration = durationInDays == null ? config.getDefaultConsentDuration() : durationInDays;
-        GclConsent.AlertLevel level = alertLevel == null ? GclConsent.AlertLevel.WARNING : alertLevel;
-        GclConsent.AlertPosition position = alertPosition == null ? GclConsent.AlertPosition.STANDARD : alertPosition;
-        GclConsent.Type type = consentType == null ? GclConsent.Type.READER : consentType;
-        Integer timeout = timeoutInSeconds == null ? config.getDefaultConsentTimeout() : timeoutInSeconds;
         GclConsent request = new GclConsent()
                 .withTitle(title)
                 .withText(codeWord)
-                .withDays(duration)
-                .withAlertLevel(level)
-                .withAlertPosition(position)
-                .withType(type)
-                .withTimeout(timeout);
+                .withDays(getDurationInDays(durationInDays))
+                .withAlertLevel(getAlertLevel(alertLevel))
+                .withAlertPosition(getAlertPosition(alertPosition))
+                .withType(getConsentType(consentType))
+                .withTimeout(getTimeoutInSeconds(timeoutInSeconds));
         try {
             if (checkCitrix()) {
                 return RestExecutor.returnData(gclCitrixRestClient.getConsent(config.getAgentPort(), request), false);
@@ -300,6 +295,26 @@ public class Core extends AbstractCore {
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("Failed to obtain consent: ", ex);
         }
+    }
+
+    private Integer getDurationInDays(final Integer durationInDays) {
+        return durationInDays == null ? config.getDefaultConsentDuration() : durationInDays;
+    }
+
+    private Integer getTimeoutInSeconds(final Integer timeoutInSeconds) {
+        return timeoutInSeconds == null ? config.getDefaultConsentTimeout() : timeoutInSeconds;
+    }
+
+    private GclConsent.AlertLevel getAlertLevel(final GclConsent.AlertLevel alertLevel) {
+        return alertLevel == null ? GclConsent.AlertLevel.WARNING : alertLevel;
+    }
+
+    private GclConsent.AlertPosition getAlertPosition(final GclConsent.AlertPosition alertPosition) {
+        return alertPosition == null ? GclConsent.AlertPosition.STANDARD : alertPosition;
+    }
+
+    private GclConsent.Type getConsentType(final GclConsent.Type consentType) {
+        return consentType == null ? GclConsent.Type.READER : consentType;
     }
 
     private List<GclReader> getReaders(boolean cardInserted) {

@@ -159,7 +159,7 @@ public class GclRemoteLoadingApdu {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingApdu) == false) {
+        if (!(other instanceof GclRemoteLoadingApdu)) {
             return false;
         }
         GclRemoteLoadingApdu rhs = ((GclRemoteLoadingApdu) other);

@@ -18,7 +18,6 @@ import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -27,7 +26,6 @@ import com.t1t.t1c.core.GclConsent;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
@@ -46,7 +44,7 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "44865b13-f94b-45e6-b1cf-2f12d4bd547d";
+    private static String API_KEY = "INSERT_API_KEY";
     private static T1cClient client;
     private static LibConfig conf;
 
@@ -62,6 +60,8 @@ public class JavaClientExample {
         conf.setHardwarePinPadForced(false);
         conf.setDefaultPollingIntervalInSeconds(5);
         conf.setDefaultPollingTimeoutInSeconds(10);
+        conf.setDefaultConsentDuration(2);
+        conf.setDefaultConsentTimeout(35);
 
         /*Instantiate client*/
         client = new T1cClient(conf);
@@ -100,11 +100,12 @@ public class JavaClientExample {
             default:
                 System.out.println("Invalid choice");
                 showMenu();
+                break;
         }
     }
 
     private static void grantConsent() {
-        System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 45));
+        System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
         showMenu();
     }
 
@@ -217,6 +218,9 @@ public class JavaClientExample {
                     break;
                 case SAFENET:
                     safeNetUseCases(reader);
+                    break;
+                default:
+                    System.out.println("No matching container type found: " + type);
                     break;
             }
         } catch (NoConsentException ex) {
@@ -392,10 +396,10 @@ public class JavaClientExample {
                     String puk = pukInput.nextLine();
                     Scanner newPinInput = new Scanner(System.in);
                     System.out.print("PUK: ");
-                    String newPin = pukInput.nextLine();
+                    String newPin = newPinInput.nextLine();
                     Scanner keyRefInput = new Scanner(System.in);
                     System.out.print("PUK: ");
-                    String keyRef = pukInput.nextLine();
+                    String keyRef = keyRefInput.nextLine();
                     System.out.println("PIN reset: " + container.resetPin(puk, newPin, keyRef));
                 } catch (VerifyPinException ex) {
                     System.out.println("Invalid PUK");

@@ -118,7 +118,7 @@ public class GclLuxTrustAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclLuxTrustAllData) == false) {
+        if (!(other instanceof GclLuxTrustAllData)) {
             return false;
         }
         GclLuxTrustAllData rhs = ((GclLuxTrustAllData) other);

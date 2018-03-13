@@ -34,7 +34,7 @@ public final class CertificateUtil {
     public static Certificate parseCertificate(String base64EncodedCertificate) {
         try {
             byte[] certBytes = Base64.decodeBase64(base64EncodedCertificate);
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            CertificateFactory cf = CertificateFactory.getInstance(X509);
             return cf.generateCertificate(new ByteArrayInputStream(certBytes));
         } catch (CertificateException ex) {
             log.error("Failed to parse base64 encoded certificate: ", ex);

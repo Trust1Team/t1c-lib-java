@@ -33,7 +33,7 @@ public class T1cConfigParser implements Serializable {
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
     /*Logger*/
     private static Logger _LOG = LoggerFactory.getLogger(T1cConfigParser.class.getName());
-    private static Config config;
+    private Config config;
     private LibConfig appConfig;
 
     //config by param - enriching with property file info

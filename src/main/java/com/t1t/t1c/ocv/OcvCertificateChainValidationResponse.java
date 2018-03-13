@@ -71,7 +71,7 @@ public class OcvCertificateChainValidationResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvCertificateChainValidationResponse) == false) {
+        if (!(other instanceof OcvCertificateChainValidationResponse)) {
             return false;
         }
         OcvCertificateChainValidationResponse rhs = ((OcvCertificateChainValidationResponse) other);

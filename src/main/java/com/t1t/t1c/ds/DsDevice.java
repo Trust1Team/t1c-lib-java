@@ -115,7 +115,7 @@ public class DsDevice {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDevice) == false) {
+        if (!(other instanceof DsDevice)) {
             return false;
         }
         DsDevice rhs = ((DsDevice) other);

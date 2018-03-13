@@ -115,7 +115,7 @@ public class GclReader {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReader) == false) {
+        if (!(other instanceof GclReader)) {
             return false;
         }
         GclReader rhs = ((GclReader) other);

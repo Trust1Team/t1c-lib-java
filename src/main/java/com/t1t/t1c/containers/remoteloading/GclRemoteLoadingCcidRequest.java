@@ -71,7 +71,7 @@ public class GclRemoteLoadingCcidRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingCcidRequest) == false) {
+        if (!(other instanceof GclRemoteLoadingCcidRequest)) {
             return false;
         }
         GclRemoteLoadingCcidRequest rhs = ((GclRemoteLoadingCcidRequest) other);

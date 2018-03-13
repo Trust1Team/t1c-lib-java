@@ -91,8 +91,8 @@ public class T1cClient implements IT1cClient {
         } else if (toConfigurationFile != null) {
             clientConfig = new T1cConfigParser(toConfigurationFile);
         }
-        if (clientConfig == null || clientConfig.getAppConfig() == null) {
-            if (config == null) throw ExceptionFactory.initializationException("Could not initialize config");
+        if ((clientConfig == null || clientConfig.getAppConfig() == null) && config == null) {
+            throw ExceptionFactory.initializationException("Could not initialize config");
         }
         LibConfig validatedConfig = clientConfig.getAppConfig();
         // Instantiate connections

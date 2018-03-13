@@ -49,7 +49,7 @@ public class GclRemoteLoadingOpenSessionRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingOpenSessionRequest) == false) {
+        if (!(other instanceof GclRemoteLoadingOpenSessionRequest)) {
             return false;
         }
         GclRemoteLoadingOpenSessionRequest rhs = ((GclRemoteLoadingOpenSessionRequest) other);

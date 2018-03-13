@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -41,18 +40,14 @@ public class DsDeviceRegistrationRequest {
     private String manufacturer;
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public DsOs getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(DsOs os) {
         this.os = os;
@@ -64,18 +59,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The managed
+     * @return The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * 
-     * @param managed
-     *     The managed
+     * @param managed The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -87,18 +78,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The browser
+     * @return The browser
      */
     public DsBrowser getBrowser() {
         return browser;
     }
 
     /**
-     * 
-     * @param browser
-     *     The browser
+     * @param browser The browser
      */
     public void setBrowser(DsBrowser browser) {
         this.browser = browser;
@@ -110,18 +97,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The desktopApplication
+     * @return The desktopApplication
      */
     public DsDesktopApplication getDesktopApplication() {
         return desktopApplication;
     }
 
     /**
-     * 
-     * @param desktopApplication
-     *     The desktopApplication
+     * @param desktopApplication The desktopApplication
      */
     public void setDesktopApplication(DsDesktopApplication desktopApplication) {
         this.desktopApplication = desktopApplication;
@@ -133,18 +116,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The ua
+     * @return The ua
      */
     public String getUa() {
         return ua;
     }
 
     /**
-     * 
-     * @param ua
-     *     The ua
+     * @param ua The ua
      */
     public void setUa(String ua) {
         this.ua = ua;
@@ -156,18 +135,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The uuid
+     * @return The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * 
-     * @param uuid
-     *     The uuid
+     * @param uuid The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -179,18 +154,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -202,18 +173,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The activated
+     * @return The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * 
-     * @param activated
-     *     The activated
+     * @param activated The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -225,18 +192,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The manufacturer
+     * @return The manufacturer
      */
     public String getManufacturer() {
         return manufacturer;
     }
 
     /**
-     * 
-     * @param manufacturer
-     *     The manufacturer
+     * @param manufacturer The manufacturer
      */
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
@@ -262,7 +225,7 @@ public class DsDeviceRegistrationRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDeviceRegistrationRequest) == false) {
+        if (!(other instanceof DsDeviceRegistrationRequest)) {
             return false;
         }
         DsDeviceRegistrationRequest rhs = ((DsDeviceRegistrationRequest) other);

@@ -71,7 +71,7 @@ public class GclMobibValidityDuration {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibValidityDuration) == false) {
+        if (!(other instanceof GclMobibValidityDuration)) {
             return false;
         }
         GclMobibValidityDuration rhs = ((GclMobibValidityDuration) other);

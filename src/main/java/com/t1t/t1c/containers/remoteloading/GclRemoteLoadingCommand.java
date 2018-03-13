@@ -93,7 +93,7 @@ public class GclRemoteLoadingCommand {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingCommand) == false) {
+        if (!(other instanceof GclRemoteLoadingCommand)) {
             return false;
         }
         GclRemoteLoadingCommand rhs = ((GclRemoteLoadingCommand) other);

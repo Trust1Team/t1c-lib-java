@@ -52,7 +52,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @return AllData
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     V getAllData() throws RestException, NoConsentException;
 
@@ -63,7 +63,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllData
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     V getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException;
 
@@ -73,7 +73,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional
      * @return AllData
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     V getAllData(Boolean... parseCertificates) throws RestException, NoConsentException;
 
@@ -82,7 +82,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @return AllCertificates
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     W getAllCertificates() throws RestException, NoConsentException;
 
@@ -93,7 +93,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllCertificates
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     W getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException;
 
@@ -103,7 +103,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllCertificates
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     W getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException;
 
@@ -116,7 +116,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return true if PIN is correct
      * @throws GenericContainerException: on communication failure
      * @throws VerifyPinException:        if PIN is incorrect
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     Boolean verifyPin(String... pin) throws VerifyPinException, RestException, NoConsentException;
 
@@ -126,7 +126,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param data the authentication payload
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException, NoConsentException;
 
@@ -136,7 +136,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param data the signing payload
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException, NoConsentException;
 
@@ -167,7 +167,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return the container data
      * @throws RestException:                 on communication failure
      * @throws UnsupportedOperationException: if the container has no data to dump
-     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
+     * @throws NoConsentException:            if consent is required but has not been granted (or is expired)
      */
     ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException, NoConsentException;
 }

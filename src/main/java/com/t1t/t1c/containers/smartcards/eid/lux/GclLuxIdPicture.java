@@ -115,7 +115,7 @@ public class GclLuxIdPicture {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclLuxIdPicture) == false) {
+        if (!(other instanceof GclLuxIdPicture)) {
             return false;
         }
         GclLuxIdPicture rhs = ((GclLuxIdPicture) other);

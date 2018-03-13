@@ -9,15 +9,13 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.UriUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public class DsClient implements IDsClient {
-    private static final Logger log = LoggerFactory.getLogger(DsClient.class);
+
     private DsRestClient dsRestClient;
     private LibConfig config;
 
@@ -89,8 +87,9 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public String getDownloadLink(PlatformInfo info) throws DsClientException {
+    public String getDownloadLink(final PlatformInfo information) throws DsClientException {
         try {
+            PlatformInfo info = information;
             if (info == null) {
                 info = new PlatformInfo();
             }

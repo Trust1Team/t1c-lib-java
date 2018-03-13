@@ -42,12 +42,6 @@ public class RestException extends AbstractRuntimeException {
         return this.httpCode;
     }
 
-    private void setHttpCode(Integer httpCode) {
-        if (httpCode != null) {
-            this.httpCode = httpCode;
-        }
-    }
-
     public String getUri() {
         return uri;
     }

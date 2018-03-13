@@ -49,7 +49,7 @@ public class GclUpdatePublicKeyRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclUpdatePublicKeyRequest) == false) {
+        if (!(other instanceof GclUpdatePublicKeyRequest)) {
             return false;
         }
         GclUpdatePublicKeyRequest rhs = ((GclUpdatePublicKeyRequest) other);

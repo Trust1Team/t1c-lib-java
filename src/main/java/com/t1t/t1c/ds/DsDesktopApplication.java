@@ -1,4 +1,3 @@
-
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -20,18 +19,14 @@ public class DsDesktopApplication {
     private String version;
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -43,18 +38,14 @@ public class DsDesktopApplication {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -80,7 +71,7 @@ public class DsDesktopApplication {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDesktopApplication) == false) {
+        if (!(other instanceof DsDesktopApplication)) {
             return false;
         }
         DsDesktopApplication rhs = ((DsDesktopApplication) other);

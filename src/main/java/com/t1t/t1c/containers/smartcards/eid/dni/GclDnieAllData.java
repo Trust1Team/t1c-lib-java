@@ -116,7 +116,7 @@ public class GclDnieAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclDnieAllData) == false) {
+        if (!(other instanceof GclDnieAllData)) {
             return false;
         }
         GclDnieAllData rhs = ((GclDnieAllData) other);

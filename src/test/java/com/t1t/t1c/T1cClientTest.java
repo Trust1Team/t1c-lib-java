@@ -23,9 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -152,7 +150,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetRemoteLoadingContainer() {
-        getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false));
+        assertNotNull(getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
     }
 
     @Test

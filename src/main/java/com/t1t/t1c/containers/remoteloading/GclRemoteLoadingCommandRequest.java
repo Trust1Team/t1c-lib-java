@@ -49,7 +49,7 @@ public class GclRemoteLoadingCommandRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingCommandRequest) == false) {
+        if (!(other instanceof GclRemoteLoadingCommandRequest)) {
             return false;
         }
         GclRemoteLoadingCommandRequest rhs = ((GclRemoteLoadingCommandRequest) other);
