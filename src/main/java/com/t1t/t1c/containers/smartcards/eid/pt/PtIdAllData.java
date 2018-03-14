@@ -17,13 +17,9 @@ public class PtIdAllData implements AllData {
         this.id = data.getId();
         this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
-        ;
         this.rootAuthenticationCertificate = CertificateUtil.createT1cCertificate(data.getRootAuthenticationCertificate(), parseCertificates);
-        ;
         this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
-        ;
         this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootNonRepudiationCertificate(), parseCertificates);
-        ;
     }
 
     /**

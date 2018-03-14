@@ -37,7 +37,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public String getAtr(String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.getAtr(getTypeId(), reader.getId(), sessionId));
+        return RestExecutor.returnData(httpClient.getAtr(getTypeId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
     public GclRemoteLoadingCommand executeApduCall(GclRemoteLoadingApdu apdu) throws RestException {
@@ -45,7 +45,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public GclRemoteLoadingCommand executeApduCall(GclRemoteLoadingApdu apdu, String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.executeApduCall(getTypeId(), reader.getId(), apdu, sessionId));
+        return RestExecutor.returnData(httpClient.executeApduCall(getTypeId(), reader.getId(), apdu, sessionId), config.isConsentRequired());
     }
 
     public List<GclRemoteLoadingCommand> executeApduCalls(List<GclRemoteLoadingApdu> apdus) throws RestException {
@@ -53,7 +53,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public List<GclRemoteLoadingCommand> executeApduCalls(List<GclRemoteLoadingApdu> apdus, String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.executeApduCalls(getTypeId(), reader.getId(), apdus, sessionId));
+        return RestExecutor.returnData(httpClient.executeApduCalls(getTypeId(), reader.getId(), apdus, sessionId), config.isConsentRequired());
     }
 
     public GclRemoteLoadingCommand executeCcid(String feature, String apdu) throws RestException {
@@ -61,7 +61,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public GclRemoteLoadingCommand executeCcid(String feature, String apdu, String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.executeCcid(getTypeId(), reader.getId(), new GclRemoteLoadingCcidRequest().withApdu(apdu).withFeature(feature), sessionId));
+        return RestExecutor.returnData(httpClient.executeCcid(getTypeId(), reader.getId(), new GclRemoteLoadingCcidRequest().withApdu(apdu).withFeature(feature), sessionId), config.isConsentRequired());
     }
 
     public List<GclRemoteLoadingCcidFeature> getCcidFeatures() throws RestException {
@@ -69,7 +69,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public List<GclRemoteLoadingCcidFeature> getCcidFeatures(String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.getCcidFeatures(getTypeId(), reader.getId(), sessionId));
+        return RestExecutor.returnData(httpClient.getCcidFeatures(getTypeId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
     public GclRemoteLoadingCommand executeCommand(String command) throws RestException {
@@ -77,7 +77,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public GclRemoteLoadingCommand executeCommand(String command, String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.executeCommand(getTypeId(), reader.getId(), new GclRemoteLoadingCommandRequest().withTx(command), sessionId));
+        return RestExecutor.returnData(httpClient.executeCommand(getTypeId(), reader.getId(), new GclRemoteLoadingCommandRequest().withTx(command), sessionId), config.isConsentRequired());
     }
 
     public List<GclRemoteLoadingCommand> executeCommands(List<String> commands) throws RestException {
@@ -89,7 +89,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         for (String command : commands) {
             commandRequests.add(new GclRemoteLoadingCommandRequest().withTx(command));
         }
-        return RestExecutor.returnData(httpClient.executeCommands(getTypeId(), reader.getId(), commandRequests, sessionId));
+        return RestExecutor.returnData(httpClient.executeCommands(getTypeId(), reader.getId(), commandRequests, sessionId), config.isConsentRequired());
     }
 
     public Boolean isCardPresent() throws RestException {
@@ -97,7 +97,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
     }
 
     public Boolean isCardPresent(String sessionId) throws RestException {
-        return RestExecutor.returnData(httpClient.isPresent(getTypeId(), reader.getId(), sessionId));
+        return RestExecutor.returnData(httpClient.isPresent(getTypeId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
     public String openSession(Integer timeout) throws RestException {
@@ -108,7 +108,7 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
         } else {
             timeoutToUse = config.getSessionTimeout();
         }
-        return RestExecutor.returnData(httpClient.openSession(getTypeId(), reader.getId(), new GclRemoteLoadingOpenSessionRequest().withTimeout(timeoutToUse)));
+        return RestExecutor.returnData(httpClient.openSession(getTypeId(), reader.getId(), new GclRemoteLoadingOpenSessionRequest().withTimeout(timeoutToUse)), config.isConsentRequired());
     }
 
     public Boolean closeSession() throws RestException {
@@ -117,9 +117,9 @@ public class RemoteLoadingContainer extends FunctionalContainer<RemoteLoadingCon
 
     public Boolean closeSession(String sessionId) throws RestException {
         if (StringUtils.isNotEmpty(sessionId)) {
-            return sessionId.equals(RestExecutor.returnData(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
+            return sessionId.equals(RestExecutor.returnData(httpClient.closeSession(getTypeId(), reader.getId(), sessionId), config.isConsentRequired()));
         } else {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.closeSession(getTypeId(), reader.getId(), sessionId)));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.closeSession(getTypeId(), reader.getId(), sessionId), config.isConsentRequired()));
         }
     }
 

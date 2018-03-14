@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
+import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
@@ -14,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Michallis Pashidis
@@ -24,12 +27,14 @@ public class Core extends AbstractCore {
     private static final Logger log = LoggerFactory.getLogger(Core.class);
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
+    private GclCitrixRestClient gclCitrixRestClient;
     private LibConfig config;
 
-    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, LibConfig config) {
+    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, GclCitrixRestClient gclCitrixRestClient, LibConfig config) {
         this.gclAdminRestClient = gclAdminRestClient;
         this.gclRestClient = gclRestClient;
         this.config = config;
+        this.gclCitrixRestClient = gclCitrixRestClient;
     }
 
     @Override
@@ -49,7 +54,7 @@ public class Core extends AbstractCore {
     @Override
     public Boolean activate() throws GclCoreException {
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate(), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error activating the GCL", ex);
         }
@@ -58,7 +63,7 @@ public class Core extends AbstractCore {
     @Override
     public String getPubKey() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getPublicKey());
+            return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
         }
@@ -69,16 +74,16 @@ public class Core extends AbstractCore {
         try {
             GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
             keyReq.setCertificate(publicKey);
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq)));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
         }
     }
 
     @Override
-    public GclStatus getInfo() throws GclCoreException {
+    public GclInfo getInfo() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getV1Status());
+            return RestExecutor.returnData(gclRestClient.getV1Status(), config.isConsentRequired());
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving GCL core info", ex);
         }
@@ -87,7 +92,7 @@ public class Core extends AbstractCore {
     @Override
     public List<GclContainer> getContainers() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getContainers());
+            return RestExecutor.returnData(gclRestClient.getV1Containers(), config.isConsentRequired());
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving list of available containers", ex);
         }
@@ -209,7 +214,11 @@ public class Core extends AbstractCore {
     public GclReader getReader(String readerId) throws GclCoreException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
         try {
-            return RestExecutor.returnData(gclRestClient.getCardReader(readerId));
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardReader(config.getAgentPort(), readerId), config.isConsentRequired());
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardReader(readerId), config.isConsentRequired());
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving reader with id \"" + readerId + "\"", ex);
         }
@@ -218,7 +227,11 @@ public class Core extends AbstractCore {
     @Override
     public List<GclReader> getReaders() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getCardReaders());
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardReaders(config.getAgentPort()), config.isConsentRequired());
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardReaders(), config.isConsentRequired());
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers", ex);
         }
@@ -234,9 +247,91 @@ public class Core extends AbstractCore {
         return getReaders(true);
     }
 
+    @Override
+    public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
+        if (config.getCitrix()) {
+            try {
+                try {
+                    return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
+                } catch (JsonConversionException ex) {
+                    if (ex.isObjectInsteadOfArray()) {
+                        return Collections.singletonList(RestExecutor.returnData(gclCitrixRestClient.getAgent(filterParams), false));
+                    } else {
+                        throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+                    }
+                }
+            } catch (RestException ex) {
+                throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+            }
+        } else {
+            throw ExceptionFactory.unsupportedOperationException("Not a citrix environment");
+        }
+    }
+
+    @Override
+    public List<GclAgent> getAgents() throws GclCoreException {
+        return getAgents(Collections.<String, String>emptyMap());
+    }
+
+    @Override
+    public boolean getConsent(String title, String codeWord) throws GclCoreException {
+        return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclConsent.AlertLevel.WARNING, GclConsent.AlertPosition.STANDARD, GclConsent.Type.READER, config.getDefaultConsentTimeout());
+    }
+
+    @Override
+    public boolean getConsent(final String title, final String codeWord, final Integer durationInDays, final GclConsent.AlertLevel alertLevel, final GclConsent.AlertPosition alertPosition, final GclConsent.Type consentType, final Integer timeoutInSeconds) {
+        Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
+        Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
+        Preconditions.checkArgument(timeoutInSeconds == null || timeoutInSeconds <= config.getDefaultConsentTimeout(), "Consent dialog timeout may not exceed default value!");
+        GclConsent request = new GclConsent()
+                .withTitle(title)
+                .withText(codeWord)
+                .withDays(getDurationInDays(durationInDays))
+                .withAlertLevel(getAlertLevel(alertLevel))
+                .withAlertPosition(getAlertPosition(alertPosition))
+                .withType(getConsentType(consentType))
+                .withTimeout(getTimeoutInSeconds(timeoutInSeconds));
+        try {
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getConsent(config.getAgentPort(), request), false);
+            } else {
+                return RestExecutor.returnData(gclRestClient.getConsent(request), false);
+            }
+        } catch (RestException ex) {
+            if (ex.getHttpCode().equals(404)) {
+                throw ExceptionFactory.unsupportedOperationException("Consent functionality not available");
+            }
+            throw ExceptionFactory.gclCoreException("Failed to obtain consent: ", ex);
+        }
+    }
+
+    private Integer getDurationInDays(final Integer durationInDays) {
+        return durationInDays == null ? config.getDefaultConsentDuration() : durationInDays;
+    }
+
+    private Integer getTimeoutInSeconds(final Integer timeoutInSeconds) {
+        return timeoutInSeconds == null ? config.getDefaultConsentTimeout() : timeoutInSeconds;
+    }
+
+    private GclConsent.AlertLevel getAlertLevel(final GclConsent.AlertLevel alertLevel) {
+        return alertLevel == null ? GclConsent.AlertLevel.WARNING : alertLevel;
+    }
+
+    private GclConsent.AlertPosition getAlertPosition(final GclConsent.AlertPosition alertPosition) {
+        return alertPosition == null ? GclConsent.AlertPosition.STANDARD : alertPosition;
+    }
+
+    private GclConsent.Type getConsentType(final GclConsent.Type consentType) {
+        return consentType == null ? GclConsent.Type.READER : consentType;
+    }
+
     private List<GclReader> getReaders(boolean cardInserted) {
         try {
-            return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted));
+            if (checkCitrix()) {
+                return RestExecutor.returnData(gclCitrixRestClient.getCardInsertedReaders(config.getAgentPort(), cardInserted), config.isConsentRequired());
+            } else {
+                return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted), config.isConsentRequired());
+            }
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers without cards", ex);
         }
@@ -258,6 +353,10 @@ public class Core extends AbstractCore {
             timeout = pollTimeoutInSeconds;
         }
         return 1000 * timeout;
+    }
+
+    private boolean checkCitrix() {
+        return config.getCitrix() && config.getAgentPort() != null;
     }
 
 /*    //TODO

@@ -160,7 +160,7 @@ public class GclPtIdAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPtIdAllData) == false) {
+        if (!(other instanceof GclPtIdAllData)) {
             return false;
         }
         GclPtIdAllData rhs = ((GclPtIdAllData) other);

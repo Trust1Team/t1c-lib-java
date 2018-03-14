@@ -18,13 +18,14 @@ import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
+import com.t1t.t1c.core.GclAgent;
+import com.t1t.t1c.core.GclConsent;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
-import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
@@ -43,48 +44,118 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "INSERT_API_KEY_HERE";
-    private static T1cClient client;
+    private static String API_KEY = "INSERT_API_KEY";
+    private static IT1cClient client;
+    private static LibConfig conf;
 
     public static void main(String[] args) {
+        try {
+            /*Config*/
+            conf = new LibConfig();
+            conf.setEnvironment(Environment.DEV);
+            conf.setDsUri(DS_URI);
+            conf.setOcvUri(OCV_URI);
+            conf.setGclClientUri(URI_T1C_GCL);
+            conf.setApiKey(API_KEY);
+            conf.setHardwarePinPadForced(false);
+            conf.setDefaultPollingIntervalInSeconds(5);
+            conf.setDefaultPollingTimeoutInSeconds(10);
+            conf.setDefaultConsentDuration(2);
+            conf.setDefaultConsentTimeout(35);
+            conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
 
-        /*Config*/
-        LibConfig conf = new LibConfig();
-        conf.setEnvironment(Environment.DEV);
-        conf.setDsUri(DS_URI);
-        conf.setOcvUri(OCV_URI);
-        conf.setGclClientUri(URI_T1C_GCL);
-        conf.setApiKey(API_KEY);
-        conf.setHardwarePinPadForced(false);
-        conf.setDefaultPollingIntervalInSeconds(5);
-        conf.setDefaultPollingTimeoutInSeconds(10);
+            showMenu();
+        } catch (NoConsentException ex) {
+            System.out.println("Consent required: Grant consent and try again");
+            showMenu();
+        }
+    }
 
+    private static void showMenu() {
+        Scanner scan = new Scanner(System.in);
         /*Instantiate client*/
         client = new T1cClient(conf);
-
-        // Poll reader for insterted cards and get first available
-        GclReader reader = client.getCore().pollCardInserted();
-
-        Scanner scan = new Scanner(System.in);
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
+        System.out.println("3. Grant consent");
+        System.out.println("4. Select Citrix agent");
+        System.out.println("5. Exit");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
         String choice = scan.nextLine();
         switch (choice) {
             case "1":
-                executeGenericContainerFunctionality(reader);
+                // Poll reader for insterted cards and get first available
+                executeGenericContainerFunctionality(client.getCore().pollCardInserted());
                 break;
             case "2":
-                executeReaderSpecificContainerFunctionality(reader);
+                // Poll reader for insterted cards and get first available
+                executeReaderSpecificContainerFunctionality(client.getCore().pollCardInserted());
+                break;
+            case "3":
+                grantConsent();
+                break;
+            case "4":
+                executeCitrixFunctionality();
+                break;
+            case "5":
+                // Do nothing
                 break;
             default:
-                throw new IllegalArgumentException("Invalid choice");
+                System.out.println("Invalid choice");
+                showMenu();
+                break;
+        }
+    }
+
+    private static void grantConsent() {
+        try {
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
+        } catch (UnsupportedOperationException ex) {
+            System.out.println(ex.getMessage());
+        }
+        showMenu();
+    }
+
+    private static void executeCitrixFunctionality() {
+        Boolean citrix = client.getCore().getInfo().getCitrix();
+        if (citrix == null || !citrix) {
+            System.out.println("No agents available: GCL not configured for Citrix");
+            showMenu();
+        } else {
+            List<GclAgent> agents = client.getCore().getAgents(Collections.singletonMap("username", "guillaumevandecasteele"));
+            Scanner scan = new Scanner(System.in);
+            System.out.println("==================== Available agents (username) ====================");
+            int i;
+            for (i = 0; i < agents.size(); i++) {
+                System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
+            }
+            System.out.println(i + ". Back");
+            System.out.println("=====================================================================");
+            System.out.print("Please make a choice: ");
+            String input = scan.nextLine();
+            try {
+                Integer choice = Integer.valueOf(input);
+                if (choice >= 0 && choice < agents.size()) {
+                    GclAgent chosenAgent = agents.get(choice);
+                    conf.setAgentPort(chosenAgent.getPort());
+                    showMenu();
+                } else if (choice != i) {
+                    System.out.println("Invalid choice");
+                    executeCitrixFunctionality();
+                } else {
+                    showMenu();
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Invalid choice");
+                executeCitrixFunctionality();
+            }
         }
     }
 
     private static void executeGenericContainerFunctionality(GclReader reader) {
+
         Scanner scan = new Scanner(System.in);
         System.out.print("Provide PIN (optional, press enter to skip): ");
         String pin = scan.nextLine();
@@ -156,6 +227,9 @@ public class JavaClientExample {
                 break;
             case SAFENET:
                 safeNetUseCases(reader);
+                break;
+            default:
+                System.out.println("No matching container type found: " + type);
                 break;
         }
     }
@@ -328,10 +402,10 @@ public class JavaClientExample {
                     String puk = pukInput.nextLine();
                     Scanner newPinInput = new Scanner(System.in);
                     System.out.print("PUK: ");
-                    String newPin = pukInput.nextLine();
+                    String newPin = newPinInput.nextLine();
                     Scanner keyRefInput = new Scanner(System.in);
                     System.out.print("PUK: ");
-                    String keyRef = pukInput.nextLine();
+                    String keyRef = keyRefInput.nextLine();
                     System.out.println("PIN reset: " + container.resetPin(puk, newPin, keyRef));
                 } catch (VerifyPinException ex) {
                     System.out.println("Invalid PUK");

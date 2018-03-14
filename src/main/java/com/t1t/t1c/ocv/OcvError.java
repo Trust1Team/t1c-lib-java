@@ -137,7 +137,7 @@ public class OcvError {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvError) == false) {
+        if (!(other instanceof OcvError)) {
             return false;
         }
         OcvError rhs = ((OcvError) other);

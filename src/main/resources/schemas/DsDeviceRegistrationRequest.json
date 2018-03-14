@@ -15,6 +15,10 @@
       "type": "object",
       "$ref": "DsBrowser.json"
     },
+    "desktopApplication": {
+      "type": "object",
+      "$ref": "DsDesktopApplication.json"
+    },
     "ua": {
       "type": "string"
     },

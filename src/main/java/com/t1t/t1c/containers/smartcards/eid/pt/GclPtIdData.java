@@ -665,7 +665,7 @@ public class GclPtIdData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPtIdData) == false) {
+        if (!(other instanceof GclPtIdData)) {
             return false;
         }
         GclPtIdData rhs = ((GclPtIdData) other);

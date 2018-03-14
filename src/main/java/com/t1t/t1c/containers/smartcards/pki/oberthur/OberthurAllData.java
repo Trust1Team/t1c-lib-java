@@ -26,7 +26,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         this.rootCertificate = CertificateUtil.createT1cCertificate(rootCertificate, parseCertificates);
         this.signingCertificate = CertificateUtil.createT1cCertificate(signingCertificate, parseCertificates);
         this.issuerCertificate = CertificateUtil.createT1cCertificate(issuerCertificate, parseCertificates);
-        this.encryptionCertificate = CertificateUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
+        this.encryptionCertificate = CertificateUtil.createT1cCertificate(encryptionCertificate, parseCertificates);
     }
 
     public T1cCertificate getRootCertificate() {

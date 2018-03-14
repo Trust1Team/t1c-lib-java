@@ -129,10 +129,6 @@ public class BeIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void createInstance() {
-    }
-
-    @Test
     public void getAllDataFilters() {
         assertTrue(CollectionUtils.isNotEmpty(container.getAllDataFilters()));
     }

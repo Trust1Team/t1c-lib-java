@@ -5,9 +5,11 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertEquals;
 
 public class UriUtilsTest {
+
     @Test
     public void testConstructURI() throws Exception {
-
+        String expected = "https://domain:80/contextpath/";
+        assertEquals(expected, UriUtils.constructURI("https://domain:80", "contextpath"));
     }
 
     @Test
@@ -20,14 +22,26 @@ public class UriUtilsTest {
 
     @Test
     public void testUriFinalSlashRemover() throws Exception {
+        final String uriWithFinalSlash = "https://some.uri/";
+        final String uriWithoutFinalSlash = "https://some.uri";
+        assertEquals(uriWithoutFinalSlash, UriUtils.uriFinalSlashRemover(uriWithFinalSlash));
+        assertEquals(uriWithoutFinalSlash, UriUtils.uriFinalSlashRemover(uriWithoutFinalSlash));
     }
 
     @Test
     public void testUriLeadingSlashRemover() throws Exception {
+        final String contextPathWithLeadingSlash = "/contextpath";
+        final String contextPathWithOutLeadingSlash = "contextpath";
+        assertEquals(contextPathWithOutLeadingSlash, UriUtils.uriLeadingSlashRemover(contextPathWithLeadingSlash));
+        assertEquals(contextPathWithOutLeadingSlash, UriUtils.uriLeadingSlashRemover(contextPathWithOutLeadingSlash));
     }
 
     @Test
     public void testUriLeadingSlashPrepender() throws Exception {
+        final String contextPathWithLeadingSlash = "/contextpath";
+        final String contextPathWithOutLeadingSlash = "contextpath";
+        assertEquals(contextPathWithLeadingSlash, UriUtils.uriLeadingSlashPrepender(contextPathWithLeadingSlash));
+        assertEquals(contextPathWithLeadingSlash, UriUtils.uriLeadingSlashPrepender(contextPathWithOutLeadingSlash));
     }
 
 }

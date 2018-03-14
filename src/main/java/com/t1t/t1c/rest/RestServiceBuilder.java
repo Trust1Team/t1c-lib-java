@@ -1,12 +1,13 @@
 package com.t1t.t1c.rest;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.ContainerRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclCitrixRestClient;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.ocv.OcvRestClient;
+import com.t1t.t1c.utils.ClientFingerprintUtil;
 import com.t1t.t1c.utils.UriUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -21,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -34,9 +34,14 @@ import java.util.concurrent.TimeUnit;
 public final class RestServiceBuilder {
     private static final Logger log = LoggerFactory.getLogger(RestServiceBuilder.class);
     /* Headers */
+    private static final String CONTAINER_CONTEXT_PATH = "plugins/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
+    private static final String ORIGIN_HEADER_NAME = "origin";
+    private static final String ORIGIN_HEADER_VALUE = "https://localhost";
+    private static final String X_AUTH_HEADER_NAME = "X-Authentication-Token";
+    private static final String CITRIX_AGENT_PATH = "agent/%s/";
 
     private RestServiceBuilder() {
     }
@@ -49,7 +54,18 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, null);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, config);
+    }
+
+    /**
+     * GCL Rest client communicates over TLS to T1C-GCL (local). Client specific for Citrix agents
+     * No apikey or JWT required.
+     *
+     * @param config
+     * @return
+     */
+    public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
+        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, null, config);
     }
 
     /**
@@ -60,7 +76,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, null, config.getJwt());
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config.getJwt(), config);
     }
 
     /**
@@ -84,7 +100,13 @@ public final class RestServiceBuilder {
      * @return
      */
     public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
-        return getLocalClient(UriUtils.uriFinalSlashAppender(config.getGclClientUri() + ContainerRestClient.CONTAINER_CONTEXT_PATH), clazz, null, null);
+        String uri;
+        if (config.getCitrix() && config.getAgentPort() != null) {
+            uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + String.format(CITRIX_AGENT_PATH, config.getAgentPort()) + CONTAINER_CONTEXT_PATH);
+        } else {
+            uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH);
+        }
+        return getLocalClient(uri, clazz, null, config);
     }
 
     /**
@@ -123,10 +145,10 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, String apikey, String jwt) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, String jwt, LibConfig config) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(getHttpClientSkipTLS(apikey, jwt))
+                    .client(getHttpClientSkipTLS(jwt, config))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -143,13 +165,8 @@ public final class RestServiceBuilder {
      * @param apikey
      * @param jwt
      * @return
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws KeyManagementException
-     * @throws KeyStoreException
-     * @throws IOException
      */
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
@@ -192,17 +209,17 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final String jwt, final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
             @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
                 // Do nothing
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
                 // Do nothing
             }
 
@@ -242,17 +259,27 @@ public final class RestServiceBuilder {
                 }
             });
         }
-
+        if (config.isTokenCompatible()) {
+            okHttpBuilder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request.Builder requestBuilder = chain.request().newBuilder();
+                    requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
+                    String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
+                    log.debug("client fingerprint: {}", fingerprint);
+                    requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
+                    return chain.proceed(requestBuilder.build());
+                }
+            });
+        }
+        // Set timeouts a little higher, because reading data from cards can take time
+        // The timeout should also be greater than the consent timeout, otherwise an error will occur when exceeding it
+        // As such the timeout should default to either 30 seconds or the default consent timeout + 1s
+        int timeout = config.getDefaultConsentTimeout() + 1 < 30 ? 30 : config.getDefaultConsentTimeout() + 1;
         return okHttpBuilder
-                // Set timeouts a little higher, because reading data from cards can take time
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .writeTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .writeTimeout(timeout, TimeUnit.SECONDS)
                 .build();
-    }
-
-    private static TrustManagerFactory getTrustManagerFactory() throws NoSuchAlgorithmException {
-        String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-        return TrustManagerFactory.getInstance(tmfAlgorithm);
     }
 }

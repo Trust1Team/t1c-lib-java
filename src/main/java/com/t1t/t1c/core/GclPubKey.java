@@ -71,7 +71,7 @@ public class GclPubKey {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPubKey) == false) {
+        if (!(other instanceof GclPubKey)) {
             return false;
         }
         GclPubKey rhs = ((GclPubKey) other);

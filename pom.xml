@@ -76,6 +76,7 @@
         <version.jackson-databind>2.0.0</version.jackson-databind>
         <version.commons.codec>1.10</version.commons.codec>
         <version.jose4j>0.6.2</version.jose4j>
+        <version.cuid>0.1.1</version.cuid>
         <!-- Guava versions above 20.0 require java 1.8 -->
         <version.guava>20.0</version.guava>
     </properties>
@@ -216,6 +217,12 @@
             <artifactId>jose4j</artifactId>
             <version>${version.jose4j}</version>
         </dependency>
+        <dependency>
+            <groupId>cool.graph</groupId>
+            <artifactId>cuid-java</artifactId>
+            <version>${version.cuid}</version>
+        </dependency>
+
 
         <!--jsonschema dependencies-->
         <dependency>
@@ -310,7 +317,7 @@
                     <!--We didn't provided the sourceDirectory, because alphabetical order makes nomenclature of classes bug out-->
                     <sourcePaths>
                         <!-- DS -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/DsJava.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsBrowser.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsOs.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDevice.json</sourcePath>
@@ -337,6 +344,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
                         </sourcePath>
                         <!-- GCL core -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAgent.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
                         </sourcePath>
@@ -347,7 +355,6 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
                         <!-- BE ID -->
@@ -435,9 +442,9 @@
                 <executions>
                     <execution>
                         <!--Uncomment the goal in order to generate t1c model-->
-                        <!--<goals>
-                            <goal>generate</goal>
-                        </goals>-->
+                        <goals>
+                            <!--<goal>generate</goal>-->
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

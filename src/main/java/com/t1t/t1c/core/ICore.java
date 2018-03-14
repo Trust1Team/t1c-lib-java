@@ -4,6 +4,7 @@ import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -58,7 +59,7 @@ public interface ICore {
      * @return the core info.
      * @throws GclCoreException: on failure
      */
-    GclStatus getInfo() throws GclCoreException;
+    GclInfo getInfo() throws GclCoreException;
 
     /**
      * Return installed containers.
@@ -205,4 +206,45 @@ public interface ICore {
      * @throws GclCoreException: on failure
      */
     List<GclReader> getPinVerificationCapableReaders() throws GclCoreException;
+
+    /**
+     * Get list of available agents, matching the provided String filter parameters.
+     *
+     * @param filterParams values to filter
+     * @return
+     * @throws GclCoreException
+     */
+    List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException;
+
+    /**
+     * Get list of available agents
+     *
+     * @return the available agents
+     * @throws GclCoreException
+     */
+    List<GclAgent> getAgents() throws GclCoreException;
+
+    /**
+     * Generate a consent request.
+     *
+     * @param title    the title for the consent dialog.
+     * @param codeWord a code word that will be shown in the consent dialog.
+     * @return true if granted, false if not.
+     * @throws GclCoreException
+     */
+    boolean getConsent(String title, String codeWord) throws GclCoreException;
+
+    /**
+     * Generate a consent request.
+     *
+     * @param title            the title for the consent dialog.
+     * @param codeWord         a code word that will be shown in the consent dialog.
+     * @param durationInDays   how long the consent should be valid if granted. To prevent timeouts, the value must be less than the default duration set in the configuration
+     * @param alertLevel       the severity of the popup. Defaults to "warning".
+     * @param alertPosition    the positioning of the consent popup on the screen. Defaults to "standard" (exact meaning of this varies between OS's).
+     * @param consentType      the type of consent being requested.
+     * @param timeoutInSeconds the timeout of the consent popup in seconds. If the user does not respond within this timespan, no consent will be granted. Defaults to 30s but can be overridden in the configuration. To prevent SocketTimeoutExceptions, the value <b>must</b> be less than the configured default value.
+     * @return true if granted, false if not.
+     */
+    boolean getConsent(String title, String codeWord, Integer durationInDays, GclConsent.AlertLevel alertLevel, GclConsent.AlertPosition alertPosition, GclConsent.Type consentType, Integer timeoutInSeconds);
 }

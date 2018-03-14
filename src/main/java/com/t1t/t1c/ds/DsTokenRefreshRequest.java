@@ -49,7 +49,7 @@ public class DsTokenRefreshRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsTokenRefreshRequest) == false) {
+        if (!(other instanceof DsTokenRefreshRequest)) {
             return false;
         }
         DsTokenRefreshRequest rhs = ((DsTokenRefreshRequest) other);

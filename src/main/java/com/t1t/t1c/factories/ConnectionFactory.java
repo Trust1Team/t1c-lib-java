@@ -15,6 +15,7 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
+import com.t1t.t1c.core.GclCitrixRestClient;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.ocv.OcvRestClient;
@@ -31,6 +32,7 @@ public final class ConnectionFactory {
     private LibConfig config;
     /*General connections*/
     private GclRestClient gclRestClient;
+    private GclCitrixRestClient gclCitrixRestClient;
     private GclAdminRestClient gclAdminRestClient;
     private DsRestClient dsRestClient;
     private OcvRestClient ocvRestClient;
@@ -59,6 +61,7 @@ public final class ConnectionFactory {
         //global connections
         this.dsRestClient = RestServiceBuilder.getDsRestClient(config);
         this.gclRestClient = RestServiceBuilder.getGclRestClient(config);
+        this.gclCitrixRestClient = RestServiceBuilder.getGclCitrixRestClient(config);
         this.gclAdminRestClient = RestServiceBuilder.getGclAdminRestClient(config);
         this.ocvRestClient = RestServiceBuilder.getOcvRestClient(config);
         //container specific connections
@@ -84,6 +87,10 @@ public final class ConnectionFactory {
 
     public GclAdminRestClient getGclAdminRestClient() {
         return gclAdminRestClient;
+    }
+
+    public GclCitrixRestClient getGclCitrixRestClient() {
+        return gclCitrixRestClient;
     }
 
     public DsRestClient getDsRestClient() {

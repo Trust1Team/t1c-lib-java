@@ -51,7 +51,7 @@ public class OcvCertificateChainValidationRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvCertificateChainValidationRequest) == false) {
+        if (!(other instanceof OcvCertificateChainValidationRequest)) {
             return false;
         }
         OcvCertificateChainValidationRequest rhs = ((OcvCertificateChainValidationRequest) other);

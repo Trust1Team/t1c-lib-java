@@ -64,7 +64,7 @@ public class GclVerifyPinRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclVerifyPinRequest) == false) {
+        if (!(other instanceof GclVerifyPinRequest)) {
             return false;
         }
         GclVerifyPinRequest rhs = ((GclVerifyPinRequest) other);

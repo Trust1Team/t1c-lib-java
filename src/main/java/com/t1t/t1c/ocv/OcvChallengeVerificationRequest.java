@@ -115,7 +115,7 @@ public class OcvChallengeVerificationRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvChallengeVerificationRequest) == false) {
+        if (!(other instanceof OcvChallengeVerificationRequest)) {
             return false;
         }
         OcvChallengeVerificationRequest rhs = ((OcvChallengeVerificationRequest) other);

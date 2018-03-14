@@ -2,6 +2,7 @@ package com.t1t.t1c.containers;
 
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
@@ -51,8 +52,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      *
      * @return AllData
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    V getAllData() throws RestException;
+    V getAllData() throws RestException, NoConsentException;
 
     /**
      * Dumps all the data on the card
@@ -61,8 +63,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllData
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    V getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException;
+    V getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException;
 
     /**
      * Dumps all the data on the card
@@ -70,16 +73,18 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional
      * @return AllData
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    V getAllData(Boolean... parseCertificates) throws RestException;
+    V getAllData(Boolean... parseCertificates) throws RestException, NoConsentException;
 
     /**
      * Dumps all the certificates on the card
      *
      * @return AllCertificates
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    W getAllCertificates() throws RestException;
+    W getAllCertificates() throws RestException, NoConsentException;
 
     /**
      * Dumps all the certificates on the card
@@ -88,8 +93,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllCertificates
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    W getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException;
+    W getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException;
 
     /**
      * Dumps all the certificates on the card
@@ -97,8 +103,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param parseCertificates toggle to parse the certificates value (optional)
      * @return AllCertificates
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    W getAllCertificates(Boolean... parseCertificates) throws RestException;
+    W getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException;
 
     /*Token Functionality*/
 
@@ -109,8 +116,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return true if PIN is correct
      * @throws GenericContainerException: on communication failure
      * @throws VerifyPinException:        if PIN is incorrect
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    Boolean verifyPin(String... pin) throws VerifyPinException, RestException;
+    Boolean verifyPin(String... pin) throws VerifyPinException, RestException, NoConsentException;
 
     /**
      * Signs a hash with the card's authentication certificate
@@ -118,8 +126,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param data the authentication payload
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
+    String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException, NoConsentException;
 
     /**
      * Signs a hash with the card's signing (non-repudiation) certificate
@@ -127,8 +136,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @param data the signing payload
      * @return a String representation of the signed hash
      * @throws GenericContainerException: on failure
+     * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
-    String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException;
+    String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException, NoConsentException;
 
     /**
      * Returns the certificate chain used for signing, if present
@@ -136,8 +146,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return An ordered map with the leaf certificate with key 0
      * @throws VerifyPinException: If a wrong PIN is provided
      * @throws RestException:      On communication failure with the GCL
+     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
      */
-    Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException;
+    Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException, NoConsentException;
 
     /**
      * Returns the certificate chain used for authentication, if present
@@ -145,8 +156,9 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return An ordered map with the leaf certificate with key 0
      * @throws VerifyPinException: If a wrong PIN is provided
      * @throws RestException:      On communication failure with the GCL
+     * @throws NoConsentException: if consent is required but has not been granted (or is expired)
      */
-    Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException;
+    Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException, NoConsentException;
 
     /**
      * Dumps the available container data
@@ -155,6 +167,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @return the container data
      * @throws RestException:                 on communication failure
      * @throws UnsupportedOperationException: if the container has no data to dump
+     * @throws NoConsentException:            if consent is required but has not been granted (or is expired)
      */
-    ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException;
+    ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException, NoConsentException;
 }

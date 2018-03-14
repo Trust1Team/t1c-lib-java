@@ -72,7 +72,7 @@ public class T1cCertificate {
         if (other == this) {
             return true;
         }
-        if ((other instanceof T1cCertificate) == false) {
+        if (!(other instanceof T1cCertificate)) {
             return false;
         }
         T1cCertificate rhs = ((T1cCertificate) other);

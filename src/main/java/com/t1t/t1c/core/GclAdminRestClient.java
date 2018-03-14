@@ -1,5 +1,6 @@
 package com.t1t.t1c.core;
 
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,8 +13,8 @@ import retrofit2.http.PUT;
 public interface GclAdminRestClient {
 
     @POST("admin/activate")
-    Call<T1cResponse<Object>> activate();
+    Call<T1cResponse<Object>> activate() throws RestException;
 
     @PUT("admin/certificate")
-    Call<T1cResponse<Object>> setPublicKey(@Body GclUpdatePublicKeyRequest request);
+    Call<T1cResponse<Object>> setPublicKey(@Body GclUpdatePublicKeyRequest request) throws RestException;
 }

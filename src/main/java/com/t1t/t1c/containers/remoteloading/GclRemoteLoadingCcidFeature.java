@@ -71,7 +71,7 @@ public class GclRemoteLoadingCcidFeature {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclRemoteLoadingCcidFeature) == false) {
+        if (!(other instanceof GclRemoteLoadingCcidFeature)) {
             return false;
         }
         GclRemoteLoadingCcidFeature rhs = ((GclRemoteLoadingCcidFeature) other);

@@ -159,7 +159,7 @@ public class GclBeIdAddress {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclBeIdAddress) == false) {
+        if (!(other instanceof GclBeIdAddress)) {
             return false;
         }
         GclBeIdAddress rhs = ((GclBeIdAddress) other);

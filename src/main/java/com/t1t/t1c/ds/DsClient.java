@@ -9,15 +9,13 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.UriUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public class DsClient implements IDsClient {
-    private static final Logger log = LoggerFactory.getLogger(DsClient.class);
+
     private DsRestClient dsRestClient;
     private LibConfig config;
 
@@ -29,7 +27,7 @@ public class DsClient implements IDsClient {
     @Override
     public DsSystemStatus getInfo() throws DsClientException {
         try {
-            return RestExecutor.executeCall(dsRestClient.getInfo());
+            return RestExecutor.executeCall(dsRestClient.getInfo(), false);
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
         }
@@ -38,7 +36,7 @@ public class DsClient implements IDsClient {
     @Override
     public DsDevice getDevice(String deviceId) throws DsClientException {
         try {
-            return RestExecutor.executeCall(dsRestClient.getDevice(deviceId));
+            return RestExecutor.executeCall(dsRestClient.getDevice(deviceId), false);
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve device info from Distribution Service", ex);
         }
@@ -47,7 +45,7 @@ public class DsClient implements IDsClient {
     @Override
     public String getJWT() throws DsClientException {
         try {
-            return RestExecutor.executeCall(dsRestClient.getJWT()).getToken();
+            return RestExecutor.executeCall(dsRestClient.getJWT(), false).getToken();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve JWT from Distribution Service", ex);
         }
@@ -56,7 +54,7 @@ public class DsClient implements IDsClient {
     @Override
     public String refreshJWT(String token) throws DsClientException {
         try {
-            return RestExecutor.executeCall(dsRestClient.refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token))).getToken();
+            return RestExecutor.executeCall(dsRestClient.refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token)), false).getToken();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not refresh JWT on Distribution Service", ex);
         }
@@ -76,7 +74,7 @@ public class DsClient implements IDsClient {
             encodingParam = encoding.getQueryParamValue();
         }
         try {
-            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(encodingParam));
+            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(encodingParam), false);
             return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
@@ -89,8 +87,9 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public String getDownloadLink(PlatformInfo info) throws DsClientException {
+    public String getDownloadLink(final PlatformInfo information) throws DsClientException {
         try {
+            PlatformInfo info = information;
             if (info == null) {
                 info = new PlatformInfo();
             }
@@ -99,7 +98,7 @@ public class DsClient implements IDsClient {
                             .withArchitecture(info.getOs().getArchitecture())
                             .withName(info.getOs().getName())
                             .withVersion(info.getOs().getVersion()));
-            DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request));
+            DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false);
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
                 return UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
             } else return null;
@@ -112,9 +111,9 @@ public class DsClient implements IDsClient {
     public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
             if (!request.getActivated()) {
-                return RestExecutor.executeCall(dsRestClient.register(deviceId, request)).getToken();
+                return RestExecutor.executeCall(dsRestClient.register(deviceId, request), false).getToken();
             } else {
-                return RestExecutor.executeCall(dsRestClient.sync(deviceId, request)).getToken();
+                return RestExecutor.executeCall(dsRestClient.sync(deviceId, request), false).getToken();
             }
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);

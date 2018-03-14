@@ -2,11 +2,13 @@ package com.t1t.t1c.core;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +17,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
 
-import static com.t1t.t1c.MockResponseFactory.getGclReaders;
 import static org.junit.Assert.*;
 
 /**
@@ -63,7 +64,7 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getInfo() {
-        GclStatus info = core.getInfo();
+        GclInfo info = core.getInfo();
         assertEquals(MockResponseFactory.getGclV1Status(), info);
     }
 
@@ -173,7 +174,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void testPollReadersWithIntervalAndDuration() {
         List<GclReader> readers = this.getClient().getCore().pollReaders(1, 1);
-        List<GclReader> expected = getGclReaders(null);
+        List<GclReader> expected = MockResponseFactory.getGclReaders(null);
 
         assertTrue(CollectionUtils.isNotEmpty(readers));
         assertEquals(expected.size(), readers.size());
@@ -235,5 +236,55 @@ public class CoreTest extends AbstractTestClass {
     public void getReadersWithInsertedCard() {
         List<GclReader> readers = core.getReadersWithInsertedCard();
         assertEquals(MockResponseFactory.getGclReaders(true), readers);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void getAgentsNonCitrix() {
+        core.getAgents();
+    }
+
+    @Test
+    public void getAgents() {
+        LibConfig conf = getClient().getConnectionFactory().getConfig();
+        conf.setCitrix(true);
+        getClient().getConnectionFactory().setConfig(conf);
+        core = getClient().getCore();
+        List<GclAgent> agents = core.getAgents();
+        assertTrue(CollectionUtils.isNotEmpty(agents));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getUsername()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getChallenge()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getHostname()));
+        assertTrue(StringUtils.isNotEmpty(agents.get(0).getLastUpdate()));
+        assertNotNull(agents.get(0).getPort());
+        assertNotNull(agents.get(0).getMetadata());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConsentWithoutTitle() {
+        core.getConsent(null, "word");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConsentWithoutCodeWord() {
+        core.getConsent("title", null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConsentWithExcessiveTimeout() {
+        core.getConsent("title", "word", null, null, null, null, 35);
+    }
+
+    @Test
+    public void getConsent() {
+        assertTrue(core.getConsent("title", "word"));
+    }
+
+    @Test
+    public void getConsentCitrix() {
+        LibConfig conf = getClient().getConnectionFactory().getConfig();
+        conf.setCitrix(true);
+        getClient().getConnectionFactory().setConfig(conf);
+        core = getClient().getCore();
+        assertTrue(core.getConsent("title", "word"));
     }
 }

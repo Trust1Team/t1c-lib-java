@@ -49,7 +49,7 @@ public class GclAdminPublicKeyUpdateResonse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAdminPublicKeyUpdateResonse) == false) {
+        if (!(other instanceof GclAdminPublicKeyUpdateResonse)) {
             return false;
         }
         GclAdminPublicKeyUpdateResonse rhs = ((GclAdminPublicKeyUpdateResonse) other);

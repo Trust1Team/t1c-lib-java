@@ -8,6 +8,7 @@ import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
@@ -53,44 +54,44 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public GclEmvAllData getAllData() throws RestException {
+    public GclEmvAllData getAllData() throws RestException, NoConsentException {
         return getAllData(null, null);
     }
 
     @Override
-    public GclEmvAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return RestExecutor.returnData(httpClient.getEmvAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)));
+    public GclEmvAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getEmvAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public GclEmvAllData getAllData(Boolean... parseCertificates) throws RestException {
+    public GclEmvAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllData(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates() throws RestException {
+    public AllCertificates getAllCertificates() throws RestException, NoConsentException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
+    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0]))));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0])), config.isConsentRequired()));
             } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
@@ -98,12 +99,12 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no sign capabilities");
     }
 
@@ -127,36 +128,36 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public List<GclEmvApplication> getApplications() throws RestException {
-        return RestExecutor.returnData(httpClient.getEmvApplications(getTypeId(), reader.getId()));
+    public List<GclEmvApplication> getApplications() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getEmvApplications(getTypeId(), reader.getId()), config.isConsentRequired());
     }
 
-    public GclEmvApplicationData getApplicationData() throws RestException {
-        return RestExecutor.returnData(httpClient.getEmvApplicationData(getTypeId(), reader.getId()));
+    public GclEmvApplicationData getApplicationData() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getEmvApplicationData(getTypeId(), reader.getId()), config.isConsentRequired());
     }
 
-    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) throws RestException {
+    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-        return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
+        return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
 
-    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException {
+    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-        return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)));
+        return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getTypeId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide certificate chains");
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         GclEmvAllData allData = getAllData(true);
 

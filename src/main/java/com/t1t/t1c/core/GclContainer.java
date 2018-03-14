@@ -93,7 +93,7 @@ public class GclContainer {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclContainer) == false) {
+        if (!(other instanceof GclContainer)) {
             return false;
         }
         GclContainer rhs = ((GclContainer) other);

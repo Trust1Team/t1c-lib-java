@@ -33,27 +33,16 @@ import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData;
-import com.t1t.t1c.core.GclCard;
-import com.t1t.t1c.core.GclContainer;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclStatus;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.DsDevice;
 import com.t1t.t1c.ds.DsDownloadPath;
 import com.t1t.t1c.ds.DsToken;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
-import okhttp3.mockwebserver.MockResponse;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
@@ -76,9 +65,6 @@ public final class MockResponseFactory {
     public static final String PT_READER_ID = "57a3e2e71c48ce12";
     public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
     public static final String REMOTE_LOADING_READER_ID = "57a3e2e71c48ce14";
-    private static final Logger log = LoggerFactory.getLogger(MockResponseFactory.class);
-    private static final String JSON_EXTENSION = ".json";
-    private static final String RESPONSE_RESOURCE_PATH = "/responses/";
 
     private MockResponseFactory() {
     }
@@ -97,11 +83,15 @@ public final class MockResponseFactory {
     // GCL Core
     //
 
+    public static T1cResponse<Boolean> getConsentResponse() {
+        return getSuccessResponse(true);
+    }
+
     public static T1cResponse<String> getGclAdminCertificateResponse() {
         return getSuccessResponse(getGclAdminCertificate());
     }
 
-    public static T1cResponse<GclStatus> getGclV1StatusResponse() {
+    public static T1cResponse<GclInfo> getGclV1StatusResponse() {
         return getSuccessResponse(getGclV1Status());
     }
 
@@ -299,16 +289,17 @@ public final class MockResponseFactory {
         return new GclReader().withName("Bit4id miniLector").withPinpad(pinPad).withId(id).withCard(card);
     }
 
-    public static GclStatus getGclV1Status() {
-        return new GclStatus()
+    public static GclInfo getGclV1Status() {
+        return new GclInfo()
                 .withActivated(true)
                 .withArch("x86_64")
                 .withCitrix(false)
+                .withConsent(false)
                 .withLogLevel("info")
                 .withManaged(false)
                 .withOs("10.13.1")
                 .withUid("B7289D3AEB22D233")
-                .withVersion("1.6.0");
+                .withVersion("1.2.5");
     }
 
     public static String getGclAdminCertificate() {
@@ -1176,9 +1167,7 @@ public final class MockResponseFactory {
     public static T1cResponse<GclOcraAllData> getGclOcraAllDataResponse(String filter) throws RestException {
         List<String> filterParams = splitFilterParams(filter);
         GclOcraAllData data = getGclOcraAllData();
-        if (!filterParams.isEmpty()) {
-            if (!filterParams.contains("counter")) data.setCounter(null);
-        }
+        if (!filterParams.isEmpty() && !filterParams.contains("counter")) data.setCounter(null);
         return getSuccessResponse(data);
     }
 
@@ -1217,7 +1206,7 @@ public final class MockResponseFactory {
     //
 
     public static T1cResponse<Object> getGclAventraResetPinResponse(String puk) {
-        if (StringUtils.isNotEmpty(puk) && !puk.equals("1111")) {
+        if (StringUtils.isNotEmpty(puk) && !"1111".equals(puk)) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -1607,6 +1596,38 @@ public final class MockResponseFactory {
         return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
     }
 
+    public static T1cResponse<List<GclAgent>> getAgentsResponse(Map<String, String> filters) {
+        List<GclAgent> agents = getAgents();
+        if (!filters.isEmpty() && filters.containsKey("username")) {
+            if (filters.get("username").equals("johndoe")) agents.remove(1);
+            else if (filters.get("username").equals("janedoe")) agents.remove(0);
+        }
+        return getSuccessResponse(agents);
+    }
+
+    public static T1cResponse<GclAgent> getAgentResponse(Map<String, String> filters) {
+        return getSuccessResponse(getAgentsResponse(filters).getData().get(0));
+    }
+
+    public static List<GclAgent> getAgents() {
+        List<GclAgent> agents = new ArrayList<>();
+        agents.add(new GclAgent()
+                .withChallenge("2cd89c9f-d1e5-4648-a850-6ddf9313d052")
+                .withHostname("macbook")
+                .withLastUpdate("2018-03-12T14:09:41.521521")
+                .withMetadata(Collections.<String, String>emptyMap())
+                .withPort(57061)
+                .withUsername("johndoe"));
+        agents.add(new GclAgent()
+                .withChallenge("43244235-d1e5-gfd548-a850-6hthrf9313po34")
+                .withHostname("macbook")
+                .withLastUpdate("2018-03-12T14:15:41.521521")
+                .withMetadata(Collections.<String, String>emptyMap())
+                .withPort(57043)
+                .withUsername("janedoe"));
+        return agents;
+    }
+
     private static List<String> splitFilterParams(String filter) throws RestException {
         // To mock rest exceptions, if filter contains "throwException", we throw a RestException
         if (StringUtils.isEmpty(filter)) {
@@ -1615,14 +1636,5 @@ public final class MockResponseFactory {
         if (filter.contains("throwException"))
             throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
-    }
-
-    public static MockResponse getMockResponseForResource(int httpStatusCode, String resourceFilename) {
-        try {
-            return new MockResponse().setResponseCode(httpStatusCode).setBody(IOUtils.toString(MockResponseFactory.class.getResourceAsStream(RESPONSE_RESOURCE_PATH + resourceFilename + JSON_EXTENSION)));
-        } catch (IOException ex) {
-            log.warn("Failed to retrieve JSON response {}: {}", resourceFilename, ex);
-            return new MockResponse();
-        }
     }
 }

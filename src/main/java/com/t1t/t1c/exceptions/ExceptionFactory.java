@@ -121,6 +121,16 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a JsonConversionException
+     *
+     * @param message
+     * @return
+     */
+    public static JsonConversionException jsonConversionException(String message) {
+        return new JsonConversionException(message);
+    }
+
+    /**
      * Creates generic container exception
      *
      * @return
@@ -244,7 +254,25 @@ public final class ExceptionFactory {
         return new LuxIdContainerException(errorMessage);
     }
 
+    /**
+     * Creates a CertificateOrderingException
+     *
+     * @param message the message
+     * @return an exception
+     */
     public static CertificateOrderingException certificateOrderingException(String message) {
         return new CertificateOrderingException(message);
+    }
+
+    /**
+     * Creates a NoConsentException
+     *
+     * @param message  the message
+     * @param httpCode the http code
+     * @param url      the url for which consent is required
+     * @return an exception
+     */
+    public static NoConsentException noConsentException(String message, Integer httpCode, String url) {
+        return new NoConsentException(message, httpCode, url);
     }
 }
