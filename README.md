@@ -1,5 +1,6 @@
 # Trust1Connector Java Client
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/77339306e39544b7bab98c68cd3a40c5)](https://www.codacy.com/app/Trust1Team/t1c-lib-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Trust1Team/t1c-lib-java&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/77339306e39544b7bab98c68cd3a40c5)](https://www.codacy.com/app/Trust1Team/t1c-lib-java?utm_source=github.com&utm_medium=referral&utm_content=Trust1Team/t1c-lib-java&utm_campaign=Badge_Coverage)
 
 [![][t1c-logo]][Trust1Connector-url]
 

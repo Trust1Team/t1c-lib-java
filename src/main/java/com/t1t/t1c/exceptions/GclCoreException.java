@@ -6,6 +6,8 @@ package com.t1t.t1c.exceptions;
  */
 public class GclCoreException extends AbstractRuntimeException {
 
+    private Integer httpCode;
+
     public GclCoreException(String message) {
         super(message);
     }
@@ -16,11 +18,14 @@ public class GclCoreException extends AbstractRuntimeException {
 
     public GclCoreException(String message, Throwable cause) {
         super(message, cause);
+        if (cause instanceof RestException) {
+            httpCode = ((RestException) cause).getHttpCode();
+        }
     }
 
     @Override
     public Integer getHttpCode() {
-        return null;
+        return httpCode;
     }
 
     @Override

@@ -94,7 +94,7 @@ public class GclDnieAllCertificates implements AllCertificates {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclDnieAllCertificates) == false) {
+        if (!(other instanceof GclDnieAllCertificates)) {
             return false;
         }
         GclDnieAllCertificates rhs = ((GclDnieAllCertificates) other);

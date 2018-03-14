@@ -467,7 +467,7 @@ public class GclBeIdRn {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclBeIdRn) == false) {
+        if (!(other instanceof GclBeIdRn)) {
             return false;
         }
         GclBeIdRn rhs = ((GclBeIdRn) other);

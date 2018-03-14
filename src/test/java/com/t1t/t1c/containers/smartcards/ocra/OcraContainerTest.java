@@ -146,7 +146,7 @@ public class OcraContainerTest extends AbstractTestClass {
 
     @Test
     public void getChallengeOTPWithHardwarePinPad() {
-        container.getChallengeOTP("kgg0MTQ4NTkzNZMA");
+        assertNotNull(container.getChallengeOTP("kgg0MTQ4NTkzNZMA"));
     }
 
     @Test

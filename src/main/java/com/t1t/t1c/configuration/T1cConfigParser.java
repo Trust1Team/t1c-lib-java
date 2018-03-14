@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -32,8 +33,9 @@ public class T1cConfigParser implements Serializable {
     private static final int DEFAULT_POLLING_INTERVAL = 5;
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
     /*Logger*/
-    private static Logger _LOG = LoggerFactory.getLogger(T1cConfigParser.class.getName());
-    private static Config config;
+    private static Logger log = LoggerFactory.getLogger(T1cConfigParser.class.getName());
+
+    private Config config;
     private LibConfig appConfig;
 
     //config by param - enriching with property file info
@@ -124,20 +126,20 @@ public class T1cConfigParser implements Serializable {
      * Print client configuration after parsing
      */
     public void printAppConfig() {
-        _LOG.debug("===== T1C Client configuration ==============================");
-        _LOG.debug("Build: {}", appConfig.getBuild());
-        _LOG.debug("Version: {}", appConfig.getVersion());
-        _LOG.debug("Environment: {}", appConfig.getEnvironment());
-        _LOG.debug("Consumer api-key: {}", appConfig.getApiKey());
-        _LOG.debug("GCL client URI: {}", appConfig.getGclClientUri());
-        _LOG.debug("DS client URI: {}", appConfig.getDsUri());
-        _LOG.debug("DS client Context path: {}", appConfig.getDsContextPath());
-        _LOG.debug("OCV client URI: {}", appConfig.getOcvUri());
-        _LOG.debug("OCV client Context path: {}", appConfig.getOcvContextPath());
-        _LOG.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
-        _LOG.debug("Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
-        _LOG.debug("Default session timeout (seconds): {}", appConfig.getSessionTimeout());
-        _LOG.debug("=============================================================");
+        log.debug("===== T1C Client configuration ==============================");
+        log.debug("Build: {}", appConfig.getBuild());
+        log.debug("Version: {}", appConfig.getVersion());
+        log.debug("Environment: {}", appConfig.getEnvironment());
+        log.debug("Consumer api-key: {}", appConfig.getApiKey());
+        log.debug("GCL client URI: {}", appConfig.getGclClientUri());
+        log.debug("DS client URI: {}", appConfig.getDsUri());
+        log.debug("DS client Context path: {}", appConfig.getDsContextPath());
+        log.debug("OCV client URI: {}", appConfig.getOcvUri());
+        log.debug("OCV client Context path: {}", appConfig.getOcvContextPath());
+        log.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
+        log.debug("Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
+        log.debug("Default session timeout (seconds): {}", appConfig.getSessionTimeout());
+        log.debug("=============================================================");
     }
 
     /**
@@ -163,6 +165,32 @@ public class T1cConfigParser implements Serializable {
         if (this.appConfig.isTokenCompatible() == null) this.appConfig.setTokenCompatible(false);
         if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0)
             this.appConfig.setSessionTimeout(60);
+        if (this.appConfig.getCitrix() == null) this.appConfig.setCitrix(false);
+        if (this.appConfig.isConsentRequired() == null) this.appConfig.setConsentRequired(false);
+        if (this.appConfig.getDefaultConsentDuration() == null) this.appConfig.setDefaultConsentDuration(1);
+        if (this.appConfig.getDefaultConsentTimeout() == null) this.appConfig.setDefaultConsentTimeout(30);
+        if (this.appConfig.isTokenCompatible() != null && this.appConfig.isTokenCompatible()) {
+            if (StringUtils.isEmpty(this.appConfig.getClientFingerprintDirectoryPath())) {
+                throw ExceptionFactory.initializationException("File path for client fingerprint token required");
+            } else {
+                Path fingerprintPath = Paths.get(this.appConfig.getClientFingerprintDirectoryPath());
+                if (fingerprintPath.toFile().exists()) {
+                    if (!fingerprintPath.toFile().isDirectory()) {
+                        throw ExceptionFactory.initializationException("Client fingerprint directory does not reference a directory");
+                    }
+                } else {
+                    try {
+                        if (fingerprintPath.toFile().mkdir()) {
+                            log.info("Client fingerprint folder created");
+                        } else {
+                            throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed");
+                        }
+                    } catch (SecurityException ex) {
+                        throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed: " + ex.getMessage());
+                    }
+                }
+            }
+        }
     }
 
     /**

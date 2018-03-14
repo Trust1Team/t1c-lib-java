@@ -93,7 +93,7 @@ public class DsOs {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsOs) == false) {
+        if (!(other instanceof DsOs)) {
             return false;
         }
         DsOs rhs = ((DsOs) other);

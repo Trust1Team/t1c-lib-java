@@ -8,6 +8,7 @@ import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -52,45 +53,45 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public DnieAllData getAllData() throws RestException {
+    public DnieAllData getAllData() throws RestException, NoConsentException {
         return getAllData(null, null);
     }
 
     @Override
-    public DnieAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return new DnieAllData(RestExecutor.returnData(httpClient.getDnieAllData(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+    public DnieAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+        return new DnieAllData(RestExecutor.returnData(httpClient.getDnieAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
 
     }
 
     @Override
-    public DnieAllData getAllData(Boolean... parseCertificates) throws RestException {
+    public DnieAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates() throws RestException {
+    public DnieAllCertificates getAllCertificates() throws RestException, NoConsentException {
         return getAllCertificates(null, null);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException {
-        return new DnieAllCertificates(RestExecutor.returnData(httpClient.getDnieAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+    public DnieAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+        return new DnieAllCertificates(RestExecutor.returnData(httpClient.getDnieAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException {
+    public DnieAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String... pin) throws RestException, VerifyPinException {
+    public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0]))));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0])), config.isConsentRequired()));
             } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId())));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
@@ -98,43 +99,43 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
+    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, RestException {
+    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getIntermediateCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getIntermediateCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getSigningCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getSigningCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public GclDnieInfo getInfo() throws RestException {
-        return RestExecutor.returnData(httpClient.getDnieInfo(getTypeId(), reader.getId()));
+    public GclDnieInfo getInfo() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getDnieInfo(getTypeId(), reader.getId()), config.isConsentRequired());
     }
 
     @Override
@@ -158,7 +159,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         DnieAllData allData = getAllData(true);
         data.setAllCertificates(getCertificatesMap(allData));
@@ -174,13 +175,13 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         DnieAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getSigningCertificate(), certs.getIntermediateCertificate());
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         DnieAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getAuthenticationCertificate(), certs.getIntermediateCertificate());
     }

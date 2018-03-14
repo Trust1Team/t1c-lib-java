@@ -74,7 +74,7 @@ public class GclEmvAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclEmvAllData) == false) {
+        if (!(other instanceof GclEmvAllData)) {
             return false;
         }
         GclEmvAllData rhs = ((GclEmvAllData) other);

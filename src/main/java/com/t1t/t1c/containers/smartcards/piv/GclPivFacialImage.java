@@ -49,7 +49,7 @@ public class GclPivFacialImage {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPivFacialImage) == false) {
+        if (!(other instanceof GclPivFacialImage)) {
             return false;
         }
         GclPivFacialImage rhs = ((GclPivFacialImage) other);

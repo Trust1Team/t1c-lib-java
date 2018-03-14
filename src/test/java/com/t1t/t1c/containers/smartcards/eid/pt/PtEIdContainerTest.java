@@ -423,7 +423,6 @@ public class PtEIdContainerTest extends AbstractTestClass {
     @Test
     public void testAllCertificates() {
         PtIdAllCertificates data = new PtIdAllCertificates(MockResponseFactory.getPtIdAllCertificates());
-        PtIdAllCertificates data2 = new PtIdAllCertificates(MockResponseFactory.getPtIdAllCertificates());
         assertTrue(StringUtils.isNotEmpty(data.toString()));
         T1cCertificate newCert = new T1cCertificate().withBase64("cer");
         T1cCertificate other = new T1cCertificate().withBase64("other");
@@ -447,7 +446,6 @@ public class PtEIdContainerTest extends AbstractTestClass {
     @Test
     public void testAllData() {
         PtIdAllData data = new PtIdAllData(MockResponseFactory.getPtIdAllData());
-        PtIdAllData data2 = new PtIdAllData(MockResponseFactory.getPtIdAllData());
         assertTrue(StringUtils.isNotEmpty(data.toString()));
         T1cCertificate newCert = new T1cCertificate().withBase64("cer");
         T1cCertificate other = new T1cCertificate().withBase64("other");

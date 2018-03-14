@@ -49,7 +49,7 @@ public class DsToken {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsToken) == false) {
+        if (!(other instanceof DsToken)) {
             return false;
         }
         DsToken rhs = ((DsToken) other);

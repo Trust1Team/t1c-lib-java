@@ -9,6 +9,7 @@ import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.GenericContainerException;
+import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -60,7 +61,7 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
 
     @Override
     public OberthurAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return new OberthurAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+        return new OberthurAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
 
     @Override
     public OberthurAllData getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return new OberthurAllData(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams))), parseCertificates);
+        return new OberthurAllData(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
@@ -89,9 +90,9 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPrivateKeyReference("sign").withPin(pin[0]))));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), new GclVerifyPinRequest().withPrivateKeyReference("sign").withPin(pin[0])), config.isConsentRequired()));
             } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId())));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId()), config.isConsentRequired()));
             }
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
@@ -105,7 +106,7 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
             Preconditions.checkArgument(algo != null
                     && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -118,7 +119,7 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
             Preconditions.checkArgument(algo != null
                     && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
             PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)));
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -144,48 +145,48 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
         return OberthurAllData.class;
     }
 
-    public List<DigestAlgorithm> getAllAlgoRefsForAuthentication() throws RestException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getTypeId(), reader.getId())));
+    public List<DigestAlgorithm> getAllAlgoRefsForAuthentication() throws RestException, NoConsentException {
+        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
     }
 
-    public List<DigestAlgorithm> getAllAlgoRefsForSigning() throws RestException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getTypeId(), reader.getId())));
+    public List<DigestAlgorithm> getAllAlgoRefsForSigning() throws RestException, NoConsentException {
+        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
     }
 
-    public T1cCertificate getRootCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getRootCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getIssuerCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIssuerCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getIssuerCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIssuerCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getSigningCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getSigningCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getEncryptionCertificate(Boolean... parse) throws RestException {
-        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getTypeId(), reader.getId())), parse);
+    public T1cCertificate getEncryptionCertificate(Boolean... parse) throws RestException, NoConsentException {
+        return CertificateUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         OberthurAllData certs = getAllCertificates(true);
         return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getAuthenticationCertificate());
     }
 
     @Override
-    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, RestException {
+    public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
         OberthurAllData certs = getAllCertificates(true);
         return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getSigningCertificate());
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, UnsupportedOperationException {
+    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         OberthurAllData allData = getAllData(true);
 

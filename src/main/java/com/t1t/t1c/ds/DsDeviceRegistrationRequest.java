@@ -20,6 +20,9 @@ public class DsDeviceRegistrationRequest {
     @SerializedName("browser")
     @Expose
     private DsBrowser browser;
+    @SerializedName("desktopApplication")
+    @Expose
+    private DsDesktopApplication desktopApplication;
     @SerializedName("ua")
     @Expose
     private String ua;
@@ -90,6 +93,25 @@ public class DsDeviceRegistrationRequest {
 
     public DsDeviceRegistrationRequest withBrowser(DsBrowser browser) {
         this.browser = browser;
+        return this;
+    }
+
+    /**
+     * @return The desktopApplication
+     */
+    public DsDesktopApplication getDesktopApplication() {
+        return desktopApplication;
+    }
+
+    /**
+     * @param desktopApplication The desktopApplication
+     */
+    public void setDesktopApplication(DsDesktopApplication desktopApplication) {
+        this.desktopApplication = desktopApplication;
+    }
+
+    public DsDeviceRegistrationRequest withDesktopApplication(DsDesktopApplication desktopApplication) {
+        this.desktopApplication = desktopApplication;
         return this;
     }
 
@@ -195,7 +217,7 @@ public class DsDeviceRegistrationRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(os).append(managed).append(browser).append(ua).append(uuid).append(version).append(activated).append(manufacturer).toHashCode();
+        return new HashCodeBuilder().append(os).append(managed).append(browser).append(desktopApplication).append(ua).append(uuid).append(version).append(activated).append(manufacturer).toHashCode();
     }
 
     @Override
@@ -203,11 +225,11 @@ public class DsDeviceRegistrationRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDeviceRegistrationRequest) == false) {
+        if (!(other instanceof DsDeviceRegistrationRequest)) {
             return false;
         }
         DsDeviceRegistrationRequest rhs = ((DsDeviceRegistrationRequest) other);
-        return new EqualsBuilder().append(os, rhs.os).append(managed, rhs.managed).append(browser, rhs.browser).append(ua, rhs.ua).append(uuid, rhs.uuid).append(version, rhs.version).append(activated, rhs.activated).append(manufacturer, rhs.manufacturer).isEquals();
+        return new EqualsBuilder().append(os, rhs.os).append(managed, rhs.managed).append(browser, rhs.browser).append(desktopApplication, rhs.desktopApplication).append(ua, rhs.ua).append(uuid, rhs.uuid).append(version, rhs.version).append(activated, rhs.activated).append(manufacturer, rhs.manufacturer).isEquals();
     }
 
 }

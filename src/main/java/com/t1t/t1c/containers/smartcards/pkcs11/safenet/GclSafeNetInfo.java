@@ -137,7 +137,7 @@ public class GclSafeNetInfo {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclSafeNetInfo) == false) {
+        if (!(other instanceof GclSafeNetInfo)) {
             return false;
         }
         GclSafeNetInfo rhs = ((GclSafeNetInfo) other);

@@ -29,6 +29,12 @@ public class LibConfig {
     private Boolean hardwarePinPadForced = false;
     private Boolean tokenCompatible = false;
     private Integer sessionTimeout;
+    private Boolean citrix;
+    private Integer agentPort;
+    private Boolean consentRequired = false;
+    private Integer defaultConsentDuration;
+    private Integer defaultConsentTimeout;
+    private String clientFingerprintDirectoryPath;
     // Dynamic properties
     private String jwt;
 
@@ -265,5 +271,53 @@ public class LibConfig {
 
     public void setSessionTimeout(Integer sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
+    }
+
+    public Boolean getCitrix() {
+        return citrix;
+    }
+
+    public void setCitrix(Boolean citrix) {
+        this.citrix = citrix;
+    }
+
+    public Integer getAgentPort() {
+        return agentPort;
+    }
+
+    public void setAgentPort(Integer agentPort) {
+        this.agentPort = agentPort;
+    }
+
+    public Boolean isConsentRequired() {
+        return consentRequired;
+    }
+
+    public void setConsentRequired(Boolean consentRequired) {
+        this.consentRequired = consentRequired;
+    }
+
+    public Integer getDefaultConsentDuration() {
+        return defaultConsentDuration;
+    }
+
+    public void setDefaultConsentDuration(Integer defaultConsentDuration) {
+        this.defaultConsentDuration = defaultConsentDuration;
+    }
+
+    public Integer getDefaultConsentTimeout() {
+        return defaultConsentTimeout;
+    }
+
+    public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
+        this.defaultConsentTimeout = defaultConsentTimeout;
+    }
+
+    public String getClientFingerprintDirectoryPath() {
+        return clientFingerprintDirectoryPath;
+    }
+
+    public void setClientFingerprintDirectoryPath(String clientFingerprintDirectoryPath) {
+        this.clientFingerprintDirectoryPath = clientFingerprintDirectoryPath;
     }
 }

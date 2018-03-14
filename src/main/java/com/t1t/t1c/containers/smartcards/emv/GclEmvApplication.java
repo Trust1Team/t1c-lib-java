@@ -93,7 +93,7 @@ public class GclEmvApplication {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclEmvApplication) == false) {
+        if (!(other instanceof GclEmvApplication)) {
             return false;
         }
         GclEmvApplication rhs = ((GclEmvApplication) other);

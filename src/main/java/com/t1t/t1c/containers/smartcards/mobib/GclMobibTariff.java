@@ -93,7 +93,7 @@ public class GclMobibTariff {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibTariff) == false) {
+        if (!(other instanceof GclMobibTariff)) {
             return false;
         }
         GclMobibTariff rhs = ((GclMobibTariff) other);
