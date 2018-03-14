@@ -64,7 +64,7 @@ public class MockGclRestClient implements GclRestClient {
 
     @Override
     public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
-        return delegate.returningResponse(MockResponseFactory.getAgents(filters)).getAgents(filters);
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(filters)).getAgents(filters);
     }
 
     @Override

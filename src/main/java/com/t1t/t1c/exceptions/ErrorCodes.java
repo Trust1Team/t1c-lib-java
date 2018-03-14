@@ -30,9 +30,11 @@ public final class ErrorCodes {
     public static final int GENERIC_CONTAINER_EXCEPTION                 = 2004;
     public static final int LUXID_CONTAINER_REST_ERROR                  = 2006;
     public static final int OCV_REST_ERROR                              = 2014;
+    public static final int JSON_CONVERSION_ERROR                       = 2015;
 
 
     public static final String REST_ERROR_INFO                          = "restError";
+    public static final String JSON_CONVERSION_ERROR_INFO               = "jsonError";
 
     //
     // Container related

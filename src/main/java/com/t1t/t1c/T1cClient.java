@@ -194,7 +194,6 @@ public class T1cClient implements IT1cClient {
         DsDeviceRegistrationRequest registration = new DsDeviceRegistrationRequest()
                 .withActivated(gclInfo.getActivated())
                 .withManaged(gclInfo.getManaged())
-                //TODO - Re-enable Java info once DS supports property
                 .withDesktopApplication(new DsDesktopApplication()
                         .withVersion(platformInfo.getJava().getVersion())
                         .withName("Java"))
@@ -202,8 +201,6 @@ public class T1cClient implements IT1cClient {
                         .withName(platformInfo.getOs().getName())
                         .withVersion(platformInfo.getOs().getVersion())
                         .withArchitecture(platformInfo.getOs().getArchitecture()))
-                //TODO - Remove once DS no longer requires browser info
-                .withBrowser(new DsBrowser().withName("NA").withVersion("NA"))
                 .withUuid(gclInfo.getUid())
                 .withVersion(gclInfo.getVersion());
 

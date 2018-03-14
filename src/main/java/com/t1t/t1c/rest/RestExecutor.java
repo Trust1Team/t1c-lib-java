@@ -1,6 +1,7 @@
 package com.t1t.t1c.rest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
@@ -60,8 +61,11 @@ public class RestExecutor {
                 throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
         } catch (IOException ex) {
-            log.error("Error executing request: ", ex.getMessage());
+            log.error("Error executing request: ", ex);
             throw ExceptionFactory.restException(ex);
+        } catch (JsonSyntaxException ex) {
+            log.error("Failed to deserialize response: ", ex.getMessage());
+            throw ExceptionFactory.jsonConversionException(ex.getMessage());
         }
     }
 

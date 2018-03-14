@@ -33,8 +33,8 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getPublicKey(Integer agentPort) {
-        return delegate.returningResponse(MockResponseFactory.getGclAdminCertificateResponse()).getPublicKey(agentPort);
+    public Call<T1cResponse<String>> getPublicKey() {
+        return delegate.returningResponse(MockResponseFactory.getGclAdminCertificateResponse()).getPublicKey();
     }
 
     @Override
@@ -64,7 +64,12 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
 
     @Override
     public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
-        return delegate.returningResponse(MockResponseFactory.getAgents(filters)).getAgents(filters);
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(filters)).getAgents(filters);
+    }
+
+    @Override
+    public Call<T1cResponse<GclAgent>> getAgent(Map<String, String> filters) throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getAgentResponse(filters)).getAgent(filters);
     }
 
     @Override

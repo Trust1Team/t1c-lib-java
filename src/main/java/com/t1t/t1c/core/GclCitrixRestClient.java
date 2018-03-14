@@ -21,8 +21,8 @@ public interface GclCitrixRestClient {
     @GET("/v2")
     Call<T1cResponse<GclInfo>> getV2Status() throws RestException;
 
-    @GET("agent/{agentPort}/admin/certificate")
-    Call<T1cResponse<String>> getPublicKey(@Path("agentPort") Integer agentPort) throws RestException;
+    @GET("admin/certificate")
+    Call<T1cResponse<String>> getPublicKey() throws RestException;
 
     @GET("agent/{agentPort}/card-readers")
     Call<T1cResponse<List<GclReader>>> getCardReaders(@Path("agentPort") Integer agentPort) throws RestException, NoConsentException;
@@ -41,6 +41,9 @@ public interface GclCitrixRestClient {
 
     @GET("agent")
     Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;
+
+    @GET("agent")
+    Call<T1cResponse<GclAgent>> getAgent(@QueryMap Map<String, String> filters) throws RestException;
 
     @POST("agent/{agentPort}/consent")
     Call<T1cResponse<Boolean>> getConsent(@Path("agentPort") Integer agentPort, @Body GclConsent request);

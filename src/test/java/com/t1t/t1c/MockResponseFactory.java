@@ -1596,30 +1596,36 @@ public final class MockResponseFactory {
         return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
     }
 
-    public static T1cResponse<List<GclAgent>> getAgents(Map<String, String> filters) {
+    public static T1cResponse<List<GclAgent>> getAgentsResponse(Map<String, String> filters) {
+        List<GclAgent> agents = getAgents();
+        if (!filters.isEmpty() && filters.containsKey("username")) {
+            if (filters.get("username").equals("johndoe")) agents.remove(1);
+            else if (filters.get("username").equals("janedoe")) agents.remove(0);
+        }
+        return getSuccessResponse(agents);
+    }
+
+    public static T1cResponse<GclAgent> getAgentResponse(Map<String, String> filters) {
+        return getSuccessResponse(getAgentsResponse(filters).getData().get(0));
+    }
+
+    public static List<GclAgent> getAgents() {
         List<GclAgent> agents = new ArrayList<>();
-        GclAgent johnDoe = new GclAgent()
+        agents.add(new GclAgent()
                 .withChallenge("2cd89c9f-d1e5-4648-a850-6ddf9313d052")
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:09:41.521521")
                 .withMetadata(Collections.<String, String>emptyMap())
                 .withPort(57061)
-                .withUsername("johndoe");
-        GclAgent janeDoe = new GclAgent()
+                .withUsername("johndoe"));
+        agents.add(new GclAgent()
                 .withChallenge("43244235-d1e5-gfd548-a850-6hthrf9313po34")
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:15:41.521521")
                 .withMetadata(Collections.<String, String>emptyMap())
                 .withPort(57043)
-                .withUsername("janedoe");
-        if (filters.isEmpty()) {
-            agents.add(janeDoe);
-            agents.add(johnDoe);
-        } else if (filters.containsKey("username")) {
-            if (filters.get("username").equals("johndoe")) agents.add(johnDoe);
-            else if (filters.get("username").equals("janedoe")) agents.add(janeDoe);
-        }
-        return getSuccessResponse(agents);
+                .withUsername("janedoe"));
+        return agents;
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {

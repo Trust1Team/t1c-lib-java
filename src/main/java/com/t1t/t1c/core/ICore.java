@@ -208,7 +208,7 @@ public interface ICore {
     List<GclReader> getPinVerificationCapableReaders() throws GclCoreException;
 
     /**
-     * Get list of available agents, matching the provided String filter parameters
+     * Get list of available agents, matching the provided String filter parameters.
      *
      * @param filterParams values to filter
      * @return

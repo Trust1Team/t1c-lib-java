@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
+import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
@@ -62,11 +63,7 @@ public class Core extends AbstractCore {
     @Override
     public String getPubKey() throws GclCoreException {
         try {
-            if (checkCitrix()) {
-                return RestExecutor.returnData(gclCitrixRestClient.getPublicKey(config.getAgentPort()), config.isConsentRequired());
-            } else {
-                return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
-            }
+            return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
         }
@@ -254,7 +251,15 @@ public class Core extends AbstractCore {
     public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
         if (config.getCitrix()) {
             try {
-                return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), config.isConsentRequired());
+                try {
+                    return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
+                } catch (JsonConversionException ex) {
+                    if (ex.isObjectInsteadOfArray()) {
+                        return Collections.singletonList(RestExecutor.returnData(gclCitrixRestClient.getAgent(filterParams), false));
+                    } else {
+                        throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+                    }
+                }
             } catch (RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
@@ -293,6 +298,7 @@ public class Core extends AbstractCore {
                 return RestExecutor.returnData(gclRestClient.getConsent(request), false);
             }
         } catch (RestException ex) {
+            String message;
             if (ex.getHttpCode().equals(404)) {
                 throw ExceptionFactory.unsupportedOperationException("Consent functionality not available");
             }

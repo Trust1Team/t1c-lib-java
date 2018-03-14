@@ -121,6 +121,16 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a JsonConversionException
+     *
+     * @param message
+     * @return
+     */
+    public static JsonConversionException jsonConversionException(String message) {
+        return new JsonConversionException(message);
+    }
+
+    /**
      * Creates generic container exception
      *
      * @return
