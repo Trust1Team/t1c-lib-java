@@ -22,7 +22,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import javax.net.ssl.*;
 import java.io.IOException;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -166,13 +165,8 @@ public final class RestServiceBuilder {
      * @param apikey
      * @param jwt
      * @return
-     * @throws NoSuchAlgorithmException
-     * @throws CertificateException
-     * @throws KeyManagementException
-     * @throws KeyStoreException
-     * @throws IOException
      */
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt) throws NoSuchAlgorithmException, CertificateException, KeyManagementException, KeyStoreException, IOException {
+    private static OkHttpClient gethttpClient(final String apikey, final String jwt) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
@@ -215,17 +209,17 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final String jwt, LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final String jwt, final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
             @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
                 // Do nothing
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
                 // Do nothing
             }
 
@@ -271,7 +265,7 @@ public final class RestServiceBuilder {
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder requestBuilder = chain.request().newBuilder();
                     requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
-                    String fingerprint = ClientFingerprintUtil.getClientFingerPrint();
+                    String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
                     log.debug("client fingerprint: {}", fingerprint);
                     requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
                     return chain.proceed(requestBuilder.build());

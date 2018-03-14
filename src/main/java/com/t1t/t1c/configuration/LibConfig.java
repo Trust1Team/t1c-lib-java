@@ -34,6 +34,7 @@ public class LibConfig {
     private Boolean consentRequired = false;
     private Integer defaultConsentDuration;
     private Integer defaultConsentTimeout;
+    private String clientFingerprintDirectoryPath;
     // Dynamic properties
     private String jwt;
 
@@ -310,5 +311,13 @@ public class LibConfig {
 
     public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
         this.defaultConsentTimeout = defaultConsentTimeout;
+    }
+
+    public String getClientFingerprintDirectoryPath() {
+        return clientFingerprintDirectoryPath;
+    }
+
+    public void setClientFingerprintDirectoryPath(String clientFingerprintDirectoryPath) {
+        this.clientFingerprintDirectoryPath = clientFingerprintDirectoryPath;
     }
 }

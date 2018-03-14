@@ -44,7 +44,7 @@ public class JavaClientExample {
     private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     /*Keys*/
-    private static String API_KEY = "44865b13-f94b-45e6-b1cf-2f12d4bd547d";
+    private static String API_KEY = "INSERT_API_KEY";
     private static IT1cClient client;
     private static LibConfig conf;
 
@@ -62,6 +62,7 @@ public class JavaClientExample {
             conf.setDefaultPollingTimeoutInSeconds(10);
             conf.setDefaultConsentDuration(2);
             conf.setDefaultConsentTimeout(35);
+            conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
 
             showMenu();
         } catch (NoConsentException ex) {

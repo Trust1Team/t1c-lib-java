@@ -57,11 +57,6 @@ import java.util.List;
 public class T1cClient implements IT1cClient {
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
     private ConnectionFactory connFactory;
-    /*General clients*/
-    private IDsClient dsClient;
-    private IOcvClient ocvClient;
-    /*Core and container clients*/
-    private ICore core;
 
     /*Constructors*/
     public T1cClient(LibConfig config) {
@@ -98,17 +93,13 @@ public class T1cClient implements IT1cClient {
         // Instantiate connections
         connFactory = new ConnectionFactory(validatedConfig);
         // Set citrix from core info
-        resetCore();
-        GclInfo gclInfo = core.getInfo();
+        GclInfo gclInfo = getCore().getInfo();
         validatedConfig.setCitrix(gclInfo.getCitrix());
         validatedConfig.setConsentRequired(gclInfo.getConsent());
         validatedConfig.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
         connFactory.setConfig(new T1cConfigParser(validatedConfig).getAppConfig());
 
         // Set core, ds and ocv client
-        resetCore();
-        resetDs();
-        resetOcv();
 
         // Set generic service
         //this.genericService = new GenericService(); //TODO implement generic service
@@ -121,21 +112,6 @@ public class T1cClient implements IT1cClient {
         } catch (GclCoreException ex) {
             throw ExceptionFactory.initializationException(ex.getMessage());
         }
-    }
-
-    /**
-     * The core uses the gclRestClient and gclAdminRestClient.
-     */
-    private void resetCore() {
-        this.core = new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getGclCitrixRestClient(), connFactory.getConfig());
-    }
-
-    private void resetDs() {
-        this.dsClient = new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
-    }
-
-    private void resetOcv() {
-        this.ocvClient = new OcvClient(connFactory.getOcvRestClient());
     }
 
     /**
@@ -164,13 +140,13 @@ public class T1cClient implements IT1cClient {
     private void initSecurityContext() {
         try {
             try {
-                core.getPubKey();
+                getCore().getPubKey();
             } catch (GclCoreException ex) {
                 if (ex.getCause() instanceof RestException) {
                     GclError error = ((RestException) ex.getCause()).getGclError();
                     if (error != null && error.getCode() == 201) {
-                        String publicKey = dsClient.getPublicKey();
-                        if (!core.setPubKey(publicKey)) {
+                        String publicKey = getDsClient().getPublicKey();
+                        if (!getCore().setPubKey(publicKey)) {
                             throw ExceptionFactory.initializationException("Could not set GCL public key");
                         }
                     }
@@ -186,7 +162,7 @@ public class T1cClient implements IT1cClient {
      * Register and activate the GCL with the distribution server if necessary
      */
     private void registerAndActivate(GclInfo gclInfo) {
-        PlatformInfo platformInfo = core.getPlatformInfo();
+        PlatformInfo platformInfo = getCore().getPlatformInfo();
         LibConfig config = connFactory.getConfig();
         config.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
         connFactory.setConfig(config);
@@ -205,20 +181,20 @@ public class T1cClient implements IT1cClient {
                 .withVersion(gclInfo.getVersion());
 
         if (!gclInfo.getActivated()) {
-            String token = dsClient.register(gclInfo.getUid(), registration);
+            String token = getDsClient().register(gclInfo.getUid(), registration);
             if (StringUtils.isNotBlank(token)) {
                 config.setJwt(token);
                 connFactory.setConfig(config);
             }
-            boolean activated = core.activate();
+            boolean activated = getCore().activate();
             gclInfo.setActivated(activated);
             registration.setActivated(activated);
             if (activated) {
-                dsClient.register(gclInfo.getUid(), registration);
+                getDsClient().register(gclInfo.getUid(), registration);
             }
 
         } else if (!gclInfo.getManaged()) {
-            dsClient.register(gclInfo.getUid(), registration);
+            getDsClient().register(gclInfo.getUid(), registration);
         }
     }
 
@@ -253,7 +229,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public ICore getCore() {
-        return core;
+        return new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getGclCitrixRestClient(), connFactory.getConfig());
     }
 
     @Override
@@ -263,12 +239,12 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public IDsClient getDsClient() {
-        return dsClient;
+        return new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
     }
 
     @Override
     public IOcvClient getOcvClient() {
-        return ocvClient;
+        return new OcvClient(connFactory.getOcvRestClient());
     }
 
     @Override

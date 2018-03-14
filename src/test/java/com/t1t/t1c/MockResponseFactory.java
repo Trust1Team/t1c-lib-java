@@ -299,7 +299,7 @@ public final class MockResponseFactory {
                 .withManaged(false)
                 .withOs("10.13.1")
                 .withUid("B7289D3AEB22D233")
-                .withVersion("1.6.0");
+                .withVersion("1.2.5");
     }
 
     public static String getGclAdminCertificate() {

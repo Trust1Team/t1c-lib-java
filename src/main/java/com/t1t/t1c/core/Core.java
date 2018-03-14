@@ -298,7 +298,6 @@ public class Core extends AbstractCore {
                 return RestExecutor.returnData(gclRestClient.getConsent(request), false);
             }
         } catch (RestException ex) {
-            String message;
             if (ex.getHttpCode().equals(404)) {
                 throw ExceptionFactory.unsupportedOperationException("Consent functionality not available");
             }
