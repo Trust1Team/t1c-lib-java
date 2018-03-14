@@ -73,8 +73,8 @@ public class JavaClientExample {
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
-        System.out.println("3. Select Citrix agent");
-        System.out.println("4. Grant consent");
+        System.out.println("3. Grant consent");
+        System.out.println("4. Select Citrix agent");
         System.out.println("5. Exit");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
@@ -89,10 +89,10 @@ public class JavaClientExample {
                 executeReaderSpecificContainerFunctionality(client.getCore().pollCardInserted());
                 break;
             case "3":
-                executeCitrixFunctionality();
+                grantConsent();
                 break;
             case "4":
-                grantConsent();
+                executeCitrixFunctionality();
                 break;
             case "5":
                 // Do nothing
@@ -105,39 +105,49 @@ public class JavaClientExample {
     }
 
     private static void grantConsent() {
-        System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
+        try {
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
+        } catch (UnsupportedOperationException ex) {
+            System.out.println(ex.getMessage());
+        }
         showMenu();
     }
 
     private static void executeCitrixFunctionality() {
-        List<GclAgent> agents = client.getCore().getAgents();
-        Scanner scan = new Scanner(System.in);
-        System.out.println("==================== Available agents (username) ====================");
-        int i;
-        for (i = 0; i < agents.size(); i++) {
-            System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
-        }
-        System.out.println(i + ". Back");
-        System.out.println("=====================================================================");
-        System.out.print("Please make a choice: ");
-        String input = scan.nextLine();
-        try {
-            Integer choice = Integer.valueOf(input);
-            if (choice >= 0 && choice < agents.size()) {
-                GclAgent chosenAgent = agents.get(choice);
-                conf.setCitrix(true);
-                conf.setAgentPort(chosenAgent.getPort());
-                conf.setConsentRequired(true);
-                showMenu();
-            } else if (choice != i) {
+        Boolean citrix = client.getCore().getInfo().getCitrix();
+        if (citrix == null || !citrix) {
+            System.out.println("No agents available: GCL not configured for Citrix");
+            showMenu();
+        } else {
+            List<GclAgent> agents = client.getCore().getAgents();
+            Scanner scan = new Scanner(System.in);
+            System.out.println("==================== Available agents (username) ====================");
+            int i;
+            for (i = 0; i < agents.size(); i++) {
+                System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
+            }
+            System.out.println(i + ". Back");
+            System.out.println("=====================================================================");
+            System.out.print("Please make a choice: ");
+            String input = scan.nextLine();
+            try {
+                Integer choice = Integer.valueOf(input);
+                if (choice >= 0 && choice < agents.size()) {
+                    GclAgent chosenAgent = agents.get(choice);
+                    conf.setCitrix(true);
+                    conf.setAgentPort(chosenAgent.getPort());
+                    conf.setConsentRequired(true);
+                    showMenu();
+                } else if (choice != i) {
+                    System.out.println("Invalid choice");
+                    executeCitrixFunctionality();
+                } else {
+                    showMenu();
+                }
+            } catch (NumberFormatException ex) {
                 System.out.println("Invalid choice");
                 executeCitrixFunctionality();
-            } else {
-                showMenu();
             }
-        } catch (NumberFormatException ex) {
-            System.out.println("Invalid choice");
-            executeCitrixFunctionality();
         }
     }
 

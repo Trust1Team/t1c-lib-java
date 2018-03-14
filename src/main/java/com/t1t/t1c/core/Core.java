@@ -259,7 +259,7 @@ public class Core extends AbstractCore {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
         } else {
-            throw ExceptionFactory.unsupportedOperationException("if on a Citrix environment, \"citrix\" must be set to true in the configuration");
+            throw ExceptionFactory.unsupportedOperationException("Not a citrix environment");
         }
     }
 
@@ -293,6 +293,9 @@ public class Core extends AbstractCore {
                 return RestExecutor.returnData(gclRestClient.getConsent(request), false);
             }
         } catch (RestException ex) {
+            if (ex.getHttpCode().equals(404)) {
+                throw ExceptionFactory.unsupportedOperationException("Consent functionality not available");
+            }
             throw ExceptionFactory.gclCoreException("Failed to obtain consent: ", ex);
         }
     }
