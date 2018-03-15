@@ -363,7 +363,7 @@ public class Core extends AbstractCore {
     private void checkJwtValidity() throws GclCoreException {
         if (config.getEnvironment() != Environment.DEV) {
             JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
-            String jwt = config.getJwt();
+            String jwt = config.getGclJwt();
             if (StringUtils.isNotEmpty(jwt)) {
                 try {
                     JwtContext context = consumer.process(jwt);
@@ -372,7 +372,7 @@ public class Core extends AbstractCore {
                     if (context.getJwtClaims().getExpirationTime().isOnOrAfter(refreshTreshold)) {
                         jwt = ConnectionFactory.getDsClient().refreshJWT(jwt);
                         if (StringUtils.isNotEmpty(jwt)) {
-                            config.setJwt(jwt);
+                            config.setGclJwt(jwt);
                             ConnectionFactory.setConfig(config);
                             setHttpClient(ConnectionFactory.getGclAdminRestClient());
                         }
@@ -381,7 +381,7 @@ public class Core extends AbstractCore {
                     log.error("Token invalid: ", ex);
                     jwt = ConnectionFactory.getDsClient().getJWT();
                     if (StringUtils.isNotEmpty(jwt)) {
-                        config.setJwt(jwt);
+                        config.setGclJwt(jwt);
                         ConnectionFactory.setConfig(config);
                         setHttpClient(ConnectionFactory.getGclAdminRestClient());
                     }
@@ -389,7 +389,7 @@ public class Core extends AbstractCore {
             } else {
                 jwt = ConnectionFactory.getDsClient().getJWT();
                 if (StringUtils.isNotEmpty(jwt)) {
-                    config.setJwt(jwt);
+                    config.setGclJwt(jwt);
                     ConnectionFactory.setConfig(config);
                     setHttpClient(ConnectionFactory.getGclAdminRestClient());
                 }

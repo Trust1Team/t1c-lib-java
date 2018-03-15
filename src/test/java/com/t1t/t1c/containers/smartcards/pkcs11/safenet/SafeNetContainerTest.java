@@ -295,9 +295,9 @@ public class SafeNetContainerTest extends AbstractTestClass {
 
     @Test
     public void testSafeNetConfiguration() {
-        SafeNetContainerConfiguration conf = new SafeNetContainerConfiguration(Paths.get("linux"), Paths.get("mac"), Paths.get("win"));
-        SafeNetContainerConfiguration conf1 = new SafeNetContainerConfiguration();
-        SafeNetContainerConfiguration conf2 = new SafeNetContainerConfiguration();
+        ModuleConfiguration conf = new ModuleConfiguration(Paths.get("linux"), Paths.get("mac"), Paths.get("win"));
+        ModuleConfiguration conf1 = new ModuleConfiguration();
+        ModuleConfiguration conf2 = new ModuleConfiguration();
         assertEquals(conf1, conf1);
         assertEquals(conf1, conf2);
         assertEquals(conf1.hashCode(), conf2.hashCode());

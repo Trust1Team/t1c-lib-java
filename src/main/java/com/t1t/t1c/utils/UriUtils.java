@@ -11,12 +11,7 @@ import java.net.URL;
  */
 public final class UriUtils {
 
-    private UriUtils() {
-    }
-
-    public static String constructURI(String uri, String contextPath) {
-        return uriFinalSlashAppender(uriFinalSlashAppender(uri) + uriLeadingSlashRemover(contextPath));
-    }
+    private UriUtils() {}
 
     public static String uriFinalSlashAppender(String uri) {
         if (!uri.endsWith("/")) return uri + "/";
@@ -38,20 +33,6 @@ public final class UriUtils {
     public static String uriLeadingSlashPrepender(String uri) {
         if (!uri.startsWith("/")) return "/" + uri;
         else return uri;
-    }
-
-    public static String getFullUri(String domain, String contextPath) throws MalformedURLException, URISyntaxException {
-        URL url = new URL(domain);
-        return uriFinalSlashAppender(new URI(url.getProtocol(), url.getHost(), contextPath, null).toString());
-    }
-
-    public static String getDomain(String uri) throws MalformedURLException, URISyntaxException {
-        URL url = new URL(uri);
-        return uriFinalSlashAppender(new URI(url.getProtocol(), url.getHost(), null, null).toString());
-    }
-
-    public static String getContextPath(String uri) throws MalformedURLException {
-        return uriLeadingSlashPrepender(uriFinalSlashAppender(new URL(uri).getPath()));
     }
 
 }

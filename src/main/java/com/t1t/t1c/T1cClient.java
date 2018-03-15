@@ -16,7 +16,7 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -96,7 +96,7 @@ public class T1cClient implements IT1cClient {
         GclInfo gclInfo = getCore().getInfo();
         validatedConfig.setCitrix(gclInfo.getCitrix());
         validatedConfig.setConsentRequired(gclInfo.getConsent());
-        validatedConfig.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
+
         connFactory.setConfig(new T1cConfigParser(validatedConfig).getAppConfig());
 
         // Set core, ds and ocv client
@@ -129,7 +129,7 @@ public class T1cClient implements IT1cClient {
             log.error("Exception happened during JWT exchange: ", ex);
         }
         if (StringUtils.isNotEmpty(jwt)) {
-            connFactory.getConfig().setJwt(jwt);
+            connFactory.getConfig().setGclJwt(jwt);
         }
         return jwt;
     }
@@ -183,7 +183,7 @@ public class T1cClient implements IT1cClient {
         if (!gclInfo.getActivated()) {
             String token = getDsClient().register(gclInfo.getUid(), registration);
             if (StringUtils.isNotBlank(token)) {
-                config.setJwt(token);
+                config.setGclJwt(token);
                 connFactory.setConfig(config);
             }
             boolean activated = getCore().activate();
@@ -217,12 +217,12 @@ public class T1cClient implements IT1cClient {
     public String refreshJwt() {
         String jwt = null;
         try {
-            jwt = (StringUtils.isNotEmpty(connFactory.getConfig().getJwt())) ? getDsClient().refreshJWT(connFactory.getConfig().getJwt()) : getDsClient().getJWT();
+            jwt = (StringUtils.isNotEmpty(connFactory.getConfig().getGclJwt())) ? getDsClient().refreshJWT(connFactory.getConfig().getGclJwt()) : getDsClient().getJWT();
         } catch (DsClientException ex) {
             log.error("Error happened during JWT refresh: ", ex);
         }
         if (StringUtils.isNotEmpty(jwt)) {
-            connFactory.getConfig().setJwt(jwt);
+            connFactory.getConfig().setGclJwt(jwt);
         }
         return jwt;
     }
@@ -304,11 +304,11 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public SafeNetContainer getSafeNetContainer(GclReader reader) {
-        return getSafeNetContainer(reader, new SafeNetContainerConfiguration());
+        return getSafeNetContainer(reader, new ModuleConfiguration());
     }
 
     @Override
-    public SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration) {
+    public SafeNetContainer getSafeNetContainer(GclReader reader, ModuleConfiguration configuration) {
         return new SafeNetContainer(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
     }
 
@@ -365,7 +365,7 @@ public class T1cClient implements IT1cClient {
                 container = getPtIdContainer(reader);
                 break;
             case SAFENET:
-                container = getSafeNetContainer(reader, new SafeNetContainerConfiguration());
+                container = getSafeNetContainer(reader, new ModuleConfiguration());
                 break;
             default:
                 throw ExceptionFactory.genericContainerException("No generic container available for this reader");

@@ -7,19 +7,19 @@ import java.nio.file.Paths;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class SafeNetContainerConfiguration {
+public class ModuleConfiguration {
 
     private Path linux;
     private Path mac;
     private Path windows;
 
-    public SafeNetContainerConfiguration() {
+    public ModuleConfiguration() {
         this.linux = Paths.get("/usr/local/lib/libeTPkcs11.so");
         this.mac = Paths.get("/usr/local/lib/libeTPkcs11.dylib");
         this.windows = Paths.get("C:\\Windows\\System32\\eTPKCS11.dll");
     }
 
-    public SafeNetContainerConfiguration(Path linux, Path mac, Path windows) {
+    public ModuleConfiguration(Path linux, Path mac, Path windows) {
         this.linux = linux;
         this.mac = mac;
         this.windows = windows;
@@ -33,7 +33,7 @@ public class SafeNetContainerConfiguration {
         this.linux = linux;
     }
 
-    public SafeNetContainerConfiguration withLinux(Path linux) {
+    public ModuleConfiguration withLinux(Path linux) {
         this.linux = linux;
         return this;
     }
@@ -46,7 +46,7 @@ public class SafeNetContainerConfiguration {
         this.mac = mac;
     }
 
-    public SafeNetContainerConfiguration withMac(Path mac) {
+    public ModuleConfiguration withMac(Path mac) {
         this.mac = mac;
         return this;
     }
@@ -59,7 +59,7 @@ public class SafeNetContainerConfiguration {
         this.windows = windows;
     }
 
-    public SafeNetContainerConfiguration withWindows(Path windows) {
+    public ModuleConfiguration withWindows(Path windows) {
         this.windows = windows;
         return this;
     }
@@ -67,9 +67,9 @@ public class SafeNetContainerConfiguration {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SafeNetContainerConfiguration)) return false;
+        if (!(o instanceof ModuleConfiguration)) return false;
 
-        SafeNetContainerConfiguration that = (SafeNetContainerConfiguration) o;
+        ModuleConfiguration that = (ModuleConfiguration) o;
 
         if (linux != null ? !linux.equals(that.linux) : that.linux != null) return false;
         if (mac != null ? !mac.equals(that.mac) : that.mac != null) return false;

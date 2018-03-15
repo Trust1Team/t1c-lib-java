@@ -197,9 +197,9 @@ public abstract class AbstractTestClass {
 
     private void mockRestClients() {
         dsRestClient = new MockDsRestClient(mockRestClient(DsRestClient.class, config.getDsUri(), config.getApiKey(), null));
-        gclRestClient = new MockGclRestClient(mockRestClient(GclRestClient.class, config.getGclClientUri(), null, config.getJwt()));
-        gclCitrixRestClient = new MockGclCitrixRestClient(mockRestClient(GclCitrixRestClient.class, config.getGclClientUri(), null, config.getJwt()));
-        gclAdminRestClient = new MockGclRestAdminClient(mockRestClient(GclAdminRestClient.class, config.getGclClientUri(), null, config.getJwt()));
+        gclRestClient = new MockGclRestClient(mockRestClient(GclRestClient.class, config.getGclClientUri(), null, config.getGclJwt()));
+        gclCitrixRestClient = new MockGclCitrixRestClient(mockRestClient(GclCitrixRestClient.class, config.getGclClientUri(), null, config.getGclJwt()));
+        gclAdminRestClient = new MockGclRestAdminClient(mockRestClient(GclAdminRestClient.class, config.getGclClientUri(), null, config.getGclJwt()));
         ocvRestClient = new MockOcvRestClient(mockRestClient(OcvRestClient.class, config.getOcvUri(), config.getApiKey(), null));
         gclBeIdRestClient = new MockGclBeIdRestClient(mockRestClient(GclBeIdRestClient.class, config.getGclClientUri(), null, null));
         gclDniRestClient = new MockGclDnieRestClient(mockRestClient(GclDniRestClient.class, config.getGclClientUri(), null, null));

@@ -1,5 +1,7 @@
 package com.t1t.t1c.configuration;
 
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.exceptions.ConfigException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -52,12 +54,24 @@ public class T1cConfigParser implements Serializable {
         if (optionalPath != null && optionalPath.toFile().exists()) {
             config = ConfigFactory.parseFile(optionalPath.toFile());
             this.appConfig.setEnvironment(getEnvironment());
+            this.appConfig.setAuthUri(getAuthUri());
+            this.appConfig.setDsUri(getDsUri());
+            this.appConfig.setGclClientUri(getGclClientUri());
+            this.appConfig.setOcvUri(getOcvUri());
             this.appConfig.setApiKey(getConsmerApiKey());
-            this.appConfig.setGclClientUri(getGCLClientURI());
-            this.appConfig.setDsContextPath(getDsContextPath());
-            this.appConfig.setOcvContextPath(getOcvContextPath());
+            this.appConfig.setClientFingerprintDirectoryPath(getClientFingerprintDirectoryPath());
+            this.appConfig.setContainerDownloadTimeout(getContainerDownloadTimeout());
+            this.appConfig.setDefaultConsentDuration(getDefaultConsentDuration());
+            this.appConfig.setDefaultConsentTimeout(getDefaultConsentTimeout());
             this.appConfig.setDefaultPollingIntervalInSeconds(getDefaultPollingIntervalInSeconds());
             this.appConfig.setDefaultPollingTimeoutInSeconds(getDefaultPollingTimeoutInSeconds());
+            this.appConfig.setHardwarePinPadForced(getHardwarePinPadForced());
+            this.appConfig.setImplicitDownloads(getImplicitDownloads());
+            this.appConfig.setOsPinDialog(getOsPinDialog());
+            this.appConfig.setSessionTimeout(getDefaultSessionTimeout());
+            this.appConfig.setSyncManaged(getSyncManaged());
+            this.appConfig.setLocalTestMode(getLocalTestMode());
+            this.appConfig.setPkcs11Config(getPkcs11Config());
             setAppConfig(configObj);
             validateConfig();
             printAppConfig();
@@ -65,48 +79,95 @@ public class T1cConfigParser implements Serializable {
             throw ExceptionFactory.systemErrorException("T1C Client config file not found on: " + optionalPath.toAbsolutePath());
     }
 
+    private ModuleConfiguration getPkcs11Config() {
+        return new ModuleConfiguration()
+                .withLinux(getConfigPath(IConfig.LIB_PKCS_PATH_LINUX))
+                .withMac(getConfigPath(IConfig.LIB_PKCS_PATH_MACOS))
+                .withWindows(getConfigPath(IConfig.LIB_PKCS_PATH_WIN));
 
-    public Environment getEnvironment() {
-        return (Environment) config.getAnyRef(IConfig.LIB_ENVIRONMENT);
     }
 
-    public String getGCLClientURI() {
-        return config.getString(IConfig.LIB_GCL_CLIENT_URI);
+    private Boolean getLocalTestMode() {
+        return getConfigBoolean(IConfig.LIB_TEST_LOCAL_MODE);
     }
 
-    public String getConsmerApiKey() {
-        return config.getString(IConfig.LIB_API_KEY);
+    private Boolean getSyncManaged() {
+        return getConfigBoolean(IConfig.LIB_GEN_SYNC_MANAGED);
     }
 
-    public String getGatewayUri() {
-        return config.getString(IConfig.LIB_GATEWAY_URI);
+    private Boolean getOsPinDialog() {
+        return getConfigBoolean(IConfig.LIB_GEN_OS_PIN_DIALOG);
     }
 
-    public String getDsContextPath() {
-        return config.getString(IConfig.LIB_DS_CONTEXT_PATH);
+    private Boolean getImplicitDownloads() {
+        return getConfigBoolean(IConfig.LIB_GEN_IMPLICIT_DOWNLOADS);
     }
 
-    public String getOcvContextPath() {
-        return config.getString(IConfig.LIB_OCV_CONTEXT_PATH);
+    private Boolean getHardwarePinPadForced() {
+        return getConfigBoolean(IConfig.LIB_GEN_HARDWARE_PINPAD_FORCED);
     }
 
-    public Integer getDefaultPollingIntervalInSeconds() {
-        return config.getInt(IConfig.LIB_DEFAULT_POLLING_INTERVAL);
+    private Integer getDefaultConsentTimeout() {
+        return getConfigInteger(IConfig.LIB_GEN_CONSENT_TIMEOUT);
     }
 
-    public Integer getDefaultPollingTimeoutInSeconds() {
-        return config.getInt(IConfig.LIB_DEFAULT_POLLING_TIMEOUT);
+    private Integer getDefaultConsentDuration() {
+        return getConfigInteger(IConfig.LIB_GEN_CONSENT_DURATION);
     }
 
-    public Integer getDefaultSessionTimeout() {
-        return config.getInt(IConfig.LIB_DEFAULT_SESSION_TIMEOUT);
+    private Integer getContainerDownloadTimeout() {
+        return getConfigInteger(IConfig.LIB_GEN_CONTAINER_DOWNLOAD_TIMEOUT);
+    }
+
+    private String getClientFingerprintDirectoryPath() {
+        return getConfigString(IConfig.LIB_GEN_FINGERPRINT_PATH);
+    }
+
+    private Environment getEnvironment() {
+        try {
+            return Environment.valueOf(getConfigString(IConfig.LIB_ENVIRONMENT));
+        } catch (IllegalArgumentException ex) {
+            return Environment.PROD;
+        }
+    }
+
+    private String getAuthUri() {
+        return getConfigString(IConfig.LIB_URIS_AUTH);
+    }
+
+    private String getDsUri() {
+        return getConfigString(IConfig.LIB_URIS_DS);
+    }
+
+    private String getGclClientUri() {
+        return getConfigString(IConfig.LIB_URIS_GCL_CLIENT);
+    }
+
+    private String getOcvUri() {
+        return getConfigString(IConfig.LIB_URIS_OCV);
+    }
+
+    private String getConsmerApiKey() {
+        return getConfigString(IConfig.LIB_AUTH_API_KEY);
+    }
+
+    private Integer getDefaultPollingIntervalInSeconds() {
+        return getConfigInteger(IConfig.LIB_GEN_POLLING_INTERVAL);
+    }
+
+    private Integer getDefaultPollingTimeoutInSeconds() {
+        return getConfigInteger(IConfig.LIB_GEN_POLLING_TIMEOUT);
+    }
+
+    private Integer getDefaultSessionTimeout() {
+        return getConfigInteger(IConfig.LIB_GEN_SESSION_TIMEOUT);
     }
 
     public LibConfig getAppConfig() {
         return appConfig;
     }
 
-    public void setAppConfig(LibConfig appConfig) {
+    private void setAppConfig(LibConfig appConfig) {
         this.appConfig = appConfig;
         resolveProperties(readProperties());
     }
@@ -130,15 +191,28 @@ public class T1cConfigParser implements Serializable {
         log.debug("Build: {}", appConfig.getBuild());
         log.debug("Version: {}", appConfig.getVersion());
         log.debug("Environment: {}", appConfig.getEnvironment());
-        log.debug("Consumer api-key: {}", appConfig.getApiKey());
-        log.debug("GCL client URI: {}", appConfig.getGclClientUri());
-        log.debug("DS client URI: {}", appConfig.getDsUri());
-        log.debug("DS client Context path: {}", appConfig.getDsContextPath());
-        log.debug("OCV client URI: {}", appConfig.getOcvUri());
-        log.debug("OCV client Context path: {}", appConfig.getOcvContextPath());
-        log.debug("Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
-        log.debug("Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
-        log.debug("Default session timeout (seconds): {}", appConfig.getSessionTimeout());
+        log.debug("URIs - T1G Auth: {}", appConfig.getAuthUri());
+        log.debug("URIs - DS: {}", appConfig.getDsUri());
+        log.debug("URIs - GCL: {}", appConfig.getGclClientUri());
+        log.debug("URIs - OCV: {}", appConfig.getOcvUri());
+        log.debug("Auth - API key: {}", appConfig.getApiKey());
+        log.debug("General - Client fingerprint directory path: {}", appConfig.getClientFingerprintDirectoryPath());
+        log.debug("General - Default container download timeout (seconds): {}", appConfig.getContainerDownloadTimeout());
+        log.debug("General - Default consent duration (days): {}", appConfig.getDefaultConsentDuration());
+        log.debug("General - Default consent timeout (seconds): {}", appConfig.getDefaultConsentTimeout());
+        log.debug("General - Forced hardware PIN pad: {}", appConfig.isHardwarePinPadForced());
+        log.debug("General - Implicit downloads: {}", appConfig.isImplicitDownloads());
+        log.debug("General - OS PIN dialog: {}", appConfig.isOsPinDialog());
+        log.debug("General - Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
+        log.debug("General - Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
+        log.debug("General - Default session timeout (seconds): {}", appConfig.getSessionTimeout());
+        log.debug("General - Sync managed: {}", appConfig.isSyncManaged());
+        log.debug("Testing - Local test mode: {}", appConfig.isLocalTestMode());
+        if (appConfig.getPkcs11Config() != null) {
+            log.debug("PKCS11 - Module Linux Path: {}", appConfig.getPkcs11Config().getLinux());
+            log.debug("PKCS11 - Module Mac OS Path: {}", appConfig.getPkcs11Config().getMac());
+            log.debug("PKCS11 - Module Windows Path: {}", appConfig.getPkcs11Config().getWindows());
+        }
         log.debug("=============================================================");
     }
 
@@ -210,6 +284,42 @@ public class T1cConfigParser implements Serializable {
             }
         } else {
             return properties;
+        }
+    }
+
+    private String getConfigString(String key) {
+        try {
+            return config.getString(key);
+        } catch (ConfigException ex) {
+            log.error("Missing configuration value: {}", key);
+            return null;
+        }
+    }
+
+    private boolean getConfigBoolean(String key) {
+        try {
+            return config.getBoolean(key);
+        } catch (ConfigException ex) {
+            log.error("Missing configuration value: {}", key);
+            return false;
+        }
+    }
+
+    private Integer getConfigInteger(String key) {
+        try {
+            return config.getInt(key);
+        } catch (ConfigException ex) {
+            log.error("Missing configuration value: {}", key);
+            return null;
+        }
+    }
+
+    private Path getConfigPath(String key) {
+        try {
+            return Paths.get(config.getString(key));
+        } catch (ConfigException ex) {
+            log.error("Missing configuration value: {}", key);
+            return null;
         }
     }
 }

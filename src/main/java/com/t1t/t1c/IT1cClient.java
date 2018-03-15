@@ -12,7 +12,7 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -66,7 +66,7 @@ public interface IT1cClient {
 
     SafeNetContainer getSafeNetContainer(GclReader reader);
 
-    SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration);
+    SafeNetContainer getSafeNetContainer(GclReader reader, ModuleConfiguration configuration);
 
     /*Functional containers*/
     RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader);

@@ -59,6 +59,7 @@ public final class ConnectionFactory {
 
     private void resetConnections() {
         //global connections
+
         this.dsRestClient = RestServiceBuilder.getDsRestClient(config);
         this.gclRestClient = RestServiceBuilder.getGclRestClient(config);
         this.gclCitrixRestClient = RestServiceBuilder.getGclCitrixRestClient(config);

@@ -430,6 +430,8 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json
                         </sourcePath>
+                        <!-- GATEWAY -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GwJwt.json</sourcePath>
                         <!-- More to come -->
                     </sourcePaths>
                     <excludes></excludes>
@@ -443,7 +445,7 @@
                     <execution>
                         <!--Uncomment the goal in order to generate t1c model-->
                         <goals>
-                            <!--<goal>generate</goal>-->
+                            <goal>generate</goal>
                         </goals>
                     </execution>
                 </executions>

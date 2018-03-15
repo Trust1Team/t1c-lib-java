@@ -38,7 +38,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         this.modulePath = "/usr/local/lib/libeTPkcs11.dylib";
     }
 
-    public SafeNetContainer(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, SafeNetContainerConfiguration safeNetConfig) {
+    public SafeNetContainer(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, ModuleConfiguration safeNetConfig) {
         super(config, reader, httpClient, null);
         configureModulePath(safeNetConfig);
     }
@@ -51,7 +51,7 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         this.pin = pin;
         this.type = ContainerType.SAFENET;
         if (this.modulePath == null) {
-            configureModulePath(new SafeNetContainerConfiguration());
+            configureModulePath(new ModuleConfiguration());
         }
         return this;
     }
@@ -161,11 +161,11 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         return RestExecutor.returnData(httpClient.getSafeNetSlots(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
-    private void configureModulePath(SafeNetContainerConfiguration safeNetConfig) {
+    private void configureModulePath(ModuleConfiguration safeNetConfig) {
         File driver = null;
-        SafeNetContainerConfiguration containerConfig = safeNetConfig;
+        ModuleConfiguration containerConfig = safeNetConfig;
         if (containerConfig == null) {
-            containerConfig = new SafeNetContainerConfiguration();
+            containerConfig = new ModuleConfiguration();
         }
         if (SystemUtils.IS_OS_MAC) {
             driver = containerConfig.getMac().toFile();

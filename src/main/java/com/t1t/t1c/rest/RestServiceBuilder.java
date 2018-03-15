@@ -76,7 +76,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config.getJwt(), config);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config.getGclJwt(), config);
     }
 
     /**

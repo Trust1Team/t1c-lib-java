@@ -1,51 +1,58 @@
 package com.t1t.t1c.configuration;
 
-import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
 import com.t1t.t1c.utils.UriUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 
 /**
  * Created by michallispashidis on 04/11/2017.
  */
 public class LibConfig {
+
     // Compile time properties
     private String version;
     private String build;
-    // Custom properties
-    private Environment environment;
-    private String gclClientUri;
-    private String dsDomain;
+
+    // URI's
+
+    private String authUri;
     private String dsUri;
-    private String dsContextPath;
-    private String ocvDomain;
+    private String gclClientUri;
     private String ocvUri;
-    private String ocvContextPath;
+
+    // Auth
+
     private String apiKey;
-    private Integer defaultPollingIntervalInSeconds;
-    private Integer defaultPollingTimeoutInSeconds;
-    private Boolean hardwarePinPadForced = false;
-    private Boolean tokenCompatible = false;
-    private Integer sessionTimeout;
+
+    // Post-initialization values
+
     private Boolean citrix;
-    private Integer agentPort;
     private Boolean consentRequired = false;
+    private String contextToken;
+    private String gatewayJwt;
+    private String gclJwt;
+    private Boolean v2Compatible = false;
+
+    // General Config
+
+    private Integer agentPort;
+    private String clientFingerprintDirectoryPath;
+    private Integer containerDownloadTimeout;
     private Integer defaultConsentDuration;
     private Integer defaultConsentTimeout;
-    private String clientFingerprintDirectoryPath;
+    private Integer defaultPollingIntervalInSeconds;
+    private Integer defaultPollingTimeoutInSeconds;
+    private Environment environment;
+    private Boolean hardwarePinPadForced = false;
+    private Boolean implicitDownloads = false;
+    private Boolean localTestMode = false;
+    private Boolean osPinDialog = false;
+    private ModuleConfiguration pkcs11Config;
+    private Integer sessionTimeout;
+    private Boolean syncManaged = true;
+
     // Dynamic properties
-    private String jwt;
 
-    public LibConfig() {
-    }
-
-    public LibConfig(Environment environment, String version, String build) {
-        this.environment = environment;
-        this.version = version;
-        this.build = build;
-    }
+    public LibConfig() {}
 
     public String getVersion() {
         return version;
@@ -63,14 +70,6 @@ public class LibConfig {
         this.build = build;
     }
 
-    public Boolean isTokenCompatible() {
-        return tokenCompatible;
-    }
-
-    public void setTokenCompatible(Boolean tokenCompatible) {
-        this.tokenCompatible = tokenCompatible;
-    }
-
     public Environment getEnvironment() {
         return environment;
     }
@@ -79,100 +78,36 @@ public class LibConfig {
         this.environment = environment;
     }
 
+    public String getAuthUri() {
+        return authUri;
+    }
+
+    public void setAuthUri(String authUri) {
+        this.authUri = authUri;
+    }
+
+    public String getDsUri() {
+        return dsUri;
+    }
+
+    public void setDsUri(String dsUri) {
+        this.dsUri = UriUtils.uriFinalSlashAppender(dsUri);
+    }
+
     public String getGclClientUri() {
         return gclClientUri;
     }
 
     public void setGclClientUri(String gclClientUri) {
-        this.gclClientUri = gclClientUri;
+        this.gclClientUri = UriUtils.uriFinalSlashAppender(gclClientUri);
     }
 
-    public String getDsDomain() {
-        if (StringUtils.isEmpty(dsDomain) && StringUtils.isNotEmpty(dsUri)) {
-            try {
-                dsDomain = UriUtils.getDomain(dsUri);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid OCV uri: " + dsUri);
-            }
-        }
-        return dsDomain;
+    public String getOcvUri() {
+        return ocvUri;
     }
 
-    public void setDsDomain(String dsDomain) {
-        if (StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
-            try {
-                dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
-            }
-        }
-        this.dsDomain = dsDomain;
-    }
-
-    public String getDsContextPath() {
-        if (StringUtils.isEmpty(dsContextPath) && StringUtils.isNotEmpty(dsUri)) {
-            try {
-                dsContextPath = UriUtils.getContextPath(dsUri);
-            } catch (MalformedURLException ex) {
-                throw ExceptionFactory.configException("Invalid OCV uri: " + dsUri);
-            }
-        }
-        return dsContextPath;
-    }
-
-    public void setDsContextPath(String dsContextPath) {
-        if (StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
-            try {
-                dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
-            }
-        }
-        this.dsContextPath = dsContextPath;
-    }
-
-    public String getOcvDomain() {
-        if (StringUtils.isEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvUri)) {
-            try {
-                ocvDomain = UriUtils.getDomain(ocvUri);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid OCV uri: " + ocvUri);
-            }
-        }
-        return ocvDomain;
-    }
-
-    public void setOcvDomain(String ocvDomain) {
-        if (StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
-            try {
-                ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
-            }
-        }
-        this.ocvDomain = ocvDomain;
-    }
-
-    public String getOcvContextPath() {
-        if (StringUtils.isEmpty(ocvContextPath) && StringUtils.isNotEmpty(ocvUri)) {
-            try {
-                ocvContextPath = UriUtils.getContextPath(ocvUri);
-            } catch (MalformedURLException ex) {
-                throw ExceptionFactory.configException("Invalid OCV uri: " + ocvUri);
-            }
-        }
-        return ocvContextPath;
-    }
-
-    public void setOcvContextPath(String ocvContextPath) {
-        if (StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
-            try {
-                ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
-            }
-        }
-        this.ocvContextPath = ocvContextPath;
+    public void setOcvUri(String ocvUri) {
+        this.ocvUri = UriUtils.uriFinalSlashAppender(ocvUri);
     }
 
     public String getApiKey() {
@@ -183,12 +118,92 @@ public class LibConfig {
         this.apiKey = apiKey;
     }
 
-    public String getJwt() {
-        return jwt;
+    public Boolean isCitrix() {
+        return citrix;
     }
 
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
+    public void setCitrix(Boolean citrix) {
+        this.citrix = citrix;
+    }
+
+    public Boolean isConsentRequired() {
+        return consentRequired;
+    }
+
+    public void setConsentRequired(Boolean consentRequired) {
+        this.consentRequired = consentRequired;
+    }
+
+    public String getContextToken() {
+        return contextToken;
+    }
+
+    public void setContextToken(String contextToken) {
+        this.contextToken = contextToken;
+    }
+
+    public String getGatewayJwt() {
+        return gatewayJwt;
+    }
+
+    public void setGatewayJwt(String gatewayJwt) {
+        this.gatewayJwt = gatewayJwt;
+    }
+
+    public String getGclJwt() {
+        return gclJwt;
+    }
+
+    public void setGclJwt(String gclJwt) {
+        this.gclJwt = gclJwt;
+    }
+
+    public Boolean isV2Compatible() {
+        return v2Compatible;
+    }
+
+    public void setV2Compatible(Boolean v2Compatible) {
+        this.v2Compatible = v2Compatible;
+    }
+
+    public Integer getAgentPort() {
+        return agentPort;
+    }
+
+    public void setAgentPort(Integer agentPort) {
+        this.agentPort = agentPort;
+    }
+
+    public String getClientFingerprintDirectoryPath() {
+        return clientFingerprintDirectoryPath;
+    }
+
+    public void setClientFingerprintDirectoryPath(String clientFingerprintDirectoryPath) {
+        this.clientFingerprintDirectoryPath = clientFingerprintDirectoryPath;
+    }
+
+    public Integer getContainerDownloadTimeout() {
+        return containerDownloadTimeout;
+    }
+
+    public void setContainerDownloadTimeout(Integer containerDownloadTimeout) {
+        this.containerDownloadTimeout = containerDownloadTimeout;
+    }
+
+    public Integer getDefaultConsentDuration() {
+        return defaultConsentDuration;
+    }
+
+    public void setDefaultConsentDuration(Integer defaultConsentDuration) {
+        this.defaultConsentDuration = defaultConsentDuration;
+    }
+
+    public Integer getDefaultConsentTimeout() {
+        return defaultConsentTimeout;
+    }
+
+    public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
+        this.defaultConsentTimeout = defaultConsentTimeout;
     }
 
     public Integer getDefaultPollingIntervalInSeconds() {
@@ -215,109 +230,51 @@ public class LibConfig {
         this.hardwarePinPadForced = hardwarePinPadForced;
     }
 
-    public String getDsUri() {
-        if (StringUtils.isEmpty(dsUri) && StringUtils.isNotEmpty(dsDomain) && StringUtils.isNotEmpty(dsContextPath)) {
-            try {
-                this.dsUri = UriUtils.getFullUri(dsDomain, dsContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + dsDomain + ", or contextpath: " + dsContextPath);
-            }
-        }
-        return this.dsUri;
+    public Boolean isImplicitDownloads() {
+        return implicitDownloads;
     }
 
-    public void setDsUri(String dsUri) {
-        if (StringUtils.isNotEmpty(dsUri)) {
-            try {
-                String domain = UriUtils.getDomain(dsUri);
-                String contextPath = UriUtils.getContextPath(dsUri);
-                dsDomain = domain;
-                dsContextPath = contextPath;
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI: " + dsUri);
-            }
-        }
-        this.dsUri = dsUri;
+    public void setImplicitDownloads(Boolean implicitDownloads) {
+        this.implicitDownloads = implicitDownloads;
     }
 
-    public String getOcvUri() {
-        if (StringUtils.isEmpty(ocvUri) && StringUtils.isNotEmpty(ocvDomain) && StringUtils.isNotEmpty(ocvContextPath)) {
-            try {
-                this.ocvUri = UriUtils.getFullUri(ocvDomain, ocvContextPath);
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI domain: " + ocvDomain + ", or contextpath: " + ocvContextPath);
-            }
-        }
-        return this.ocvUri;
+    public Boolean isLocalTestMode() {
+        return localTestMode;
     }
 
-    public void setOcvUri(String ocvUri) {
-        if (StringUtils.isNotEmpty(ocvUri)) {
-            try {
-                String domain = UriUtils.getDomain(ocvUri);
-                String contextPath = UriUtils.getContextPath(ocvUri);
-                ocvDomain = domain;
-                ocvContextPath = contextPath;
-            } catch (MalformedURLException | URISyntaxException ex) {
-                throw ExceptionFactory.configException("Invalid URI: " + ocvUri);
-            }
-        }
-        this.ocvUri = ocvUri;
+    public void setLocalTestMode(Boolean localTestMode) {
+        this.localTestMode = localTestMode;
+    }
+
+    public Boolean isOsPinDialog() {
+        return osPinDialog;
+    }
+
+    public void setOsPinDialog(Boolean osPinDialog) {
+        this.osPinDialog = osPinDialog;
+    }
+
+    public ModuleConfiguration getPkcs11Config() {
+        return pkcs11Config;
+    }
+
+    public void setPkcs11Config(ModuleConfiguration pkcs11Config) {
+        this.pkcs11Config = pkcs11Config;
     }
 
     public Integer getSessionTimeout() {
-        return this.sessionTimeout;
+        return sessionTimeout;
     }
 
     public void setSessionTimeout(Integer sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
     }
 
-    public Boolean getCitrix() {
-        return citrix;
+    public Boolean isSyncManaged() {
+        return syncManaged;
     }
 
-    public void setCitrix(Boolean citrix) {
-        this.citrix = citrix;
-    }
-
-    public Integer getAgentPort() {
-        return agentPort;
-    }
-
-    public void setAgentPort(Integer agentPort) {
-        this.agentPort = agentPort;
-    }
-
-    public Boolean isConsentRequired() {
-        return consentRequired;
-    }
-
-    public void setConsentRequired(Boolean consentRequired) {
-        this.consentRequired = consentRequired;
-    }
-
-    public Integer getDefaultConsentDuration() {
-        return defaultConsentDuration;
-    }
-
-    public void setDefaultConsentDuration(Integer defaultConsentDuration) {
-        this.defaultConsentDuration = defaultConsentDuration;
-    }
-
-    public Integer getDefaultConsentTimeout() {
-        return defaultConsentTimeout;
-    }
-
-    public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
-        this.defaultConsentTimeout = defaultConsentTimeout;
-    }
-
-    public String getClientFingerprintDirectoryPath() {
-        return clientFingerprintDirectoryPath;
-    }
-
-    public void setClientFingerprintDirectoryPath(String clientFingerprintDirectoryPath) {
-        this.clientFingerprintDirectoryPath = clientFingerprintDirectoryPath;
+    public void setSyncManaged(Boolean syncManaged) {
+        this.syncManaged = syncManaged;
     }
 }
