@@ -72,7 +72,7 @@ public class GclPivAllCertificates implements AllCertificates {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclPivAllCertificates)) {
+        if ((other instanceof GclPivAllCertificates) == false) {
             return false;
         }
         GclPivAllCertificates rhs = ((GclPivAllCertificates) other);

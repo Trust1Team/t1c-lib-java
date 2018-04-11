@@ -93,7 +93,7 @@ public class GclAventraPinResetRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclAventraPinResetRequest)) {
+        if ((other instanceof GclAventraPinResetRequest) == false) {
             return false;
         }
         GclAventraPinResetRequest rhs = ((GclAventraPinResetRequest) other);

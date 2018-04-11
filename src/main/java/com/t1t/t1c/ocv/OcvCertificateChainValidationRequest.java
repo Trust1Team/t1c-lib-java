@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.ocv;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class OcvCertificateChainValidationRequest {
@@ -18,18 +18,14 @@ public class OcvCertificateChainValidationRequest {
     private List<OcvCertificate> certificateChain = new ArrayList<OcvCertificate>();
 
     /**
-     * 
-     * @return
-     *     The certificateChain
+     * @return The certificateChain
      */
     public List<OcvCertificate> getCertificateChain() {
         return certificateChain;
     }
 
     /**
-     * 
-     * @param certificateChain
-     *     The certificateChain
+     * @param certificateChain The certificateChain
      */
     public void setCertificateChain(List<OcvCertificate> certificateChain) {
         this.certificateChain = certificateChain;

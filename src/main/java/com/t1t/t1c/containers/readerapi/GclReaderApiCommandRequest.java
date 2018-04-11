@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.containers.readerapi;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclReaderApiCommandRequest {
@@ -16,18 +16,14 @@ public class GclReaderApiCommandRequest {
     private String tx;
 
     /**
-     * 
-     * @return
-     *     The tx
+     * @return The tx
      */
     public String getTx() {
         return tx;
     }
 
     /**
-     * 
-     * @param tx
-     *     The tx
+     * @param tx The tx
      */
     public void setTx(String tx) {
         this.tx = tx;

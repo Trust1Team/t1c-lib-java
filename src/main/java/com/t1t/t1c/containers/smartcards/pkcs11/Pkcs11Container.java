@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
@@ -25,31 +25,31 @@ import java.util.Map;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafeNetRestClient, SafeNetAllData, AllCertificates> {
+public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11RestClient, Pkcs11AllData, AllCertificates> {
 
     private String modulePath;
 
     // Default constructor for testing purposes
-    public SafeNetContainer(GclReader reader, GclSafeNetRestClient httpClient) {
+    public Pkcs11Container(GclReader reader, GclPkcs11RestClient httpClient) {
         this.config = new LibConfig();
         this.reader = reader;
         this.httpClient = httpClient;
-        this.type = ContainerType.SAFENET;
+        this.type = ContainerType.PKCS11;
         this.modulePath = "/usr/local/lib/libeTPkcs11.dylib";
     }
 
-    public SafeNetContainer(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, ModuleConfiguration safeNetConfig) {
+    public Pkcs11Container(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, ModuleConfiguration pkcs11Config) {
         super(config, reader, httpClient, null);
-        configureModulePath(safeNetConfig);
+        configureModulePath(pkcs11Config);
     }
 
     @Override
-    public SafeNetContainer createInstance(LibConfig config, GclReader reader, GclSafeNetRestClient httpClient, String pin) {
+    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, String pin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pin = pin;
-        this.type = ContainerType.SAFENET;
+        this.type = ContainerType.PKCS11;
         if (this.modulePath == null) {
             configureModulePath(new ModuleConfiguration());
         }
@@ -67,17 +67,17 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public SafeNetAllData getAllData() throws GenericContainerException {
-        return new SafeNetAllData(getSafeNetSlots());
+    public Pkcs11AllData getAllData() throws GenericContainerException {
+        return new Pkcs11AllData(getPkcs11Slots());
     }
 
     @Override
-    public SafeNetAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
+    public Pkcs11AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
         return getAllData();
     }
 
     @Override
-    public SafeNetAllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
+    public Pkcs11AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
         return getAllData();
     }
 
@@ -122,8 +122,8 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
     }
 
     @Override
-    public Class<SafeNetAllData> getAllDataClass() {
-        return SafeNetAllData.class;
+    public Class<Pkcs11AllData> getAllDataClass() {
+        return Pkcs11AllData.class;
     }
 
     @Override
@@ -131,39 +131,39 @@ public class SafeNetContainer extends GenericContainer<SafeNetContainer, GclSafe
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
-    public SafeNetCertificates getSafeNetCertificates(Integer slotId, String pin, Boolean... parse) throws VerifyPinException, NoConsentException, RestException {
+    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin, Boolean... parse) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
-            return new SafeNetCertificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getSafeNetCertificates(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
+            return new Pkcs11Certificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public GclSafeNetInfo getSafeNetInfo() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getSafeNetInfo(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath)), config.isConsentRequired());
+    public GclPkcs11Info getPkcs11Info() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getPkcs11Info(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath)), config.isConsentRequired());
     }
 
-    public List<GclSafeNetSlot> getSafeNetSlots() throws RestException, NoConsentException {
-        return getSafeNetSlots(null);
+    public List<GclPkcs11Slot> getPkcs11Slots() throws RestException, NoConsentException {
+        return getPkcs11Slots(null);
     }
 
-    public List<GclSafeNetSlot> getSafeNetSlotsWithTokensPresent(boolean tokenPresent) throws RestException, NoConsentException {
-        return getSafeNetSlots(tokenPresent);
+    public List<GclPkcs11Slot> getPkcs11SlotsWithTokensPresent(boolean tokenPresent) throws RestException, NoConsentException {
+        return getPkcs11Slots(tokenPresent);
     }
 
     public String getModulePath() {
         return modulePath;
     }
 
-    private List<GclSafeNetSlot> getSafeNetSlots(Boolean tokenPresent) {
-        return RestExecutor.returnData(httpClient.getSafeNetSlots(getTypeId(), reader.getId(), new GclSafeNetRequest().withModule(modulePath), tokenPresent), config.isConsentRequired());
+    private List<GclPkcs11Slot> getPkcs11Slots(Boolean tokenPresent) {
+        return RestExecutor.returnData(httpClient.getPkcs11Slots(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
-    private void configureModulePath(ModuleConfiguration safeNetConfig) {
+    private void configureModulePath(ModuleConfiguration pkcs11Config) {
         File driver = null;
-        ModuleConfiguration containerConfig = safeNetConfig;
+        ModuleConfiguration containerConfig = pkcs11Config;
         if (containerConfig == null) {
             containerConfig = new ModuleConfiguration();
         }

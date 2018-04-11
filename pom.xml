@@ -404,10 +404,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivPrintedInformation.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllCertificates.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllData.json</sourcePath>
-                        <!-- SAFENET -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
+                        <!-- PKCS11 -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Request.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Info.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Slot.json</sourcePath>
                         <!-- Aventra -->
                         <sourcePath>
                             ${basedir}/src/main/resources/schemas/GclAventraPinResetRequest.json
@@ -443,6 +443,7 @@
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>
                     <sourceType>jsonschema</sourceType>
                     <annotationStyle>gson</annotationStyle>
+                    <useLongIntegers>true</useLongIntegers>
                     <generateBuilders>true</generateBuilders>
                     <useCommonsLang3>true</useCommonsLang3>
                 </configuration>

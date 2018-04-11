@@ -71,7 +71,7 @@ public class GclLuxIdSignatureImage {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclLuxIdSignatureImage)) {
+        if ((other instanceof GclLuxIdSignatureImage) == false) {
             return false;
         }
         GclLuxIdSignatureImage rhs = ((GclLuxIdSignatureImage) other);

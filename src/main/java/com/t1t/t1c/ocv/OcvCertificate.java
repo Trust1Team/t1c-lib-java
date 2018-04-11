@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ocv;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class OcvCertificate {
@@ -16,21 +16,17 @@ public class OcvCertificate {
     private String certificate;
     @SerializedName("order")
     @Expose
-    private Integer order;
+    private Long order;
 
     /**
-     * 
-     * @return
-     *     The certificate
+     * @return The certificate
      */
     public String getCertificate() {
         return certificate;
     }
 
     /**
-     * 
-     * @param certificate
-     *     The certificate
+     * @param certificate The certificate
      */
     public void setCertificate(String certificate) {
         this.certificate = certificate;
@@ -42,24 +38,20 @@ public class OcvCertificate {
     }
 
     /**
-     * 
-     * @return
-     *     The order
+     * @return The order
      */
-    public Integer getOrder() {
+    public Long getOrder() {
         return order;
     }
 
     /**
-     * 
-     * @param order
-     *     The order
+     * @param order The order
      */
-    public void setOrder(Integer order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
 
-    public OcvCertificate withOrder(Integer order) {
+    public OcvCertificate withOrder(Long order) {
         this.order = order;
         return this;
     }

@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.ds;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class DsContainerResponse {
@@ -42,18 +42,14 @@ public class DsContainerResponse {
     private List<String> allowedOrigins = new ArrayList<String>();
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(String id) {
         this.id = id;
@@ -65,18 +61,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -88,18 +80,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -111,18 +99,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The osStorage
+     * @return The osStorage
      */
     public List<DsContainerStorage> getOsStorage() {
         return osStorage;
     }
 
     /**
-     * 
-     * @param osStorage
-     *     The osStorage
+     * @param osStorage The osStorage
      */
     public void setOsStorage(List<DsContainerStorage> osStorage) {
         this.osStorage = osStorage;
@@ -134,18 +118,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The language
+     * @return The language
      */
     public String getLanguage() {
         return language;
     }
 
     /**
-     * 
-     * @param language
-     *     The language
+     * @param language The language
      */
     public void setLanguage(String language) {
         this.language = language;
@@ -157,18 +137,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The availability
+     * @return The availability
      */
     public String getAvailability() {
         return availability;
     }
 
     /**
-     * 
-     * @param availability
-     *     The availability
+     * @param availability The availability
      */
     public void setAvailability(String availability) {
         this.availability = availability;
@@ -180,18 +156,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The dependsOn
+     * @return The dependsOn
      */
     public List<String> getDependsOn() {
         return dependsOn;
     }
 
     /**
-     * 
-     * @param dependsOn
-     *     The dependsOn
+     * @param dependsOn The dependsOn
      */
     public void setDependsOn(List<String> dependsOn) {
         this.dependsOn = dependsOn;
@@ -203,18 +175,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public String getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(String status) {
         this.status = status;
@@ -226,18 +194,14 @@ public class DsContainerResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The allowedOrigins
+     * @return The allowedOrigins
      */
     public List<String> getAllowedOrigins() {
         return allowedOrigins;
     }
 
     /**
-     * 
-     * @param allowedOrigins
-     *     The allowedOrigins
+     * @param allowedOrigins The allowedOrigins
      */
     public void setAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;

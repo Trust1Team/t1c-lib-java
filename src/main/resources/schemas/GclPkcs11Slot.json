@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "$id": "GclSafeNetSlot",
-  "javaType": "com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot",
+  "$id": "GclPkcs11Slot",
+  "javaType": "com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Slot",
   "type": "object",
   "properties": {
     "slot_id": {

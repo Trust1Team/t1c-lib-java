@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "$id": "GclSafeNetRequest",
-  "javaType": "com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRequest",
+  "$id": "GclPkcs11Request",
+  "javaType": "com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Request",
   "type": "object",
   "properties": {
     "module": {

@@ -15,40 +15,40 @@ public class GclMobibContract {
 
     @SerializedName("authenticator_kvc")
     @Expose
-    private Integer authenticatorKvc;
+    private Long authenticatorKvc;
     @SerializedName("authenticator_value")
     @Expose
-    private Integer authenticatorValue;
+    private Long authenticatorValue;
     @SerializedName("journey_interchanges_allowed")
     @Expose
     private Boolean journeyInterchangesAllowed;
     @SerializedName("operator_map")
     @Expose
-    private Integer operatorMap;
+    private Long operatorMap;
     @SerializedName("passengers_max")
     @Expose
-    private Integer passengersMax;
+    private Long passengersMax;
     @SerializedName("price_amount")
     @Expose
-    private Integer priceAmount;
+    private Long priceAmount;
     @SerializedName("provider")
     @Expose
-    private Integer provider;
+    private Long provider;
     @SerializedName("restrict_code")
     @Expose
-    private Integer restrictCode;
+    private Long restrictCode;
     @SerializedName("restrict_time")
     @Expose
-    private Integer restrictTime;
+    private Long restrictTime;
     @SerializedName("sale_date")
     @Expose
     private String saleDate;
     @SerializedName("sale_sam_count")
     @Expose
-    private Integer saleSamCount;
+    private Long saleSamCount;
     @SerializedName("sale_sam_id")
     @Expose
-    private Integer saleSamId;
+    private Long saleSamId;
     @SerializedName("spatials")
     @Expose
     private List<GclMobibSpatial> spatials = new ArrayList<GclMobibSpatial>();
@@ -57,7 +57,7 @@ public class GclMobibContract {
     private GclMobibTariff tariff;
     @SerializedName("type_id")
     @Expose
-    private Integer typeId;
+    private Long typeId;
     @SerializedName("validity_duration")
     @Expose
     private GclMobibValidityDuration validityDuration;
@@ -66,26 +66,26 @@ public class GclMobibContract {
     private String validityStartDate;
     @SerializedName("vehicle_class_allowed")
     @Expose
-    private Integer vehicleClassAllowed;
+    private Long vehicleClassAllowed;
     @SerializedName("version")
     @Expose
-    private Integer version;
+    private Long version;
 
     /**
      * @return The authenticatorKvc
      */
-    public Integer getAuthenticatorKvc() {
+    public Long getAuthenticatorKvc() {
         return authenticatorKvc;
     }
 
     /**
      * @param authenticatorKvc The authenticator_kvc
      */
-    public void setAuthenticatorKvc(Integer authenticatorKvc) {
+    public void setAuthenticatorKvc(Long authenticatorKvc) {
         this.authenticatorKvc = authenticatorKvc;
     }
 
-    public GclMobibContract withAuthenticatorKvc(Integer authenticatorKvc) {
+    public GclMobibContract withAuthenticatorKvc(Long authenticatorKvc) {
         this.authenticatorKvc = authenticatorKvc;
         return this;
     }
@@ -93,18 +93,18 @@ public class GclMobibContract {
     /**
      * @return The authenticatorValue
      */
-    public Integer getAuthenticatorValue() {
+    public Long getAuthenticatorValue() {
         return authenticatorValue;
     }
 
     /**
      * @param authenticatorValue The authenticator_value
      */
-    public void setAuthenticatorValue(Integer authenticatorValue) {
+    public void setAuthenticatorValue(Long authenticatorValue) {
         this.authenticatorValue = authenticatorValue;
     }
 
-    public GclMobibContract withAuthenticatorValue(Integer authenticatorValue) {
+    public GclMobibContract withAuthenticatorValue(Long authenticatorValue) {
         this.authenticatorValue = authenticatorValue;
         return this;
     }
@@ -131,18 +131,18 @@ public class GclMobibContract {
     /**
      * @return The operatorMap
      */
-    public Integer getOperatorMap() {
+    public Long getOperatorMap() {
         return operatorMap;
     }
 
     /**
      * @param operatorMap The operator_map
      */
-    public void setOperatorMap(Integer operatorMap) {
+    public void setOperatorMap(Long operatorMap) {
         this.operatorMap = operatorMap;
     }
 
-    public GclMobibContract withOperatorMap(Integer operatorMap) {
+    public GclMobibContract withOperatorMap(Long operatorMap) {
         this.operatorMap = operatorMap;
         return this;
     }
@@ -150,18 +150,18 @@ public class GclMobibContract {
     /**
      * @return The passengersMax
      */
-    public Integer getPassengersMax() {
+    public Long getPassengersMax() {
         return passengersMax;
     }
 
     /**
      * @param passengersMax The passengers_max
      */
-    public void setPassengersMax(Integer passengersMax) {
+    public void setPassengersMax(Long passengersMax) {
         this.passengersMax = passengersMax;
     }
 
-    public GclMobibContract withPassengersMax(Integer passengersMax) {
+    public GclMobibContract withPassengersMax(Long passengersMax) {
         this.passengersMax = passengersMax;
         return this;
     }
@@ -169,18 +169,18 @@ public class GclMobibContract {
     /**
      * @return The priceAmount
      */
-    public Integer getPriceAmount() {
+    public Long getPriceAmount() {
         return priceAmount;
     }
 
     /**
      * @param priceAmount The price_amount
      */
-    public void setPriceAmount(Integer priceAmount) {
+    public void setPriceAmount(Long priceAmount) {
         this.priceAmount = priceAmount;
     }
 
-    public GclMobibContract withPriceAmount(Integer priceAmount) {
+    public GclMobibContract withPriceAmount(Long priceAmount) {
         this.priceAmount = priceAmount;
         return this;
     }
@@ -188,18 +188,18 @@ public class GclMobibContract {
     /**
      * @return The provider
      */
-    public Integer getProvider() {
+    public Long getProvider() {
         return provider;
     }
 
     /**
      * @param provider The provider
      */
-    public void setProvider(Integer provider) {
+    public void setProvider(Long provider) {
         this.provider = provider;
     }
 
-    public GclMobibContract withProvider(Integer provider) {
+    public GclMobibContract withProvider(Long provider) {
         this.provider = provider;
         return this;
     }
@@ -207,18 +207,18 @@ public class GclMobibContract {
     /**
      * @return The restrictCode
      */
-    public Integer getRestrictCode() {
+    public Long getRestrictCode() {
         return restrictCode;
     }
 
     /**
      * @param restrictCode The restrict_code
      */
-    public void setRestrictCode(Integer restrictCode) {
+    public void setRestrictCode(Long restrictCode) {
         this.restrictCode = restrictCode;
     }
 
-    public GclMobibContract withRestrictCode(Integer restrictCode) {
+    public GclMobibContract withRestrictCode(Long restrictCode) {
         this.restrictCode = restrictCode;
         return this;
     }
@@ -226,18 +226,18 @@ public class GclMobibContract {
     /**
      * @return The restrictTime
      */
-    public Integer getRestrictTime() {
+    public Long getRestrictTime() {
         return restrictTime;
     }
 
     /**
      * @param restrictTime The restrict_time
      */
-    public void setRestrictTime(Integer restrictTime) {
+    public void setRestrictTime(Long restrictTime) {
         this.restrictTime = restrictTime;
     }
 
-    public GclMobibContract withRestrictTime(Integer restrictTime) {
+    public GclMobibContract withRestrictTime(Long restrictTime) {
         this.restrictTime = restrictTime;
         return this;
     }
@@ -264,18 +264,18 @@ public class GclMobibContract {
     /**
      * @return The saleSamCount
      */
-    public Integer getSaleSamCount() {
+    public Long getSaleSamCount() {
         return saleSamCount;
     }
 
     /**
      * @param saleSamCount The sale_sam_count
      */
-    public void setSaleSamCount(Integer saleSamCount) {
+    public void setSaleSamCount(Long saleSamCount) {
         this.saleSamCount = saleSamCount;
     }
 
-    public GclMobibContract withSaleSamCount(Integer saleSamCount) {
+    public GclMobibContract withSaleSamCount(Long saleSamCount) {
         this.saleSamCount = saleSamCount;
         return this;
     }
@@ -283,18 +283,18 @@ public class GclMobibContract {
     /**
      * @return The saleSamId
      */
-    public Integer getSaleSamId() {
+    public Long getSaleSamId() {
         return saleSamId;
     }
 
     /**
      * @param saleSamId The sale_sam_id
      */
-    public void setSaleSamId(Integer saleSamId) {
+    public void setSaleSamId(Long saleSamId) {
         this.saleSamId = saleSamId;
     }
 
-    public GclMobibContract withSaleSamId(Integer saleSamId) {
+    public GclMobibContract withSaleSamId(Long saleSamId) {
         this.saleSamId = saleSamId;
         return this;
     }
@@ -340,18 +340,18 @@ public class GclMobibContract {
     /**
      * @return The typeId
      */
-    public Integer getTypeId() {
+    public Long getTypeId() {
         return typeId;
     }
 
     /**
      * @param typeId The type_id
      */
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(Long typeId) {
         this.typeId = typeId;
     }
 
-    public GclMobibContract withTypeId(Integer typeId) {
+    public GclMobibContract withTypeId(Long typeId) {
         this.typeId = typeId;
         return this;
     }
@@ -397,18 +397,18 @@ public class GclMobibContract {
     /**
      * @return The vehicleClassAllowed
      */
-    public Integer getVehicleClassAllowed() {
+    public Long getVehicleClassAllowed() {
         return vehicleClassAllowed;
     }
 
     /**
      * @param vehicleClassAllowed The vehicle_class_allowed
      */
-    public void setVehicleClassAllowed(Integer vehicleClassAllowed) {
+    public void setVehicleClassAllowed(Long vehicleClassAllowed) {
         this.vehicleClassAllowed = vehicleClassAllowed;
     }
 
-    public GclMobibContract withVehicleClassAllowed(Integer vehicleClassAllowed) {
+    public GclMobibContract withVehicleClassAllowed(Long vehicleClassAllowed) {
         this.vehicleClassAllowed = vehicleClassAllowed;
         return this;
     }
@@ -416,18 +416,18 @@ public class GclMobibContract {
     /**
      * @return The version
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
     /**
      * @param version The version
      */
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public GclMobibContract withVersion(Integer version) {
+    public GclMobibContract withVersion(Long version) {
         this.version = version;
         return this;
     }
@@ -447,7 +447,7 @@ public class GclMobibContract {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclMobibContract)) {
+        if ((other instanceof GclMobibContract) == false) {
             return false;
         }
         GclMobibContract rhs = ((GclMobibContract) other);

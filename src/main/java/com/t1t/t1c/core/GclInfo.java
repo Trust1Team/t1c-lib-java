@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.core;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class GclInfo {
@@ -51,18 +51,14 @@ public class GclInfo {
     private String version;
 
     /**
-     * 
-     * @return
-     *     The activated
+     * @return The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * 
-     * @param activated
-     *     The activated
+     * @param activated The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -74,18 +70,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The arch
+     * @return The arch
      */
     public String getArch() {
         return arch;
     }
 
     /**
-     * 
-     * @param arch
-     *     The arch
+     * @param arch The arch
      */
     public void setArch(String arch) {
         this.arch = arch;
@@ -97,18 +89,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The citrix
+     * @return The citrix
      */
     public Boolean getCitrix() {
         return citrix;
     }
 
     /**
-     * 
-     * @param citrix
-     *     The citrix
+     * @param citrix The citrix
      */
     public void setCitrix(Boolean citrix) {
         this.citrix = citrix;
@@ -120,18 +108,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The consent
+     * @return The consent
      */
     public Boolean getConsent() {
         return consent;
     }
 
     /**
-     * 
-     * @param consent
-     *     The consent
+     * @param consent The consent
      */
     public void setConsent(Boolean consent) {
         this.consent = consent;
@@ -143,18 +127,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The containers
+     * @return The containers
      */
     public List<GclContainerInfo> getContainers() {
         return containers;
     }
 
     /**
-     * 
-     * @param containers
-     *     The containers
+     * @param containers The containers
      */
     public void setContainers(List<GclContainerInfo> containers) {
         this.containers = containers;
@@ -166,18 +146,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The logLevel
+     * @return The logLevel
      */
     public String getLogLevel() {
         return logLevel;
     }
 
     /**
-     * 
-     * @param logLevel
-     *     The log_level
+     * @param logLevel The log_level
      */
     public void setLogLevel(String logLevel) {
         this.logLevel = logLevel;
@@ -189,18 +165,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The managed
+     * @return The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * 
-     * @param managed
-     *     The managed
+     * @param managed The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -212,18 +184,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public String getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(String os) {
         this.os = os;
@@ -235,18 +203,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The osid
+     * @return The osid
      */
     public String getOsid() {
         return osid;
     }
 
     /**
-     * 
-     * @param osid
-     *     The osid
+     * @param osid The osid
      */
     public void setOsid(String osid) {
         this.osid = osid;
@@ -258,18 +222,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The osversion
+     * @return The osversion
      */
     public String getOsversion() {
         return osversion;
     }
 
     /**
-     * 
-     * @param osversion
-     *     The osversion
+     * @param osversion The osversion
      */
     public void setOsversion(String osversion) {
         this.osversion = osversion;
@@ -281,18 +241,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The uid
+     * @return The uid
      */
     public String getUid() {
         return uid;
     }
 
     /**
-     * 
-     * @param uid
-     *     The uid
+     * @param uid The uid
      */
     public void setUid(String uid) {
         this.uid = uid;
@@ -304,18 +260,14 @@ public class GclInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;

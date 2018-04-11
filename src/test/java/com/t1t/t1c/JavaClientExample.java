@@ -16,8 +16,8 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Slot;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -229,7 +229,7 @@ public class JavaClientExample {
                 ptIdUseCases(reader);
                 break;
             case SAFENET:
-                safeNetUseCases(reader);
+                pkcs11UseCases(reader);
                 break;
             default:
                 System.out.println("No matching container type found: " + type);
@@ -237,23 +237,23 @@ public class JavaClientExample {
         }
     }
 
-    private static void safeNetUseCases(GclReader reader) {
+    private static void pkcs11UseCases(GclReader reader) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pin = scanner.nextLine();
 
-        SafeNetContainer container = client.getSafeNetContainer(reader);
+        Pkcs11Container container = client.getPkcs11Container(reader);
 
         System.out.println("Container data dump: " + container.getAllData().toString());
 
-        System.out.println("SafeNet info: " + container.getSafeNetInfo().toString());
+        System.out.println("Pkcs11 info: " + container.getPkcs11Info().toString());
 
-        List<GclSafeNetSlot> slots = container.getSafeNetSlots();
+        List<GclPkcs11Slot> slots = container.getPkcs11Slots();
         try {
-            for (GclSafeNetSlot slot : slots) {
-                System.out.println("SafeNet slot: " + slot.toString());
+            for (GclPkcs11Slot slot : slots) {
+                System.out.println("Pkcs11 slot: " + slot.toString());
                 if (StringUtils.isNotEmpty(pin)) {
-                    System.out.println("Slot certificates: " + container.getSafeNetCertificates(slot.getSlotId(), pin));
+                    System.out.println("Slot certificates: " + container.getPkcs11Certificates(slot.getSlotId(), pin));
                 }
             }
         } catch (VerifyPinException ex) {

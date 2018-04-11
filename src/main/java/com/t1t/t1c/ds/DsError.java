@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsError {
@@ -16,7 +16,7 @@ public class DsError {
     private String type;
     @SerializedName("errorCode")
     @Expose
-    private Integer errorCode;
+    private Long errorCode;
     @SerializedName("message")
     @Expose
     private String message;
@@ -28,18 +28,14 @@ public class DsError {
     private String stackTrace;
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public String getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(String type) {
         this.type = type;
@@ -51,41 +47,33 @@ public class DsError {
     }
 
     /**
-     * 
-     * @return
-     *     The errorCode
+     * @return The errorCode
      */
-    public Integer getErrorCode() {
+    public Long getErrorCode() {
         return errorCode;
     }
 
     /**
-     * 
-     * @param errorCode
-     *     The errorCode
+     * @param errorCode The errorCode
      */
-    public void setErrorCode(Integer errorCode) {
+    public void setErrorCode(Long errorCode) {
         this.errorCode = errorCode;
     }
 
-    public DsError withErrorCode(Integer errorCode) {
+    public DsError withErrorCode(Long errorCode) {
         this.errorCode = errorCode;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The message
+     * @return The message
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * 
-     * @param message
-     *     The message
+     * @param message The message
      */
     public void setMessage(String message) {
         this.message = message;
@@ -97,18 +85,14 @@ public class DsError {
     }
 
     /**
-     * 
-     * @return
-     *     The moreInfoUrl
+     * @return The moreInfoUrl
      */
     public String getMoreInfoUrl() {
         return moreInfoUrl;
     }
 
     /**
-     * 
-     * @param moreInfoUrl
-     *     The moreInfoUrl
+     * @param moreInfoUrl The moreInfoUrl
      */
     public void setMoreInfoUrl(String moreInfoUrl) {
         this.moreInfoUrl = moreInfoUrl;
@@ -120,18 +104,14 @@ public class DsError {
     }
 
     /**
-     * 
-     * @return
-     *     The stackTrace
+     * @return The stackTrace
      */
     public String getStackTrace() {
         return stackTrace;
     }
 
     /**
-     * 
-     * @param stackTrace
-     *     The stackTrace
+     * @param stackTrace The stackTrace
      */
     public void setStackTrace(String stackTrace) {
         this.stackTrace = stackTrace;

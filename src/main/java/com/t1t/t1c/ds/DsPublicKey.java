@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsPublicKey {
@@ -22,18 +22,14 @@ public class DsPublicKey {
     private String encryptedAesKey;
 
     /**
-     * 
-     * @return
-     *     The success
+     * @return The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * 
-     * @param success
-     *     The success
+     * @param success The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;
@@ -45,18 +41,14 @@ public class DsPublicKey {
     }
 
     /**
-     * 
-     * @return
-     *     The encryptedPublicKey
+     * @return The encryptedPublicKey
      */
     public String getEncryptedPublicKey() {
         return encryptedPublicKey;
     }
 
     /**
-     * 
-     * @param encryptedPublicKey
-     *     The encryptedPublicKey
+     * @param encryptedPublicKey The encryptedPublicKey
      */
     public void setEncryptedPublicKey(String encryptedPublicKey) {
         this.encryptedPublicKey = encryptedPublicKey;
@@ -68,18 +60,14 @@ public class DsPublicKey {
     }
 
     /**
-     * 
-     * @return
-     *     The encryptedAesKey
+     * @return The encryptedAesKey
      */
     public String getEncryptedAesKey() {
         return encryptedAesKey;
     }
 
     /**
-     * 
-     * @param encryptedAesKey
-     *     The encryptedAesKey
+     * @param encryptedAesKey The encryptedAesKey
      */
     public void setEncryptedAesKey(String encryptedAesKey) {
         this.encryptedAesKey = encryptedAesKey;

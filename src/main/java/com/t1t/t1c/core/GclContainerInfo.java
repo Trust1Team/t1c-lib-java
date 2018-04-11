@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.core;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.HashMap;
+import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class GclContainerInfo {
@@ -24,18 +24,14 @@ public class GclContainerInfo {
     private Status status;
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -47,18 +43,14 @@ public class GclContainerInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -70,18 +62,14 @@ public class GclContainerInfo {
     }
 
     /**
-     * 
-     * @return
-     *     The status
+     * @return The status
      */
     public Status getStatus() {
         return status;
     }
 
     /**
-     * 
-     * @param status
-     *     The status
+     * @param status The status
      */
     public void setStatus(Status status) {
         this.status = status;
@@ -127,22 +115,18 @@ public class GclContainerInfo {
         INSTALLED("INSTALLED"),
         @SerializedName("ERROR")
         ERROR("ERROR");
-        private final String value;
         private static Map<String, Status> constants = new HashMap<String, Status>();
 
         static {
-            for (Status c: values()) {
+            for (Status c : values()) {
                 constants.put(c.value, c);
             }
         }
 
+        private final String value;
+
         private Status(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         public static Status fromValue(String value) {
@@ -152,6 +136,11 @@ public class GclContainerInfo {
             } else {
                 return constant;
             }
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
         }
 
     }

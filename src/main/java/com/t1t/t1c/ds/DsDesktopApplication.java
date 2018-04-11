@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.ds;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.HashMap;
+import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class DsDesktopApplication {
@@ -21,18 +21,14 @@ public class DsDesktopApplication {
     private String version;
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public Name getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(Name name) {
         this.name = name;
@@ -44,18 +40,14 @@ public class DsDesktopApplication {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -95,22 +87,18 @@ public class DsDesktopApplication {
         JAVA("JAVA"),
         @SerializedName("DOTNET")
         DOTNET("DOTNET");
-        private final String value;
         private static Map<String, Name> constants = new HashMap<String, Name>();
 
         static {
-            for (Name c: values()) {
+            for (Name c : values()) {
                 constants.put(c.value, c);
             }
         }
 
+        private final String value;
+
         private Name(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         public static Name fromValue(String value) {
@@ -120,6 +108,11 @@ public class DsDesktopApplication {
             } else {
                 return constant;
             }
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
         }
 
     }

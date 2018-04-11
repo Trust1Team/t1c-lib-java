@@ -16,10 +16,10 @@ public class GclMobibSpatial {
     private Boolean routeDestination;
     @SerializedName("route_origin")
     @Expose
-    private Integer routeOrigin;
+    private Long routeOrigin;
     @SerializedName("type")
     @Expose
-    private Integer type;
+    private Long type;
 
     /**
      * @return The routeDestination
@@ -43,18 +43,18 @@ public class GclMobibSpatial {
     /**
      * @return The routeOrigin
      */
-    public Integer getRouteOrigin() {
+    public Long getRouteOrigin() {
         return routeOrigin;
     }
 
     /**
      * @param routeOrigin The route_origin
      */
-    public void setRouteOrigin(Integer routeOrigin) {
+    public void setRouteOrigin(Long routeOrigin) {
         this.routeOrigin = routeOrigin;
     }
 
-    public GclMobibSpatial withRouteOrigin(Integer routeOrigin) {
+    public GclMobibSpatial withRouteOrigin(Long routeOrigin) {
         this.routeOrigin = routeOrigin;
         return this;
     }
@@ -62,18 +62,18 @@ public class GclMobibSpatial {
     /**
      * @return The type
      */
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
     /**
      * @param type The type
      */
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
-    public GclMobibSpatial withType(Integer type) {
+    public GclMobibSpatial withType(Long type) {
         this.type = type;
         return this;
     }
@@ -93,7 +93,7 @@ public class GclMobibSpatial {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclMobibSpatial)) {
+        if ((other instanceof GclMobibSpatial) == false) {
             return false;
         }
         GclMobibSpatial rhs = ((GclMobibSpatial) other);

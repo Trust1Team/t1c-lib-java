@@ -15,19 +15,19 @@ public interface DsRestClient {
     Call<DsDevice> getDevice(@Path("deviceId") String deviceId);
 
     @PUT("devices/{deviceId}")
-    Call<DsToken> register(@Path("deviceId") String deviceId, @Body DsDeviceRegistrationRequest request);
+    Call<DsRegistrationSyncResponse> register(@Path("deviceId") String deviceId,
+                                              @Body DsDeviceRegistrationRequest request);
 
     @POST("devices/{deviceId}")
-    Call<DsToken> sync(@Path("deviceId") String deviceId, @Body DsDeviceRegistrationRequest request);
-
-    @GET("security/jwt/issue")
-    Call<DsToken> getJWT();
+    Call<DsRegistrationSyncResponse> sync(@Path("deviceId") String deviceId,
+                                          @Body DsDeviceRegistrationRequest request);
 
     @POST("security/jwt/refresh")
     Call<DsToken> refreshJWT(@Body DsTokenRefreshRequest request);
 
-    @GET("security/keys/public")
-    Call<DsPublicKey> getPubKey(@Query("encoding") String encoding);
+    @GET("security/keys/public/{deviceId}")
+    Call<DsPublicKey> getPubKey(@Path("deviceId") String deviceId,
+                                @Query("encoding") String encoding);
 
     @POST("download/gcl")
     Call<DsDownloadPath> getDownloadLink(@Body DsDownloadRequest request);

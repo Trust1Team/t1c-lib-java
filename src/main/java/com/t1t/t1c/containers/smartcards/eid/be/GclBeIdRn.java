@@ -70,7 +70,7 @@ public class GclBeIdRn {
     private String thirdName;
     @SerializedName("version")
     @Expose
-    private Integer version;
+    private Long version;
 
     /**
      * @return The birthDate
@@ -436,18 +436,18 @@ public class GclBeIdRn {
     /**
      * @return The version
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
     /**
      * @param version The version
      */
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public GclBeIdRn withVersion(Integer version) {
+    public GclBeIdRn withVersion(Long version) {
         this.version = version;
         return this;
     }
@@ -467,7 +467,7 @@ public class GclBeIdRn {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclBeIdRn)) {
+        if ((other instanceof GclBeIdRn) == false) {
             return false;
         }
         GclBeIdRn rhs = ((GclBeIdRn) other);

@@ -1,17 +1,13 @@
 package com.t1t.t1c.utils;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public final class UriUtils {
 
-    private UriUtils() {}
+    private UriUtils() {
+    }
 
     public static String uriFinalSlashAppender(String uri) {
         if (!uri.endsWith("/")) return uri + "/";

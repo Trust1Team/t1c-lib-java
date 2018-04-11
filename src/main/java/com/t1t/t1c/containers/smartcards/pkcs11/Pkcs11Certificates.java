@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
@@ -9,11 +9,11 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class SafeNetCertificates implements AllCertificates {
+public class Pkcs11Certificates implements AllCertificates {
 
     private List<T1cCertificate> certificates;
 
-    public SafeNetCertificates(List<T1cCertificate> certificates) {
+    public Pkcs11Certificates(List<T1cCertificate> certificates) {
         this.certificates = certificates;
     }
 
@@ -28,9 +28,9 @@ public class SafeNetCertificates implements AllCertificates {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SafeNetCertificates)) return false;
+        if (!(o instanceof Pkcs11Certificates)) return false;
 
-        SafeNetCertificates that = (SafeNetCertificates) o;
+        Pkcs11Certificates that = (Pkcs11Certificates) o;
 
         return certificates != null ? certificates.equals(that.certificates) : that.certificates == null;
     }
@@ -42,7 +42,7 @@ public class SafeNetCertificates implements AllCertificates {
 
     @Override
     public String toString() {
-        return "SafeNetCertificates{" +
+        return "Pkcs11Certificates{" +
                 "certificates=" + certificates +
                 '}';
     }

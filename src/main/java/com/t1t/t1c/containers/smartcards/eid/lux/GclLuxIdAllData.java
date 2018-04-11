@@ -184,7 +184,7 @@ public class GclLuxIdAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclLuxIdAllData)) {
+        if ((other instanceof GclLuxIdAllData) == false) {
             return false;
         }
         GclLuxIdAllData rhs = ((GclLuxIdAllData) other);

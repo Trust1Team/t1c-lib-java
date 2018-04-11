@@ -7,7 +7,8 @@
     "name": {
       "type": "string",
       "enum": [
-        "JAVA", "DOTNET"
+        "JAVA",
+        "DOTNET"
       ]
     },
     "version": {

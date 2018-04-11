@@ -28,11 +28,11 @@ public class GatewayAuthClient implements IGatewayAuthClient {
     @Override
     public String getToken() {
         if (token)
-        try {
-            return RestExecutor.executeCall(client.getToken(), false).getToken();
-        } catch (RestException ex) {
-            throw ExceptionFactory.authenticateException(ex.getMessage());
-        }
+            try {
+                return RestExecutor.executeCall(client.getToken(), false).getToken();
+            } catch (RestException ex) {
+                throw ExceptionFactory.authenticateException(ex.getMessage());
+            }
     }
 
     @Override

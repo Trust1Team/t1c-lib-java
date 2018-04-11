@@ -1,14 +1,14 @@
-
 package com.t1t.t1c.core;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.HashMap;
+import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class GclConsent {
@@ -21,7 +21,7 @@ public class GclConsent {
     private String text;
     @SerializedName("days")
     @Expose
-    private Integer days;
+    private Long days;
     @SerializedName("alert_level")
     @Expose
     private AlertLevel alertLevel;
@@ -33,21 +33,17 @@ public class GclConsent {
     private Type type;
     @SerializedName("timeout")
     @Expose
-    private Integer timeout;
+    private Long timeout;
 
     /**
-     * 
-     * @return
-     *     The title
+     * @return The title
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * 
-     * @param title
-     *     The title
+     * @param title The title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -59,18 +55,14 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The text
+     * @return The text
      */
     public String getText() {
         return text;
     }
 
     /**
-     * 
-     * @param text
-     *     The text
+     * @param text The text
      */
     public void setText(String text) {
         this.text = text;
@@ -82,41 +74,33 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The days
+     * @return The days
      */
-    public Integer getDays() {
+    public Long getDays() {
         return days;
     }
 
     /**
-     * 
-     * @param days
-     *     The days
+     * @param days The days
      */
-    public void setDays(Integer days) {
+    public void setDays(Long days) {
         this.days = days;
     }
 
-    public GclConsent withDays(Integer days) {
+    public GclConsent withDays(Long days) {
         this.days = days;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The alertLevel
+     * @return The alertLevel
      */
     public AlertLevel getAlertLevel() {
         return alertLevel;
     }
 
     /**
-     * 
-     * @param alertLevel
-     *     The alert_level
+     * @param alertLevel The alert_level
      */
     public void setAlertLevel(AlertLevel alertLevel) {
         this.alertLevel = alertLevel;
@@ -128,18 +112,14 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The alertPosition
+     * @return The alertPosition
      */
     public AlertPosition getAlertPosition() {
         return alertPosition;
     }
 
     /**
-     * 
-     * @param alertPosition
-     *     The alert_position
+     * @param alertPosition The alert_position
      */
     public void setAlertPosition(AlertPosition alertPosition) {
         this.alertPosition = alertPosition;
@@ -151,18 +131,14 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The type
+     * @return The type
      */
     public Type getType() {
         return type;
     }
 
     /**
-     * 
-     * @param type
-     *     The type
+     * @param type The type
      */
     public void setType(Type type) {
         this.type = type;
@@ -174,24 +150,20 @@ public class GclConsent {
     }
 
     /**
-     * 
-     * @return
-     *     The timeout
+     * @return The timeout
      */
-    public Integer getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
     /**
-     * 
-     * @param timeout
-     *     The timeout
+     * @param timeout The timeout
      */
-    public void setTimeout(Integer timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 
-    public GclConsent withTimeout(Integer timeout) {
+    public GclConsent withTimeout(Long timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -229,22 +201,18 @@ public class GclConsent {
         WARNING("warning"),
         @SerializedName("error")
         ERROR("error");
-        private final String value;
         private static Map<String, AlertLevel> constants = new HashMap<String, AlertLevel>();
 
         static {
-            for (AlertLevel c: values()) {
+            for (AlertLevel c : values()) {
                 constants.put(c.value, c);
             }
         }
 
+        private final String value;
+
         private AlertLevel(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         public static AlertLevel fromValue(String value) {
@@ -254,6 +222,11 @@ public class GclConsent {
             } else {
                 return constant;
             }
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
         }
 
     }
@@ -281,22 +254,18 @@ public class GclConsent {
         BOTTOM_LEFT("bottom_left"),
         @SerializedName("bottom_right")
         BOTTOM_RIGHT("bottom_right");
-        private final String value;
         private static Map<String, AlertPosition> constants = new HashMap<String, AlertPosition>();
 
         static {
-            for (AlertPosition c: values()) {
+            for (AlertPosition c : values()) {
                 constants.put(c.value, c);
             }
         }
 
+        private final String value;
+
         private AlertPosition(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         public static AlertPosition fromValue(String value) {
@@ -308,6 +277,11 @@ public class GclConsent {
             }
         }
 
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
     }
 
     @Generated("org.jsonschema2pojo")
@@ -317,22 +291,18 @@ public class GclConsent {
         READER("reader"),
         @SerializedName("file_exchange")
         FILE_EXCHANGE("file_exchange");
-        private final String value;
         private static Map<String, Type> constants = new HashMap<String, Type>();
 
         static {
-            for (Type c: values()) {
+            for (Type c : values()) {
                 constants.put(c.value, c);
             }
         }
 
+        private final String value;
+
         private Type(String value) {
             this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
         }
 
         public static Type fromValue(String value) {
@@ -342,6 +312,11 @@ public class GclConsent {
             } else {
                 return constant;
             }
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
         }
 
     }

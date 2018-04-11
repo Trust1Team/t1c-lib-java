@@ -138,7 +138,7 @@ public class GclAventraAllCertificates implements AllCertificates {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclAventraAllCertificates)) {
+        if ((other instanceof GclAventraAllCertificates) == false) {
             return false;
         }
         GclAventraAllCertificates rhs = ((GclAventraAllCertificates) other);

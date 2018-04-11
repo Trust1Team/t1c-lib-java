@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsContainerStorage {
@@ -22,18 +22,14 @@ public class DsContainerStorage {
     private String os;
 
     /**
-     * 
-     * @return
-     *     The hash
+     * @return The hash
      */
     public String getHash() {
         return hash;
     }
 
     /**
-     * 
-     * @param hash
-     *     The hash
+     * @param hash The hash
      */
     public void setHash(String hash) {
         this.hash = hash;
@@ -45,18 +41,14 @@ public class DsContainerStorage {
     }
 
     /**
-     * 
-     * @return
-     *     The storagePath
+     * @return The storagePath
      */
     public String getStoragePath() {
         return storagePath;
     }
 
     /**
-     * 
-     * @param storagePath
-     *     The storagePath
+     * @param storagePath The storagePath
      */
     public void setStoragePath(String storagePath) {
         this.storagePath = storagePath;
@@ -68,18 +60,14 @@ public class DsContainerStorage {
     }
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public String getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(String os) {
         this.os = os;

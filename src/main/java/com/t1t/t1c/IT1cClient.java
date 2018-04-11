@@ -10,8 +10,8 @@ import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -63,14 +63,12 @@ public interface IT1cClient {
 
     PtEIdContainer getPtIdContainer(GclReader reader);
 
-    SafeNetContainer getSafeNetContainer(GclReader reader);
+    Pkcs11Container getPkcs11Container(GclReader reader);
 
-    SafeNetContainer getSafeNetContainer(GclReader reader, ModuleConfiguration configuration);
+    Pkcs11Container getPkcs11Container(GclReader reader, ModuleConfiguration configuration);
 
     /*Functional containers*/
     ReaderApiContainer getReaderApiContainer(GclReader reader);
-
-    com.t1t.t1c.containers.readerapi.ReaderApiContainer getReaderApiContainer();
 
     /*DS Functionality*/
     String getDownloadLink();

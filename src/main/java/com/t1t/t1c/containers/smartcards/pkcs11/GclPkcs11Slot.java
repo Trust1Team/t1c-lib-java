@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,17 +9,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclSafeNetSlot {
+public class GclPkcs11Slot {
 
     @SerializedName("slot_id")
     @Expose
-    private Integer slotId;
+    private Long slotId;
     @SerializedName("description")
     @Expose
     private String description;
     @SerializedName("flags")
     @Expose
-    private Integer flags;
+    private Long flags;
     @SerializedName("hardware_version")
     @Expose
     private String hardwareVersion;
@@ -30,18 +30,18 @@ public class GclSafeNetSlot {
     /**
      * @return The slotId
      */
-    public Integer getSlotId() {
+    public Long getSlotId() {
         return slotId;
     }
 
     /**
      * @param slotId The slot_id
      */
-    public void setSlotId(Integer slotId) {
+    public void setSlotId(Long slotId) {
         this.slotId = slotId;
     }
 
-    public GclSafeNetSlot withSlotId(Integer slotId) {
+    public GclPkcs11Slot withSlotId(Long slotId) {
         this.slotId = slotId;
         return this;
     }
@@ -60,7 +60,7 @@ public class GclSafeNetSlot {
         this.description = description;
     }
 
-    public GclSafeNetSlot withDescription(String description) {
+    public GclPkcs11Slot withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -68,18 +68,18 @@ public class GclSafeNetSlot {
     /**
      * @return The flags
      */
-    public Integer getFlags() {
+    public Long getFlags() {
         return flags;
     }
 
     /**
      * @param flags The flags
      */
-    public void setFlags(Integer flags) {
+    public void setFlags(Long flags) {
         this.flags = flags;
     }
 
-    public GclSafeNetSlot withFlags(Integer flags) {
+    public GclPkcs11Slot withFlags(Long flags) {
         this.flags = flags;
         return this;
     }
@@ -98,7 +98,7 @@ public class GclSafeNetSlot {
         this.hardwareVersion = hardwareVersion;
     }
 
-    public GclSafeNetSlot withHardwareVersion(String hardwareVersion) {
+    public GclPkcs11Slot withHardwareVersion(String hardwareVersion) {
         this.hardwareVersion = hardwareVersion;
         return this;
     }
@@ -117,7 +117,7 @@ public class GclSafeNetSlot {
         this.firmwareVersion = firmwareVersion;
     }
 
-    public GclSafeNetSlot withFirmwareVersion(String firmwareVersion) {
+    public GclPkcs11Slot withFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;
         return this;
     }
@@ -137,10 +137,10 @@ public class GclSafeNetSlot {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclSafeNetSlot)) {
+        if ((other instanceof GclPkcs11Slot) == false) {
             return false;
         }
-        GclSafeNetSlot rhs = ((GclSafeNetSlot) other);
+        GclPkcs11Slot rhs = ((GclPkcs11Slot) other);
         return new EqualsBuilder().append(slotId, rhs.slotId).append(description, rhs.description).append(flags, rhs.flags).append(hardwareVersion, rhs.hardwareVersion).append(firmwareVersion, rhs.firmwareVersion).isEquals();
     }
 

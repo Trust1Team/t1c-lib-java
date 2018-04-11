@@ -96,7 +96,7 @@ public class GclLuxTrustAllCertificates implements AllCertificates {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclLuxTrustAllCertificates)) {
+        if ((other instanceof GclLuxTrustAllCertificates) == false) {
             return false;
         }
         GclLuxTrustAllCertificates rhs = ((GclLuxTrustAllCertificates) other);

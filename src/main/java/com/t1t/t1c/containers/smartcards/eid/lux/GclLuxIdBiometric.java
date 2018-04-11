@@ -269,7 +269,7 @@ public class GclLuxIdBiometric {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclLuxIdBiometric)) {
+        if ((other instanceof GclLuxIdBiometric) == false) {
             return false;
         }
         GclLuxIdBiometric rhs = ((GclLuxIdBiometric) other);

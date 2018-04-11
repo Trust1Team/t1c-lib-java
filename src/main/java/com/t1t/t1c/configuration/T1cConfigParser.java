@@ -1,10 +1,10 @@
 package com.t1t.t1c.configuration;
 
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
 import com.t1t.t1c.core.GclInfo;
+import com.t1t.t1c.ds.DsSyncResponseDto;
 import com.t1t.t1c.exceptions.ConfigException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.utils.UriUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -28,16 +28,12 @@ import java.util.Properties;
  */
 public class T1cConfigParser implements Serializable {
 
-    /*Logger*/
-    private static Logger log = LoggerFactory.getLogger(T1cConfigParser.class.getName());
-
     /*Uris*/
     private static final String URI_PROXY_DOMAIN = "https://apim.t1t.be";
     private static final String URI_GATEWAY_AUTH = URI_PROXY_DOMAIN + "/apiengineauth/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
     private static final String URI_OCV = URI_PROXY_DOMAIN + "/trust1team/ocv-api/v1";
     private static final String URI_DS = URI_PROXY_DOMAIN + "/trust1team/gclds/v1";
-
     /*Custom configurations*/
     private static final int DEFAULT_POLLING_INTERVAL = 5;
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
@@ -45,7 +41,8 @@ public class T1cConfigParser implements Serializable {
     private static final int DEFAULT_CONSENT_TIMEOUT = 25;
     private static final int DEFAULT_CONTAINER_DOWNLOAD_TIMEOUT = 30;
     private static final int DEFAULT_SESSION_TIMEOUT = 300;
-
+    /*Logger*/
+    private static Logger log = LoggerFactory.getLogger(T1cConfigParser.class.getName());
     private Config config;
     private LibConfig appConfig;
 
@@ -91,8 +88,9 @@ public class T1cConfigParser implements Serializable {
 
     /**
      * Parse the given configuration object and enrich it with the Core info
+     *
      * @param config library configuration object
-     * @param info core info
+     * @param info   core info
      * @return parsed and validated library configuration object
      */
     public LibConfig parseConfig(LibConfig config, GclInfo info) {
@@ -106,12 +104,14 @@ public class T1cConfigParser implements Serializable {
 
     /**
      * Parse the given configuration and enrich it with the JWT obtained from the DS
-     * @param config library configuration object
-     * @param gclJWt token obtained from the DS
+     *
+     * @param config       library configuration object
+     * @param syncResponse sync/registration response obtained from the DS
      * @return parsed and validated library configuration object
      */
-    public LibConfig parseConfig(LibConfig config, String gclJWt) {
-        config.setGclJwt(gclJWt);
+    public LibConfig parseConfig(LibConfig config, DsSyncResponseDto syncResponse) {
+        config.setGclJwt(syncResponse.getGclJwt());
+        config.setContextToken(syncResponse.getContextToken());
         setAppConfig(config);
         validateConfig();
         printAppConfig();

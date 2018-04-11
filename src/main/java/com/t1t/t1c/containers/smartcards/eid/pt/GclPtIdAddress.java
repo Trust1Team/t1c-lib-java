@@ -533,7 +533,7 @@ public class GclPtIdAddress {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclPtIdAddress)) {
+        if ((other instanceof GclPtIdAddress) == false) {
             return false;
         }
         GclPtIdAddress rhs = ((GclPtIdAddress) other);

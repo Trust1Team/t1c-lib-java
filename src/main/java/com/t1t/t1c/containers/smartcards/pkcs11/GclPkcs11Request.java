@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,14 +9,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclSafeNetRequest {
+public class GclPkcs11Request {
 
     @SerializedName("module")
     @Expose
     private String module;
     @SerializedName("slot_id")
     @Expose
-    private Integer slotId;
+    private Long slotId;
     @SerializedName("pin")
     @Expose
     private String pin;
@@ -35,7 +35,7 @@ public class GclSafeNetRequest {
         this.module = module;
     }
 
-    public GclSafeNetRequest withModule(String module) {
+    public GclPkcs11Request withModule(String module) {
         this.module = module;
         return this;
     }
@@ -43,18 +43,18 @@ public class GclSafeNetRequest {
     /**
      * @return The slotId
      */
-    public Integer getSlotId() {
+    public Long getSlotId() {
         return slotId;
     }
 
     /**
      * @param slotId The slot_id
      */
-    public void setSlotId(Integer slotId) {
+    public void setSlotId(Long slotId) {
         this.slotId = slotId;
     }
 
-    public GclSafeNetRequest withSlotId(Integer slotId) {
+    public GclPkcs11Request withSlotId(Long slotId) {
         this.slotId = slotId;
         return this;
     }
@@ -73,7 +73,7 @@ public class GclSafeNetRequest {
         this.pin = pin;
     }
 
-    public GclSafeNetRequest withPin(String pin) {
+    public GclPkcs11Request withPin(String pin) {
         this.pin = pin;
         return this;
     }
@@ -93,10 +93,10 @@ public class GclSafeNetRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclSafeNetRequest)) {
+        if ((other instanceof GclPkcs11Request) == false) {
             return false;
         }
-        GclSafeNetRequest rhs = ((GclSafeNetRequest) other);
+        GclPkcs11Request rhs = ((GclPkcs11Request) other);
         return new EqualsBuilder().append(module, rhs.module).append(slotId, rhs.slotId).append(pin, rhs.pin).isEquals();
     }
 

@@ -181,7 +181,7 @@ public class GclEmvApplicationData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclEmvApplicationData)) {
+        if ((other instanceof GclEmvApplicationData) == false) {
             return false;
         }
         GclEmvApplicationData rhs = ((GclEmvApplicationData) other);

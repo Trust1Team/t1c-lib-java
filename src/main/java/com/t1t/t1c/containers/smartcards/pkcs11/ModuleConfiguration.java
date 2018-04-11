@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

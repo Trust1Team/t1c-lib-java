@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsAtrList {
@@ -19,18 +19,14 @@ public class DsAtrList {
     private String storagePath;
 
     /**
-     * 
-     * @return
-     *     The hash
+     * @return The hash
      */
     public String getHash() {
         return hash;
     }
 
     /**
-     * 
-     * @param hash
-     *     The hash
+     * @param hash The hash
      */
     public void setHash(String hash) {
         this.hash = hash;
@@ -42,18 +38,14 @@ public class DsAtrList {
     }
 
     /**
-     * 
-     * @return
-     *     The storagePath
+     * @return The storagePath
      */
     public String getStoragePath() {
         return storagePath;
     }
 
     /**
-     * 
-     * @param storagePath
-     *     The storagePath
+     * @param storagePath The storagePath
      */
     public void setStoragePath(String storagePath) {
         this.storagePath = storagePath;

@@ -1,19 +1,19 @@
-
 package com.t1t.t1c.core;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
 public class GclError {
 
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private Long code;
     @SerializedName("description")
     @Expose
     private String description;
@@ -22,41 +22,33 @@ public class GclError {
     private Boolean success;
 
     /**
-     * 
-     * @return
-     *     The code
+     * @return The code
      */
-    public Integer getCode() {
+    public Long getCode() {
         return code;
     }
 
     /**
-     * 
-     * @param code
-     *     The code
+     * @param code The code
      */
-    public void setCode(Integer code) {
+    public void setCode(Long code) {
         this.code = code;
     }
 
-    public GclError withCode(Integer code) {
+    public GclError withCode(Long code) {
         this.code = code;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The description
+     * @return The description
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * 
-     * @param description
-     *     The description
+     * @param description The description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -68,18 +60,14 @@ public class GclError {
     }
 
     /**
-     * 
-     * @return
-     *     The success
+     * @return The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * 
-     * @param success
-     *     The success
+     * @param success The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;

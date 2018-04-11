@@ -7,6 +7,7 @@ package com.t1t.t1c.auth;
 public interface IGatewayAuthClient {
 
     String getToken();
+
     String refreshToken(String token);
 
 }

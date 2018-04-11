@@ -34,19 +34,19 @@ public class GclMobibCardIssuing {
     private String cardRevalidationDate;
     @SerializedName("card_type")
     @Expose
-    private Integer cardType;
+    private Long cardType;
     @SerializedName("company_id")
     @Expose
-    private Integer companyId;
+    private Long companyId;
     @SerializedName("gender")
     @Expose
-    private Integer gender;
+    private Long gender;
     @SerializedName("language")
     @Expose
-    private Integer language;
+    private Long language;
     @SerializedName("version")
     @Expose
-    private Integer version;
+    private Long version;
 
     /**
      * @return The cardExpirationDate
@@ -184,18 +184,18 @@ public class GclMobibCardIssuing {
     /**
      * @return The cardType
      */
-    public Integer getCardType() {
+    public Long getCardType() {
         return cardType;
     }
 
     /**
      * @param cardType The card_type
      */
-    public void setCardType(Integer cardType) {
+    public void setCardType(Long cardType) {
         this.cardType = cardType;
     }
 
-    public GclMobibCardIssuing withCardType(Integer cardType) {
+    public GclMobibCardIssuing withCardType(Long cardType) {
         this.cardType = cardType;
         return this;
     }
@@ -203,18 +203,18 @@ public class GclMobibCardIssuing {
     /**
      * @return The companyId
      */
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
     /**
      * @param companyId The company_id
      */
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
-    public GclMobibCardIssuing withCompanyId(Integer companyId) {
+    public GclMobibCardIssuing withCompanyId(Long companyId) {
         this.companyId = companyId;
         return this;
     }
@@ -222,18 +222,18 @@ public class GclMobibCardIssuing {
     /**
      * @return The gender
      */
-    public Integer getGender() {
+    public Long getGender() {
         return gender;
     }
 
     /**
      * @param gender The gender
      */
-    public void setGender(Integer gender) {
+    public void setGender(Long gender) {
         this.gender = gender;
     }
 
-    public GclMobibCardIssuing withGender(Integer gender) {
+    public GclMobibCardIssuing withGender(Long gender) {
         this.gender = gender;
         return this;
     }
@@ -241,18 +241,18 @@ public class GclMobibCardIssuing {
     /**
      * @return The language
      */
-    public Integer getLanguage() {
+    public Long getLanguage() {
         return language;
     }
 
     /**
      * @param language The language
      */
-    public void setLanguage(Integer language) {
+    public void setLanguage(Long language) {
         this.language = language;
     }
 
-    public GclMobibCardIssuing withLanguage(Integer language) {
+    public GclMobibCardIssuing withLanguage(Long language) {
         this.language = language;
         return this;
     }
@@ -260,18 +260,18 @@ public class GclMobibCardIssuing {
     /**
      * @return The version
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
     /**
      * @param version The version
      */
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public GclMobibCardIssuing withVersion(Integer version) {
+    public GclMobibCardIssuing withVersion(Long version) {
         this.version = version;
         return this;
     }
@@ -291,7 +291,7 @@ public class GclMobibCardIssuing {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclMobibCardIssuing)) {
+        if ((other instanceof GclMobibCardIssuing) == false) {
             return false;
         }
         GclMobibCardIssuing rhs = ((GclMobibCardIssuing) other);

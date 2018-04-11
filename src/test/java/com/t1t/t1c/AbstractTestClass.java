@@ -20,8 +20,8 @@ import com.t1t.t1c.containers.smartcards.ocra.GclOcraRestClient;
 import com.t1t.t1c.containers.smartcards.ocra.MockGclOcraRestClient;
 import com.t1t.t1c.containers.smartcards.piv.GclPivRestClient;
 import com.t1t.t1c.containers.smartcards.piv.MockGclPivRestClient;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRestClient;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.MockGclSafeNetRestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11RestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.MockGclPkcs11RestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.MockGclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
@@ -93,7 +93,7 @@ public abstract class AbstractTestClass {
     @Mock
     private GclPivRestClient gclPivRestClient;
     @Mock
-    private GclSafeNetRestClient gclSafeNetRestClient;
+    private GclPkcs11RestClient gclPkcs11RestClient;
     @Mock
     private GclAventraRestClient gclAventraRestClient;
     @Mock
@@ -130,8 +130,8 @@ public abstract class AbstractTestClass {
         return client;
     }
 
-    protected GclSafeNetRestClient getSafeNetRestClient() {
-        return gclSafeNetRestClient;
+    protected GclPkcs11RestClient getPkcs11RestClient() {
+        return gclPkcs11RestClient;
     }
 
     @After
@@ -188,7 +188,7 @@ public abstract class AbstractTestClass {
         expect(RestServiceBuilder.getContainerRestClient(config, GclMobibRestClient.class)).andReturn(gclMobibRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclOcraRestClient.class)).andReturn(gclOcraRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclPivRestClient.class)).andReturn(gclPivRestClient);
-        expect(RestServiceBuilder.getContainerRestClient(config, GclSafeNetRestClient.class)).andReturn(gclSafeNetRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(config, GclPkcs11RestClient.class)).andReturn(gclPkcs11RestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class)).andReturn(gclAventraRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class)).andReturn(gclLuxTrustRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class)).andReturn(gclOberthurRestClient);
@@ -209,7 +209,7 @@ public abstract class AbstractTestClass {
         gclMobibRestClient = new MockGclMobibRestClient(mockRestClient(GclMobibRestClient.class, config.getGclClientUri(), null, null));
         gclOcraRestClient = new MockGclOcraRestClient(mockRestClient(GclOcraRestClient.class, config.getGclClientUri(), null, null));
         gclPivRestClient = new MockGclPivRestClient(mockRestClient(GclPivRestClient.class, config.getGclClientUri(), null, null));
-        gclSafeNetRestClient = new MockGclSafeNetRestClient(mockRestClient(GclSafeNetRestClient.class, config.getGclClientUri(), null, null));
+        gclPkcs11RestClient = new MockGclPkcs11RestClient(mockRestClient(GclPkcs11RestClient.class, config.getGclClientUri(), null, null));
         gclAventraRestClient = new MockGclAventraRestClient(mockRestClient(GclAventraRestClient.class, config.getGclClientUri(), null, null));
         gclLuxTrustRestClient = new MockGclLuxTrustRestClient(mockRestClient(GclLuxTrustRestClient.class, config.getGclClientUri(), null, null));
         gclOberthurRestClient = new MockGclOberthurRestClient(mockRestClient(GclOberthurRestClient.class, config.getGclClientUri(), null, null));

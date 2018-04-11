@@ -159,7 +159,7 @@ public class GclDnieInfo {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclDnieInfo)) {
+        if ((other instanceof GclDnieInfo) == false) {
             return false;
         }
         GclDnieInfo rhs = ((GclDnieInfo) other);

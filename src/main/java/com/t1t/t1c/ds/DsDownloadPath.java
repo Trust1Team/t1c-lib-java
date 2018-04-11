@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsDownloadPath {
@@ -19,18 +19,14 @@ public class DsDownloadPath {
     private String fileName;
 
     /**
-     * 
-     * @return
-     *     The path
+     * @return The path
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * 
-     * @param path
-     *     The path
+     * @param path The path
      */
     public void setPath(String path) {
         this.path = path;
@@ -42,18 +38,14 @@ public class DsDownloadPath {
     }
 
     /**
-     * 
-     * @return
-     *     The fileName
+     * @return The fileName
      */
     public String getFileName() {
         return fileName;
     }
 
     /**
-     * 
-     * @param fileName
-     *     The fileName
+     * @param fileName The fileName
      */
     public void setFileName(String fileName) {
         this.fileName = fileName;

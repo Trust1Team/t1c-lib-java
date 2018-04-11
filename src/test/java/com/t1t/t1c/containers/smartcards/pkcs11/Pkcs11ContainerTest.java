@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
@@ -30,15 +30,15 @@ import static org.junit.Assert.*;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
-public class SafeNetContainerTest extends AbstractTestClass {
+public class Pkcs11ContainerTest extends AbstractTestClass {
 
-    private SafeNetContainer container;
+    private Pkcs11Container container;
 
     @Before
     public void initContainer() {
-        container = new SafeNetContainer(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true), getSafeNetRestClient());
+        container = new Pkcs11Container(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true), getPkcs11RestClient());
         try {
-            container = getClient().getSafeNetContainer(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true));
+            container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true));
         } catch (IllegalArgumentException ex) {
             // Do nothing
         }
@@ -57,20 +57,20 @@ public class SafeNetContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllData() {
-        SafeNetAllData data = container.getAllData();
+        Pkcs11AllData data = container.getAllData();
         assertNotNull(data);
         assertNotNull(data.getSlots());
     }
 
     @Test
     public void getAllDataFiltered() {
-        SafeNetAllData data = container.getAllData(Collections.singletonList(""));
+        Pkcs11AllData data = container.getAllData(Collections.singletonList(""));
         assertNotNull(data);
     }
 
     @Test
     public void getAllDataParsed() {
-        SafeNetAllData data = container.getAllData(true);
+        Pkcs11AllData data = container.getAllData(true);
         assertNotNull(data);
     }
 
@@ -116,7 +116,7 @@ public class SafeNetContainerTest extends AbstractTestClass {
 
     @Test
     public void getAllDataClass() {
-        assertEquals(SafeNetAllData.class, container.getAllDataClass());
+        assertEquals(Pkcs11AllData.class, container.getAllDataClass());
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -125,8 +125,8 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getSafeNetCertificates() {
-        SafeNetCertificates certs = container.getSafeNetCertificates(1, "1111");
+    public void getPkcs11Certificates() {
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111");
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
         assertNotNull(certs.getCertificates().get(0));
@@ -135,8 +135,8 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getSafeNetCertificatesParsed() {
-        SafeNetCertificates certs = container.getSafeNetCertificates(1, "1111", true);
+    public void getPkcs11CertificatesParsed() {
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111", true);
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
         assertNotNull(certs.getCertificates().get(0));
@@ -145,25 +145,25 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test(expected = VerifyPinException.class)
-    public void getSafeNetCertificatesWithWrongPin() {
-        SafeNetCertificates certs = container.getSafeNetCertificates(1, "1112");
+    public void getPkcs11CertificatesWithWrongPin() {
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1112");
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
     }
 
     @Test(expected = NullPointerException.class)
-    public void getSafeNetCertificatesWithoutSlotId() {
-        container.getSafeNetCertificates(null, "1111");
+    public void getPkcs11CertificatesWithoutSlotId() {
+        container.getPkcs11Certificates(null, "1111");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getSafeNetCertificatesWithoutPin() {
-        container.getSafeNetCertificates(1, null);
+    public void getPkcs11CertificatesWithoutPin() {
+        container.getPkcs11Certificates(1, null);
     }
 
     @Test
-    public void getSafeNetInfo() {
-        GclSafeNetInfo info = container.getSafeNetInfo();
+    public void getPkcs11Info() {
+        GclPkcs11Info info = container.getPkcs11Info();
         assertNotNull(info);
         assertNotNull(info.getCryptokiVersion());
         assertNotNull(info.getFlags());
@@ -173,8 +173,8 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getSafeNetSlots() {
-        List<GclSafeNetSlot> slots = container.getSafeNetSlots();
+    public void getPkcs11Slots() {
+        List<GclPkcs11Slot> slots = container.getPkcs11Slots();
         assertTrue(CollectionUtils.isNotEmpty(slots));
         assertEquals(2, slots.size());
         assertNotNull(slots.get(0));
@@ -186,16 +186,16 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void getSafeNetSlotsWithTokensPresentTrue() {
-        List<GclSafeNetSlot> slots = container.getSafeNetSlotsWithTokensPresent(true);
+    public void getPkcs11SlotsWithTokensPresentTrue() {
+        List<GclPkcs11Slot> slots = container.getPkcs11SlotsWithTokensPresent(true);
         assertTrue(CollectionUtils.isNotEmpty(slots));
         assertEquals(1, slots.size());
         assertEquals(Integer.valueOf(1), slots.get(0).getFlags());
     }
 
     @Test
-    public void getSafeNetSlotsWithTokensPresentFalse() {
-        List<GclSafeNetSlot> slots = container.getSafeNetSlotsWithTokensPresent(false);
+    public void getPkcs11SlotsWithTokensPresentFalse() {
+        List<GclPkcs11Slot> slots = container.getPkcs11SlotsWithTokensPresent(false);
         assertTrue(CollectionUtils.isNotEmpty(slots));
         assertEquals(1, slots.size());
         assertEquals(Integer.valueOf(0), slots.get(0).getFlags());
@@ -207,9 +207,9 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGclSafeNetInfo() {
-        GclSafeNetInfo info = MockResponseFactory.getGclSafeNetInfo();
-        GclSafeNetInfo info2 = MockResponseFactory.getGclSafeNetInfo();
+    public void testGclPkcs11Info() {
+        GclPkcs11Info info = MockResponseFactory.getGclPkcs11Info();
+        GclPkcs11Info info2 = MockResponseFactory.getGclPkcs11Info();
         assertEquals(info, info);
         assertEquals(info, info2);
         assertEquals(info.hashCode(), info2.hashCode());
@@ -229,9 +229,9 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGclSafeNetRequest() {
-        GclSafeNetRequest req = new GclSafeNetRequest();
-        GclSafeNetRequest req2 = new GclSafeNetRequest();
+    public void testGclPkcs11Request() {
+        GclPkcs11Request req = new GclPkcs11Request();
+        GclPkcs11Request req2 = new GclPkcs11Request();
         assertEquals(req, req);
         assertEquals(req, req2);
         assertEquals(req.hashCode(), req2.hashCode());
@@ -246,9 +246,9 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGclSafeNetSlot() {
-        GclSafeNetSlot slot = MockResponseFactory.getGclSafeNetSlotWithToken();
-        GclSafeNetSlot slot2 = MockResponseFactory.getGclSafeNetSlotWithToken();
+    public void testGclPkcs11Slot() {
+        GclPkcs11Slot slot = MockResponseFactory.getGclPkcs11SlotWithToken();
+        GclPkcs11Slot slot2 = MockResponseFactory.getGclPkcs11SlotWithToken();
         assertEquals(slot, slot);
         assertEquals(slot, slot2);
         assertEquals(slot.hashCode(), slot2.hashCode());
@@ -268,22 +268,22 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGclSafeNetAllData() {
-        SafeNetAllData data = container.getAllData();
-        SafeNetAllData data2 = container.getAllData();
+    public void testGclPkcs11AllData() {
+        Pkcs11AllData data = container.getAllData();
+        Pkcs11AllData data2 = container.getAllData();
         assertEquals(data, data);
         assertEquals(data.hashCode(), data2.hashCode());
         assertEquals(data, data2);
         assertTrue(StringUtils.isNotEmpty(data.toString()));
-        List<GclSafeNetSlot> slots = Arrays.asList(MockResponseFactory.getGclSafeNetSlotWithoutToken(), MockResponseFactory.getGclSafeNetSlotWithoutToken(), MockResponseFactory.getGclSafeNetSlotWithToken());
+        List<GclPkcs11Slot> slots = Arrays.asList(MockResponseFactory.getGclPkcs11SlotWithoutToken(), MockResponseFactory.getGclPkcs11SlotWithoutToken(), MockResponseFactory.getGclPkcs11SlotWithToken());
         data.setSlots(slots);
         assertEquals(slots, data.getSlots());
     }
 
     @Test
-    public void testGclSafeNetCertificates() {
-        SafeNetCertificates certs = container.getSafeNetCertificates(1, "1111");
-        SafeNetCertificates certs2 = container.getSafeNetCertificates(1, "1111");
+    public void testGclPkcs11Certificates() {
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111");
+        Pkcs11Certificates certs2 = container.getPkcs11Certificates(1, "1111");
         assertEquals(certs, certs);
         assertEquals(certs.hashCode(), certs2.hashCode());
         assertEquals(certs, certs2);
@@ -294,7 +294,7 @@ public class SafeNetContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void testSafeNetConfiguration() {
+    public void testPkcs11Configuration() {
         ModuleConfiguration conf = new ModuleConfiguration(Paths.get("linux"), Paths.get("mac"), Paths.get("win"));
         ModuleConfiguration conf1 = new ModuleConfiguration();
         ModuleConfiguration conf2 = new ModuleConfiguration();

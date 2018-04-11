@@ -21,8 +21,8 @@
       "version": "0.0.0.3"
     },
     {
-      "id": "safenet",
-      "name": "SafeNet",
+      "id": "pkcs11",
+      "name": "Pkcs11",
       "version": "0.0.0.2"
     },
     {

@@ -71,7 +71,7 @@ public class GclOcraChallengeData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclOcraChallengeData)) {
+        if ((other instanceof GclOcraChallengeData) == false) {
             return false;
         }
         GclOcraChallengeData rhs = ((GclOcraChallengeData) other);

@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.containers.readerapi;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclReaderApiApdu {
@@ -31,18 +31,14 @@ public class GclReaderApiApdu {
     private String le;
 
     /**
-     * 
-     * @return
-     *     The cla
+     * @return The cla
      */
     public String getCla() {
         return cla;
     }
 
     /**
-     * 
-     * @param cla
-     *     The cla
+     * @param cla The cla
      */
     public void setCla(String cla) {
         this.cla = cla;
@@ -54,18 +50,14 @@ public class GclReaderApiApdu {
     }
 
     /**
-     * 
-     * @return
-     *     The ins
+     * @return The ins
      */
     public String getIns() {
         return ins;
     }
 
     /**
-     * 
-     * @param ins
-     *     The ins
+     * @param ins The ins
      */
     public void setIns(String ins) {
         this.ins = ins;
@@ -77,18 +69,14 @@ public class GclReaderApiApdu {
     }
 
     /**
-     * 
-     * @return
-     *     The p1
+     * @return The p1
      */
     public String getP1() {
         return p1;
     }
 
     /**
-     * 
-     * @param p1
-     *     The p1
+     * @param p1 The p1
      */
     public void setP1(String p1) {
         this.p1 = p1;
@@ -100,18 +88,14 @@ public class GclReaderApiApdu {
     }
 
     /**
-     * 
-     * @return
-     *     The p2
+     * @return The p2
      */
     public String getP2() {
         return p2;
     }
 
     /**
-     * 
-     * @param p2
-     *     The p2
+     * @param p2 The p2
      */
     public void setP2(String p2) {
         this.p2 = p2;
@@ -123,18 +107,14 @@ public class GclReaderApiApdu {
     }
 
     /**
-     * 
-     * @return
-     *     The data
+     * @return The data
      */
     public String getData() {
         return data;
     }
 
     /**
-     * 
-     * @param data
-     *     The data
+     * @param data The data
      */
     public void setData(String data) {
         this.data = data;
@@ -146,18 +126,14 @@ public class GclReaderApiApdu {
     }
 
     /**
-     * 
-     * @return
-     *     The le
+     * @return The le
      */
     public String getLe() {
         return le;
     }
 
     /**
-     * 
-     * @param le
-     *     The le
+     * @param le The le
      */
     public void setLe(String le) {
         this.le = le;

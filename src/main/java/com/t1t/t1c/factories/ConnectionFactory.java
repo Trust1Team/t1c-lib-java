@@ -10,7 +10,7 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvRestClient;
 import com.t1t.t1c.containers.smartcards.mobib.GclMobibRestClient;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraRestClient;
 import com.t1t.t1c.containers.smartcards.piv.GclPivRestClient;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11RestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
@@ -47,7 +47,7 @@ public final class ConnectionFactory {
     private GclMobibRestClient gclMobibRestClient;
     private GclOcraRestClient gclOcraRestClient;
     private GclPivRestClient gclPivRestClient;
-    private GclSafeNetRestClient gclSafenetRestClient;
+    private GclPkcs11RestClient gclSafenetRestClient;
     private GclAventraRestClient gclAventraRestClient;
     private GclOberthurRestClient gclOberthurRestClient;
     private GclReaderApiRestClient gclReaderApiRestClient;
@@ -75,7 +75,7 @@ public final class ConnectionFactory {
         this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config, GclMobibRestClient.class);
         this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config, GclOcraRestClient.class);
         this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config, GclPivRestClient.class);
-        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclSafeNetRestClient.class);
+        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclPkcs11RestClient.class);
         this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class);
         this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class);
         this.gclReaderApiRestClient = RestServiceBuilder.getContainerRestClient(config, GclReaderApiRestClient.class);
@@ -138,7 +138,7 @@ public final class ConnectionFactory {
         return gclPivRestClient;
     }
 
-    public GclSafeNetRestClient getGclSafenetRestClient() {
+    public GclPkcs11RestClient getGclSafenetRestClient() {
         return gclSafenetRestClient;
     }
 

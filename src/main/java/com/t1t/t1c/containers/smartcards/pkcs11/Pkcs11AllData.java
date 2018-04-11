@@ -1,4 +1,5 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
+
 
 import com.t1t.t1c.model.AllData;
 
@@ -8,28 +9,28 @@ import java.util.List;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class SafeNetAllData implements AllData {
+public class Pkcs11AllData implements AllData {
 
-    private List<GclSafeNetSlot> slots;
+    private List<GclPkcs11Slot> slots;
 
-    public SafeNetAllData(List<GclSafeNetSlot> slots) {
+    public Pkcs11AllData(List<GclPkcs11Slot> slots) {
         this.slots = slots;
     }
 
-    public List<GclSafeNetSlot> getSlots() {
+    public List<GclPkcs11Slot> getSlots() {
         return slots;
     }
 
-    public void setSlots(List<GclSafeNetSlot> slots) {
+    public void setSlots(List<GclPkcs11Slot> slots) {
         this.slots = slots;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SafeNetAllData)) return false;
+        if (!(o instanceof Pkcs11AllData)) return false;
 
-        SafeNetAllData that = (SafeNetAllData) o;
+        Pkcs11AllData that = (Pkcs11AllData) o;
 
         return slots != null ? slots.equals(that.slots) : that.slots == null;
     }
@@ -41,7 +42,7 @@ public class SafeNetAllData implements AllData {
 
     @Override
     public String toString() {
-        return "SafeNetAllData{" +
+        return "Pkcs11AllData{" +
                 "slots=" + slots +
                 '}';
     }

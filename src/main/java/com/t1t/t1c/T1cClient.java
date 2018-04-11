@@ -14,14 +14,13 @@ import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.*;
-import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.RestException;
@@ -113,6 +112,7 @@ public class T1cClient implements IT1cClient {
 
     /**
      * Register or sync the device with the Distribution Service
+     *
      * @param currentInfo
      */
     private void initializeDevice(final GclInfo currentInfo) {
@@ -122,9 +122,9 @@ public class T1cClient implements IT1cClient {
             // If the GCL is managed package or the managed sync is set to true, register or sync the device
             if (!currentInfo.getManaged() || connFactory.getConfig().isSyncManaged()) {
                 try {
-                    String dsToken = getDsClient().registerOrSync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePublicKey));
+                    DsSyncResponseDto syncResponse = getDsClient().registerOrSync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePublicKey));
                     // Reset the connections with the newly obtained DS token
-                    connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), dsToken));
+                    connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
                 } catch (Exception ex) {
                     // If the package is managed, ignore the error: we made an attempt to sync, that is enough.
                     if (!currentInfo.getManaged()) {
@@ -137,7 +137,12 @@ public class T1cClient implements IT1cClient {
                 if (!currentInfo.getActivated()) {
                     log.info("Activated Core: {}", getCore().activate());
                 }
-
+                // Check if the DS public key is set
+                if (getCore().getDsPubKey() == null) {
+                    // Get the encrypted DS key for the device
+                    DsPublicKey dsPublicKey = getDsClient().getPublicKey(currentInfo.getUid());
+                    log.info("Loaded DS Public key: {}", getCore().setDsPubKey());
+                }
             }
         }
     }
@@ -145,6 +150,7 @@ public class T1cClient implements IT1cClient {
     /**
      * Determine if the client can sync or register. The client can attempt to register and/or sync if the configuration
      * has an URI for the Distribution Service and an API key
+     *
      * @return boolean value
      */
     private boolean canRegisterOrSync() {
@@ -254,19 +260,6 @@ public class T1cClient implements IT1cClient {
         return false;
     }
 
-    public String refreshJwt() {
-        String jwt = null;
-        try {
-            jwt = (StringUtils.isNotEmpty(connFactory.getConfig().getGclJwt())) ? getDsClient().refreshJWT(connFactory.getConfig().getGclJwt()) : getDsClient().getJWT();
-        } catch (DsClientException ex) {
-            log.error("Error happened during JWT refresh: ", ex);
-        }
-        if (StringUtils.isNotEmpty(jwt)) {
-            connFactory.getConfig().setGclJwt(jwt);
-        }
-        return jwt;
-    }
-
     @Override
     public ICore getCore() {
         return new Core(connFactory.getGclRestClient(), connFactory.getGclAdminRestClient(), connFactory.getGclCitrixRestClient(), connFactory.getConfig());
@@ -279,7 +272,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public IDsClient getDsClient() {
-        return new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
+        return new DsClient(connFactory.getDsRestClient());
     }
 
     @Override
@@ -343,23 +336,18 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public SafeNetContainer getSafeNetContainer(GclReader reader) {
-        return getSafeNetContainer(reader, new ModuleConfiguration());
+    public Pkcs11Container getPkcs11Container(GclReader reader) {
+        return getPkcs11Container(reader, new ModuleConfiguration());
     }
 
     @Override
-    public SafeNetContainer getSafeNetContainer(GclReader reader, ModuleConfiguration configuration) {
-        return new SafeNetContainer(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
+    public Pkcs11Container getPkcs11Container(GclReader reader, ModuleConfiguration configuration) {
+        return new Pkcs11Container(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
     }
 
     @Override
     public ReaderApiContainer getReaderApiContainer(GclReader reader) {
         return new ReaderApiContainer(connFactory.getConfig(), reader, connFactory.getGclReaderApiRestClient());
-    }
-
-    @Override
-    public com.t1t.t1c.containers.readerapi.ReaderApiContainer getReaderApiContainer() {
-        return new com.t1t.t1c.containers.readerapi.ReaderApiContainer();
     }
 
     @Override
@@ -404,8 +392,8 @@ public class T1cClient implements IT1cClient {
             case PT:
                 container = getPtIdContainer(reader);
                 break;
-            case SAFENET:
-                container = getSafeNetContainer(reader, new ModuleConfiguration());
+            case PKCS11:
+                container = getPkcs11Container(reader, new ModuleConfiguration());
                 break;
             default:
                 throw ExceptionFactory.genericContainerException("No generic container available for this reader");

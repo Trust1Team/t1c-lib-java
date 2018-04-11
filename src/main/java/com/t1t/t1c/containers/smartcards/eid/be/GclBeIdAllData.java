@@ -204,7 +204,7 @@ public class GclBeIdAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclBeIdAllData)) {
+        if ((other instanceof GclBeIdAllData) == false) {
             return false;
         }
         GclBeIdAllData rhs = ((GclBeIdAllData) other);

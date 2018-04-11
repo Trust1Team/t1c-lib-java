@@ -25,8 +25,8 @@ import com.t1t.t1c.containers.smartcards.piv.GclPivAllCertificates;
 import com.t1t.t1c.containers.smartcards.piv.GclPivAllData;
 import com.t1t.t1c.containers.smartcards.piv.GclPivFacialImage;
 import com.t1t.t1c.containers.smartcards.piv.GclPivPrintedInformation;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Info;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Slot;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
@@ -1507,26 +1507,26 @@ public final class MockResponseFactory {
     }
 
     //
-    // SafeNet responses
+    // Pkcs11 responses
     //
 
-    public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
-        return getSuccessResponse(getGclSafeNetInfo());
+    public static T1cResponse<GclPkcs11Info> getPkcs11InfoResponse() {
+        return getSuccessResponse(getGclPkcs11Info());
     }
 
-    public static T1cResponse<List<GclSafeNetSlot>> getSafeNetSlotsResponse(Boolean tokenPresent) {
-        List<GclSafeNetSlot> slots;
+    public static T1cResponse<List<GclPkcs11Slot>> getPkcs11SlotsResponse(Boolean tokenPresent) {
+        List<GclPkcs11Slot> slots;
         if (tokenPresent == null) {
-            slots = Arrays.asList(getGclSafeNetSlotWithToken(), getGclSafeNetSlotWithoutToken());
+            slots = Arrays.asList(getGclPkcs11SlotWithToken(), getGclPkcs11SlotWithoutToken());
         } else if (tokenPresent) {
-            slots = Collections.singletonList(getGclSafeNetSlotWithToken());
+            slots = Collections.singletonList(getGclPkcs11SlotWithToken());
         } else {
-            slots = Collections.singletonList(getGclSafeNetSlotWithoutToken());
+            slots = Collections.singletonList(getGclPkcs11SlotWithoutToken());
         }
         return getSuccessResponse(slots);
     }
 
-    public static T1cResponse<List<String>> getSafeNetCertificatesResponse(String pin) {
+    public static T1cResponse<List<String>> getPkcs11CertificatesResponse(String pin) {
         if (!"1111".equals(pin)) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
@@ -1534,36 +1534,36 @@ public final class MockResponseFactory {
                     "  \"success\": false\n" +
                     "}");
         }
-        return getSuccessResponse(getSafeNetCertificates());
+        return getSuccessResponse(getPkcs11Certificates());
     }
 
-    public static List<String> getSafeNetCertificates() {
-        //TODO - Return actual SafeNet test certificates
+    public static List<String> getPkcs11Certificates() {
+        //TODO - Return actual Pkcs11 test certificates
         return getLuxTrustRootCertificates();
     }
 
-    public static GclSafeNetInfo getGclSafeNetInfo() {
-        return new GclSafeNetInfo()
+    public static GclPkcs11Info getGclPkcs11Info() {
+        return new GclPkcs11Info()
                 .withCryptokiVersion("2.20")
-                .withManufacturerId("SafeNet, Inc.")
+                .withManufacturerId("Pkcs11, Inc.")
                 .withFlags(7)
-                .withLibraryDescription("SafeNet eToken PKCS#11")
+                .withLibraryDescription("Pkcs11 eToken PKCS#11")
                 .withLibraryVersion("9.1");
     }
 
-    public static GclSafeNetSlot getGclSafeNetSlotWithToken() {
-        return new GclSafeNetSlot()
+    public static GclPkcs11Slot getGclPkcs11SlotWithToken() {
+        return new GclPkcs11Slot()
                 .withSlotId(0)
-                .withDescription("SafeNet eToken 5100")
+                .withDescription("Pkcs11 eToken 5100")
                 .withFlags(1)
                 .withHardwareVersion("2.0")
                 .withFirmwareVersion("0.0");
     }
 
-    public static GclSafeNetSlot getGclSafeNetSlotWithoutToken() {
-        return new GclSafeNetSlot()
+    public static GclPkcs11Slot getGclPkcs11SlotWithoutToken() {
+        return new GclPkcs11Slot()
                 .withSlotId(0)
-                .withDescription("SafeNet eToken 5100")
+                .withDescription("Pkcs11 eToken 5100")
                 .withFlags(0)
                 .withHardwareVersion("2.0")
                 .withFirmwareVersion("0.0");

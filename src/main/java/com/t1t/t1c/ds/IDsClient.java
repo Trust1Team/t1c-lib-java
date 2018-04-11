@@ -27,14 +27,6 @@ public interface IDsClient {
     DsDevice getDevice(String deviceId) throws DsClientException;
 
     /**
-     * Returns a singed JWT for admin use cases on the T1C-GCL.
-     *
-     * @return the JWT
-     * @throws DsClientException: on failure
-     */
-    String getJWT() throws DsClientException;
-
-    /**
      * Refreshes (re-sign) a valid JWT.
      * The client should verify if JWT is about to expire.
      *
@@ -48,20 +40,22 @@ public interface IDsClient {
      * Retrieves the public key of the T1C-DS.
      * The key can be used for validation purposes.
      *
+     * @param deviceId the Device ID
      * @return the DS public key
      * @throws DsClientException: on failure
      */
-    String getPublicKey() throws DsClientException;
+    DsPublicKey getPublicKey(String deviceId) throws DsClientException;
 
     /**
      * Retrieves the public key of the T1C-DS.
      * The key can be used for validation purposes.
      *
+     * @param deviceId the device ID
      * @param encoding can be used for different certificate encoding
      * @return the DS public key
      * @throws DsClientException: on failure
      */
-    String getPublicKey(DsPublicKeyEncoding encoding) throws DsClientException;
+    DsPublicKey getPublicKey(String deviceId, DsPublicKeyEncoding encoding) throws DsClientException;
 
     /**
      * Returns the download link based on the provided platform information.
@@ -80,10 +74,10 @@ public interface IDsClient {
      *
      * @param deviceId the devide ID
      * @param request  the registration request
-     * @return a JWT
+     * @return the sync or registration response and the access token obtained from the headers
      * @throws DsClientException: on failure
      */
-    String registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
+    DsSyncResponseDto registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
 
     /**
      * Returns the download link based on the provided platform information.

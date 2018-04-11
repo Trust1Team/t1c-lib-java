@@ -1,39 +1,35 @@
-
 package com.t1t.t1c.containers.readerapi;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
 public class GclReaderApiOpenSessionRequest {
 
     @SerializedName("timeout")
     @Expose
-    private Integer timeout;
+    private Long timeout;
 
     /**
-     * 
-     * @return
-     *     The timeout
+     * @return The timeout
      */
-    public Integer getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
     /**
-     * 
-     * @param timeout
-     *     The timeout
+     * @param timeout The timeout
      */
-    public void setTimeout(Integer timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 
-    public GclReaderApiOpenSessionRequest withTimeout(Integer timeout) {
+    public GclReaderApiOpenSessionRequest withTimeout(Long timeout) {
         this.timeout = timeout;
         return this;
     }

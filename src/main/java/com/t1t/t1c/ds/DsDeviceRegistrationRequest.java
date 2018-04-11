@@ -1,15 +1,15 @@
-
 package com.t1t.t1c.ds;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.t1t.t1c.core.GclContainerInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class DsDeviceRegistrationRequest {
@@ -46,18 +46,14 @@ public class DsDeviceRegistrationRequest {
     private String proxyDomain;
 
     /**
-     * 
-     * @return
-     *     The managed
+     * @return The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * 
-     * @param managed
-     *     The managed
+     * @param managed The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -69,18 +65,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The activated
+     * @return The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * 
-     * @param activated
-     *     The activated
+     * @param activated The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -92,18 +84,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The uuid
+     * @return The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * 
-     * @param uuid
-     *     The uuid
+     * @param uuid The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -115,18 +103,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -138,18 +122,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The derEncodedPublicKey
+     * @return The derEncodedPublicKey
      */
     public String getDerEncodedPublicKey() {
         return derEncodedPublicKey;
     }
 
     /**
-     * 
-     * @param derEncodedPublicKey
-     *     The derEncodedPublicKey
+     * @param derEncodedPublicKey The derEncodedPublicKey
      */
     public void setDerEncodedPublicKey(String derEncodedPublicKey) {
         this.derEncodedPublicKey = derEncodedPublicKey;
@@ -161,18 +141,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public DsOs getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(DsOs os) {
         this.os = os;
@@ -184,18 +160,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The desktopApplication
+     * @return The desktopApplication
      */
     public DsDesktopApplication getDesktopApplication() {
         return desktopApplication;
     }
 
     /**
-     * 
-     * @param desktopApplication
-     *     The desktopApplication
+     * @param desktopApplication The desktopApplication
      */
     public void setDesktopApplication(DsDesktopApplication desktopApplication) {
         this.desktopApplication = desktopApplication;
@@ -207,18 +179,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The clientInfo
+     * @return The clientInfo
      */
     public DsClientInfo getClientInfo() {
         return clientInfo;
     }
 
     /**
-     * 
-     * @param clientInfo
-     *     The clientInfo
+     * @param clientInfo The clientInfo
      */
     public void setClientInfo(DsClientInfo clientInfo) {
         this.clientInfo = clientInfo;
@@ -230,18 +198,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The containerStates
+     * @return The containerStates
      */
     public List<GclContainerInfo> getContainerStates() {
         return containerStates;
     }
 
     /**
-     * 
-     * @param containerStates
-     *     The containerStates
+     * @param containerStates The containerStates
      */
     public void setContainerStates(List<GclContainerInfo> containerStates) {
         this.containerStates = containerStates;
@@ -253,18 +217,14 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The proxyDomain
+     * @return The proxyDomain
      */
     public String getProxyDomain() {
         return proxyDomain;
     }
 
     /**
-     * 
-     * @param proxyDomain
-     *     The proxyDomain
+     * @param proxyDomain The proxyDomain
      */
     public void setProxyDomain(String proxyDomain) {
         this.proxyDomain = proxyDomain;

@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ocv;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class OcvCertificateChainValidationResponse {
@@ -19,18 +19,14 @@ public class OcvCertificateChainValidationResponse {
     private OcvCrlResponse crlResponse;
 
     /**
-     * 
-     * @return
-     *     The ocspResponse
+     * @return The ocspResponse
      */
     public OcvOcspResponse getOcspResponse() {
         return ocspResponse;
     }
 
     /**
-     * 
-     * @param ocspResponse
-     *     The ocspResponse
+     * @param ocspResponse The ocspResponse
      */
     public void setOcspResponse(OcvOcspResponse ocspResponse) {
         this.ocspResponse = ocspResponse;
@@ -42,18 +38,14 @@ public class OcvCertificateChainValidationResponse {
     }
 
     /**
-     * 
-     * @return
-     *     The crlResponse
+     * @return The crlResponse
      */
     public OcvCrlResponse getCrlResponse() {
         return crlResponse;
     }
 
     /**
-     * 
-     * @param crlResponse
-     *     The crlResponse
+     * @param crlResponse The crlResponse
      */
     public void setCrlResponse(OcvCrlResponse crlResponse) {
         this.crlResponse = crlResponse;

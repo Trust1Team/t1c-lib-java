@@ -1,6 +1,6 @@
 package com.t1t.t1c.configuration;
 
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
 import com.t1t.t1c.utils.UriUtils;
 
 /**
@@ -28,7 +28,7 @@ public class LibConfig {
 
     private Boolean citrix;
     private Boolean consentRequired = false;
-    private String contextToken;
+    private Long contextToken;
     private String gatewayJwt;
     private String gclJwt;
 
@@ -52,7 +52,8 @@ public class LibConfig {
 
     // Dynamic properties
 
-    public LibConfig() {}
+    public LibConfig() {
+    }
 
     public String getVersion() {
         return version;
@@ -142,11 +143,11 @@ public class LibConfig {
         this.consentRequired = consentRequired;
     }
 
-    public String getContextToken() {
+    public Long getContextToken() {
         return contextToken;
     }
 
-    public void setContextToken(String contextToken) {
+    public void setContextToken(Long contextToken) {
         this.contextToken = contextToken;
     }
 

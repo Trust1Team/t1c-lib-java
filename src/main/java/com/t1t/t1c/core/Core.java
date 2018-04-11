@@ -24,7 +24,9 @@ import java.util.Map;
  * @Since 2017
  */
 public class Core extends AbstractCore {
+
     private static final Logger log = LoggerFactory.getLogger(Core.class);
+
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
     private GclCitrixRestClient gclCitrixRestClient;
@@ -63,8 +65,13 @@ public class Core extends AbstractCore {
     @Override
     public String getDsPubKey() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
+            return RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired());
         } catch (RestException ex) {
+            GclError error = ex.getGclError();
+            // If the error code returned is 201, that means the public has not been set (yet), return null
+            if (error != null && error.getCode() == 201) {
+                return null;
+            }
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
         }
     }

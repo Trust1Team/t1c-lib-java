@@ -181,7 +181,7 @@ public class GclPivPrintedInformation {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclPivPrintedInformation)) {
+        if ((other instanceof GclPivPrintedInformation) == false) {
             return false;
         }
         GclPivPrintedInformation rhs = ((GclPivPrintedInformation) other);

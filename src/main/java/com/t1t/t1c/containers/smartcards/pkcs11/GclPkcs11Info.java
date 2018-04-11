@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.smartcards.pkcs11.safenet;
+package com.t1t.t1c.containers.smartcards.pkcs11;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclSafeNetInfo {
+public class GclPkcs11Info {
 
     @SerializedName("cryptoki_version")
     @Expose
@@ -19,7 +19,7 @@ public class GclSafeNetInfo {
     private String manufacturerId;
     @SerializedName("flags")
     @Expose
-    private Integer flags;
+    private Long flags;
     @SerializedName("library_description")
     @Expose
     private String libraryDescription;
@@ -41,7 +41,7 @@ public class GclSafeNetInfo {
         this.cryptokiVersion = cryptokiVersion;
     }
 
-    public GclSafeNetInfo withCryptokiVersion(String cryptokiVersion) {
+    public GclPkcs11Info withCryptokiVersion(String cryptokiVersion) {
         this.cryptokiVersion = cryptokiVersion;
         return this;
     }
@@ -60,7 +60,7 @@ public class GclSafeNetInfo {
         this.manufacturerId = manufacturerId;
     }
 
-    public GclSafeNetInfo withManufacturerId(String manufacturerId) {
+    public GclPkcs11Info withManufacturerId(String manufacturerId) {
         this.manufacturerId = manufacturerId;
         return this;
     }
@@ -68,18 +68,18 @@ public class GclSafeNetInfo {
     /**
      * @return The flags
      */
-    public Integer getFlags() {
+    public Long getFlags() {
         return flags;
     }
 
     /**
      * @param flags The flags
      */
-    public void setFlags(Integer flags) {
+    public void setFlags(Long flags) {
         this.flags = flags;
     }
 
-    public GclSafeNetInfo withFlags(Integer flags) {
+    public GclPkcs11Info withFlags(Long flags) {
         this.flags = flags;
         return this;
     }
@@ -98,7 +98,7 @@ public class GclSafeNetInfo {
         this.libraryDescription = libraryDescription;
     }
 
-    public GclSafeNetInfo withLibraryDescription(String libraryDescription) {
+    public GclPkcs11Info withLibraryDescription(String libraryDescription) {
         this.libraryDescription = libraryDescription;
         return this;
     }
@@ -117,7 +117,7 @@ public class GclSafeNetInfo {
         this.libraryVersion = libraryVersion;
     }
 
-    public GclSafeNetInfo withLibraryVersion(String libraryVersion) {
+    public GclPkcs11Info withLibraryVersion(String libraryVersion) {
         this.libraryVersion = libraryVersion;
         return this;
     }
@@ -137,10 +137,10 @@ public class GclSafeNetInfo {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclSafeNetInfo)) {
+        if ((other instanceof GclPkcs11Info) == false) {
             return false;
         }
-        GclSafeNetInfo rhs = ((GclSafeNetInfo) other);
+        GclPkcs11Info rhs = ((GclPkcs11Info) other);
         return new EqualsBuilder().append(cryptokiVersion, rhs.cryptokiVersion).append(manufacturerId, rhs.manufacturerId).append(flags, rhs.flags).append(libraryDescription, rhs.libraryDescription).append(libraryVersion, rhs.libraryVersion).isEquals();
     }
 

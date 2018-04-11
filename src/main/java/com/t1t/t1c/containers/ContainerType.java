@@ -10,7 +10,7 @@ import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -101,11 +101,11 @@ public enum ContainerType {
             Collections.EMPTY_LIST,
             ReaderApiContainer.class,
             null),
-    SAFENET("safenet",
-            Collections.singletonList("SafeNet"),
+    PKCS11("pkcs11",
+            Arrays.asList("Pkcs11", "SafeNet"),
             Collections.EMPTY_LIST,
             Collections.EMPTY_LIST,
-            SafeNetContainer.class,
+            Pkcs11Container.class,
             AllData.class);
 
     private static final Map<String, ContainerType> idMap;

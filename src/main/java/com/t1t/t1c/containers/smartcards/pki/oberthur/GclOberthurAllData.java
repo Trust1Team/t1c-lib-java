@@ -138,7 +138,7 @@ public class GclOberthurAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclOberthurAllData)) {
+        if ((other instanceof GclOberthurAllData) == false) {
             return false;
         }
         GclOberthurAllData rhs = ((GclOberthurAllData) other);

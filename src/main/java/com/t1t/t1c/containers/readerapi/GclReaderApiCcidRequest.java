@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.containers.readerapi;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclReaderApiCcidRequest {
@@ -19,18 +19,14 @@ public class GclReaderApiCcidRequest {
     private String apdu;
 
     /**
-     * 
-     * @return
-     *     The feature
+     * @return The feature
      */
     public String getFeature() {
         return feature;
     }
 
     /**
-     * 
-     * @param feature
-     *     The feature
+     * @param feature The feature
      */
     public void setFeature(String feature) {
         this.feature = feature;
@@ -42,18 +38,14 @@ public class GclReaderApiCcidRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The apdu
+     * @return The apdu
      */
     public String getApdu() {
         return apdu;
     }
 
     /**
-     * 
-     * @param apdu
-     *     The apdu
+     * @param apdu The apdu
      */
     public void setApdu(String apdu) {
         this.apdu = apdu;

@@ -49,7 +49,7 @@ public class GclEmvAidRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclEmvAidRequest)) {
+        if ((other instanceof GclEmvAidRequest) == false) {
             return false;
         }
         GclEmvAidRequest rhs = ((GclEmvAidRequest) other);

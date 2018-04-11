@@ -1,59 +1,51 @@
-
 package com.t1t.t1c.containers.readerapi;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
 public class GclReaderApiCcidFeature {
 
     @SerializedName("control_code")
     @Expose
-    private Integer controlCode;
+    private Long controlCode;
     @SerializedName("id")
     @Expose
     private String id;
 
     /**
-     * 
-     * @return
-     *     The controlCode
+     * @return The controlCode
      */
-    public Integer getControlCode() {
+    public Long getControlCode() {
         return controlCode;
     }
 
     /**
-     * 
-     * @param controlCode
-     *     The control_code
+     * @param controlCode The control_code
      */
-    public void setControlCode(Integer controlCode) {
+    public void setControlCode(Long controlCode) {
         this.controlCode = controlCode;
     }
 
-    public GclReaderApiCcidFeature withControlCode(Integer controlCode) {
+    public GclReaderApiCcidFeature withControlCode(Long controlCode) {
         this.controlCode = controlCode;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The id
+     * @return The id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     * @param id The id
      */
     public void setId(String id) {
         this.id = id;

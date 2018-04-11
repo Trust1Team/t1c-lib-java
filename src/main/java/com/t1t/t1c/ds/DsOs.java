@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsOs {
@@ -22,18 +22,14 @@ public class DsOs {
     private String architecture;
 
     /**
-     * 
-     * @return
-     *     The name
+     * @return The name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     * @param name The name
      */
     public void setName(String name) {
         this.name = name;
@@ -45,18 +41,14 @@ public class DsOs {
     }
 
     /**
-     * 
-     * @return
-     *     The version
+     * @return The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * 
-     * @param version
-     *     The version
+     * @param version The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -68,18 +60,14 @@ public class DsOs {
     }
 
     /**
-     * 
-     * @return
-     *     The architecture
+     * @return The architecture
      */
     public String getArchitecture() {
         return architecture;
     }
 
     /**
-     * 
-     * @param architecture
-     *     The architecture
+     * @param architecture The architecture
      */
     public void setArchitecture(String architecture) {
         this.architecture = architecture;
