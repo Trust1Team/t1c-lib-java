@@ -36,12 +36,28 @@ public interface ICore {
     Boolean activate() throws GclCoreException;
 
     /**
-     * Retrieve the public key for the installed T1C-GCL.
+     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
      *
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    String getPubKey() throws GclCoreException;
+    String getDsPubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the device public key for the installed T1C-GCL.
+     *
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    String getDevicePubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the SSL public key for the installed T1C-GCL.
+     *
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    String getSslPubKey() throws GclCoreException;
 
     /**
      * Set the public key for the installed T1C-GCL.
@@ -51,7 +67,7 @@ public interface ICore {
      * @return true if successful
      * @throws GclCoreException: on failure
      */
-    Boolean setPubKey(String publicKey) throws GclCoreException;
+    Boolean setDsPubKey(String publicKey) throws GclCoreException;
 
     /**
      * Return T1C-GCL status information.

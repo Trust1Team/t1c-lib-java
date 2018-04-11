@@ -1,15 +1,15 @@
-package com.t1t.t1c.containers.remoteloading;
 
+package com.t1t.t1c.containers.readerapi;
+
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-
 @Generated("org.jsonschema2pojo")
-public class GclRemoteLoadingCcidFeature {
+public class GclReaderApiCcidFeature {
 
     @SerializedName("control_code")
     @Expose
@@ -19,39 +19,47 @@ public class GclRemoteLoadingCcidFeature {
     private String id;
 
     /**
-     * @return The controlCode
+     * 
+     * @return
+     *     The controlCode
      */
     public Integer getControlCode() {
         return controlCode;
     }
 
     /**
-     * @param controlCode The control_code
+     * 
+     * @param controlCode
+     *     The control_code
      */
     public void setControlCode(Integer controlCode) {
         this.controlCode = controlCode;
     }
 
-    public GclRemoteLoadingCcidFeature withControlCode(Integer controlCode) {
+    public GclReaderApiCcidFeature withControlCode(Integer controlCode) {
         this.controlCode = controlCode;
         return this;
     }
 
     /**
-     * @return The id
+     * 
+     * @return
+     *     The id
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id The id
+     * 
+     * @param id
+     *     The id
      */
     public void setId(String id) {
         this.id = id;
     }
 
-    public GclRemoteLoadingCcidFeature withId(String id) {
+    public GclReaderApiCcidFeature withId(String id) {
         this.id = id;
         return this;
     }
@@ -71,10 +79,10 @@ public class GclRemoteLoadingCcidFeature {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclRemoteLoadingCcidFeature)) {
+        if ((other instanceof GclReaderApiCcidFeature) == false) {
             return false;
         }
-        GclRemoteLoadingCcidFeature rhs = ((GclRemoteLoadingCcidFeature) other);
+        GclReaderApiCcidFeature rhs = ((GclReaderApiCcidFeature) other);
         return new EqualsBuilder().append(controlCode, rhs.controlCode).append(id, rhs.id).isEquals();
     }
 

@@ -1,8 +1,8 @@
 {
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "$id": "GclRemoteLoadingApdu",
-  "javaType": "com.t1t.t1c.containers.remoteloading.GclRemoteLoadingApdu",
+  "$id": "GclReaderApiApdu",
+  "javaType": "com.t1t.t1c.containers.readerapi.GclReaderApiApdu",
   "type": "object",
   "properties": {
     "cla": {

@@ -10,6 +10,10 @@ public class InitializationException extends AbstractSystemException {
         super(message);
     }
 
+    public InitializationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     @Override
     public Integer getHttpCode() {
         return ErrorCodes.HTTP_STATUS_CODE_SYSTEM_ERROR;

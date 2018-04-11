@@ -1,0 +1,17 @@
+{
+  "$id": "GclInfo",
+  "type": "object",
+  "javaType": "com.t1t.t1c.ds.DsClientInfo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "JAVA", "JAVASCRIPT"
+      ]
+    },
+    "version": {
+      "type": "string"
+    }
+  }
+}

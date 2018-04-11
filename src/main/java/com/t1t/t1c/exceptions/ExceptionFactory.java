@@ -100,6 +100,17 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Client initialization exception
+     *
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static InitializationException initializationException(String message, Throwable cause) {
+        return new InitializationException(message, cause);
+    }
+
+    /**
      * Creates a REST exception
      *
      * @param message

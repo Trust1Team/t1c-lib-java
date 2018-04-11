@@ -1,5 +1,5 @@
 
-package com.t1t.t1c.ds;
+package com.t1t.t1c.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,21 +11,24 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class DsDesktopApplication {
+public class GclContainerInfo {
 
     @SerializedName("name")
     @Expose
-    private Name name;
+    private String name;
     @SerializedName("version")
     @Expose
     private String version;
+    @SerializedName("status")
+    @Expose
+    private Status status;
 
     /**
      * 
      * @return
      *     The name
      */
-    public Name getName() {
+    public String getName() {
         return name;
     }
 
@@ -34,11 +37,11 @@ public class DsDesktopApplication {
      * @param name
      *     The name
      */
-    public void setName(Name name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public DsDesktopApplication withName(Name name) {
+    public GclContainerInfo withName(String name) {
         this.name = name;
         return this;
     }
@@ -61,8 +64,31 @@ public class DsDesktopApplication {
         this.version = version;
     }
 
-    public DsDesktopApplication withVersion(String version) {
+    public GclContainerInfo withVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The status
+     */
+    public Status getStatus() {
+        return status;
+    }
+
+    /**
+     * 
+     * @param status
+     *     The status
+     */
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public GclContainerInfo withStatus(Status status) {
+        this.status = status;
         return this;
     }
 
@@ -73,7 +99,7 @@ public class DsDesktopApplication {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).append(version).toHashCode();
+        return new HashCodeBuilder().append(name).append(version).append(status).toHashCode();
     }
 
     @Override
@@ -81,30 +107,36 @@ public class DsDesktopApplication {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDesktopApplication) == false) {
+        if ((other instanceof GclContainerInfo) == false) {
             return false;
         }
-        DsDesktopApplication rhs = ((DsDesktopApplication) other);
-        return new EqualsBuilder().append(name, rhs.name).append(version, rhs.version).isEquals();
+        GclContainerInfo rhs = ((GclContainerInfo) other);
+        return new EqualsBuilder().append(name, rhs.name).append(version, rhs.version).append(status, rhs.status).isEquals();
     }
 
     @Generated("org.jsonschema2pojo")
-    public static enum Name {
+    public static enum Status {
 
-        @SerializedName("JAVA")
-        JAVA("JAVA"),
-        @SerializedName("DOTNET")
-        DOTNET("DOTNET");
+        @SerializedName("DOWNLOAD_ERROR")
+        DOWNLOAD_ERROR("DOWNLOAD_ERROR"),
+        @SerializedName("INIT")
+        INIT("INIT"),
+        @SerializedName("DOWNLOADING")
+        DOWNLOADING("DOWNLOADING"),
+        @SerializedName("INSTALLED")
+        INSTALLED("INSTALLED"),
+        @SerializedName("ERROR")
+        ERROR("ERROR");
         private final String value;
-        private static Map<String, Name> constants = new HashMap<String, Name>();
+        private static Map<String, Status> constants = new HashMap<String, Status>();
 
         static {
-            for (Name c: values()) {
+            for (Status c: values()) {
                 constants.put(c.value, c);
             }
         }
 
-        private Name(String value) {
+        private Status(String value) {
             this.value = value;
         }
 
@@ -113,8 +145,8 @@ public class DsDesktopApplication {
             return this.value;
         }
 
-        public static Name fromValue(String value) {
-            Name constant = constants.get(value);
+        public static Status fromValue(String value) {
+            Status constant = constants.get(value);
             if (constant == null) {
                 throw new IllegalArgumentException(value);
             } else {

@@ -1,15 +1,15 @@
-package com.t1t.t1c.containers.remoteloading;
 
+package com.t1t.t1c.containers.readerapi;
+
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-
 @Generated("org.jsonschema2pojo")
-public class GclRemoteLoadingCcidRequest {
+public class GclReaderApiCcidRequest {
 
     @SerializedName("feature")
     @Expose
@@ -19,39 +19,47 @@ public class GclRemoteLoadingCcidRequest {
     private String apdu;
 
     /**
-     * @return The feature
+     * 
+     * @return
+     *     The feature
      */
     public String getFeature() {
         return feature;
     }
 
     /**
-     * @param feature The feature
+     * 
+     * @param feature
+     *     The feature
      */
     public void setFeature(String feature) {
         this.feature = feature;
     }
 
-    public GclRemoteLoadingCcidRequest withFeature(String feature) {
+    public GclReaderApiCcidRequest withFeature(String feature) {
         this.feature = feature;
         return this;
     }
 
     /**
-     * @return The apdu
+     * 
+     * @return
+     *     The apdu
      */
     public String getApdu() {
         return apdu;
     }
 
     /**
-     * @param apdu The apdu
+     * 
+     * @param apdu
+     *     The apdu
      */
     public void setApdu(String apdu) {
         this.apdu = apdu;
     }
 
-    public GclRemoteLoadingCcidRequest withApdu(String apdu) {
+    public GclReaderApiCcidRequest withApdu(String apdu) {
         this.apdu = apdu;
         return this;
     }
@@ -71,10 +79,10 @@ public class GclRemoteLoadingCcidRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclRemoteLoadingCcidRequest)) {
+        if ((other instanceof GclReaderApiCcidRequest) == false) {
             return false;
         }
-        GclRemoteLoadingCcidRequest rhs = ((GclRemoteLoadingCcidRequest) other);
+        GclReaderApiCcidRequest rhs = ((GclReaderApiCcidRequest) other);
         return new EqualsBuilder().append(feature, rhs.feature).append(apdu, rhs.apdu).isEquals();
     }
 

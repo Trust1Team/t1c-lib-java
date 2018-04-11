@@ -101,7 +101,7 @@ public final class RestServiceBuilder {
      */
     public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
         String uri;
-        if (config.getCitrix() && config.getAgentPort() != null) {
+        if (config.isCitrix() && config.getAgentPort() != null) {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + String.format(CITRIX_AGENT_PATH, config.getAgentPort()) + CONTAINER_CONTEXT_PATH);
         } else {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH);
@@ -259,19 +259,19 @@ public final class RestServiceBuilder {
                 }
             });
         }
-        if (config.isTokenCompatible()) {
-            okHttpBuilder.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder requestBuilder = chain.request().newBuilder();
-                    requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
-                    String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
-                    log.debug("client fingerprint: {}", fingerprint);
-                    requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
-                    return chain.proceed(requestBuilder.build());
-                }
-            });
-        }
+
+        okHttpBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request.Builder requestBuilder = chain.request().newBuilder();
+                requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
+                String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
+                log.debug("client fingerprint: {}", fingerprint);
+                requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
+                return chain.proceed(requestBuilder.build());
+            }
+        });
+
         // Set timeouts a little higher, because reading data from cards can take time
         // The timeout should also be greater than the consent timeout, otherwise an error will occur when exceeding it
         // As such the timeout should default to either 30 seconds or the default consent timeout + 1s

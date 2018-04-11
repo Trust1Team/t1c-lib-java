@@ -11,11 +11,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Generated("org.jsonschema2pojo")
-public class DsDesktopApplication {
+public class DsClientInfo {
 
-    @SerializedName("name")
+    @SerializedName("type")
     @Expose
-    private Name name;
+    private Type type;
     @SerializedName("version")
     @Expose
     private String version;
@@ -23,23 +23,23 @@ public class DsDesktopApplication {
     /**
      * 
      * @return
-     *     The name
+     *     The type
      */
-    public Name getName() {
-        return name;
+    public Type getType() {
+        return type;
     }
 
     /**
      * 
-     * @param name
-     *     The name
+     * @param type
+     *     The type
      */
-    public void setName(Name name) {
-        this.name = name;
+    public void setType(Type type) {
+        this.type = type;
     }
 
-    public DsDesktopApplication withName(Name name) {
-        this.name = name;
+    public DsClientInfo withType(Type type) {
+        this.type = type;
         return this;
     }
 
@@ -61,7 +61,7 @@ public class DsDesktopApplication {
         this.version = version;
     }
 
-    public DsDesktopApplication withVersion(String version) {
+    public DsClientInfo withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -73,7 +73,7 @@ public class DsDesktopApplication {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).append(version).toHashCode();
+        return new HashCodeBuilder().append(type).append(version).toHashCode();
     }
 
     @Override
@@ -81,30 +81,30 @@ public class DsDesktopApplication {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDesktopApplication) == false) {
+        if ((other instanceof DsClientInfo) == false) {
             return false;
         }
-        DsDesktopApplication rhs = ((DsDesktopApplication) other);
-        return new EqualsBuilder().append(name, rhs.name).append(version, rhs.version).isEquals();
+        DsClientInfo rhs = ((DsClientInfo) other);
+        return new EqualsBuilder().append(type, rhs.type).append(version, rhs.version).isEquals();
     }
 
     @Generated("org.jsonschema2pojo")
-    public static enum Name {
+    public static enum Type {
 
         @SerializedName("JAVA")
         JAVA("JAVA"),
-        @SerializedName("DOTNET")
-        DOTNET("DOTNET");
+        @SerializedName("JAVASCRIPT")
+        JAVASCRIPT("JAVASCRIPT");
         private final String value;
-        private static Map<String, Name> constants = new HashMap<String, Name>();
+        private static Map<String, Type> constants = new HashMap<String, Type>();
 
         static {
-            for (Name c: values()) {
+            for (Type c: values()) {
                 constants.put(c.value, c);
             }
         }
 
-        private Name(String value) {
+        private Type(String value) {
             this.value = value;
         }
 
@@ -113,8 +113,8 @@ public class DsDesktopApplication {
             return this.value;
         }
 
-        public static Name fromValue(String value) {
-            Name constant = constants.get(value);
+        public static Type fromValue(String value) {
+            Type constant = constants.get(value);
             if (constant == null) {
                 throw new IllegalArgumentException(value);
             } else {

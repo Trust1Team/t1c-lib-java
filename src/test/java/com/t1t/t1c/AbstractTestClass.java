@@ -2,8 +2,8 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingRestClient;
-import com.t1t.t1c.containers.remoteloading.MockGclRemoteLoadingRestClient;
+import com.t1t.t1c.containers.readerapi.GclReaderApiRestClient;
+import com.t1t.t1c.containers.readerapi.MockGclReaderApiRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.MockGclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
@@ -101,7 +101,7 @@ public abstract class AbstractTestClass {
     @Mock
     private GclOberthurRestClient gclOberthurRestClient;
     @Mock
-    private GclRemoteLoadingRestClient gclRemoteLoadingRestClient;
+    private GclReaderApiRestClient gclReaderApiRestClient;
     @Mock
     private GclCitrixRestClient gclCitrixRestClient;
 
@@ -192,7 +192,7 @@ public abstract class AbstractTestClass {
         expect(RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class)).andReturn(gclAventraRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclLuxTrustRestClient.class)).andReturn(gclLuxTrustRestClient);
         expect(RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class)).andReturn(gclOberthurRestClient);
-        expect(RestServiceBuilder.getContainerRestClient(config, GclRemoteLoadingRestClient.class)).andReturn(gclRemoteLoadingRestClient);
+        expect(RestServiceBuilder.getContainerRestClient(config, GclReaderApiRestClient.class)).andReturn(gclReaderApiRestClient);
     }
 
     private void mockRestClients() {
@@ -213,6 +213,6 @@ public abstract class AbstractTestClass {
         gclAventraRestClient = new MockGclAventraRestClient(mockRestClient(GclAventraRestClient.class, config.getGclClientUri(), null, null));
         gclLuxTrustRestClient = new MockGclLuxTrustRestClient(mockRestClient(GclLuxTrustRestClient.class, config.getGclClientUri(), null, null));
         gclOberthurRestClient = new MockGclOberthurRestClient(mockRestClient(GclOberthurRestClient.class, config.getGclClientUri(), null, null));
-        gclRemoteLoadingRestClient = new MockGclRemoteLoadingRestClient(mockRestClient(GclRemoteLoadingRestClient.class, config.getGclClientUri(), null, null));
+        gclReaderApiRestClient = new MockGclReaderApiRestClient(mockRestClient(GclReaderApiRestClient.class, config.getGclClientUri(), null, null));
     }
 }

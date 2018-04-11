@@ -1,7 +1,7 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingRestClient;
+import com.t1t.t1c.containers.readerapi.GclReaderApiRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;
@@ -50,7 +50,7 @@ public final class ConnectionFactory {
     private GclSafeNetRestClient gclSafenetRestClient;
     private GclAventraRestClient gclAventraRestClient;
     private GclOberthurRestClient gclOberthurRestClient;
-    private GclRemoteLoadingRestClient gclRemoteLoadingRestClient;
+    private GclReaderApiRestClient gclReaderApiRestClient;
 
     public ConnectionFactory(LibConfig config) {
         this.config = config;
@@ -78,7 +78,7 @@ public final class ConnectionFactory {
         this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclSafeNetRestClient.class);
         this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class);
         this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class);
-        this.gclRemoteLoadingRestClient = RestServiceBuilder.getContainerRestClient(config, GclRemoteLoadingRestClient.class);
+        this.gclReaderApiRestClient = RestServiceBuilder.getContainerRestClient(config, GclReaderApiRestClient.class);
     }
 
     /*Getters*/
@@ -150,8 +150,8 @@ public final class ConnectionFactory {
         return gclOberthurRestClient;
     }
 
-    public GclRemoteLoadingRestClient getGclRemoteLoadingRestClient() {
-        return gclRemoteLoadingRestClient;
+    public GclReaderApiRestClient getGclReaderApiRestClient() {
+        return gclReaderApiRestClient;
     }
 
     public LibConfig getConfig() {

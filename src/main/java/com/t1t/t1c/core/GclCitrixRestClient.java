@@ -36,9 +36,6 @@ public interface GclCitrixRestClient {
     @GET("plugins")
     Call<T1cResponse<List<GclContainer>>> getV1Containers() throws RestException;
 
-    @GET("containers")
-    Call<T1cResponse<List<GclContainer>>> getV2Containers() throws RestException;
-
     @GET("agent")
     Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;
 

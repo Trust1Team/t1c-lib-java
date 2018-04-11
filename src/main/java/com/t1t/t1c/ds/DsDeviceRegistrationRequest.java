@@ -1,72 +1,63 @@
+
 package com.t1t.t1c.ds;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.t1t.t1c.core.GclContainerInfo;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-
 @Generated("org.jsonschema2pojo")
 public class DsDeviceRegistrationRequest {
 
-    @SerializedName("os")
-    @Expose
-    private DsOs os;
     @SerializedName("managed")
     @Expose
     private Boolean managed;
-    @SerializedName("browser")
+    @SerializedName("activated")
     @Expose
-    private DsBrowser browser;
-    @SerializedName("desktopApplication")
-    @Expose
-    private DsDesktopApplication desktopApplication;
-    @SerializedName("ua")
-    @Expose
-    private String ua;
+    private Boolean activated;
     @SerializedName("uuid")
     @Expose
     private String uuid;
     @SerializedName("version")
     @Expose
     private String version;
-    @SerializedName("activated")
+    @SerializedName("derEncodedPublicKey")
     @Expose
-    private Boolean activated;
-    @SerializedName("manufacturer")
+    private String derEncodedPublicKey;
+    @SerializedName("os")
     @Expose
-    private String manufacturer;
+    private DsOs os;
+    @SerializedName("desktopApplication")
+    @Expose
+    private DsDesktopApplication desktopApplication;
+    @SerializedName("clientInfo")
+    @Expose
+    private DsClientInfo clientInfo;
+    @SerializedName("containerStates")
+    @Expose
+    private List<GclContainerInfo> containerStates = new ArrayList<GclContainerInfo>();
+    @SerializedName("proxyDomain")
+    @Expose
+    private String proxyDomain;
 
     /**
-     * @return The os
-     */
-    public DsOs getOs() {
-        return os;
-    }
-
-    /**
-     * @param os The os
-     */
-    public void setOs(DsOs os) {
-        this.os = os;
-    }
-
-    public DsDeviceRegistrationRequest withOs(DsOs os) {
-        this.os = os;
-        return this;
-    }
-
-    /**
-     * @return The managed
+     * 
+     * @return
+     *     The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * @param managed The managed
+     * 
+     * @param managed
+     *     The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -78,109 +69,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The browser
-     */
-    public DsBrowser getBrowser() {
-        return browser;
-    }
-
-    /**
-     * @param browser The browser
-     */
-    public void setBrowser(DsBrowser browser) {
-        this.browser = browser;
-    }
-
-    public DsDeviceRegistrationRequest withBrowser(DsBrowser browser) {
-        this.browser = browser;
-        return this;
-    }
-
-    /**
-     * @return The desktopApplication
-     */
-    public DsDesktopApplication getDesktopApplication() {
-        return desktopApplication;
-    }
-
-    /**
-     * @param desktopApplication The desktopApplication
-     */
-    public void setDesktopApplication(DsDesktopApplication desktopApplication) {
-        this.desktopApplication = desktopApplication;
-    }
-
-    public DsDeviceRegistrationRequest withDesktopApplication(DsDesktopApplication desktopApplication) {
-        this.desktopApplication = desktopApplication;
-        return this;
-    }
-
-    /**
-     * @return The ua
-     */
-    public String getUa() {
-        return ua;
-    }
-
-    /**
-     * @param ua The ua
-     */
-    public void setUa(String ua) {
-        this.ua = ua;
-    }
-
-    public DsDeviceRegistrationRequest withUa(String ua) {
-        this.ua = ua;
-        return this;
-    }
-
-    /**
-     * @return The uuid
-     */
-    public String getUuid() {
-        return uuid;
-    }
-
-    /**
-     * @param uuid The uuid
-     */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public DsDeviceRegistrationRequest withUuid(String uuid) {
-        this.uuid = uuid;
-        return this;
-    }
-
-    /**
-     * @return The version
-     */
-    public String getVersion() {
-        return version;
-    }
-
-    /**
-     * @param version The version
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public DsDeviceRegistrationRequest withVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
-     * @return The activated
+     * 
+     * @return
+     *     The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * @param activated The activated
+     * 
+     * @param activated
+     *     The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -192,21 +92,186 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The manufacturer
+     * 
+     * @return
+     *     The uuid
      */
-    public String getManufacturer() {
-        return manufacturer;
+    public String getUuid() {
+        return uuid;
     }
 
     /**
-     * @param manufacturer The manufacturer
+     * 
+     * @param uuid
+     *     The uuid
      */
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public DsDeviceRegistrationRequest withManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public DsDeviceRegistrationRequest withUuid(String uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The version
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * 
+     * @param version
+     *     The version
+     */
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public DsDeviceRegistrationRequest withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The derEncodedPublicKey
+     */
+    public String getDerEncodedPublicKey() {
+        return derEncodedPublicKey;
+    }
+
+    /**
+     * 
+     * @param derEncodedPublicKey
+     *     The derEncodedPublicKey
+     */
+    public void setDerEncodedPublicKey(String derEncodedPublicKey) {
+        this.derEncodedPublicKey = derEncodedPublicKey;
+    }
+
+    public DsDeviceRegistrationRequest withDerEncodedPublicKey(String derEncodedPublicKey) {
+        this.derEncodedPublicKey = derEncodedPublicKey;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The os
+     */
+    public DsOs getOs() {
+        return os;
+    }
+
+    /**
+     * 
+     * @param os
+     *     The os
+     */
+    public void setOs(DsOs os) {
+        this.os = os;
+    }
+
+    public DsDeviceRegistrationRequest withOs(DsOs os) {
+        this.os = os;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The desktopApplication
+     */
+    public DsDesktopApplication getDesktopApplication() {
+        return desktopApplication;
+    }
+
+    /**
+     * 
+     * @param desktopApplication
+     *     The desktopApplication
+     */
+    public void setDesktopApplication(DsDesktopApplication desktopApplication) {
+        this.desktopApplication = desktopApplication;
+    }
+
+    public DsDeviceRegistrationRequest withDesktopApplication(DsDesktopApplication desktopApplication) {
+        this.desktopApplication = desktopApplication;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The clientInfo
+     */
+    public DsClientInfo getClientInfo() {
+        return clientInfo;
+    }
+
+    /**
+     * 
+     * @param clientInfo
+     *     The clientInfo
+     */
+    public void setClientInfo(DsClientInfo clientInfo) {
+        this.clientInfo = clientInfo;
+    }
+
+    public DsDeviceRegistrationRequest withClientInfo(DsClientInfo clientInfo) {
+        this.clientInfo = clientInfo;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The containerStates
+     */
+    public List<GclContainerInfo> getContainerStates() {
+        return containerStates;
+    }
+
+    /**
+     * 
+     * @param containerStates
+     *     The containerStates
+     */
+    public void setContainerStates(List<GclContainerInfo> containerStates) {
+        this.containerStates = containerStates;
+    }
+
+    public DsDeviceRegistrationRequest withContainerStates(List<GclContainerInfo> containerStates) {
+        this.containerStates = containerStates;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The proxyDomain
+     */
+    public String getProxyDomain() {
+        return proxyDomain;
+    }
+
+    /**
+     * 
+     * @param proxyDomain
+     *     The proxyDomain
+     */
+    public void setProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
+    }
+
+    public DsDeviceRegistrationRequest withProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
         return this;
     }
 
@@ -217,7 +282,7 @@ public class DsDeviceRegistrationRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(os).append(managed).append(browser).append(desktopApplication).append(ua).append(uuid).append(version).append(activated).append(manufacturer).toHashCode();
+        return new HashCodeBuilder().append(managed).append(activated).append(uuid).append(version).append(derEncodedPublicKey).append(os).append(desktopApplication).append(clientInfo).append(containerStates).append(proxyDomain).toHashCode();
     }
 
     @Override
@@ -225,11 +290,11 @@ public class DsDeviceRegistrationRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsDeviceRegistrationRequest)) {
+        if ((other instanceof DsDeviceRegistrationRequest) == false) {
             return false;
         }
         DsDeviceRegistrationRequest rhs = ((DsDeviceRegistrationRequest) other);
-        return new EqualsBuilder().append(os, rhs.os).append(managed, rhs.managed).append(browser, rhs.browser).append(desktopApplication, rhs.desktopApplication).append(ua, rhs.ua).append(uuid, rhs.uuid).append(version, rhs.version).append(activated, rhs.activated).append(manufacturer, rhs.manufacturer).isEquals();
+        return new EqualsBuilder().append(managed, rhs.managed).append(activated, rhs.activated).append(uuid, rhs.uuid).append(version, rhs.version).append(derEncodedPublicKey, rhs.derEncodedPublicKey).append(os, rhs.os).append(desktopApplication, rhs.desktopApplication).append(clientInfo, rhs.clientInfo).append(containerStates, rhs.containerStates).append(proxyDomain, rhs.proxyDomain).isEquals();
     }
 
 }

@@ -22,6 +22,7 @@ public interface IConfig {
     String LIB_URIS_DS = "t1c.uris.dsUri";
     String LIB_URIS_GCL_CLIENT = "t1c.uris.gclClientUri";
     String LIB_URIS_OCV = "t1c.uris.ocvUri";
+    String LIB_URIS_PROXYDOMAIN = "t1c.uris.proxyDomain";
     
     //Auth
     

@@ -6,7 +6,6 @@ import com.t1t.t1c.configuration.T1cConfigParser;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -56,6 +55,7 @@ import java.util.List;
  */
 public class T1cClient implements IT1cClient {
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
+    private T1cConfigParser configParser;
     private ConnectionFactory connFactory;
 
     /*Constructors*/
@@ -80,58 +80,75 @@ public class T1cClient implements IT1cClient {
      */
     private void init(LibConfig config, Path toConfigurationFile) {
         // Configure
-        T1cConfigParser clientConfig = null;
+        this.configParser = null;
         if (config != null) {
-            clientConfig = new T1cConfigParser(config);
+            configParser = new T1cConfigParser(config);
         } else if (toConfigurationFile != null) {
-            clientConfig = new T1cConfigParser(toConfigurationFile);
+            configParser = new T1cConfigParser(toConfigurationFile);
         }
-        if ((clientConfig == null || clientConfig.getAppConfig() == null) && config == null) {
+        if ((configParser == null || configParser.getAppConfig() == null) && config == null) {
             throw ExceptionFactory.initializationException("Could not initialize config");
         }
-        LibConfig validatedConfig = clientConfig.getAppConfig();
+        LibConfig validatedConfig = configParser.getAppConfig();
         // Instantiate connections
         connFactory = new ConnectionFactory(validatedConfig);
-        // Set citrix from core info
+        // Get Core info, enrich config with core info and reset connection
         GclInfo gclInfo = getCore().getInfo();
-        validatedConfig.setCitrix(gclInfo.getCitrix());
-        validatedConfig.setConsentRequired(gclInfo.getConsent());
+        connFactory.setConfig(configParser.parseConfig(validatedConfig, gclInfo));
 
-        connFactory.setConfig(new T1cConfigParser(validatedConfig).getAppConfig());
+        // Attempt to register or sync device
+        initializeDevice(gclInfo);
 
-        // Set core, ds and ocv client
-
-        // Set generic service
-        //this.genericService = new GenericService(); //TODO implement generic service
 
         // Initialize public key for instance and register towards DS
-        if (StringUtils.isEmpty(config.getApiKey())) return;
-        try {
-            initSecurityContext();
-            registerAndActivate(gclInfo);
-        } catch (GclCoreException ex) {
-            throw ExceptionFactory.initializationException(ex.getMessage());
+        if (gclInfo.getManaged() || !StringUtils.isEmpty(validatedConfig.getApiKey())) {
+            try {
+                initSecurityContext();
+                registerAndActivate();
+            } catch (GclCoreException ex) {
+                throw ExceptionFactory.initializationException(ex.getMessage());
+            }
         }
     }
 
     /**
-     * Reset containers
-     *
-     * @return
+     * Register or sync the device with the Distribution Service
+     * @param currentInfo
      */
+    private void initializeDevice(final GclInfo currentInfo) {
+        if (canRegisterOrSync()) {
+            // If the device isn't activated, register it first and activate
+            String devicePublicKey = getCore().getDevicePubKey();
+            // If the GCL is managed package or the managed sync is set to true, register or sync the device
+            if (!currentInfo.getManaged() || connFactory.getConfig().isSyncManaged()) {
+                try {
+                    String dsToken = getDsClient().registerOrSync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePublicKey));
+                    // Reset the connections with the newly obtained DS token
+                    connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), dsToken));
+                } catch (Exception ex) {
+                    // If the package is managed, ignore the error: we made an attempt to sync, that is enough.
+                    if (!currentInfo.getManaged()) {
+                        throw ExceptionFactory.initializationException("Could not initialize the GCL: ", ex);
+                    }
+                }
+            }
+            // If the GCL isn't managed, active if necessary, set DS public key and sync container/CORS whitelist
+            if (!currentInfo.getManaged()) {
+                if (!currentInfo.getActivated()) {
+                    log.info("Activated Core: {}", getCore().activate());
+                }
 
+            }
+        }
+    }
 
-    public String exchangeApiKeyForToken() {
-        String jwt = null;
-        try {
-            jwt = getDsClient().getJWT();
-        } catch (DsClientException ex) {
-            log.error("Exception happened during JWT exchange: ", ex);
-        }
-        if (StringUtils.isNotEmpty(jwt)) {
-            connFactory.getConfig().setGclJwt(jwt);
-        }
-        return jwt;
+    /**
+     * Determine if the client can sync or register. The client can attempt to register and/or sync if the configuration
+     * has an URI for the Distribution Service and an API key
+     * @return boolean value
+     */
+    private boolean canRegisterOrSync() {
+        return StringUtils.isNoneEmpty(connFactory.getConfig().getApiKey(), connFactory.getConfig().getDsUri());
     }
 
     /**
@@ -140,13 +157,13 @@ public class T1cClient implements IT1cClient {
     private void initSecurityContext() {
         try {
             try {
-                getCore().getPubKey();
+                getCore().getDsPubKey();
             } catch (GclCoreException ex) {
                 if (ex.getCause() instanceof RestException) {
                     GclError error = ((RestException) ex.getCause()).getGclError();
                     if (error != null && error.getCode() == 201) {
                         String publicKey = getDsClient().getPublicKey();
-                        if (!getCore().setPubKey(publicKey)) {
+                        if (!getCore().setDsPubKey(publicKey)) {
                             throw ExceptionFactory.initializationException("Could not set GCL public key");
                         }
                     }
@@ -158,13 +175,36 @@ public class T1cClient implements IT1cClient {
         }
     }
 
+    private DsDeviceRegistrationRequest createRegistrationOrSyncRequest(GclInfo info, String devicePublicKey) {
+        PlatformInfo platformInfo = getCore().getPlatformInfo();
+        DsDeviceRegistrationRequest request = new DsDeviceRegistrationRequest()
+                .withManaged(info.getManaged())
+                .withActivated(info.getActivated())
+                .withUuid(info.getUid())
+                .withVersion(info.getVersion())
+                .withDerEncodedPublicKey(devicePublicKey)
+                .withOs(new DsOs()
+                        .withName(platformInfo.getOs().getName())
+                        .withArchitecture(platformInfo.getOs().getArchitecture())
+                        .withVersion(platformInfo.getOs().getVersion()))
+                .withDesktopApplication(new DsDesktopApplication()
+                        .withVersion(platformInfo.getJava().getVersion())
+                        .withName(DsDesktopApplication.Name.JAVA))
+                .withClientInfo(new DsClientInfo()
+                        .withType(DsClientInfo.Type.JAVA)
+                        .withVersion(platformInfo.getJava().getSpecificationVersion()))
+                .withContainerStates(info.getContainers())
+                .withProxyDomain(connFactory.getConfig().getProxyDomain());
+        return request;
+    }
+
     /**
      * Register and activate the GCL with the distribution server if necessary
      */
     private void registerAndActivate(GclInfo gclInfo) {
         PlatformInfo platformInfo = getCore().getPlatformInfo();
         LibConfig config = connFactory.getConfig();
-        config.setTokenCompatible(isTokenCompatible(gclInfo.getVersion()));
+
         connFactory.setConfig(config);
 
         DsDeviceRegistrationRequest registration = new DsDeviceRegistrationRequest()
@@ -181,7 +221,7 @@ public class T1cClient implements IT1cClient {
                 .withVersion(gclInfo.getVersion());
 
         if (!gclInfo.getActivated()) {
-            String token = getDsClient().register(gclInfo.getUid(), registration);
+            String token = getDsClient().registerOrSync(gclInfo.getUid(), registration);
             if (StringUtils.isNotBlank(token)) {
                 config.setGclJwt(token);
                 connFactory.setConfig(config);
@@ -190,11 +230,11 @@ public class T1cClient implements IT1cClient {
             gclInfo.setActivated(activated);
             registration.setActivated(activated);
             if (activated) {
-                getDsClient().register(gclInfo.getUid(), registration);
+                getDsClient().registerOrSync(gclInfo.getUid(), registration);
             }
 
         } else if (!gclInfo.getManaged()) {
-            getDsClient().register(gclInfo.getUid(), registration);
+            getDsClient().registerOrSync(gclInfo.getUid(), registration);
         }
     }
 
@@ -313,13 +353,13 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader) {
-        return new RemoteLoadingContainer(connFactory.getConfig(), reader, connFactory.getGclRemoteLoadingRestClient());
+    public ReaderApiContainer getReaderApiContainer(GclReader reader) {
+        return new ReaderApiContainer(connFactory.getConfig(), reader, connFactory.getGclReaderApiRestClient());
     }
 
     @Override
-    public ReaderApiContainer getReaderApiContainer() {
-        return new ReaderApiContainer();
+    public com.t1t.t1c.containers.readerapi.ReaderApiContainer getReaderApiContainer() {
+        return new com.t1t.t1c.containers.readerapi.ReaderApiContainer();
     }
 
     @Override

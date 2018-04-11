@@ -21,9 +21,6 @@ public interface GclRestClient {
     @GET("/v2")
     Call<T1cResponse<GclInfo>> getV2Status() throws RestException;
 
-    @GET("admin/certificate")
-    Call<T1cResponse<String>> getPublicKey() throws RestException;
-
     @GET("card-readers")
     Call<T1cResponse<List<GclReader>>> getCardReaders() throws RestException, NoConsentException;
 

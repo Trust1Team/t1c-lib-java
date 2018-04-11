@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.ds;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsToken {
@@ -16,14 +16,18 @@ public class DsToken {
     private String token;
 
     /**
-     * @return The token
+     * 
+     * @return
+     *     The token
      */
     public String getToken() {
         return token;
     }
 
     /**
-     * @param token The token
+     * 
+     * @param token
+     *     The token
      */
     public void setToken(String token) {
         this.token = token;
@@ -49,7 +53,7 @@ public class DsToken {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsToken)) {
+        if ((other instanceof DsToken) == false) {
             return false;
         }
         DsToken rhs = ((DsToken) other);

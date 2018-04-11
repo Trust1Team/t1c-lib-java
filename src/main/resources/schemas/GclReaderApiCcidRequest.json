@@ -1,8 +1,8 @@
 {
   "definitions": {},
   "$schema": "http://json-schema.org/draft-06/schema#",
-  "$id": "GclRemoteLoadingCcidRequest",
-  "javaType": "com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidRequest",
+  "$id": "GclReaderApiCcidRequest",
+  "javaType": "com.t1t.t1c.containers.readerapi.GclReaderApiCcidRequest",
   "type": "object",
   "properties": {
     "feature": {

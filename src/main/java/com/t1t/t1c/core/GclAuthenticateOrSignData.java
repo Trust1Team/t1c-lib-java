@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.core;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclAuthenticateOrSignData {
@@ -22,14 +22,18 @@ public class GclAuthenticateOrSignData {
     private String pin;
 
     /**
-     * @return The algorithmReference
+     * 
+     * @return
+     *     The algorithmReference
      */
     public String getAlgorithmReference() {
         return algorithmReference;
     }
 
     /**
-     * @param algorithmReference The algorithm_reference
+     * 
+     * @param algorithmReference
+     *     The algorithm_reference
      */
     public void setAlgorithmReference(String algorithmReference) {
         this.algorithmReference = algorithmReference;
@@ -41,14 +45,18 @@ public class GclAuthenticateOrSignData {
     }
 
     /**
-     * @return The data
+     * 
+     * @return
+     *     The data
      */
     public String getData() {
         return data;
     }
 
     /**
-     * @param data The data
+     * 
+     * @param data
+     *     The data
      */
     public void setData(String data) {
         this.data = data;
@@ -60,14 +68,18 @@ public class GclAuthenticateOrSignData {
     }
 
     /**
-     * @return The pin
+     * 
+     * @return
+     *     The pin
      */
     public String getPin() {
         return pin;
     }
 
     /**
-     * @param pin The pin
+     * 
+     * @param pin
+     *     The pin
      */
     public void setPin(String pin) {
         this.pin = pin;
@@ -93,7 +105,7 @@ public class GclAuthenticateOrSignData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclAuthenticateOrSignData)) {
+        if ((other instanceof GclAuthenticateOrSignData) == false) {
             return false;
         }
         GclAuthenticateOrSignData rhs = ((GclAuthenticateOrSignData) other);

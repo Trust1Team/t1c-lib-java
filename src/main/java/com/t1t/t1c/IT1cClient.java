@@ -2,7 +2,6 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -69,9 +68,9 @@ public interface IT1cClient {
     SafeNetContainer getSafeNetContainer(GclReader reader, ModuleConfiguration configuration);
 
     /*Functional containers*/
-    RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader);
+    ReaderApiContainer getReaderApiContainer(GclReader reader);
 
-    ReaderApiContainer getReaderApiContainer();
+    com.t1t.t1c.containers.readerapi.ReaderApiContainer getReaderApiContainer();
 
     /*DS Functionality*/
     String getDownloadLink();

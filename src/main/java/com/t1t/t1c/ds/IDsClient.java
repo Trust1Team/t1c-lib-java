@@ -75,15 +75,15 @@ public interface IDsClient {
     String getDownloadLink(PlatformInfo info) throws DsClientException;
 
     /**
-     * Registers or synchronized a device towards the T1C-DS.
-     * Public properties are send in order to determine operating system browser, ...
+     * Registers or synchronize a device towards the T1C-DS.
+     * Public properties are send in order to determine operating system, client, desktop application, ...
      *
      * @param deviceId the devide ID
      * @param request  the registration request
      * @return a JWT
      * @throws DsClientException: on failure
      */
-    String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
+    String registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
 
     /**
      * Returns the download link based on the provided platform information.

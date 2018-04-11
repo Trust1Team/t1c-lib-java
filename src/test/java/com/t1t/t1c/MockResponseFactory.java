@@ -1,8 +1,8 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidFeature;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCommand;
+import com.t1t.t1c.containers.readerapi.GclReaderApiCcidFeature;
+import com.t1t.t1c.containers.readerapi.GclReaderApiCommand;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllData;
@@ -668,61 +668,61 @@ public final class MockResponseFactory {
     // Remote loading responses
     //
 
-    public static T1cResponse<String> getRemoteLoadingAtrResponse() {
-        return getSuccessResponse(getRemoteLoadingAtr());
+    public static T1cResponse<String> getReaderApiAtrResponse() {
+        return getSuccessResponse(getReaderApiAtr());
     }
 
-    public static T1cResponse<GclRemoteLoadingCommand> getRemoteLoadingCommandResponse() {
-        return getSuccessResponse(getGclRemoteLoadingCommand(0));
+    public static T1cResponse<GclReaderApiCommand> getReaderApiCommandResponse() {
+        return getSuccessResponse(getGclReaderApiCommand(0));
     }
 
-    public static T1cResponse<List<GclRemoteLoadingCommand>> getRemoteLoadingCommandsResponses(int amountOfCommands) {
-        List<GclRemoteLoadingCommand> remoteLoadingCommands = new ArrayList<>();
+    public static T1cResponse<List<GclReaderApiCommand>> getReaderApiCommandsResponses(int amountOfCommands) {
+        List<GclReaderApiCommand> readerApiCommands = new ArrayList<>();
         for (int i = 0; i < amountOfCommands; i++) {
-            remoteLoadingCommands.add(getGclRemoteLoadingCommand(i));
+            readerApiCommands.add(getGclReaderApiCommand(i));
         }
-        return getSuccessResponse(remoteLoadingCommands);
+        return getSuccessResponse(readerApiCommands);
     }
 
-    public static T1cResponse<List<GclRemoteLoadingCcidFeature>> getRemoteLoadingCcidFeaturesResponse() {
-        return getSuccessResponse(getGclRemoteLoadingCcidFeatures());
+    public static T1cResponse<List<GclReaderApiCcidFeature>> getReaderApiCcidFeaturesResponse() {
+        return getSuccessResponse(getGclReaderApiCcidFeatures());
     }
 
-    public static T1cResponse<Boolean> getRemoteLoadingIsPresentResponse() {
+    public static T1cResponse<Boolean> getReaderApiIsPresentResponse() {
         return getSuccessResponse(true);
     }
 
-    public static T1cResponse<String> getRemoteLoadingOpenSessionResponse() {
-        return getSuccessResponse(getRemoteLoadingSessionId());
+    public static T1cResponse<String> getReaderApiOpenSessionResponse() {
+        return getSuccessResponse(getReaderApiSessionId());
     }
 
-    public static T1cResponse<String> getRemoteLoadingCloseSessionResponse(String sessionId) {
+    public static T1cResponse<String> getReaderApiCloseSessionResponse(String sessionId) {
         return getSuccessResponse(sessionId);
     }
 
-    public static String getRemoteLoadingSessionId() {
+    public static String getReaderApiSessionId() {
         return "sessionId";
     }
 
-    public static List<GclRemoteLoadingCcidFeature> getGclRemoteLoadingCcidFeatures() {
-        List<GclRemoteLoadingCcidFeature> features = new ArrayList<>();
-        features.add(new GclRemoteLoadingCcidFeature()
+    public static List<GclReaderApiCcidFeature> getGclReaderApiCcidFeatures() {
+        List<GclReaderApiCcidFeature> features = new ArrayList<>();
+        features.add(new GclReaderApiCcidFeature()
                 .withId("VERIFY_PIN_DIRECT")
                 .withControlCode(1));
-        features.add(new GclRemoteLoadingCcidFeature()
+        features.add(new GclReaderApiCcidFeature()
                 .withId("MODIFY_PIN_DIRECT")
                 .withControlCode(2));
         return features;
     }
 
-    public static GclRemoteLoadingCommand getGclRemoteLoadingCommand(int txIncrement) {
-        return new GclRemoteLoadingCommand()
+    public static GclReaderApiCommand getGclReaderApiCommand(int txIncrement) {
+        return new GclReaderApiCommand()
                 .withRx("RESPONSE_DATA")
                 .withTx("00B00000B" + txIncrement)
                 .withSw("9000");
     }
 
-    public static String getRemoteLoadingAtr() {
+    public static String getReaderApiAtr() {
         return "3B8F800180318065B0850300EF120FFF82900073";
     }
 

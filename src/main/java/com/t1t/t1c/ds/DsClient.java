@@ -17,11 +17,9 @@ import org.apache.commons.lang3.StringUtils;
 public class DsClient implements IDsClient {
 
     private DsRestClient dsRestClient;
-    private LibConfig config;
 
-    public DsClient(DsRestClient dsRestClient, LibConfig config) {
+    public DsClient(DsRestClient dsRestClient) {
         this.dsRestClient = dsRestClient;
-        this.config = config;
     }
 
     @Override
@@ -100,7 +98,7 @@ public class DsClient implements IDsClient {
                             .withVersion(info.getOs().getVersion()));
             DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false);
             if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
+                return null;//UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
             } else return null;
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
@@ -108,7 +106,7 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+    public String registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
             if (!request.getActivated()) {
                 return RestExecutor.executeCall(dsRestClient.register(deviceId, request), false).getToken();

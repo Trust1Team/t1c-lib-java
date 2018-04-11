@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.ds;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsSystemStatus {
@@ -58,14 +58,18 @@ public class DsSystemStatus {
     private Boolean securityPrivateKeyAvailable;
 
     /**
-     * @return The configFile
+     * 
+     * @return
+     *     The configFile
      */
     public String getConfigFile() {
         return configFile;
     }
 
     /**
-     * @param configFile The configFile
+     * 
+     * @param configFile
+     *     The configFile
      */
     public void setConfigFile(String configFile) {
         this.configFile = configFile;
@@ -77,14 +81,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The build
+     * 
+     * @return
+     *     The build
      */
     public String getBuild() {
         return build;
     }
 
     /**
-     * @param build The build
+     * 
+     * @param build
+     *     The build
      */
     public void setBuild(String build) {
         this.build = build;
@@ -96,14 +104,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The version
+     * 
+     * @return
+     *     The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * @param version The version
+     * 
+     * @param version
+     *     The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -115,14 +127,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The environemnt
+     * 
+     * @return
+     *     The environemnt
      */
     public String getEnvironemnt() {
         return environemnt;
     }
 
     /**
-     * @param environemnt The environemnt
+     * 
+     * @param environemnt
+     *     The environemnt
      */
     public void setEnvironemnt(String environemnt) {
         this.environemnt = environemnt;
@@ -134,14 +150,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The storageAppName
+     * 
+     * @return
+     *     The storageAppName
      */
     public String getStorageAppName() {
         return storageAppName;
     }
 
     /**
-     * @param storageAppName The storageAppName
+     * 
+     * @param storageAppName
+     *     The storageAppName
      */
     public void setStorageAppName(String storageAppName) {
         this.storageAppName = storageAppName;
@@ -153,14 +173,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The storageServiceAccount
+     * 
+     * @return
+     *     The storageServiceAccount
      */
     public String getStorageServiceAccount() {
         return storageServiceAccount;
     }
 
     /**
-     * @param storageServiceAccount The storageServiceAccount
+     * 
+     * @param storageServiceAccount
+     *     The storageServiceAccount
      */
     public void setStorageServiceAccount(String storageServiceAccount) {
         this.storageServiceAccount = storageServiceAccount;
@@ -172,14 +196,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The storageCertPath
+     * 
+     * @return
+     *     The storageCertPath
      */
     public String getStorageCertPath() {
         return storageCertPath;
     }
 
     /**
-     * @param storageCertPath The storageCertPath
+     * 
+     * @param storageCertPath
+     *     The storageCertPath
      */
     public void setStorageCertPath(String storageCertPath) {
         this.storageCertPath = storageCertPath;
@@ -191,14 +219,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The storageBucket
+     * 
+     * @return
+     *     The storageBucket
      */
     public String getStorageBucket() {
         return storageBucket;
     }
 
     /**
-     * @param storageBucket The storageBucket
+     * 
+     * @param storageBucket
+     *     The storageBucket
      */
     public void setStorageBucket(String storageBucket) {
         this.storageBucket = storageBucket;
@@ -210,14 +242,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The storageDownloadPrefix
+     * 
+     * @return
+     *     The storageDownloadPrefix
      */
     public String getStorageDownloadPrefix() {
         return storageDownloadPrefix;
     }
 
     /**
-     * @param storageDownloadPrefix The storageDownloadPrefix
+     * 
+     * @param storageDownloadPrefix
+     *     The storageDownloadPrefix
      */
     public void setStorageDownloadPrefix(String storageDownloadPrefix) {
         this.storageDownloadPrefix = storageDownloadPrefix;
@@ -229,14 +265,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The fileOsx
+     * 
+     * @return
+     *     The fileOsx
      */
     public String getFileOsx() {
         return fileOsx;
     }
 
     /**
-     * @param fileOsx The fileOsx
+     * 
+     * @param fileOsx
+     *     The fileOsx
      */
     public void setFileOsx(String fileOsx) {
         this.fileOsx = fileOsx;
@@ -248,14 +288,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The fileWin32
+     * 
+     * @return
+     *     The fileWin32
      */
     public String getFileWin32() {
         return fileWin32;
     }
 
     /**
-     * @param fileWin32 The fileWin32
+     * 
+     * @param fileWin32
+     *     The fileWin32
      */
     public void setFileWin32(String fileWin32) {
         this.fileWin32 = fileWin32;
@@ -267,14 +311,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The fileWin64
+     * 
+     * @return
+     *     The fileWin64
      */
     public String getFileWin64() {
         return fileWin64;
     }
 
     /**
-     * @param fileWin64 The fileWin64
+     * 
+     * @param fileWin64
+     *     The fileWin64
      */
     public void setFileWin64(String fileWin64) {
         this.fileWin64 = fileWin64;
@@ -286,14 +334,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The fileDefaultVersion
+     * 
+     * @return
+     *     The fileDefaultVersion
      */
     public String getFileDefaultVersion() {
         return fileDefaultVersion;
     }
 
     /**
-     * @param fileDefaultVersion The fileDefaultVersion
+     * 
+     * @param fileDefaultVersion
+     *     The fileDefaultVersion
      */
     public void setFileDefaultVersion(String fileDefaultVersion) {
         this.fileDefaultVersion = fileDefaultVersion;
@@ -305,14 +357,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The securityEnabled
+     * 
+     * @return
+     *     The securityEnabled
      */
     public String getSecurityEnabled() {
         return securityEnabled;
     }
 
     /**
-     * @param securityEnabled The securityEnabled
+     * 
+     * @param securityEnabled
+     *     The securityEnabled
      */
     public void setSecurityEnabled(String securityEnabled) {
         this.securityEnabled = securityEnabled;
@@ -324,14 +380,18 @@ public class DsSystemStatus {
     }
 
     /**
-     * @return The securityPrivateKeyAvailable
+     * 
+     * @return
+     *     The securityPrivateKeyAvailable
      */
     public Boolean getSecurityPrivateKeyAvailable() {
         return securityPrivateKeyAvailable;
     }
 
     /**
-     * @param securityPrivateKeyAvailable The securityPrivateKeyAvailable
+     * 
+     * @param securityPrivateKeyAvailable
+     *     The securityPrivateKeyAvailable
      */
     public void setSecurityPrivateKeyAvailable(Boolean securityPrivateKeyAvailable) {
         this.securityPrivateKeyAvailable = securityPrivateKeyAvailable;
@@ -357,7 +417,7 @@ public class DsSystemStatus {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsSystemStatus)) {
+        if ((other instanceof DsSystemStatus) == false) {
             return false;
         }
         DsSystemStatus rhs = ((DsSystemStatus) other);

@@ -1,35 +1,39 @@
-package com.t1t.t1c.containers.remoteloading;
 
+package com.t1t.t1c.containers.readerapi;
+
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-
 @Generated("org.jsonschema2pojo")
-public class GclRemoteLoadingOpenSessionRequest {
+public class GclReaderApiOpenSessionRequest {
 
     @SerializedName("timeout")
     @Expose
     private Integer timeout;
 
     /**
-     * @return The timeout
+     * 
+     * @return
+     *     The timeout
      */
     public Integer getTimeout() {
         return timeout;
     }
 
     /**
-     * @param timeout The timeout
+     * 
+     * @param timeout
+     *     The timeout
      */
     public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 
-    public GclRemoteLoadingOpenSessionRequest withTimeout(Integer timeout) {
+    public GclReaderApiOpenSessionRequest withTimeout(Integer timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -49,10 +53,10 @@ public class GclRemoteLoadingOpenSessionRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclRemoteLoadingOpenSessionRequest)) {
+        if ((other instanceof GclReaderApiOpenSessionRequest) == false) {
             return false;
         }
-        GclRemoteLoadingOpenSessionRequest rhs = ((GclRemoteLoadingOpenSessionRequest) other);
+        GclReaderApiOpenSessionRequest rhs = ((GclReaderApiOpenSessionRequest) other);
         return new EqualsBuilder().append(timeout, rhs.timeout).isEquals();
     }
 

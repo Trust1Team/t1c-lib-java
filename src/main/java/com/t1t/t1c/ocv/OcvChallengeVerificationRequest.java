@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.ocv;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class OcvChallengeVerificationRequest {
@@ -25,14 +25,18 @@ public class OcvChallengeVerificationRequest {
     private String hash;
 
     /**
-     * @return The base64Certificate
+     * 
+     * @return
+     *     The base64Certificate
      */
     public String getBase64Certificate() {
         return base64Certificate;
     }
 
     /**
-     * @param base64Certificate The base64Certificate
+     * 
+     * @param base64Certificate
+     *     The base64Certificate
      */
     public void setBase64Certificate(String base64Certificate) {
         this.base64Certificate = base64Certificate;
@@ -44,14 +48,18 @@ public class OcvChallengeVerificationRequest {
     }
 
     /**
-     * @return The digestAlgorithm
+     * 
+     * @return
+     *     The digestAlgorithm
      */
     public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
     /**
-     * @param digestAlgorithm The digestAlgorithm
+     * 
+     * @param digestAlgorithm
+     *     The digestAlgorithm
      */
     public void setDigestAlgorithm(String digestAlgorithm) {
         this.digestAlgorithm = digestAlgorithm;
@@ -63,14 +71,18 @@ public class OcvChallengeVerificationRequest {
     }
 
     /**
-     * @return The base64Signature
+     * 
+     * @return
+     *     The base64Signature
      */
     public String getBase64Signature() {
         return base64Signature;
     }
 
     /**
-     * @param base64Signature The base64Signature
+     * 
+     * @param base64Signature
+     *     The base64Signature
      */
     public void setBase64Signature(String base64Signature) {
         this.base64Signature = base64Signature;
@@ -82,14 +94,18 @@ public class OcvChallengeVerificationRequest {
     }
 
     /**
-     * @return The hash
+     * 
+     * @return
+     *     The hash
      */
     public String getHash() {
         return hash;
     }
 
     /**
-     * @param hash The hash
+     * 
+     * @param hash
+     *     The hash
      */
     public void setHash(String hash) {
         this.hash = hash;
@@ -115,7 +131,7 @@ public class OcvChallengeVerificationRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof OcvChallengeVerificationRequest)) {
+        if ((other instanceof OcvChallengeVerificationRequest) == false) {
             return false;
         }
         OcvChallengeVerificationRequest rhs = ((OcvChallengeVerificationRequest) other);

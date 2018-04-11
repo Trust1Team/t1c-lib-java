@@ -18,6 +18,7 @@ public class LibConfig {
     private String dsUri;
     private String gclClientUri;
     private String ocvUri;
+    private String proxyDomain;
 
     // Auth
 
@@ -30,10 +31,10 @@ public class LibConfig {
     private String contextToken;
     private String gatewayJwt;
     private String gclJwt;
-    private Boolean v2Compatible = false;
 
     // General Config
 
+    private Environment environment;
     private Integer agentPort;
     private String clientFingerprintDirectoryPath;
     private Integer containerDownloadTimeout;
@@ -41,7 +42,6 @@ public class LibConfig {
     private Integer defaultConsentTimeout;
     private Integer defaultPollingIntervalInSeconds;
     private Integer defaultPollingTimeoutInSeconds;
-    private Environment environment;
     private Boolean hardwarePinPadForced = false;
     private Boolean implicitDownloads = false;
     private Boolean localTestMode = false;
@@ -110,6 +110,14 @@ public class LibConfig {
         this.ocvUri = UriUtils.uriFinalSlashAppender(ocvUri);
     }
 
+    public String getProxyDomain() {
+        return proxyDomain;
+    }
+
+    public void setProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
+    }
+
     public String getApiKey() {
         return apiKey;
     }
@@ -156,14 +164,6 @@ public class LibConfig {
 
     public void setGclJwt(String gclJwt) {
         this.gclJwt = gclJwt;
-    }
-
-    public Boolean isV2Compatible() {
-        return v2Compatible;
-    }
-
-    public void setV2Compatible(Boolean v2Compatible) {
-        this.v2Compatible = v2Compatible;
     }
 
     public Integer getAgentPort() {

@@ -149,8 +149,8 @@ public class T1cClientTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGetRemoteLoadingContainer() {
-        assertNotNull(getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
+    public void testGetReaderApiContainer() {
+        assertNotNull(getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
     }
 
     @Test

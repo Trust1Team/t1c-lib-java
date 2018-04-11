@@ -1,8 +1,9 @@
-package com.t1t.t1c.containers.remoteloading;
+package com.t1t.t1c.containers.readerapi;
 
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.readerapi.*;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -24,25 +25,25 @@ import static org.junit.Assert.*;
  */
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({RestServiceBuilder.class, ConnectionFactory.class})
-public class RemoteLoadingContainerTest extends AbstractTestClass {
+public class ReaderApiContainerTest extends AbstractTestClass {
 
-    private RemoteLoadingContainer container;
+    private ReaderApiContainer container;
 
     @Before
     public void initContainer() {
-        container = getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true));
+        container = getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true));
     }
 
     @Test
     public void getAtr() {
         String atr = container.getAtr();
         assertNotNull(atr);
-        assertEquals(MockResponseFactory.getRemoteLoadingAtr(), atr);
+        assertEquals(MockResponseFactory.getReaderApiAtr(), atr);
     }
 
     @Test
     public void executeApduCall() {
-        GclRemoteLoadingCommand command = container.executeApduCall(new GclRemoteLoadingApdu()
+        GclReaderApiCommand command = container.executeApduCall(new GclReaderApiApdu()
                 .withCla("cla")
                 .withData("data")
                 .withIns("ins")
@@ -51,21 +52,21 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
                 .withP2("p2")
         );
         assertNotNull(command);
-        assertEquals(MockResponseFactory.getGclRemoteLoadingCommand(0), command);
+        assertEquals(MockResponseFactory.getGclReaderApiCommand(0), command);
     }
 
     @Test
     public void executeApduCalls() {
-        List<GclRemoteLoadingCommand> commands = container.executeApduCalls(
+        List<GclReaderApiCommand> commands = container.executeApduCalls(
                 Arrays.asList(
-                        new GclRemoteLoadingApdu()
+                        new GclReaderApiApdu()
                                 .withCla("cla")
                                 .withData("data")
                                 .withIns("ins")
                                 .withLe("le")
                                 .withP1("p1")
                                 .withP2("p2"),
-                        new GclRemoteLoadingApdu().withCla("cla")
+                        new GclReaderApiApdu().withCla("cla")
                                 .withData("data")
                                 .withIns("ins")
                                 .withLe("le")
@@ -78,30 +79,30 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void executeCcid() {
-        GclRemoteLoadingCommand command = container.executeCcid("VERIFY_PIN_DIRECT", "1E1E8947040C0402010904000000000D000000002000010820FFFFFFFFFFFFFF");
+        GclReaderApiCommand command = container.executeCcid("VERIFY_PIN_DIRECT", "1E1E8947040C0402010904000000000D000000002000010820FFFFFFFFFFFFFF");
         assertNotNull(command);
-        assertEquals(MockResponseFactory.getGclRemoteLoadingCommand(0), command);
+        assertEquals(MockResponseFactory.getGclReaderApiCommand(0), command);
     }
 
     @Test
     public void getCcidFeatures() {
-        List<GclRemoteLoadingCcidFeature> features = container.getCcidFeatures();
+        List<GclReaderApiCcidFeature> features = container.getCcidFeatures();
         assertNotNull(features);
-        for (GclRemoteLoadingCcidFeature feature : MockResponseFactory.getGclRemoteLoadingCcidFeatures()) {
+        for (GclReaderApiCcidFeature feature : MockResponseFactory.getGclReaderApiCcidFeatures()) {
             assertTrue(features.contains(feature));
         }
     }
 
     @Test
     public void executeCommand() {
-        GclRemoteLoadingCommand command = container.executeCommand("00B00000FF");
+        GclReaderApiCommand command = container.executeCommand("00B00000FF");
         assertNotNull(command);
-        assertEquals(MockResponseFactory.getGclRemoteLoadingCommand(0), command);
+        assertEquals(MockResponseFactory.getGclReaderApiCommand(0), command);
     }
 
     @Test
     public void executeCommands() {
-        List<GclRemoteLoadingCommand> commands = container.executeCommands(
+        List<GclReaderApiCommand> commands = container.executeCommands(
                 Arrays.asList("00B00000F1", "00B00000F2"));
         assertNotNull(commands);
         assertEquals(2, commands.size());
@@ -116,19 +117,19 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
     public void openSession() {
         String sessionId = container.openSession(30);
         assertNotNull(sessionId);
-        assertEquals(MockResponseFactory.getRemoteLoadingSessionId(), sessionId);
+        assertEquals(MockResponseFactory.getReaderApiSessionId(), sessionId);
     }
 
     @Test
     public void openSessionWithoutTimeout() {
         String sessionId = container.openSession(null);
         assertNotNull(sessionId);
-        assertEquals(MockResponseFactory.getRemoteLoadingSessionId(), sessionId);
+        assertEquals(MockResponseFactory.getReaderApiSessionId(), sessionId);
     }
 
     @Test
     public void closeSessionWithSessionId() {
-        assertTrue(container.closeSession(MockResponseFactory.getRemoteLoadingSessionId()));
+        assertTrue(container.closeSession(MockResponseFactory.getReaderApiSessionId()));
     }
 
     @Test
@@ -148,8 +149,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testApdu() {
-        GclRemoteLoadingApdu obj = new GclRemoteLoadingApdu();
-        GclRemoteLoadingApdu obj2 = new GclRemoteLoadingApdu();
+        GclReaderApiApdu obj = new GclReaderApiApdu();
+        GclReaderApiApdu obj2 = new GclReaderApiApdu();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());
@@ -172,8 +173,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testCcidFeature() {
-        GclRemoteLoadingCcidFeature obj = new GclRemoteLoadingCcidFeature();
-        GclRemoteLoadingCcidFeature obj2 = new GclRemoteLoadingCcidFeature();
+        GclReaderApiCcidFeature obj = new GclReaderApiCcidFeature();
+        GclReaderApiCcidFeature obj2 = new GclReaderApiCcidFeature();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());
@@ -189,8 +190,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testCcidRequest() {
-        GclRemoteLoadingCcidRequest obj = new GclRemoteLoadingCcidRequest();
-        GclRemoteLoadingCcidRequest obj2 = new GclRemoteLoadingCcidRequest();
+        GclReaderApiCcidRequest obj = new GclReaderApiCcidRequest();
+        GclReaderApiCcidRequest obj2 = new GclReaderApiCcidRequest();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());
@@ -206,8 +207,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testCommand() {
-        GclRemoteLoadingCommand obj = new GclRemoteLoadingCommand();
-        GclRemoteLoadingCommand obj2 = new GclRemoteLoadingCommand();
+        GclReaderApiCommand obj = new GclReaderApiCommand();
+        GclReaderApiCommand obj2 = new GclReaderApiCommand();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());
@@ -226,8 +227,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testCommandRequest() {
-        GclRemoteLoadingCommandRequest obj = new GclRemoteLoadingCommandRequest();
-        GclRemoteLoadingCommandRequest obj2 = new GclRemoteLoadingCommandRequest();
+        GclReaderApiCommandRequest obj = new GclReaderApiCommandRequest();
+        GclReaderApiCommandRequest obj2 = new GclReaderApiCommandRequest();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());
@@ -240,8 +241,8 @@ public class RemoteLoadingContainerTest extends AbstractTestClass {
 
     @Test
     public void testOpenSessionRequest() {
-        GclRemoteLoadingOpenSessionRequest obj = new GclRemoteLoadingOpenSessionRequest();
-        GclRemoteLoadingOpenSessionRequest obj2 = new GclRemoteLoadingOpenSessionRequest();
+        GclReaderApiOpenSessionRequest obj = new GclReaderApiOpenSessionRequest();
+        GclReaderApiOpenSessionRequest obj2 = new GclReaderApiOpenSessionRequest();
         assertEquals(obj, obj);
         assertEquals(obj, obj2);
         assertEquals(obj.hashCode(), obj2.hashCode());

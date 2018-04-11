@@ -61,7 +61,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public String getPubKey() throws GclCoreException {
+    public String getDsPubKey() throws GclCoreException {
         try {
             return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
         } catch (RestException ex) {
@@ -70,11 +70,11 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public Boolean setPubKey(String publicKey) throws GclCoreException {
+    public Boolean setDsPubKey(String publicKey) throws GclCoreException {
         try {
             GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
             keyReq.setCertificate(publicKey);
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
         }
@@ -249,7 +249,7 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
-        if (config.getCitrix()) {
+        if (config.isCitrix()) {
             try {
                 try {
                     return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
@@ -356,7 +356,7 @@ public class Core extends AbstractCore {
     }
 
     private boolean checkCitrix() {
-        return config.getCitrix() && config.getAgentPort() != null;
+        return config.isCitrix() && config.getAgentPort() != null;
     }
 
 /*    //TODO

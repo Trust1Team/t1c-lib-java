@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.ds;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsTokenRefreshRequest {
@@ -16,14 +16,18 @@ public class DsTokenRefreshRequest {
     private String originalJWT;
 
     /**
-     * @return The originalJWT
+     * 
+     * @return
+     *     The originalJWT
      */
     public String getOriginalJWT() {
         return originalJWT;
     }
 
     /**
-     * @param originalJWT The originalJWT
+     * 
+     * @param originalJWT
+     *     The originalJWT
      */
     public void setOriginalJWT(String originalJWT) {
         this.originalJWT = originalJWT;
@@ -49,7 +53,7 @@ public class DsTokenRefreshRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsTokenRefreshRequest)) {
+        if ((other instanceof DsTokenRefreshRequest) == false) {
             return false;
         }
         DsTokenRefreshRequest rhs = ((DsTokenRefreshRequest) other);

@@ -16,6 +16,13 @@
     "consent": {
       "type": "boolean"
     },
+    "containers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclContainerInfo.json"
+      }
+    },
     "log_level": {
       "type": "string"
     },
@@ -23,6 +30,12 @@
       "type": "boolean"
     },
     "os": {
+      "type": "string"
+    },
+    "osid": {
+      "type": "string"
+    },
+    "osversion": {
       "type": "string"
     },
     "uid": {

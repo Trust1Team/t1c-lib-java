@@ -4,8 +4,8 @@ import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingApdu;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
+import com.t1t.t1c.containers.readerapi.GclReaderApiApdu;
+import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -27,8 +27,10 @@ import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
+import com.t1t.t1c.model.JavaInfo;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
+import com.t1t.t1c.utils.ClientFingerprintUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -63,8 +65,9 @@ public class JavaClientExample {
             conf.setDefaultConsentDuration(2);
             conf.setDefaultConsentTimeout(35);
             conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
-
-            showMenu();
+            System.out.println(ClientFingerprintUtil.createFingerprint());
+            System.out.println(new JavaInfo().toString());
+            //showMenu();
         } catch (NoConsentException ex) {
             System.out.println("Consent required: Grant consent and try again");
             showMenu();
@@ -193,7 +196,7 @@ public class JavaClientExample {
                 aventraUseCases(reader);
                 break;
             case BEID:
-                remoteLoadingUseCases(reader);
+                readerApiUseCases(reader);
                 beIdUseCases(reader);
                 break;
             case DNIE:
@@ -707,8 +710,8 @@ public class JavaClientExample {
         }
     }
 
-    private static void remoteLoadingUseCases(GclReader reader) {
-        RemoteLoadingContainer container = client.getRemoteLoadingContainer(reader);
+    private static void readerApiUseCases(GclReader reader) {
+        ReaderApiContainer container = client.getReaderApiContainer(reader);
 
         System.out.println("ATR: " + container.getAtr());
 
@@ -723,7 +726,7 @@ public class JavaClientExample {
         );
 
         System.out.println("Executed APDU: " + container.executeApduCall(
-                new GclRemoteLoadingApdu()
+                new GclReaderApiApdu()
                         .withCla("F1")
                         .withIns("95")
                         .withP1("F7")
@@ -733,13 +736,13 @@ public class JavaClientExample {
 
         System.out.println("Executed APDUs: " + container.executeApduCalls(
                 Arrays.asList(
-                        new GclRemoteLoadingApdu()
+                        new GclReaderApiApdu()
                                 .withCla("F1")
                                 .withIns("95")
                                 .withP1("F7")
                                 .withP2("E4")
                                 .withData("FE0000040001300000"),
-                        new GclRemoteLoadingApdu()
+                        new GclReaderApiApdu()
                                 .withCla("F1")
                                 .withIns("95")
                                 .withP1("F7")

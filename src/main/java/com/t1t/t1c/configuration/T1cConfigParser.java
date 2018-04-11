@@ -1,8 +1,10 @@
 package com.t1t.t1c.configuration;
 
 import com.t1t.t1c.containers.smartcards.pkcs11.safenet.ModuleConfiguration;
+import com.t1t.t1c.core.GclInfo;
 import com.t1t.t1c.exceptions.ConfigException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.utils.UriUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.commons.lang3.StringUtils;
@@ -25,17 +27,24 @@ import java.util.Properties;
  * </ul>
  */
 public class T1cConfigParser implements Serializable {
+
+    /*Logger*/
+    private static Logger log = LoggerFactory.getLogger(T1cConfigParser.class.getName());
+
     /*Uris*/
-    private static final String URI_GATEWAY = "https://apim.t1t.be";
+    private static final String URI_PROXY_DOMAIN = "https://apim.t1t.be";
+    private static final String URI_GATEWAY_AUTH = URI_PROXY_DOMAIN + "/apiengineauth/v1";
     private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
-    /*Context paths*/
-    private static final String CONTEXT_DS = "/trust1team/gclds/v1";
-    private static final String CONTEXT_OCV = "/trust1team/ocv-api/v1";
+    private static final String URI_OCV = URI_PROXY_DOMAIN + "/trust1team/ocv-api/v1";
+    private static final String URI_DS = URI_PROXY_DOMAIN + "/trust1team/gclds/v1";
+
     /*Custom configurations*/
     private static final int DEFAULT_POLLING_INTERVAL = 5;
     private static final int DEFAULT_POLLING_TIMEOUT = 30;
-    /*Logger*/
-    private static Logger log = LoggerFactory.getLogger(T1cConfigParser.class.getName());
+    private static final int DEFAULT_CONSENT_DURATION = 1;
+    private static final int DEFAULT_CONSENT_TIMEOUT = 25;
+    private static final int DEFAULT_CONTAINER_DOWNLOAD_TIMEOUT = 30;
+    private static final int DEFAULT_SESSION_TIMEOUT = 300;
 
     private Config config;
     private LibConfig appConfig;
@@ -72,11 +81,41 @@ public class T1cConfigParser implements Serializable {
             this.appConfig.setSyncManaged(getSyncManaged());
             this.appConfig.setLocalTestMode(getLocalTestMode());
             this.appConfig.setPkcs11Config(getPkcs11Config());
+            this.appConfig.setProxyDomain(getProxyDomain());
             setAppConfig(configObj);
             validateConfig();
             printAppConfig();
         } else
             throw ExceptionFactory.systemErrorException("T1C Client config file not found on: " + optionalPath.toAbsolutePath());
+    }
+
+    /**
+     * Parse the given configuration object and enrich it with the Core info
+     * @param config library configuration object
+     * @param info core info
+     * @return parsed and validated library configuration object
+     */
+    public LibConfig parseConfig(LibConfig config, GclInfo info) {
+        config.setCitrix(info.getCitrix());
+        config.setConsentRequired(info.getConsent());
+        setAppConfig(config);
+        validateConfig();
+        printAppConfig();
+        return getAppConfig();
+    }
+
+    /**
+     * Parse the given configuration and enrich it with the JWT obtained from the DS
+     * @param config library configuration object
+     * @param gclJWt token obtained from the DS
+     * @return parsed and validated library configuration object
+     */
+    public LibConfig parseConfig(LibConfig config, String gclJWt) {
+        config.setGclJwt(gclJWt);
+        setAppConfig(config);
+        validateConfig();
+        printAppConfig();
+        return getAppConfig();
     }
 
     private ModuleConfiguration getPkcs11Config() {
@@ -163,6 +202,10 @@ public class T1cConfigParser implements Serializable {
         return getConfigInteger(IConfig.LIB_GEN_SESSION_TIMEOUT);
     }
 
+    private String getProxyDomain() {
+        return getConfigString(IConfig.LIB_URIS_PROXYDOMAIN);
+    }
+
     public LibConfig getAppConfig() {
         return appConfig;
     }
@@ -223,47 +266,86 @@ public class T1cConfigParser implements Serializable {
      * this is the case for managed T1C instances.
      */
     public void validateConfig() {
-        if (this.appConfig.getEnvironment() == null) this.appConfig.setEnvironment(Environment.PROD);
-        if (StringUtils.isEmpty(this.appConfig.getGclClientUri())) this.appConfig.setGclClientUri(URI_T1C_GCL);
-        if (StringUtils.isEmpty(this.appConfig.getOcvUri())) this.appConfig.setOcvUri(URI_GATEWAY);
-        if (StringUtils.isEmpty(this.appConfig.getDsUri())) this.appConfig.setDsUri(URI_GATEWAY);
-        if (StringUtils.isEmpty(this.appConfig.getDsContextPath())) this.appConfig.setDsContextPath(CONTEXT_DS);
-        if (StringUtils.isEmpty(this.appConfig.getOcvContextPath())) this.appConfig.setOcvContextPath(CONTEXT_OCV);
-        if (StringUtils.isEmpty(this.appConfig.getApiKey()))
+
+        if (this.appConfig.getEnvironment() == null) {
+            this.appConfig.setEnvironment(Environment.PROD);
+        }
+        if (StringUtils.isEmpty(this.appConfig.getGclClientUri())) {
+            this.appConfig.setGclClientUri(URI_T1C_GCL);
+        }
+        if (StringUtils.isEmpty(this.appConfig.getAuthUri())) {
+            this.appConfig.setOcvUri(URI_GATEWAY_AUTH);
+        }
+        if (StringUtils.isEmpty(this.appConfig.getDsUri())) {
+            this.appConfig.setDsUri(URI_DS);
+        }
+        if (StringUtils.isEmpty(appConfig.getOcvUri())) {
+            this.appConfig.setOcvUri(URI_OCV);
+        }
+        if (StringUtils.isEmpty(this.appConfig.getProxyDomain())) {
+            this.appConfig.setProxyDomain(URI_PROXY_DOMAIN);
+        }
+        if (StringUtils.isEmpty(this.appConfig.getApiKey())) {
             this.appConfig.setApiKey(""); // for managed instances - when DS and OCV are not used
-        if (this.appConfig.getDefaultPollingIntervalInSeconds() == null)
-            this.appConfig.setDefaultPollingIntervalInSeconds(DEFAULT_POLLING_INTERVAL);
-        if (this.appConfig.getDefaultPollingTimeoutInSeconds() == null)
-            this.appConfig.setDefaultPollingTimeoutInSeconds(DEFAULT_POLLING_TIMEOUT);
-        if (this.appConfig.isHardwarePinPadForced() == null) this.appConfig.setHardwarePinPadForced(false);
-        if (this.appConfig.isTokenCompatible() == null) this.appConfig.setTokenCompatible(false);
-        if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0)
-            this.appConfig.setSessionTimeout(60);
-        if (this.appConfig.getCitrix() == null) this.appConfig.setCitrix(false);
-        if (this.appConfig.isConsentRequired() == null) this.appConfig.setConsentRequired(false);
-        if (this.appConfig.getDefaultConsentDuration() == null) this.appConfig.setDefaultConsentDuration(1);
-        if (this.appConfig.getDefaultConsentTimeout() == null) this.appConfig.setDefaultConsentTimeout(30);
-        if (this.appConfig.isTokenCompatible() != null && this.appConfig.isTokenCompatible()) {
-            if (StringUtils.isEmpty(this.appConfig.getClientFingerprintDirectoryPath())) {
-                throw ExceptionFactory.initializationException("File path for client fingerprint token required");
+        }
+        if (StringUtils.isEmpty(this.appConfig.getClientFingerprintDirectoryPath())) {
+            throw ExceptionFactory.initializationException("File path for client fingerprint token required");
+        } else {
+            Path fingerprintPath = Paths.get(this.appConfig.getClientFingerprintDirectoryPath());
+            if (fingerprintPath.toFile().exists()) {
+                if (!fingerprintPath.toFile().isDirectory()) {
+                    throw ExceptionFactory.initializationException("Client fingerprint directory does not reference a directory");
+                }
             } else {
-                Path fingerprintPath = Paths.get(this.appConfig.getClientFingerprintDirectoryPath());
-                if (fingerprintPath.toFile().exists()) {
-                    if (!fingerprintPath.toFile().isDirectory()) {
-                        throw ExceptionFactory.initializationException("Client fingerprint directory does not reference a directory");
+                try {
+                    if (fingerprintPath.toFile().mkdir()) {
+                        log.info("Client fingerprint folder created");
+                    } else {
+                        throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed");
                     }
-                } else {
-                    try {
-                        if (fingerprintPath.toFile().mkdir()) {
-                            log.info("Client fingerprint folder created");
-                        } else {
-                            throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed");
-                        }
-                    } catch (SecurityException ex) {
-                        throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed: " + ex.getMessage());
-                    }
+                } catch (SecurityException ex) {
+                    throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed: " + ex.getMessage());
                 }
             }
+        }
+        if (this.appConfig.getContainerDownloadTimeout() == null || this.appConfig.getContainerDownloadTimeout() <= 0) {
+            this.appConfig.setContainerDownloadTimeout(DEFAULT_CONTAINER_DOWNLOAD_TIMEOUT);
+        }
+        if (this.appConfig.getDefaultConsentDuration() == null || this.appConfig.getDefaultConsentDuration() <= 0) {
+            this.appConfig.setDefaultConsentDuration(DEFAULT_CONSENT_DURATION);
+        }
+        if (this.appConfig.getDefaultConsentTimeout() == null || this.appConfig.getDefaultConsentTimeout() <= 0) {
+            this.appConfig.setDefaultConsentTimeout(DEFAULT_CONSENT_TIMEOUT);
+        }
+        if (this.appConfig.getDefaultPollingIntervalInSeconds() == null || this.appConfig.getDefaultPollingIntervalInSeconds() <= 0) {
+            this.appConfig.setDefaultPollingIntervalInSeconds(DEFAULT_POLLING_INTERVAL);
+        }
+        if (this.appConfig.getDefaultPollingTimeoutInSeconds() == null || this.appConfig.getDefaultPollingTimeoutInSeconds() <= 0) {
+            this.appConfig.setDefaultPollingTimeoutInSeconds(DEFAULT_POLLING_TIMEOUT);
+        }
+        if (this.appConfig.isHardwarePinPadForced() == null) {
+            this.appConfig.setHardwarePinPadForced(false);
+        }
+        if (this.appConfig.isImplicitDownloads() == null) {
+            this.appConfig.setImplicitDownloads(false);
+        }
+        if (this.appConfig.isLocalTestMode() == null) {
+            this.appConfig.setLocalTestMode(false);
+        }
+        if (this.appConfig.isOsPinDialog() == null) {
+            this.appConfig.setOsPinDialog(false);
+        }
+        if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0) {
+            this.appConfig.setSessionTimeout(DEFAULT_SESSION_TIMEOUT);
+        }
+        if (this.appConfig.isSyncManaged() == null) {
+            this.appConfig.setSyncManaged(true);
+        }
+        if (this.appConfig.isCitrix() == null) {
+            this.appConfig.setCitrix(false);
+        }
+        if (this.appConfig.isConsentRequired() == null) {
+            this.appConfig.setConsentRequired(false);
         }
     }
 

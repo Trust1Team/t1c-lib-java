@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.core;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclVerifyPinRequest {
@@ -14,18 +14,20 @@ public class GclVerifyPinRequest {
     @SerializedName("pin")
     @Expose
     private String pin;
-    @SerializedName("private_key_reference")
-    private String privateKeyReference;
 
     /**
-     * @return The pin
+     * 
+     * @return
+     *     The pin
      */
     public String getPin() {
         return pin;
     }
 
     /**
-     * @param pin The pin
+     * 
+     * @param pin
+     *     The pin
      */
     public void setPin(String pin) {
         this.pin = pin;
@@ -33,19 +35,6 @@ public class GclVerifyPinRequest {
 
     public GclVerifyPinRequest withPin(String pin) {
         this.pin = pin;
-        return this;
-    }
-
-    public String getPrivateKeyReference() {
-        return privateKeyReference;
-    }
-
-    public void setPrivateKeyReference(String privateKeyReference) {
-        this.privateKeyReference = privateKeyReference;
-    }
-
-    public GclVerifyPinRequest withPrivateKeyReference(String privateKeyReference) {
-        this.privateKeyReference = privateKeyReference;
         return this;
     }
 
@@ -64,7 +53,7 @@ public class GclVerifyPinRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclVerifyPinRequest)) {
+        if ((other instanceof GclVerifyPinRequest) == false) {
             return false;
         }
         GclVerifyPinRequest rhs = ((GclVerifyPinRequest) other);

@@ -22,6 +22,10 @@ import java.io.IOException;
 public class RestExecutor {
     private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
+    public static final synchronized <T> T executeCall(Call<T> call) throws RestException, NoConsentException {
+        return executeCall(call, true);
+    }
+
     public static final synchronized <T> T executeCall(Call<T> call, boolean consentRequired) throws RestException, NoConsentException {
         try {
             Response<T> response = call.execute();

@@ -1,12 +1,12 @@
+
 package com.t1t.t1c.ds;
 
+import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsDevice {
@@ -25,14 +25,18 @@ public class DsDevice {
     private String coreVersion;
 
     /**
-     * @return The uuid
+     * 
+     * @return
+     *     The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid The uuid
+     * 
+     * @param uuid
+     *     The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -44,14 +48,18 @@ public class DsDevice {
     }
 
     /**
-     * @return The activated
+     * 
+     * @return
+     *     The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * @param activated The activated
+     * 
+     * @param activated
+     *     The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -63,14 +71,18 @@ public class DsDevice {
     }
 
     /**
-     * @return The managed
+     * 
+     * @return
+     *     The managed
      */
     public Boolean getManaged() {
         return managed;
     }
 
     /**
-     * @param managed The managed
+     * 
+     * @param managed
+     *     The managed
      */
     public void setManaged(Boolean managed) {
         this.managed = managed;
@@ -82,14 +94,18 @@ public class DsDevice {
     }
 
     /**
-     * @return The coreVersion
+     * 
+     * @return
+     *     The coreVersion
      */
     public String getCoreVersion() {
         return coreVersion;
     }
 
     /**
-     * @param coreVersion The coreVersion
+     * 
+     * @param coreVersion
+     *     The coreVersion
      */
     public void setCoreVersion(String coreVersion) {
         this.coreVersion = coreVersion;
@@ -115,7 +131,7 @@ public class DsDevice {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsDevice)) {
+        if ((other instanceof DsDevice) == false) {
             return false;
         }
         DsDevice rhs = ((DsDevice) other);

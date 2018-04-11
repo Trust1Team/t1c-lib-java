@@ -53,13 +53,13 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getPubKey() {
-        String publicKey = core.getPubKey();
+        String publicKey = core.getDsPubKey();
         assertEquals(MockResponseFactory.getGclAdminCertificate(), publicKey);
     }
 
     @Test
     public void setPubKey() {
-        assertTrue(core.setPubKey(MockResponseFactory.getGclAdminCertificate()));
+        assertTrue(core.setDsPubKey(MockResponseFactory.getGclAdminCertificate()));
     }
 
     @Test
