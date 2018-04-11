@@ -73,7 +73,7 @@ public class GclCard {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclCard) == false) {
+        if (!(other instanceof GclCard)) {
             return false;
         }
         GclCard rhs = ((GclCard) other);

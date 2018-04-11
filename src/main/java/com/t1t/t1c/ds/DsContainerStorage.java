@@ -93,7 +93,7 @@ public class DsContainerStorage {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsContainerStorage) == false) {
+        if (!(other instanceof DsContainerStorage)) {
             return false;
         }
         DsContainerStorage rhs = ((DsContainerStorage) other);

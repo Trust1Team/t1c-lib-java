@@ -1,5 +1,7 @@
 package com.t1t.t1c.core;
 
+import com.t1t.t1c.ds.DsAtrList;
+import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
 
@@ -63,11 +65,12 @@ public interface ICore {
      * Set the public key for the installed T1C-GCL.
      * The public key can be updated.
      *
-     * @param publicKey the public key to set.
+     * @param encryptedPublicKey the public key to set.
+     * @param encryptedAesKey the aes key with which the public key was encrypted
      * @return true if successful
      * @throws GclCoreException: on failure
      */
-    Boolean setDsPubKey(String publicKey) throws GclCoreException;
+    Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException;
 
     /**
      * Return T1C-GCL status information.
@@ -76,14 +79,6 @@ public interface ICore {
      * @throws GclCoreException: on failure
      */
     GclInfo getInfo() throws GclCoreException;
-
-    /**
-     * Return installed containers.
-     *
-     * @return the list of containers
-     * @throws GclCoreException: on failure
-     */
-    List<GclContainer> getContainers() throws GclCoreException;
 
     /**
      * Poll for readers until a reader with an inserted card is found.
@@ -263,4 +258,29 @@ public interface ICore {
      * @return true if granted, false if not.
      */
     boolean getConsent(String title, String codeWord, Integer durationInDays, GclConsent.AlertLevel alertLevel, GclConsent.AlertPosition alertPosition, GclConsent.Type consentType, Integer timeoutInSeconds);
+
+    /**
+     * Loads the containers specified by the DS in the Core
+     *
+     * @param containerResponses the container info
+     * @return true if successful
+     * @throws GclCoreException
+     */
+    boolean loadContainers(List<DsContainerResponse> containerResponses) throws GclCoreException;
+
+    /**
+     * Loads the ATR list obtained from the DS
+     * @param atrList the ATR list to load
+     * @return true if successful
+     * @throws GclCoreException
+     */
+    boolean loadAtrList(DsAtrList atrList) throws GclCoreException;
+
+    /**
+     * Poll the GCL for a configured duration or until all downloads are completed
+     *
+     * @return the GCL info
+     * @throws GclCoreException
+     */
+    GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers) throws GclCoreException;
 }

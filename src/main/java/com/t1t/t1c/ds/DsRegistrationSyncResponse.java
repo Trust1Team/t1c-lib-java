@@ -183,7 +183,7 @@ public class DsRegistrationSyncResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsRegistrationSyncResponse) == false) {
+        if (!(other instanceof DsRegistrationSyncResponse)) {
             return false;
         }
         DsRegistrationSyncResponse rhs = ((DsRegistrationSyncResponse) other);

@@ -227,7 +227,7 @@ public class DsContainerResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsContainerResponse) == false) {
+        if (!(other instanceof DsContainerResponse)) {
             return false;
         }
         DsContainerResponse rhs = ((DsContainerResponse) other);

@@ -31,7 +31,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     private String signingCertificate;
 
     /**
-     * 
+     *
      * @return
      *     The authenticationCertificate
      */
@@ -40,7 +40,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @param authenticationCertificate
      *     The authentication_certificate
      */
@@ -54,7 +54,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @return
      *     The encryptionCertificate
      */
@@ -63,7 +63,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @param encryptionCertificate
      *     The encryption_certificate
      */
@@ -77,7 +77,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @return
      *     The issuerCertificate
      */
@@ -86,7 +86,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @param issuerCertificate
      *     The issuer_certificate
      */
@@ -100,7 +100,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @return
      *     The rootCertificate
      */
@@ -109,7 +109,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @param rootCertificate
      *     The root_certificate
      */
@@ -123,7 +123,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @return
      *     The signingCertificate
      */
@@ -132,7 +132,7 @@ public class GclOberthurAllCertificates implements AllCertificates
     }
 
     /**
-     * 
+     *
      * @param signingCertificate
      *     The signing_certificate
      */
@@ -160,7 +160,7 @@ public class GclOberthurAllCertificates implements AllCertificates
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclOberthurAllCertificates) == false) {
+        if (!(other instanceof GclOberthurAllCertificates)) {
             return false;
         }
         GclOberthurAllCertificates rhs = ((GclOberthurAllCertificates) other);

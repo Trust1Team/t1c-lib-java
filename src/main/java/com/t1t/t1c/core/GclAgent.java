@@ -160,7 +160,7 @@ public class GclAgent {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAgent) == false) {
+        if (!(other instanceof GclAgent)) {
             return false;
         }
         GclAgent rhs = ((GclAgent) other);

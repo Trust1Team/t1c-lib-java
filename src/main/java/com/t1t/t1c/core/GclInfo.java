@@ -293,7 +293,7 @@ public class GclInfo {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclInfo) == false) {
+        if (!(other instanceof GclInfo)) {
             return false;
         }
         GclInfo rhs = ((GclInfo) other);

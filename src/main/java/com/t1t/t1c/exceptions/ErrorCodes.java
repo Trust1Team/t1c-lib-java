@@ -85,4 +85,12 @@ public final class ErrorCodes {
     public static final int NO_CONSENT_ERROR                            = 8000;
 
     public static final String NO_CONSENT_ERROR_INFO                    = "noConsent";
+
+    //
+    // Token related
+    //
+
+    public static final int ERROR_INVALID_TOKEN                         = 9000;
+
+    public static final String INFO_INVALID_TOKEN                       = "invalidToken";
 }

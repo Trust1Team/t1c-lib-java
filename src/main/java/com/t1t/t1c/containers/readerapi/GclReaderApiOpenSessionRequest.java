@@ -49,7 +49,7 @@ public class GclReaderApiOpenSessionRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiOpenSessionRequest) == false) {
+        if (!(other instanceof GclReaderApiOpenSessionRequest)) {
             return false;
         }
         GclReaderApiOpenSessionRequest rhs = ((GclReaderApiOpenSessionRequest) other);

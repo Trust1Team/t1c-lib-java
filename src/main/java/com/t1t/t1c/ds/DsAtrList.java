@@ -71,7 +71,7 @@ public class DsAtrList {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsAtrList) == false) {
+        if (!(other instanceof DsAtrList)) {
             return false;
         }
         DsAtrList rhs = ((DsAtrList) other);

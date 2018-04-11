@@ -2,8 +2,12 @@ package com.t1t.t1c.auth;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
+import com.t1t.t1c.exceptions.InvalidTokenException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.JwtUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.jose4j.jwt.JwtClaims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,30 +17,41 @@ import org.slf4j.LoggerFactory;
  */
 public class GatewayAuthClient implements IGatewayAuthClient {
 
-    private static final Logger log = LoggerFactory.getLogger(GatewayAuthClient.class);
-
     private GatewayAuthRestClient client;
-    private LibConfig config;
     private String token;
 
-    private GatewayAuthClient(GatewayAuthRestClient client, LibConfig config) {
+    public GatewayAuthClient(GatewayAuthRestClient client) {
         this.client = client;
-        this.config = config;
-        this.token = RestExecutor.executeCall(this.client.getToken(), false);
+        this.token = obtainToken();
     }
 
     @Override
     public String getToken() {
-        if (token)
-            try {
-                return RestExecutor.executeCall(client.getToken(), false).getToken();
-            } catch (RestException ex) {
-                throw ExceptionFactory.authenticateException(ex.getMessage());
+        try {
+            if (JwtUtil.isTokenAlmostExpired(token)) {
+                token = refreshToken(token);
             }
+        } catch (InvalidTokenException ex) {
+            token = obtainToken();
+        } if (JwtUtil.isTokenAlmostExpired(token)) {
+            token = refreshToken(token);
+        }
+        return token;
     }
 
-    @Override
-    public String refreshToken(String token) {
-        return null;
+    private String obtainToken() {
+        try {
+            return RestExecutor.executeCall(this.client.getToken(), false).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.authenticateException(ex.getMessage());
+        }
+    }
+
+    private String refreshToken(String token) {
+        try {
+            return RestExecutor.executeCall(client.refreshToken(new GwJwt().withToken(token)), false).getToken();
+        } catch (RestException ex) {
+            throw ExceptionFactory.authenticateException(ex.getMessage());
+        }
     }
 }

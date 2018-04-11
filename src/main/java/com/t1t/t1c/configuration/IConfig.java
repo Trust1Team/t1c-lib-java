@@ -18,7 +18,7 @@ public interface IConfig {
 
     //URIs
 
-    String LIB_URIS_AUTH = "t1c.uris.authtUri";
+    String LIB_URIS_AUTH = "t1c.uris.authUri";
     String LIB_URIS_DS = "t1c.uris.dsUri";
     String LIB_URIS_GCL_CLIENT = "t1c.uris.gclClientUri";
     String LIB_URIS_OCV = "t1c.uris.ocvUri";
@@ -30,7 +30,7 @@ public interface IConfig {
 
     //General
 
-    String LIB_GEN_FINGERPRINT_PATH = "t1c.general.";
+    String LIB_GEN_FINGERPRINT_PATH = "t1c.general.clientFingerprintDirectoryPath";
     String LIB_GEN_CONTAINER_DOWNLOAD_TIMEOUT = "t1c.general.containerDownloadTimeoutInSeconds";
     String LIB_GEN_CONSENT_DURATION = "t1c.general.consentDurationInDays";
     String LIB_GEN_CONSENT_TIMEOUT = "t1c.general.consentTimeoutInSeconds";

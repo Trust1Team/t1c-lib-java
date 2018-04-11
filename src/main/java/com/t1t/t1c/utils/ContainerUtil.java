@@ -3,7 +3,6 @@ package com.t1t.t1c.utils;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclCard;
-import com.t1t.t1c.core.GclContainer;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
@@ -123,17 +122,6 @@ public final class ContainerUtil {
             if (type != null) return type;
         }
         throw ExceptionFactory.genericContainerException("Could not determine container for card");
-    }
-
-    public static boolean isContainerAvailable(GclCard card, List<GclContainer> availableContainers) {
-        return isContainerAvailable(determineContainer(card), availableContainers);
-    }
-
-    public static boolean isContainerAvailable(ContainerType type, List<GclContainer> availableContainers) {
-        for (GclContainer container : availableContainers) {
-            if (container.getId().equalsIgnoreCase(type.getId())) return true;
-        }
-        return false;
     }
 
     public static Integer getPinVerificationRetriesLeftFor(Integer code) {

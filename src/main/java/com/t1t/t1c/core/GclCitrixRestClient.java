@@ -15,11 +15,8 @@ import java.util.Map;
  */
 public interface GclCitrixRestClient {
 
-    @GET("/v1")
-    Call<T1cResponse<GclInfo>> getV1Status() throws RestException;
-
     @GET("/v2")
-    Call<T1cResponse<GclInfo>> getV2Status() throws RestException;
+    Call<T1cResponse<GclInfo>> getStatus() throws RestException;
 
     @GET("admin/certificate")
     Call<T1cResponse<String>> getPublicKey() throws RestException;
@@ -32,9 +29,6 @@ public interface GclCitrixRestClient {
 
     @GET("agent/{agentPort}/card-readers/{reader}")
     Call<T1cResponse<GclReader>> getCardReader(@Path("agentPort") Integer agentPort, @Path("reader") String readerId) throws RestException, NoConsentException;
-
-    @GET("plugins")
-    Call<T1cResponse<List<GclContainer>>> getV1Containers() throws RestException;
 
     @GET("agent")
     Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;

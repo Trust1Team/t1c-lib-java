@@ -93,7 +93,7 @@ public class GclEmvPublicKeyCertificate {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclEmvPublicKeyCertificate) == false) {
+        if (!(other instanceof GclEmvPublicKeyCertificate)) {
             return false;
         }
         GclEmvPublicKeyCertificate rhs = ((GclEmvPublicKeyCertificate) other);

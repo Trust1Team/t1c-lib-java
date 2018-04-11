@@ -159,7 +159,7 @@ public class GclReaderApiApdu {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiApdu) == false) {
+        if (!(other instanceof GclReaderApiApdu)) {
             return false;
         }
         GclReaderApiApdu rhs = ((GclReaderApiApdu) other);

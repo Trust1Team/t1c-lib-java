@@ -95,7 +95,7 @@ public class GclContainerInfo {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclContainerInfo) == false) {
+        if (!(other instanceof GclContainerInfo)) {
             return false;
         }
         GclContainerInfo rhs = ((GclContainerInfo) other);

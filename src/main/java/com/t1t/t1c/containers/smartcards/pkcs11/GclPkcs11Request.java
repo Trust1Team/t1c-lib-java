@@ -93,7 +93,7 @@ public class GclPkcs11Request {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPkcs11Request) == false) {
+        if (!(other instanceof GclPkcs11Request)) {
             return false;
         }
         GclPkcs11Request rhs = ((GclPkcs11Request) other);

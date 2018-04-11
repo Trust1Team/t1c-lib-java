@@ -93,7 +93,7 @@ public class GclReaderApiCommand {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiCommand) == false) {
+        if (!(other instanceof GclReaderApiCommand)) {
             return false;
         }
         GclReaderApiCommand rhs = ((GclReaderApiCommand) other);

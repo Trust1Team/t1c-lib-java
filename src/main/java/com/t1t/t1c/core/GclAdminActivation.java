@@ -49,7 +49,7 @@ public class GclAdminActivation {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAdminActivation) == false) {
+        if (!(other instanceof GclAdminActivation)) {
             return false;
         }
         GclAdminActivation rhs = ((GclAdminActivation) other);

@@ -93,7 +93,7 @@ public class GclError {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclError) == false) {
+        if (!(other instanceof GclError)) {
             return false;
         }
         GclError rhs = ((GclError) other);

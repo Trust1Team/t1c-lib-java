@@ -34,6 +34,7 @@ import com.t1t.t1c.utils.ClientFingerprintUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -52,22 +53,7 @@ public class JavaClientExample {
 
     public static void main(String[] args) {
         try {
-            /*Config*/
-            conf = new LibConfig();
-            conf.setEnvironment(Environment.DEV);
-            conf.setDsUri(DS_URI);
-            conf.setOcvUri(OCV_URI);
-            conf.setGclClientUri(URI_T1C_GCL);
-            conf.setApiKey(API_KEY);
-            conf.setHardwarePinPadForced(false);
-            conf.setDefaultPollingIntervalInSeconds(5);
-            conf.setDefaultPollingTimeoutInSeconds(10);
-            conf.setDefaultConsentDuration(2);
-            conf.setDefaultConsentTimeout(35);
-            conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
-            System.out.println(ClientFingerprintUtil.createFingerprint());
-            System.out.println(new JavaInfo().toString());
-            //showMenu();
+            showMenu();
         } catch (NoConsentException ex) {
             System.out.println("Consent required: Grant consent and try again");
             showMenu();
@@ -77,13 +63,15 @@ public class JavaClientExample {
     private static void showMenu() {
         Scanner scan = new Scanner(System.in);
         /*Instantiate client*/
-        client = new T1cClient(conf);
+        client = new T1cClient(Paths.get("/usr/local/t1c/application.conf"));
+        conf = client.getConnectionFactory().getConfig();
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
         System.out.println("3. Grant consent");
         System.out.println("4. Select Citrix agent");
-        System.out.println("5. Exit");
+        System.out.println("5. Get Reader API container");
+        System.out.println("6. Exit");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
         String choice = scan.nextLine();
@@ -103,7 +91,10 @@ public class JavaClientExample {
                 executeCitrixFunctionality();
                 break;
             case "5":
-                // Do nothing
+                readerApiUseCases(client.getCore().pollCardInserted());
+                break;
+            case "6":
+                //Do nothing
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -142,7 +133,7 @@ public class JavaClientExample {
                 Integer choice = Integer.valueOf(input);
                 if (choice >= 0 && choice < agents.size()) {
                     GclAgent chosenAgent = agents.get(choice);
-                    conf.setAgentPort(chosenAgent.getPort());
+                    conf.setAgentPort(chosenAgent.getPort().intValue());
                     showMenu();
                 } else if (choice != i) {
                     System.out.println("Invalid choice");
@@ -196,7 +187,6 @@ public class JavaClientExample {
                 aventraUseCases(reader);
                 break;
             case BEID:
-                readerApiUseCases(reader);
                 beIdUseCases(reader);
                 break;
             case DNIE:
@@ -228,7 +218,7 @@ public class JavaClientExample {
             case PT:
                 ptIdUseCases(reader);
                 break;
-            case SAFENET:
+            case PKCS11:
                 pkcs11UseCases(reader);
                 break;
             default:

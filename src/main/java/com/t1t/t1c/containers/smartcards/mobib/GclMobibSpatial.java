@@ -93,7 +93,7 @@ public class GclMobibSpatial {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibSpatial) == false) {
+        if (!(other instanceof GclMobibSpatial)) {
             return false;
         }
         GclMobibSpatial rhs = ((GclMobibSpatial) other);

@@ -71,7 +71,7 @@ public class OcvOcspResponse {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvOcspResponse) == false) {
+        if (!(other instanceof OcvOcspResponse)) {
             return false;
         }
         OcvOcspResponse rhs = ((OcvOcspResponse) other);

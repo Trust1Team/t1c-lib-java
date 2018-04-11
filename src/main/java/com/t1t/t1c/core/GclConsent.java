@@ -183,7 +183,7 @@ public class GclConsent {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclConsent) == false) {
+        if (!(other instanceof GclConsent)) {
             return false;
         }
         GclConsent rhs = ((GclConsent) other);

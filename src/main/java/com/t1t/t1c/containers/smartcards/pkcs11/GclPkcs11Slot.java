@@ -137,7 +137,7 @@ public class GclPkcs11Slot {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPkcs11Slot) == false) {
+        if (!(other instanceof GclPkcs11Slot)) {
             return false;
         }
         GclPkcs11Slot rhs = ((GclPkcs11Slot) other);

@@ -71,7 +71,7 @@ public class GclReaderApiCcidRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiCcidRequest) == false) {
+        if (!(other instanceof GclReaderApiCcidRequest)) {
             return false;
         }
         GclReaderApiCcidRequest rhs = ((GclReaderApiCcidRequest) other);

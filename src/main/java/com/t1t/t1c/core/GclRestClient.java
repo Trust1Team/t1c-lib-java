@@ -15,11 +15,8 @@ import java.util.Map;
  */
 public interface GclRestClient {
 
-    @GET("/v1")
-    Call<T1cResponse<GclInfo>> getV1Status() throws RestException;
-
     @GET("/v2")
-    Call<T1cResponse<GclInfo>> getV2Status() throws RestException;
+    Call<T1cResponse<GclInfo>> getStatus() throws RestException;
 
     @GET("card-readers")
     Call<T1cResponse<List<GclReader>>> getCardReaders() throws RestException, NoConsentException;
@@ -29,12 +26,6 @@ public interface GclRestClient {
 
     @GET("card-readers/{reader}")
     Call<T1cResponse<GclReader>> getCardReader(@Path("reader") String readerId) throws RestException, NoConsentException;
-
-    @GET("plugins")
-    Call<T1cResponse<List<GclContainer>>> getV1Containers() throws RestException;
-
-    @GET("containers")
-    Call<T1cResponse<List<GclContainer>>> getV2Containers() throws RestException;
 
     @GET("agent")
     Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;

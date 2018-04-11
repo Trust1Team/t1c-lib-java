@@ -90,17 +90,20 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public DsSyncResponseDto registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+    public DsSyncResponseDto register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
-            if (!request.getActivated()) {
-                return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.register(deviceId, request), false));
-            } else {
-                return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.sync(deviceId, request), false));
-            }
+            return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.register(deviceId, request), false));
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
         }
     }
 
-
+    @Override
+    public DsSyncResponseDto sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+        try {
+            return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.sync(deviceId, request), false));
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
+        }
+    }
 }

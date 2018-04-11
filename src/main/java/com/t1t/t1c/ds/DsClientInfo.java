@@ -73,7 +73,7 @@ public class DsClientInfo {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsClientInfo) == false) {
+        if (!(other instanceof DsClientInfo)) {
             return false;
         }
         DsClientInfo rhs = ((DsClientInfo) other);

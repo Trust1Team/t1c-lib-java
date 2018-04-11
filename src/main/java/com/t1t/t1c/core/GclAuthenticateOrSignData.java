@@ -93,7 +93,7 @@ public class GclAuthenticateOrSignData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAuthenticateOrSignData) == false) {
+        if (!(other instanceof GclAuthenticateOrSignData)) {
             return false;
         }
         GclAuthenticateOrSignData rhs = ((GclAuthenticateOrSignData) other);

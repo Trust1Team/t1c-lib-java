@@ -137,7 +137,7 @@ public class DsError {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsError) == false) {
+        if (!(other instanceof DsError)) {
             return false;
         }
         DsError rhs = ((DsError) other);

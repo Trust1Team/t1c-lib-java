@@ -2,9 +2,13 @@ package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
+import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.jose4j.jwt.consumer.InvalidJwtException;
+
+import java.util.List;
 
 /**
  * Simple factory for creating REST exceptions.
@@ -190,7 +194,7 @@ public final class ExceptionFactory {
      */
     public static VerifyPinException verifyPinException(GclError error) {
         if (error != null) {
-            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode()));
+            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode().intValue()));
         } else {
             return verifyPinException("No error message present, cannot determine cause");
         }
@@ -255,6 +259,16 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a GCL Core exception
+     *
+     * @param containerInfo
+     * @return
+     */
+    public static GclCoreException containerLoadingFailed(List<GclContainerInfo> containerInfo) {
+        return new GclCoreException("Container download failed: " + containerInfo.toString());
+    }
+
+    /**
      * Creates a lux ID container exception
      *
      * @return
@@ -285,5 +299,14 @@ public final class ExceptionFactory {
      */
     public static NoConsentException noConsentException(String message, Integer httpCode, String url) {
         return new NoConsentException(message, httpCode, url);
+    }
+
+    /**
+     * Creates an InvalidTokenException
+     * @param cause the cause
+     * @return the exception
+     */
+    public static InvalidTokenException invalidTokenException(Throwable cause) {
+        throw new InvalidTokenException(cause);
     }
 }

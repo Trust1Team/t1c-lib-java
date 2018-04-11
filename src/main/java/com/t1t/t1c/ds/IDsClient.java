@@ -69,7 +69,7 @@ public interface IDsClient {
     String getDownloadLink(PlatformInfo info) throws DsClientException;
 
     /**
-     * Registers or synchronize a device towards the T1C-DS.
+     * Registers a device towards the T1C-DS.
      * Public properties are send in order to determine operating system, client, desktop application, ...
      *
      * @param deviceId the devide ID
@@ -77,7 +77,18 @@ public interface IDsClient {
      * @return the sync or registration response and the access token obtained from the headers
      * @throws DsClientException: on failure
      */
-    DsSyncResponseDto registerOrSync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
+    DsSyncResponseDto register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
+
+    /**
+     * Syncs a device towards the T1C-DS.
+     * Public properties are send in order to determine operating system, client, desktop application, ...
+     *
+     * @param deviceId the devide ID
+     * @param request  the sync request
+     * @return the sync or registration response and the access token obtained from the headers
+     * @throws DsClientException: on failure
+     */
+    DsSyncResponseDto sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
 
     /**
      * Returns the download link based on the provided platform information.

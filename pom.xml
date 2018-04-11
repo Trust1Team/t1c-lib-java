@@ -330,12 +330,13 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminCertificates.json</sourcePath>
                         <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsAtrList.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsContainerStorage.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsContainerResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLoadContainersRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsOs.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsClientInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDevice.json</sourcePath>
@@ -451,7 +452,7 @@
                     <execution>
                         <!--Uncomment the goal in order to generate t1c model-->
                         <goals>
-                            <goal>generate</goal>
+                            <!--<goal>generate</goal>-->
                         </goals>
                     </execution>
                 </executions>

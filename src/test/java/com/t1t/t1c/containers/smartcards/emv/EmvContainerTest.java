@@ -230,8 +230,8 @@ public class EmvContainerTest extends AbstractTestClass {
         assertEquals("a", obj.getAid());
         obj.setLabel("l");
         assertEquals("l", obj.getLabel());
-        obj.setPriority(1);
-        assertEquals(Integer.valueOf(1), obj.getPriority());
+        obj.setPriority(1L);
+        assertEquals(Long.valueOf(1), obj.getPriority());
     }
 
     @Test

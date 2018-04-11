@@ -71,7 +71,7 @@ public class OcvCertificate {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvCertificate) == false) {
+        if (!(other instanceof OcvCertificate)) {
             return false;
         }
         OcvCertificate rhs = ((OcvCertificate) other);

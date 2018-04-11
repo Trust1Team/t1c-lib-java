@@ -73,7 +73,7 @@ public class DsDesktopApplication {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDesktopApplication) == false) {
+        if (!(other instanceof DsDesktopApplication)) {
             return false;
         }
         DsDesktopApplication rhs = ((DsDesktopApplication) other);

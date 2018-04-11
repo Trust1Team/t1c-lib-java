@@ -115,7 +115,7 @@ public class GclAventraAppletInfo {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAventraAppletInfo) == false) {
+        if (!(other instanceof GclAventraAppletInfo)) {
             return false;
         }
         GclAventraAppletInfo rhs = ((GclAventraAppletInfo) other);

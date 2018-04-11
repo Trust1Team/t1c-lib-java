@@ -334,10 +334,10 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test
     public void testGclLuxIdPicture() {
         GclLuxIdPicture pic = MockResponseFactory.getGclLuxIdPicture();
-        pic.setHeight(1);
-        assertEquals(Integer.valueOf(1), pic.getHeight());
-        pic.setWidth(2);
-        assertEquals(Integer.valueOf(2), pic.getWidth());
+        pic.setHeight(1L);
+        assertEquals(Long.valueOf(1), pic.getHeight());
+        pic.setWidth(2L);
+        assertEquals(Long.valueOf(2), pic.getWidth());
         pic.setImage("img");
         assertEquals("img", pic.getImage());
         pic.setRawData("raw");
@@ -431,7 +431,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test
     public void testLuxIdContainerException() {
         LuxIdContainerException ex = ExceptionFactory.luxIdContainerException("message");
-        assertEquals(Integer.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
+        assertEquals(Long.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
     }
 
     @Test

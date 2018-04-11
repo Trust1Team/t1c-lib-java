@@ -36,9 +36,9 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = new Pkcs11Container(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true), getPkcs11RestClient());
+        container = new Pkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true), getPkcs11RestClient());
         try {
-            container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(true));
+            container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true));
         } catch (IllegalArgumentException ex) {
             // Do nothing
         }
@@ -106,12 +106,12 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test
     public void getType() {
-        assertEquals(ContainerType.SAFENET, container.getType());
+        assertEquals(ContainerType.PKCS11, container.getType());
     }
 
     @Test
     public void getTypeId() {
-        assertEquals(ContainerType.SAFENET.getId(), container.getTypeId());
+        assertEquals(ContainerType.PKCS11.getId(), container.getTypeId());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test
     public void getPkcs11Certificates() {
-        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111");
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1L, "1111");
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
         assertNotNull(certs.getCertificates().get(0));
@@ -136,7 +136,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test
     public void getPkcs11CertificatesParsed() {
-        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111", true);
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1L, "1111", true);
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
         assertNotNull(certs.getCertificates().get(0));
@@ -146,7 +146,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test(expected = VerifyPinException.class)
     public void getPkcs11CertificatesWithWrongPin() {
-        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1112");
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1L, "1112");
         assertNotNull(certs);
         assertTrue(CollectionUtils.isNotEmpty(certs.getCertificates()));
     }
@@ -158,7 +158,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test(expected = IllegalArgumentException.class)
     public void getPkcs11CertificatesWithoutPin() {
-        container.getPkcs11Certificates(1, null);
+        container.getPkcs11Certificates(1L, null);
     }
 
     @Test
@@ -217,9 +217,9 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
         assertTrue(StringUtils.isNotEmpty(info.toString()));
         info.setCryptokiVersion("1");
         assertEquals("1", info.getCryptokiVersion());
-        info.setFlags(5);
-        assertEquals(Integer.valueOf(5), info.getFlags());
-        assertEquals(info.withFlags(0), info);
+        info.setFlags(5L);
+        assertEquals(Long.valueOf(5), info.getFlags());
+        assertEquals(info.withFlags(0L), info);
         info.setLibraryVersion("2");
         assertEquals("2", info.getLibraryVersion());
         info.setLibraryDescription("3");
@@ -241,8 +241,8 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
         assertEquals("mod", req.getModule());
         req.setPin("pin");
         assertEquals("pin", req.getPin());
-        req.setSlotId(1);
-        assertEquals(Integer.valueOf(1), req.getSlotId());
+        req.setSlotId(1L);
+        assertEquals(Long.valueOf(1), req.getSlotId());
     }
 
     @Test
@@ -256,15 +256,15 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
         assertTrue(StringUtils.isNotEmpty(slot.toString()));
         slot.setDescription("1");
         assertEquals("1", slot.getDescription());
-        slot.setFlags(5);
-        assertEquals(Integer.valueOf(5), slot.getFlags());
-        assertEquals(slot.withFlags(0), slot);
+        slot.setFlags(5L);
+        assertEquals(Long.valueOf(5), slot.getFlags());
+        assertEquals(slot.withFlags(0L), slot);
         slot.setFirmwareVersion("2");
         assertEquals("2", slot.getFirmwareVersion());
         slot.setHardwareVersion("3");
         assertEquals("3", slot.getHardwareVersion());
-        slot.setSlotId(6);
-        assertEquals(Integer.valueOf(6), slot.getSlotId());
+        slot.setSlotId(6L);
+        assertEquals(Long.valueOf(6), slot.getSlotId());
     }
 
     @Test
@@ -282,8 +282,8 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Test
     public void testGclPkcs11Certificates() {
-        Pkcs11Certificates certs = container.getPkcs11Certificates(1, "1111");
-        Pkcs11Certificates certs2 = container.getPkcs11Certificates(1, "1111");
+        Pkcs11Certificates certs = container.getPkcs11Certificates(1L, "1111");
+        Pkcs11Certificates certs2 = container.getPkcs11Certificates(1L, "1111");
         assertEquals(certs, certs);
         assertEquals(certs.hashCode(), certs2.hashCode());
         assertEquals(certs, certs2);

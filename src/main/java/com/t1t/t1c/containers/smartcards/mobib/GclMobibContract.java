@@ -447,7 +447,7 @@ public class GclMobibContract {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclMobibContract) == false) {
+        if (!(other instanceof GclMobibContract)) {
             return false;
         }
         GclMobibContract rhs = ((GclMobibContract) other);

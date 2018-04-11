@@ -250,7 +250,7 @@ public class DsDeviceRegistrationRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDeviceRegistrationRequest) == false) {
+        if (!(other instanceof DsDeviceRegistrationRequest)) {
             return false;
         }
         DsDeviceRegistrationRequest rhs = ((DsDeviceRegistrationRequest) other);

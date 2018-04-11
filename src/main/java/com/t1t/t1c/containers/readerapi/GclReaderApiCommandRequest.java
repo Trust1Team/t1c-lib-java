@@ -49,7 +49,7 @@ public class GclReaderApiCommandRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiCommandRequest) == false) {
+        if (!(other instanceof GclReaderApiCommandRequest)) {
             return false;
         }
         GclReaderApiCommandRequest rhs = ((GclReaderApiCommandRequest) other);

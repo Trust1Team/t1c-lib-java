@@ -2,6 +2,8 @@ package com.t1t.t1c.core;
 
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.ds.DsAtrList;
+import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.JsonConversionException;
@@ -26,6 +28,8 @@ import java.util.Map;
 public class Core extends AbstractCore {
 
     private static final Logger log = LoggerFactory.getLogger(Core.class);
+
+    private static final Integer DOWNLOAD_STATUS_POLL_INTERVAL = 250;
 
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
@@ -63,6 +67,24 @@ public class Core extends AbstractCore {
     }
 
     @Override
+    public String getDevicePubKey() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving device public key", ex);
+        }
+    }
+
+    @Override
+    public String getSslPubKey() throws GclCoreException {
+        try {
+            return RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired());
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving SSL public key", ex);
+        }
+    }
+
+    @Override
     public String getDsPubKey() throws GclCoreException {
         try {
             return RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired());
@@ -77,10 +99,11 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public Boolean setDsPubKey(String publicKey) throws GclCoreException {
+    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException {
         try {
-            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
-            keyReq.setCertificate(publicKey);
+            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
+                    .withEncryptedPublicKey(encryptedPublicKey)
+                    .withEncryptedAesKey(encryptedAesKey);
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
@@ -90,18 +113,9 @@ public class Core extends AbstractCore {
     @Override
     public GclInfo getInfo() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getV1Status(), config.isConsentRequired());
+            return RestExecutor.returnData(gclRestClient.getStatus(), config.isConsentRequired());
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving GCL core info", ex);
-        }
-    }
-
-    @Override
-    public List<GclContainer> getContainers() throws GclCoreException {
-        try {
-            return RestExecutor.returnData(gclRestClient.getV1Containers(), config.isConsentRequired());
-        } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("error retrieving list of available containers", ex);
         }
     }
 
@@ -312,12 +326,89 @@ public class Core extends AbstractCore {
         }
     }
 
-    private Integer getDurationInDays(final Integer durationInDays) {
-        return durationInDays == null ? config.getDefaultConsentDuration() : durationInDays;
+    @Override
+    public boolean loadContainers(List<DsContainerResponse> containerResponses) throws GclCoreException {
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadContainers(new GclLoadContainersRequest().withContainerResponses(containerResponses))));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Failed to load containers: ", ex);
+        }
     }
 
-    private Integer getTimeoutInSeconds(final Integer timeoutInSeconds) {
-        return timeoutInSeconds == null ? config.getDefaultConsentTimeout() : timeoutInSeconds;
+    @Override
+    public boolean loadAtrList(DsAtrList atrList) throws GclCoreException {
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadAtrList(atrList)));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Failed to load ATR list: ", ex);
+        }
+    }
+
+    @Override
+    public GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers) throws GclCoreException {
+        int totalTime = 0;
+        int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
+        boolean isRetry = false;
+        boolean downloadsComplete;
+        do {
+            GclInfo info = getInfo();
+            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers, isRetry);
+            if (!downloadsComplete) {
+                isRetry = true;
+                try {
+                    Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
+                    totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
+                } catch (InterruptedException ex) {
+                    log.warn("error sleeping through polling interval: ", ex);
+                }
+            }
+        } while (!downloadsComplete && totalTime < pollTimeout);
+        return getInfo();
+    }
+
+    private boolean checkIfDownloadsCompleted(List<GclContainerInfo> currentContainers, List<DsContainerResponse> containersToLoad, boolean isRetry) {
+        boolean completed;
+        int errored = 0;
+        int missing = 0;
+        int ongoing = 0;
+        int installed = 0;
+        for (DsContainerResponse ctl : containersToLoad) {
+            boolean found = false;
+            for (GclContainerInfo cc : currentContainers) {
+                if (ctl.getName().equalsIgnoreCase(cc.getName()) && ctl.getVersion().equalsIgnoreCase(cc.getVersion())) {
+                    found = true;
+                    switch(cc.getStatus()) {
+                        case ERROR:
+                        case DOWNLOAD_ERROR:
+                            errored++;
+                            break;
+                        case INIT:
+                        case DOWNLOADING:
+                            ongoing++;
+                            break;
+                        case INSTALLED:
+                            installed++;
+                            break;
+                    }
+                }
+            }
+            if (!found) {
+                missing++;
+            }
+        }
+        if (errored > 0 || missing > 0 && isRetry) {
+            throw ExceptionFactory.containerLoadingFailed(currentContainers);
+        }
+        completed = ongoing == 0 && installed == containersToLoad.size();
+        return completed;
+    }
+
+    private Long getDurationInDays(final Integer durationInDays) {
+        return durationInDays == null ? config.getDefaultConsentDuration().longValue() : durationInDays.longValue();
+    }
+
+    private Long getTimeoutInSeconds(final Integer timeoutInSeconds) {
+        return timeoutInSeconds == null ? config.getDefaultConsentTimeout().longValue() : timeoutInSeconds.longValue();
     }
 
     private GclConsent.AlertLevel getAlertLevel(final GclConsent.AlertLevel alertLevel) {
@@ -344,7 +435,7 @@ public class Core extends AbstractCore {
         }
     }
 
-    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) throws GclCoreException {
+    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
         int interval = config.getDefaultPollingIntervalInSeconds();
         if (pollIntervalInSeconds != null) {
             Preconditions.checkArgument(pollIntervalInSeconds > 0 && pollIntervalInSeconds < 60, "Polling interval must be a value between 0 & 60");
@@ -353,7 +444,7 @@ public class Core extends AbstractCore {
         return 1000 * interval;
     }
 
-    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) throws GclCoreException {
+    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
         int timeout = config.getDefaultPollingTimeoutInSeconds();
         if (pollTimeoutInSeconds != null) {
             Preconditions.checkArgument(pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60, "Polling timout must be a value between 0 & 60");
@@ -362,45 +453,12 @@ public class Core extends AbstractCore {
         return 1000 * timeout;
     }
 
+    private int getDownloadStatusPollingTimeoutInMillis() {
+        int timeout = config.getContainerDownloadTimeout();
+        return 1000 * timeout;
+    }
+
     private boolean checkCitrix() {
         return config.isCitrix() && config.getAgentPort() != null;
     }
-
-/*    //TODO
-    private void checkJwtValidity() throws GclCoreException {
-        if (config.getEnvironment() != Environment.DEV) {
-            JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
-            String jwt = config.getGclJwt();
-            if (StringUtils.isNotEmpty(jwt)) {
-                try {
-                    JwtContext context = consumer.process(jwt);
-                    NumericDate refreshTreshold = NumericDate.now();
-                    refreshTreshold.addSeconds(-240);
-                    if (context.getJwtClaims().getExpirationTime().isOnOrAfter(refreshTreshold)) {
-                        jwt = ConnectionFactory.getDsClient().refreshJWT(jwt);
-                        if (StringUtils.isNotEmpty(jwt)) {
-                            config.setGclJwt(jwt);
-                            ConnectionFactory.setConfig(config);
-                            setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                        }
-                    }
-                } catch (InvalidJwtException | MalformedClaimException ex) {
-                    log.error("Token invalid: ", ex);
-                    jwt = ConnectionFactory.getDsClient().getJWT();
-                    if (StringUtils.isNotEmpty(jwt)) {
-                        config.setGclJwt(jwt);
-                        ConnectionFactory.setConfig(config);
-                        setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                    }
-                }
-            } else {
-                jwt = ConnectionFactory.getDsClient().getJWT();
-                if (StringUtils.isNotEmpty(jwt)) {
-                    config.setGclJwt(jwt);
-                    ConnectionFactory.setConfig(config);
-                    setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                }
-            }
-        }
-    }*/
 }

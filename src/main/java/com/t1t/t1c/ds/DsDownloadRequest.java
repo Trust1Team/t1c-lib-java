@@ -49,7 +49,7 @@ public class DsDownloadRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDownloadRequest) == false) {
+        if (!(other instanceof DsDownloadRequest)) {
             return false;
         }
         DsDownloadRequest rhs = ((DsDownloadRequest) other);

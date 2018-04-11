@@ -5,13 +5,23 @@ import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.AbstractRuntimeException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
 public final class PinUtil {
+
+    private static String devicePubKey;
 
     private PinUtil() {
     }
@@ -42,8 +52,22 @@ public final class PinUtil {
 
     public static GclAuthenticateOrSignData setPinIfPresent(GclAuthenticateOrSignData data, String... pin) {
         if (pin != null && pin.length > 0) {
-            data.setPin(pin[0]);
+            data.setPin(PinUtil.encryptPin(pin[0]));
         }
         return data;
+    }
+
+    public static String encryptPin(String pin) {
+        try {
+            Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.ENCRYPT_MODE, KeyUtil.getPublicKey(devicePubKey));
+            return Base64.encodeBase64String(cipher.doFinal(pin.getBytes()));
+        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException ex) {
+            return null;
+        }
+    }
+
+    public static void setDevicePubKey(String devicePubKey) {
+        PinUtil.devicePubKey = devicePubKey;
     }
 }

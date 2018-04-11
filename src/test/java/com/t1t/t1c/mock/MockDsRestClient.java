@@ -30,21 +30,16 @@ public class MockDsRestClient implements DsRestClient {
     }
 
     @Override
-    public Call<DsToken> getJWT() {
-        return delegate.returningResponse(getToken()).getJWT();
-    }
-
-    @Override
     public Call<DsToken> refreshJWT(DsTokenRefreshRequest request) {
         return delegate.returningResponse(getToken()).refreshJWT(request);
     }
 
     @Override
-    public Call<DsPublicKey> getPubKey(String encoding) {
+    public Call<DsPublicKey> getPubKey(String deviceId, String encoding) {
         if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
-            return delegate.returningResponse(getPublicKeyResponseDer()).getPubKey(null);
+            return delegate.returningResponse(getPublicKeyResponseDer()).getPubKey(deviceId,null);
         } else {
-            return delegate.returningResponse(getPublicKeyResponsePem()).getPubKey(encoding);
+            return delegate.returningResponse(getPublicKeyResponsePem()).getPubKey(deviceId, encoding);
         }
     }
 
@@ -54,12 +49,12 @@ public class MockDsRestClient implements DsRestClient {
     }
 
     @Override
-    public Call<DsToken> register(String deviceId, DsDeviceRegistrationRequest request) {
-        return delegate.returningResponse(getToken()).register(deviceId, request);
+    public Call<DsRegistrationSyncResponse> register(String deviceId, DsDeviceRegistrationRequest request) {
+        return delegate.returningResponse(getDsRegistrationResponse()).register(deviceId, request);
     }
 
     @Override
-    public Call<DsToken> sync(String deviceId, DsDeviceRegistrationRequest request) {
-        return delegate.returningResponse(getToken()).sync(deviceId, request);
+    public Call<DsRegistrationSyncResponse> sync(String deviceId, DsDeviceRegistrationRequest request) {
+        return delegate.returningResponse(getDsSyncResponse()).sync(deviceId, request);
     }
 }

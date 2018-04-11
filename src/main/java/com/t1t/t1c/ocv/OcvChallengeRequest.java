@@ -71,7 +71,7 @@ public class OcvChallengeRequest {
         if (other == this) {
             return true;
         }
-        if ((other instanceof OcvChallengeRequest) == false) {
+        if (!(other instanceof OcvChallengeRequest)) {
             return false;
         }
         OcvChallengeRequest rhs = ((OcvChallengeRequest) other);

@@ -180,8 +180,8 @@ public class ReaderApiContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setControlCode(1);
-        assertEquals(Integer.valueOf(1), obj.getControlCode());
+        obj.setControlCode(1L);
+        assertEquals(Long.valueOf(1), obj.getControlCode());
 
         obj.setId("i");
         assertEquals("i", obj.getId());
@@ -248,7 +248,7 @@ public class ReaderApiContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setTimeout(1);
-        assertEquals(Integer.valueOf(1), obj.getTimeout());
+        obj.setTimeout(1L);
+        assertEquals(Long.valueOf(1), obj.getTimeout());
     }
 }

@@ -29,6 +29,7 @@ import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.ocv.OcvClient;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,21 +94,14 @@ public class T1cClient implements IT1cClient {
         connFactory = new ConnectionFactory(validatedConfig);
         // Get Core info, enrich config with core info and reset connection
         GclInfo gclInfo = getCore().getInfo();
+        // Check that the core version is compatible with the Java library
+        if (gclInfo.getVersion().compareToIgnoreCase("2.0.0") < 0) {
+            throw ExceptionFactory.initializationException("GCL version not compatible with library. Upgrade the GCL to newer version");
+        }
         connFactory.setConfig(configParser.parseConfig(validatedConfig, gclInfo));
 
         // Attempt to register or sync device
         initializeDevice(gclInfo);
-
-
-        // Initialize public key for instance and register towards DS
-        if (gclInfo.getManaged() || !StringUtils.isEmpty(validatedConfig.getApiKey())) {
-            try {
-                initSecurityContext();
-                registerAndActivate();
-            } catch (GclCoreException ex) {
-                throw ExceptionFactory.initializationException(ex.getMessage());
-            }
-        }
     }
 
     /**
@@ -116,34 +110,57 @@ public class T1cClient implements IT1cClient {
      * @param currentInfo
      */
     private void initializeDevice(final GclInfo currentInfo) {
+        GclInfo info = currentInfo;
+        // Set the device's public key in the PIN util for encryption
+        PinUtil.setDevicePubKey(getCore().getDevicePubKey());
         if (canRegisterOrSync()) {
-            // If the device isn't activated, register it first and activate
+            // Get the device's public key
             String devicePublicKey = getCore().getDevicePubKey();
-            // If the GCL is managed package or the managed sync is set to true, register or sync the device
-            if (!currentInfo.getManaged() || connFactory.getConfig().isSyncManaged()) {
+
+            // If the device isn't managed and isn't activated, register it first and activate
+            if (!info.getManaged() && !info.getActivated()) {
+                DsSyncResponseDto registrationResponse = getDsClient().register(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
+                connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), registrationResponse));
+                verifyDsPublicKey(info.getUid());
+                log.info("Activated Core: {}", getCore().activate());
+                info = getCore().getInfo();
+            }
+            DsSyncResponseDto syncResponse = null;
+            // If the GCL is managed package or the managed sync is set to true, sync the device
+            if (!info.getManaged() || connFactory.getConfig().isSyncManaged()) {
                 try {
-                    DsSyncResponseDto syncResponse = getDsClient().registerOrSync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePublicKey));
+                    syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
                     // Reset the connections with the newly obtained DS token
                     connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
                 } catch (Exception ex) {
                     // If the package is managed, ignore the error: we made an attempt to sync, that is enough.
-                    if (!currentInfo.getManaged()) {
+                    if (!info.getManaged()) {
                         throw ExceptionFactory.initializationException("Could not initialize the GCL: ", ex);
                     }
                 }
             }
-            // If the GCL isn't managed, active if necessary, set DS public key and sync container/CORS whitelist
-            if (!currentInfo.getManaged()) {
-                if (!currentInfo.getActivated()) {
-                    log.info("Activated Core: {}", getCore().activate());
-                }
-                // Check if the DS public key is set
-                if (getCore().getDsPubKey() == null) {
-                    // Get the encrypted DS key for the device
-                    DsPublicKey dsPublicKey = getDsClient().getPublicKey(currentInfo.getUid());
-                    log.info("Loaded DS Public key: {}", getCore().setDsPubKey());
-                }
+
+            // If the GCL isn't managed, verify the DS public key and sync container/CORS whitelist
+            if (!info.getManaged()) {
+                verifyDsPublicKey(info.getUid());
+                // Load the ATR list
+                log.info("Loaded ATR list: {}", getCore().loadAtrList(syncResponse.getAtrList()));
+                log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));
+                // Poll the GCL to check container download status
+                info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses());
+                // Sync the new container states with the DS
+                syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
+                connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
             }
+        }
+    }
+
+    private void verifyDsPublicKey(String deviceId) {
+        // Check if the DS public key is set
+        if (getCore().getDsPubKey() == null) {
+            // Get the encrypted DS key for the device
+            DsPublicKey dsPublicKey = getDsClient().getPublicKey(deviceId);
+            log.info("Loaded DS Public key: {}", getCore().setDsPubKey(dsPublicKey.getEncryptedPublicKey(), dsPublicKey.getEncryptedAesKey()));
         }
     }
 
@@ -155,30 +172,6 @@ public class T1cClient implements IT1cClient {
      */
     private boolean canRegisterOrSync() {
         return StringUtils.isNoneEmpty(connFactory.getConfig().getApiKey(), connFactory.getConfig().getDsUri());
-    }
-
-    /**
-     * Initialize the security context by setting the GCL's public key if necessary
-     */
-    private void initSecurityContext() {
-        try {
-            try {
-                getCore().getDsPubKey();
-            } catch (GclCoreException ex) {
-                if (ex.getCause() instanceof RestException) {
-                    GclError error = ((RestException) ex.getCause()).getGclError();
-                    if (error != null && error.getCode() == 201) {
-                        String publicKey = getDsClient().getPublicKey();
-                        if (!getCore().setDsPubKey(publicKey)) {
-                            throw ExceptionFactory.initializationException("Could not set GCL public key");
-                        }
-                    }
-                }
-            }
-        } catch (GclCoreException ex) {
-            log.error("Error initiallizing security context: ", ex);
-            throw ExceptionFactory.initializationException(ex.getMessage());
-        }
     }
 
     private DsDeviceRegistrationRequest createRegistrationOrSyncRequest(GclInfo info, String devicePublicKey) {
@@ -204,61 +197,7 @@ public class T1cClient implements IT1cClient {
         return request;
     }
 
-    /**
-     * Register and activate the GCL with the distribution server if necessary
-     */
-    private void registerAndActivate(GclInfo gclInfo) {
-        PlatformInfo platformInfo = getCore().getPlatformInfo();
-        LibConfig config = connFactory.getConfig();
 
-        connFactory.setConfig(config);
-
-        DsDeviceRegistrationRequest registration = new DsDeviceRegistrationRequest()
-                .withActivated(gclInfo.getActivated())
-                .withManaged(gclInfo.getManaged())
-                .withDesktopApplication(new DsDesktopApplication()
-                        .withVersion(platformInfo.getJava().getVersion())
-                        .withName("Java"))
-                .withOs(new DsOs()
-                        .withName(platformInfo.getOs().getName())
-                        .withVersion(platformInfo.getOs().getVersion())
-                        .withArchitecture(platformInfo.getOs().getArchitecture()))
-                .withUuid(gclInfo.getUid())
-                .withVersion(gclInfo.getVersion());
-
-        if (!gclInfo.getActivated()) {
-            String token = getDsClient().registerOrSync(gclInfo.getUid(), registration);
-            if (StringUtils.isNotBlank(token)) {
-                config.setGclJwt(token);
-                connFactory.setConfig(config);
-            }
-            boolean activated = getCore().activate();
-            gclInfo.setActivated(activated);
-            registration.setActivated(activated);
-            if (activated) {
-                getDsClient().registerOrSync(gclInfo.getUid(), registration);
-            }
-
-        } else if (!gclInfo.getManaged()) {
-            getDsClient().registerOrSync(gclInfo.getUid(), registration);
-        }
-    }
-
-    /**
-     * Determines if the GCL version is token compatible
-     *
-     * @return
-     */
-    private boolean isTokenCompatible(String gclVersion) {
-        if (StringUtils.isNotBlank(gclVersion)) {
-            String version;
-            if (gclVersion.contains("-")) {
-                version = gclVersion.substring(gclVersion.indexOf("-") + 1);
-            } else version = gclVersion;
-            return version.compareToIgnoreCase("1.4.0") > 0;
-        }
-        return false;
-    }
 
     @Override
     public ICore getCore() {

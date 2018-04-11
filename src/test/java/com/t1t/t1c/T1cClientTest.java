@@ -134,18 +134,13 @@ public class T1cClientTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGetSafenetContainer() {
+    public void testGetPkcs11Container() {
         try {
-            Pkcs11Container container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(false));
+            Pkcs11Container container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(false));
             assertNotNull(container);
         } catch (IllegalArgumentException ex) {
             assertTrue(ex.getMessage().contains("Driver not found"));
         }
-    }
-
-    @Test
-    public void testGetReaderContainer() {
-        assertNotNull(getClient().getReaderApiContainer());
     }
 
     @Test

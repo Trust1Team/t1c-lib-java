@@ -357,7 +357,7 @@ public class DsSystemStatus {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsSystemStatus) == false) {
+        if (!(other instanceof DsSystemStatus)) {
             return false;
         }
         DsSystemStatus rhs = ((DsSystemStatus) other);

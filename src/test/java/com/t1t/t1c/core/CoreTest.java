@@ -43,7 +43,7 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void getVersion() {
         String version = core.getVersion();
-        assertEquals(MockResponseFactory.getGclV1Status().getVersion(), version);
+        assertEquals(MockResponseFactory.getGclV2Status().getVersion(), version);
     }
 
     @Test
@@ -54,24 +54,18 @@ public class CoreTest extends AbstractTestClass {
     @Test
     public void getPubKey() {
         String publicKey = core.getDsPubKey();
-        assertEquals(MockResponseFactory.getGclAdminCertificate(), publicKey);
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey);
     }
 
     @Test
     public void setPubKey() {
-        assertTrue(core.setDsPubKey(MockResponseFactory.getGclAdminCertificate()));
+        assertTrue(core.setDsPubKey(MockResponseFactory.getGclAdminDsCertificate(), "AESKEY"));
     }
 
     @Test
     public void getInfo() {
         GclInfo info = core.getInfo();
-        assertEquals(MockResponseFactory.getGclV1Status(), info);
-    }
-
-    @Test
-    public void getContainers() {
-        List<GclContainer> containers = core.getContainers();
-        assertEquals(MockResponseFactory.getAllContainers(), containers);
+        assertEquals(MockResponseFactory.getGclV2Status(), info);
     }
 
     @Test

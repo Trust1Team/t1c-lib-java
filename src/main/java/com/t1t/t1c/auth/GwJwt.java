@@ -49,7 +49,7 @@ public class GwJwt {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GwJwt) == false) {
+        if (!(other instanceof GwJwt)) {
             return false;
         }
         GwJwt rhs = ((GwJwt) other);

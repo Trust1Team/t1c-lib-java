@@ -8,6 +8,4 @@ public interface IGatewayAuthClient {
 
     String getToken();
 
-    String refreshToken(String token);
-
 }

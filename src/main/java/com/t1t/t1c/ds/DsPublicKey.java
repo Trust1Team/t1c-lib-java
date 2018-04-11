@@ -93,7 +93,7 @@ public class DsPublicKey {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsPublicKey) == false) {
+        if (!(other instanceof DsPublicKey)) {
             return false;
         }
         DsPublicKey rhs = ((DsPublicKey) other);

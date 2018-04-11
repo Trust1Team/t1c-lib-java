@@ -101,12 +101,12 @@ public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, 
     }
 
     public String openSession(Integer timeout) throws RestException {
-        Integer timeoutToUse;
+        Long timeoutToUse;
         if (timeout != null) {
             Preconditions.checkArgument(timeout > 0, "timeout value must be greater than 0");
-            timeoutToUse = timeout;
+            timeoutToUse = timeout.longValue();
         } else {
-            timeoutToUse = config.getSessionTimeout();
+            timeoutToUse = config.getSessionTimeout().longValue();
         }
         return RestExecutor.returnData(httpClient.openSession(getTypeId(), reader.getId(), new GclReaderApiOpenSessionRequest().withTimeout(timeoutToUse)), config.isConsentRequired());
     }

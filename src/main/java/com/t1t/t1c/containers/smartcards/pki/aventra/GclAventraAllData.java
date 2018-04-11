@@ -160,7 +160,7 @@ public class GclAventraAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAventraAllData) == false) {
+        if (!(other instanceof GclAventraAllData)) {
             return false;
         }
         GclAventraAllData rhs = ((GclAventraAllData) other);

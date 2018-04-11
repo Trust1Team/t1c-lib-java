@@ -71,7 +71,7 @@ public class DsDownloadPath {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DsDownloadPath) == false) {
+        if (!(other instanceof DsDownloadPath)) {
             return false;
         }
         DsDownloadPath rhs = ((DsDownloadPath) other);

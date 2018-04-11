@@ -138,7 +138,7 @@ public class GclPtIdAllCertificates implements AllCertificates {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPtIdAllCertificates) == false) {
+        if (!(other instanceof GclPtIdAllCertificates)) {
             return false;
         }
         GclPtIdAllCertificates rhs = ((GclPtIdAllCertificates) other);

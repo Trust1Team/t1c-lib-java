@@ -1,5 +1,8 @@
 package com.t1t.t1c.rest;
 
+import com.t1t.t1c.auth.GatewayAuthClient;
+import com.t1t.t1c.auth.GatewayAuthRestClient;
+import com.t1t.t1c.auth.IGatewayAuthClient;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclCitrixRestClient;
@@ -32,9 +35,11 @@ import java.util.concurrent.TimeUnit;
  * @since 2017
  */
 public final class RestServiceBuilder {
+
     private static final Logger log = LoggerFactory.getLogger(RestServiceBuilder.class);
+
     /* Headers */
-    private static final String CONTAINER_CONTEXT_PATH = "plugins/";
+    private static final String CONTAINER_CONTEXT_PATH = "containers/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
@@ -87,7 +92,16 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null);
+        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
+    }
+
+    /**
+     * Gateway auth client that communicates through gateway
+     * @param config
+     * @return
+     */
+    public static IGatewayAuthClient getGatewayAuthClient(LibConfig config) {
+        return new GatewayAuthClient(getClient(config.getAuthUri(), GatewayAuthRestClient.class, config.getApiKey(), null));
     }
 
     /**
@@ -117,7 +131,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), null);
+        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
     }
 
     /**
@@ -126,14 +140,14 @@ public final class RestServiceBuilder {
      * @param uri
      * @param iFace
      * @param apikey
-     * @param jwt
+     * @param gatewayAuthClient
      * @param <T>
      * @return
      */
-    private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt) {
+    private static <T> T getClient(String uri, Class<T> iFace, String apikey, IGatewayAuthClient gatewayAuthClient) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(gethttpClient(apikey, jwt))
+                    .client(gethttpClient(apikey, gatewayAuthClient))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -163,14 +177,14 @@ public final class RestServiceBuilder {
      * Builds a http client instance.
      *
      * @param apikey
-     * @param jwt
+     * @param gatewayAuthClient
      * @return
      */
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt) {
+    private static OkHttpClient gethttpClient(final String apikey, final IGatewayAuthClient gatewayAuthClient) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
-        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
+        final boolean jwtPresent = gatewayAuthClient != null;
 
         if (apikeyPresent || jwtPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
@@ -181,11 +195,7 @@ public final class RestServiceBuilder {
                         requestBuilder.addHeader(APIKEY_HEADER_NAME, apikey);
                     }
                     if (jwtPresent) {
-                        if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                        } else {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
-                        }
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + gatewayAuthClient.getToken());
                     }
                     return chain.proceed(requestBuilder.build());
                 }

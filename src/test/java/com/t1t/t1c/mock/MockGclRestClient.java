@@ -23,18 +23,8 @@ public class MockGclRestClient implements GclRestClient {
     }
 
     @Override
-    public Call<T1cResponse<GclInfo>> getV1Status() {
-        return delegate.returningResponse(MockResponseFactory.getGclV1StatusResponse()).getV1Status();
-    }
-
-    @Override
-    public Call<T1cResponse<GclInfo>> getV2Status() throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getGclV1StatusResponse()).getV2Status();
-    }
-
-    @Override
-    public Call<T1cResponse<String>> getPublicKey() {
-        return delegate.returningResponse(MockResponseFactory.getGclAdminCertificateResponse()).getPublicKey();
+    public Call<T1cResponse<GclInfo>> getStatus() {
+        return delegate.returningResponse(MockResponseFactory.getGclStatusResponse()).getStatus();
     }
 
     @Override
@@ -50,16 +40,6 @@ public class MockGclRestClient implements GclRestClient {
     @Override
     public Call<T1cResponse<GclReader>> getCardReader(String readerId) {
         return delegate.returningResponse(MockResponseFactory.getGclReaderResponse(readerId)).getCardReader(readerId);
-    }
-
-    @Override
-    public Call<T1cResponse<List<GclContainer>>> getV1Containers() {
-        return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getV1Containers();
-    }
-
-    @Override
-    public Call<T1cResponse<List<GclContainer>>> getV2Containers() throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getAllContainersResponse()).getV2Containers();
     }
 
     @Override

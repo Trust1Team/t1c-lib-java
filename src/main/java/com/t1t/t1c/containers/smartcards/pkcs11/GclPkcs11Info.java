@@ -137,7 +137,7 @@ public class GclPkcs11Info {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPkcs11Info) == false) {
+        if (!(other instanceof GclPkcs11Info)) {
             return false;
         }
         GclPkcs11Info rhs = ((GclPkcs11Info) other);

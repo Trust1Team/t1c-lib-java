@@ -71,7 +71,7 @@ public class GclReaderApiCcidFeature {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclReaderApiCcidFeature) == false) {
+        if (!(other instanceof GclReaderApiCcidFeature)) {
             return false;
         }
         GclReaderApiCcidFeature rhs = ((GclReaderApiCcidFeature) other);

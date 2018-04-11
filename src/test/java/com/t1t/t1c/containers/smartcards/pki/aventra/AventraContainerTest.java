@@ -365,7 +365,7 @@ public class AventraContainerTest extends AbstractTestClass {
         assertEquals(newCert, obj.getEncryptionCertificate());
         obj.setSigningCertificate(newCert);
         assertEquals(newCert, obj.getSigningCertificate());
-        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1);
+        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1L);
         obj.setAppletInfo(info);
         assertEquals(info, obj.getAppletInfo());
     }
@@ -402,7 +402,7 @@ public class AventraContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1);
+        GclAventraAppletInfo info = new GclAventraAppletInfo().withChangeCounter(1L);
         obj.setAppletInfo(info);
         assertEquals(info, obj.getAppletInfo());
         obj.setRootCertificate("r");
@@ -427,8 +427,8 @@ public class AventraContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setChangeCounter(1);
-        assertEquals(Integer.valueOf(1), obj.getChangeCounter());
+        obj.setChangeCounter(1L);
+        assertEquals(Long.valueOf(1), obj.getChangeCounter());
         obj.setName("n");
         assertEquals("n", obj.getName());
         obj.setSerial("s");

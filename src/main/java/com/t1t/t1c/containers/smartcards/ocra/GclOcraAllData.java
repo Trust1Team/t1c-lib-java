@@ -50,7 +50,7 @@ public class GclOcraAllData implements AllData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclOcraAllData) == false) {
+        if (!(other instanceof GclOcraAllData)) {
             return false;
         }
         GclOcraAllData rhs = ((GclOcraAllData) other);
