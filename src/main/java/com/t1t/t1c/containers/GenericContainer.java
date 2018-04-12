@@ -21,10 +21,13 @@ import java.util.*;
  * //TODO
  */
 public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
+
+    protected static final String ENCRYPTED_PIN_HEADER_NAME = "X-Encrypted-Pin";
+
     /*Properties*/
     protected GclReader reader;
     protected U httpClient;
-    protected transient String pin;
+    protected transient String pacePin;
     protected LibConfig config;
     protected ContainerType type;
 
@@ -32,11 +35,11 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     public GenericContainer() {
     }
 
-    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pin) {
-        createInstance(config, reader, httpClient, pin);
+    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pacePin) {
+        createInstance(config, reader, httpClient, pacePin);
     }
 
-    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
+    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pacePin);
 
     protected String createFilterParams(List<String> params) {
         String returnValue = null;

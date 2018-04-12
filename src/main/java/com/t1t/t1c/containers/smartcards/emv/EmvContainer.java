@@ -34,11 +34,11 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, String pin) {
+    public EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, String pacePin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pacePin = pacePin;
         this.type = ContainerType.EMV;
         return this;
     }
@@ -85,11 +85,11 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
 
     @Override
     public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest(pin[0], reader.getPinpad(), config.isOsPinDialog())), config.isConsentRequired()));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }

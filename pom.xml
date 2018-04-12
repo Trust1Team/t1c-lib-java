@@ -318,6 +318,7 @@
                     <sourcePaths>
                         <!-- GCL core -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAgent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPrivateKeyReference.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
                         </sourcePath>
@@ -330,6 +331,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminCertificates.json</sourcePath>
                         <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
@@ -342,7 +344,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDevice.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDeviceRegistrationRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsRegistrationSyncResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadPath.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadLink.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsSystemStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsPublicKey.json</sourcePath>

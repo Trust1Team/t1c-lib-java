@@ -26,12 +26,12 @@ public class NoConsentException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.NO_CONSENT_ERROR;
+        return ErrorCodes.ERROR_NO_CONSENT;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.NO_CONSENT_ERROR_INFO;
+        return ErrorCodes.INFO_NO_CONSENT_ERROR;
     }
 
 }

@@ -17,11 +17,11 @@ public class SigningException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.SIGNING_ERROR;
+        return ErrorCodes.ERROR_SIGNING;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.SIGNING_ERROR_INFO;
+        return ErrorCodes.INFO_SIGNING_ERROR;
     }
 }

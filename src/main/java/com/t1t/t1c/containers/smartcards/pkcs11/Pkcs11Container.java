@@ -44,11 +44,11 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     @Override
-    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, String pin) {
+    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, String pacePin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pacePin = pacePin;
         this.type = ContainerType.PKCS11;
         if (this.modulePath == null) {
             configureModulePath(new ModuleConfiguration());

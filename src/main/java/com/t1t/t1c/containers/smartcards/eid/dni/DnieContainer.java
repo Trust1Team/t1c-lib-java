@@ -37,7 +37,6 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
         this.type = ContainerType.DNIE;
         return this;
     }
@@ -85,11 +84,11 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
 
     @Override
     public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest(pin[0], reader.getPinpad(), config.isOsPinDialog())), config.isConsentRequired()));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
@@ -103,8 +102,8 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
-            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
+            PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -115,8 +114,8 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
-            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
+            PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

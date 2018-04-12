@@ -32,12 +32,12 @@ public class GenericContainerException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.GENERIC_CONTAINER_EXCEPTION;
+        return ErrorCodes.ERROR_GENERIC_CONTAINER_EXCEPTION;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.REST_ERROR_INFO;
+        return ErrorCodes.INFO_REST_ERROR;
     }
 
 }

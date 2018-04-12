@@ -33,11 +33,11 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pin) {
+    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pacePin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pacePin = pacePin;
         this.type = ContainerType.OCRA;
         return this;
     }
@@ -84,11 +84,11 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
 
     @Override
     public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest(pin[0], reader.getPinpad(), config.isOsPinDialog())), config.isConsentRequired()));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
@@ -129,7 +129,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
 
     public Long getChallengeOTP(String challenge, String... pin) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(challenge), "challenge must not be null or empty");
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             GclOcraChallengeData request = new GclOcraChallengeData().withChallenge(challenge);
             if (pin != null && pin.length > 0) {
@@ -144,7 +144,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
 
     public String readCounter(String... pin) throws VerifyPinException, NoConsentException, RestException {
         try {
-            String pinToUse = pin != null && pin.length > 0 ? pin[0] : null;
+            String pinToUse = PinUtil.getEncryptedPinIfPresent(pin);
             return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId(), pinToUse), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);

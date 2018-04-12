@@ -30,5 +30,5 @@ public interface DsRestClient {
                                 @Query("encoding") String encoding);
 
     @POST("download/gcl")
-    Call<DsDownloadPath> getDownloadLink(@Body DsDownloadRequest request);
+    Call<DsDownloadLink> getDownloadLink(@Body DsDownloadRequest request);
 }

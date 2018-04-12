@@ -30,11 +30,11 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, String pin) {
+    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, String pacePin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pacePin = pacePin;
         this.type = ContainerType.MOBIB;
         return this;
     }

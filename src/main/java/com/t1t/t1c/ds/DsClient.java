@@ -1,5 +1,6 @@
 package com.t1t.t1c.ds;
 
+import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -15,9 +16,11 @@ import org.apache.commons.lang3.StringUtils;
 public class DsClient implements IDsClient {
 
     private DsRestClient dsRestClient;
+    private LibConfig config;
 
-    public DsClient(DsRestClient dsRestClient) {
+    public DsClient(DsRestClient dsRestClient, LibConfig config) {
         this.dsRestClient = dsRestClient;
+        this.config = config;
     }
 
     @Override
@@ -79,11 +82,9 @@ public class DsClient implements IDsClient {
                     .withOs(new DsOs()
                             .withArchitecture(info.getOs().getArchitecture())
                             .withName(info.getOs().getName())
-                            .withVersion(info.getOs().getVersion()));
-            DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false);
-            if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return null;//UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
-            } else return null;
+                            .withVersion(info.getOs().getVersion()))
+                    .withProxyDomain(config.getProxyDomain());
+            return RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false).getLink();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
         }

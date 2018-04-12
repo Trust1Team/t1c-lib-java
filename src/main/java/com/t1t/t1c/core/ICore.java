@@ -279,8 +279,10 @@ public interface ICore {
     /**
      * Poll the GCL for a configured duration or until all downloads are completed
      *
+     * @param containers the containers to load
+     * @param isRetry if this is a retry attempt
      * @return the GCL info
      * @throws GclCoreException
      */
-    GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers) throws GclCoreException;
+    GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers, boolean isRetry) throws GclCoreException;
 }

@@ -42,6 +42,7 @@ public final class RestServiceBuilder {
     private static final String CONTAINER_CONTEXT_PATH = "containers/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String ORIGIN_HEADER_NAME = "origin";
     private static final String ORIGIN_HEADER_VALUE = "https://localhost";
@@ -59,7 +60,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, config);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, config);
     }
 
     /**
@@ -70,7 +71,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, null, config);
+        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, config);
     }
 
     /**
@@ -81,7 +82,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config.getGclJwt(), config);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config);
     }
 
     /**
@@ -120,7 +121,7 @@ public final class RestServiceBuilder {
         } else {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH);
         }
-        return getLocalClient(uri, clazz, null, config);
+        return getLocalClient(uri, clazz, config);
     }
 
     /**
@@ -159,10 +160,10 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, String jwt, LibConfig config) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, LibConfig config) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(getHttpClientSkipTLS(jwt, config))
+                    .client(getHttpClientSkipTLS(config))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -219,7 +220,7 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final String jwt, final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
@@ -254,16 +255,18 @@ public final class RestServiceBuilder {
                     }
                 });
 
-        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
-        if (jwtPresent) {
+        final boolean jwtPresent = StringUtils.isNotBlank(config.getGclJwt());
+        final boolean contextTokenPresent = config.getContextToken() != null;
+        if (jwtPresent || contextTokenPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder requestBuilder = chain.request().newBuilder();
-                    if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
-                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                    } else {
-                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
+                    if (jwtPresent) {
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
+                    }
+                    if (contextTokenPresent) {
+                        requestBuilder.addHeader(X_RELAY_STATE_PREFIX + config.getContextToken(), String.valueOf(config.getContextToken()));
                     }
                     return chain.proceed(requestBuilder.build());
                 }

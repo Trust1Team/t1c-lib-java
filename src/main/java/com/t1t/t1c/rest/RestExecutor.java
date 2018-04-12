@@ -55,13 +55,13 @@ public class RestExecutor {
                         jsonError = response.errorBody().source().readUtf8();
                     } else {
                         if (StringUtils.isNotBlank(response.errorBody().string())) {
-                            log.error("Something went wrong: {}", response.errorBody().string());
+                            log.debug("Something went wrong: {}", response.errorBody().string());
                             message.append(response.errorBody().string());
                         }
                     }
                 }
                 if (response.raw() != null) {
-                    log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
+                    log.debug("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
                     httpCode = response.raw().code();
                     if (StringUtils.isNotBlank(message.toString())) {
                         message.append(" - ");

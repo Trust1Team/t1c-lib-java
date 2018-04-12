@@ -431,7 +431,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test
     public void testLuxIdContainerException() {
         LuxIdContainerException ex = ExceptionFactory.luxIdContainerException("message");
-        assertEquals(Long.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
+        assertEquals(Long.valueOf(ErrorCodes.ERROR_LUXID_CONTAINER_REST), ex.getErrorCode());
     }
 
     @Test

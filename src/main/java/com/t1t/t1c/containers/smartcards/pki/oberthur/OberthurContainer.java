@@ -6,6 +6,7 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
+import com.t1t.t1c.core.GclPrivateKeyReference;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -34,11 +35,11 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
     }
 
     @Override
-    public OberthurContainer createInstance(LibConfig config, GclReader reader, GclOberthurRestClient httpClient, String pin) {
+    public OberthurContainer createInstance(LibConfig config, GclReader reader, GclOberthurRestClient httpClient, String pacePin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pacePin = pacePin;
         this.type = ContainerType.OBERTHUR;
         return this;
     }
@@ -86,11 +87,11 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
 
     @Override
     public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             if (pin != null && pin.length > 0) {
                 Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), new GclVerifyPinRequest(pin[0], reader.getPinpad(), config.isOsPinDialog()).withPrivateKeyReference("sign")), config.isConsentRequired()));
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), GclPrivateKeyReference.SIGN, pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId()), config.isConsentRequired()));
             }
@@ -105,8 +106,8 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkArgument(algo != null
                     && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
-            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
+            PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -118,8 +119,8 @@ public class OberthurContainer extends GenericContainer<OberthurContainer, GclOb
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkArgument(algo != null
                     && (algo.equals(DigestAlgorithm.SHA1) || algo.equals(DigestAlgorithm.SHA256)), "algorithmReference must be provided and must be one of: SHA1, SHA256");
-            PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.setPinIfPresent(new GclAuthenticateOrSignData().withData(data).withAlgorithmReference(algo.getStringValue()), pin)), config.isConsentRequired());
+            PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
+            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

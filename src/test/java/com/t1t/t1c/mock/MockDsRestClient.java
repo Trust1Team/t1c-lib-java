@@ -44,8 +44,8 @@ public class MockDsRestClient implements DsRestClient {
     }
 
     @Override
-    public Call<DsDownloadPath> getDownloadLink(DsDownloadRequest request) {
-        return delegate.returningResponse(getDownloadPath()).getDownloadLink(request);
+    public Call<DsDownloadLink> getDownloadLink(DsDownloadRequest request) {
+        return delegate.returningResponse(getDownloadLinkResponse(request.getProxyDomain())).getDownloadLink(request);
     }
 
     @Override

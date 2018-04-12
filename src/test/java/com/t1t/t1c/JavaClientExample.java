@@ -42,12 +42,7 @@ import java.util.*;
  * @since 2017
  */
 public class JavaClientExample {
-    /*Uris*/
-    private static final String OCV_URI = "https://accapim.t1t.be/trust1team/ocv-api/v1";
-    private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
-    private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
-    /*Keys*/
-    private static String API_KEY = "INSERT_API_KEY";
+
     private static IT1cClient client;
     private static LibConfig conf;
 
@@ -63,6 +58,9 @@ public class JavaClientExample {
     private static void showMenu() {
         Scanner scan = new Scanner(System.in);
         /*Instantiate client*/
+
+        // Copy the example configuration file to a folder of your choosing and adjust it below
+
         client = new T1cClient(Paths.get("/usr/local/t1c/application.conf"));
         conf = client.getConnectionFactory().getConfig();
         System.out.println("===============================================");
@@ -105,7 +103,7 @@ public class JavaClientExample {
 
     private static void grantConsent() {
         try {
-            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 10));
         } catch (UnsupportedOperationException ex) {
             System.out.println(ex.getMessage());
         }

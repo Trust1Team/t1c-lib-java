@@ -29,7 +29,6 @@ public class LibConfig {
     private Boolean citrix;
     private Boolean consentRequired = false;
     private Long contextToken;
-    private String gatewayJwt;
     private String gclJwt;
 
     // General Config
@@ -149,14 +148,6 @@ public class LibConfig {
 
     public void setContextToken(Long contextToken) {
         this.contextToken = contextToken;
-    }
-
-    public String getGatewayJwt() {
-        return gatewayJwt;
-    }
-
-    public void setGatewayJwt(String gatewayJwt) {
-        this.gatewayJwt = gatewayJwt;
     }
 
     public String getGclJwt() {

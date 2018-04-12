@@ -21,11 +21,11 @@ public class InitializationException extends AbstractSystemException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.INITIALIZATION_ERROR;
+        return ErrorCodes.ERROR_INITIALIZATION;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.INITIALIZATION_ERROR_INFO;
+        return ErrorCodes.INFO_INITIALIZATION_ERROR;
     }
 }

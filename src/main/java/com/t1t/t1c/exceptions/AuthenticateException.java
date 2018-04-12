@@ -17,11 +17,11 @@ public class AuthenticateException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.AUTHENTICATE_ERROR;
+        return ErrorCodes.ERROR_AUTHENTICATE;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.AUTHENTICATE_ERROR_INFO;
+        return ErrorCodes.INFO_AUTHENTICATE_ERROR;
     }
 }

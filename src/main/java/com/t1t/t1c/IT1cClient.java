@@ -39,11 +39,11 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    IGenericContainer getGenericContainer(GclReader reader, String... pin);
+    IGenericContainer getGenericContainer(GclReader reader, String... pacePin);
 
     BeIdContainer getBeIdContainer(GclReader reader);
 
-    LuxIdContainer getLuxIdContainer(GclReader reader, String pin);
+    LuxIdContainer getLuxIdContainer(GclReader reader, String pacePin);
 
     LuxTrustContainer getLuxTrustContainer(GclReader reader);
 
@@ -59,7 +59,7 @@ public interface IT1cClient {
 
     OberthurContainer getOberthurContainer(GclReader reader);
 
-    PivContainer getPivContainer(GclReader reader, String pin);
+    PivContainer getPivContainer(GclReader reader, String pacePin);
 
     PtEIdContainer getPtIdContainer(GclReader reader);
 

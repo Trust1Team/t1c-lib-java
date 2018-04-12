@@ -104,6 +104,17 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Core version incompatibility exception
+     * @param actualVersion the incompatible version
+     * @param downloadUrl download url for compatible package
+     * @return the exception
+     */
+    public static IncompatibleCoreVersionException incompatibleCoreVersionException(String actualVersion, String downloadUrl) {
+        String message = "GCL version \"" + actualVersion + "\" not compatible with library. Download and install new version: " + downloadUrl;
+        return new IncompatibleCoreVersionException(message, downloadUrl);
+    }
+
+    /**
      * Client initialization exception
      *
      * @param message
@@ -266,6 +277,15 @@ public final class ExceptionFactory {
      */
     public static GclCoreException containerLoadingFailed(List<GclContainerInfo> containerInfo) {
         return new GclCoreException("Container download failed: " + containerInfo.toString());
+    }
+
+    /**
+     * Creates a GCL Core exception
+     *
+     * @return
+     */
+    public static GclCoreException containerLoadingTimeoutExceeded() {
+        return new GclCoreException("Download timeout period for container download exceeded");
     }
 
     /**

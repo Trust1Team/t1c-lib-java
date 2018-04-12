@@ -22,8 +22,6 @@ import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
 import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
-import com.t1t.t1c.exceptions.GclCoreException;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.ocv.IOcvClient;
@@ -67,11 +65,6 @@ public class T1cClient implements IT1cClient {
         init(null, toConfigurationFile);
     }
 
-    //TODO implement pin constraint in safe way
-    private static String getPin(String... pin) {
-        return (pin == null || pin.length == 0) ? "" : pin[0];
-    }
-
     /**
      * Initialisation of the T1C Java client
      *
@@ -92,70 +85,105 @@ public class T1cClient implements IT1cClient {
         LibConfig validatedConfig = configParser.getAppConfig();
         // Instantiate connections
         connFactory = new ConnectionFactory(validatedConfig);
-        // Get Core info, enrich config with core info and reset connection
-        GclInfo gclInfo = getCore().getInfo();
-        // Check that the core version is compatible with the Java library
-        if (gclInfo.getVersion().compareToIgnoreCase("2.0.0") < 0) {
-            throw ExceptionFactory.initializationException("GCL version not compatible with library. Upgrade the GCL to newer version");
-        }
-        connFactory.setConfig(configParser.parseConfig(validatedConfig, gclInfo));
 
-        // Attempt to register or sync device
-        initializeDevice(gclInfo);
+        // Initialize library
+        initializeLibrary(validatedConfig);
     }
 
     /**
-     * Register or sync the device with the Distribution Service
-     *
-     * @param currentInfo
+     * Initialize the library & device
      */
-    private void initializeDevice(final GclInfo currentInfo) {
-        GclInfo info = currentInfo;
-        // Set the device's public key in the PIN util for encryption
-        PinUtil.setDevicePubKey(getCore().getDevicePubKey());
-        if (canRegisterOrSync()) {
+    private void initializeLibrary(LibConfig validatedConfig) {
+        // Get Core info, enrich config with core info and reset connection
+        GclInfo info = getCore().getInfo();
+        connFactory.setConfig(configParser.parseConfig(validatedConfig, info));
+
+        // Check that the core version is compatible with the Java library
+        if (isV2Compatible(info)) {
+
             // Get the device's public key
             String devicePublicKey = getCore().getDevicePubKey();
+            // Set the device's public key in the PIN util for encryption
+            PinUtil.setDevicePubKey(devicePublicKey);
 
-            // If the device isn't managed and isn't activated, register it first and activate
-            if (!info.getManaged() && !info.getActivated()) {
-                DsSyncResponseDto registrationResponse = getDsClient().register(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
-                connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), registrationResponse));
-                verifyDsPublicKey(info.getUid());
-                log.info("Activated Core: {}", getCore().activate());
-                info = getCore().getInfo();
-            }
-            DsSyncResponseDto syncResponse = null;
-            // If the GCL is managed package or the managed sync is set to true, sync the device
-            if (!info.getManaged() || connFactory.getConfig().isSyncManaged()) {
+            if (info.getManaged()) {
+                // Only attempt to sync if API key & DS URL are provided and managed sync is enabled
+                if (canRegisterOrSync() && connFactory.getConfig().isSyncManaged()) {
+                    doManagedSync(info, devicePublicKey);
+                }
+            } else {
                 try {
-                    syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
-                    // Reset the connections with the newly obtained DS token
-                    connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
-                } catch (Exception ex) {
-                    // If the package is managed, ignore the error: we made an attempt to sync, that is enough.
-                    if (!info.getManaged()) {
-                        throw ExceptionFactory.initializationException("Could not initialize the GCL: ", ex);
+                    // Check the device activation status and activate if necessary
+                    if (!info.getActivated()) {
+                        info = doUnmanagedActivation(info, devicePublicKey);
                     }
+                    // Sync the device
+                    doUnmanagedSync(info, devicePublicKey, false);
+                } catch (Exception ex) {
+                    throw ExceptionFactory.initializationException("Failed to initialize library", ex);
                 }
             }
+        } else {
+            throw ExceptionFactory.incompatibleCoreVersionException(info.getVersion(), getDsClient().getDownloadLink());
+        }
+    }
 
-            // If the GCL isn't managed, verify the DS public key and sync container/CORS whitelist
-            if (!info.getManaged()) {
-                verifyDsPublicKey(info.getUid());
-                // Load the ATR list
-                log.info("Loaded ATR list: {}", getCore().loadAtrList(syncResponse.getAtrList()));
-                log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));
-                // Poll the GCL to check container download status
-                info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses());
-                // Sync the new container states with the DS
-                syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
-                connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
+    private void doUnmanagedSync(final GclInfo currentInfo, final String devicePublicKey, final boolean isRetry) {
+        try {
+            GclInfo info = currentInfo;
+            // Check if the DS public key is loaded into the Core
+            setDsPublicKeyIfAbsent(info.getUid());
+            // Sync the device with the DS
+            DsSyncResponseDto syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
+            // Reset the connections with the newly obtained DS JWT and context token
+            connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
+            // Load the ATR list
+            log.info("Loaded ATR list: {}", getCore().loadAtrList(syncResponse.getAtrList()));
+            log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));
+            // Poll the GCL to check container download status
+            info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses(), isRetry);
+            // Sync the new container states with the DS
+            syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
+            connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
+        } catch (Exception ex) {
+            if (!isRetry) {
+                doUnmanagedSync(currentInfo, devicePublicKey, true);
             }
         }
     }
 
-    private void verifyDsPublicKey(String deviceId) {
+    private GclInfo doUnmanagedActivation(final GclInfo info, final String devicePubKey) {
+        // Register the device and its public key with the Distribution service
+        DsSyncResponseDto registrationResponse = getDsClient().register(info.getUid(), createRegistrationOrSyncRequest(info, devicePubKey));
+        // Reset the connection to make use of the newly obtained JWT from the DS
+        connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), registrationResponse));
+        // Set the pub key
+        setDsPublicKeyIfAbsent(info.getUid());
+        // Activate the device
+        log.info("Core activated: {}", getCore().activate());
+        return getCore().getInfo();
+    }
+
+    /**
+     * Perform a sync operation for a managed device
+     */
+    private void doManagedSync(final GclInfo currentInfo, final String devicePubKey) {
+        try {
+             DsSyncResponseDto syncResponse = getDsClient().sync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePubKey));
+             // Reset the connection with the received info
+             connFactory.setConfig(configParser.parseConfig(connFactory.getConfig(), syncResponse));
+        } catch (Exception ex) {
+            // If the sync fails, log the error and continue as if nothing happened
+            log.warn("Managed sync failed: ", ex);
+        }
+    }
+
+    private boolean isV2Compatible(GclInfo info) {
+        String sanitized = info.getVersion().split("-")[0];
+        return sanitized.compareToIgnoreCase("2.0.0") >= 0;
+    }
+
+    private void setDsPublicKeyIfAbsent(String deviceId) {
         // Check if the DS public key is set
         if (getCore().getDsPubKey() == null) {
             // Get the encrypted DS key for the device
@@ -211,7 +239,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public IDsClient getDsClient() {
-        return new DsClient(connFactory.getDsRestClient());
+        return new DsClient(connFactory.getDsRestClient(), connFactory.getConfig());
     }
 
     @Override
@@ -226,7 +254,7 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) {
-        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), getPin(pin));
+        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), pin);
     }
 
     @Override
@@ -265,8 +293,8 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public PivContainer getPivContainer(GclReader reader, String pin) {
-        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pin);
+    public PivContainer getPivContainer(GclReader reader, String pacePin) {
+        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pacePin);
     }
 
     @Override
@@ -293,6 +321,7 @@ public class T1cClient implements IT1cClient {
     public IGenericContainer getGenericContainer(GclReader reader, String... pin) {
         ContainerType type = ContainerUtil.determineContainer(reader.getCard());
         IGenericContainer container;
+        String pacePin = PinUtil.getPinIfPresent(pin);
         switch (type) {
             case AVENTRA:
                 container = getAventraContainer(reader);
@@ -307,9 +336,7 @@ public class T1cClient implements IT1cClient {
                 container = getEmvContainer(reader);
                 break;
             case LUXID:
-                String luxPinToUse = getPin(pin);
-                Preconditions.checkArgument(StringUtils.isNotEmpty(luxPinToUse), "Cannot instantiate generic container for this reader without PIN");
-                container = getLuxIdContainer(reader, luxPinToUse);
+                container = getLuxIdContainer(reader, pacePin);
                 break;
             case LUXTRUST:
                 container = getLuxTrustContainer(reader);
@@ -324,9 +351,7 @@ public class T1cClient implements IT1cClient {
                 container = getOcraContainer(reader);
                 break;
             case PIV:
-                String pivPinToUse = getPin(pin);
-                Preconditions.checkArgument(StringUtils.isNotEmpty(pivPinToUse), "Cannot instantiate generic container for this reader without PIN");
-                container = getPivContainer(reader, pivPinToUse);
+                container = getPivContainer(reader, pacePin);
                 break;
             case PT:
                 container = getPtIdContainer(reader);

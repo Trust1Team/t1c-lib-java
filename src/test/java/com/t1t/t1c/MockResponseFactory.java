@@ -1607,8 +1607,12 @@ public final class MockResponseFactory {
         return new DsToken().withToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vVDFDLURTIiwiYXVkIjoiR0NMIiwiZXhwIjoxNTEwMjg2MDIwLCJqdGkiOiItVE9MMWNHZHVLTl9LTGFGLVZSSkJ3IiwiaWF0IjoxNTEwMjgyNDIwLCJuYmYiOjE1MTAyODIzMDAsInN1YiI6IkdDTC1JRCIsImFjdGl2YXRpb24iOnRydWUsInBsdWdpbnMiOlsicGx1Z2luMSIsInBsdWdpbjIiLCJwbHVnaW4zIl19.JncS0rdgQ19r-lj5Yvtkw3evx3iufPX19WhoTrOW0H_Qu6L7HagkOZlszRMEivm2trYldvOivtzqNJFuz0XODcJE6rKF3DOlkyUkE-PHgPd-NFd8ME21FHCKLswkcJw4xPxAhreat6ybN3BuH1cdAMgrqFkR-avsKQOLYmW2LwSsmApdv7HBEo6YX3IxfX7HbzSI71D6fxEhqIsvg8u5ZrJGAjdFPEaIeo58yDDjZ-zwa7tKpg9w5Jt5Ubl3VePyLOE9zl1CycYov-qod9BC6pOuYptYrayY8pzGKSXrYdpEMoqRAXGCfrpIAxVUuR0prcTpHKeUU6lFPUzdanw8DQ");
     }
 
-    public static DsDownloadPath getDownloadPath() {
-        return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
+    public static DsDownloadLink getDownloadLinkResponse(String proxyDomain) {
+        return new DsDownloadLink().withLink(getDownloadLink(proxyDomain));
+    }
+
+    public static String getDownloadLink(String proxyDomain) {
+        return proxyDomain + "/trust1team/gclds-file/v1/installer.dmg";
     }
 
     public static DsRegistrationSyncResponse getDsRegistrationResponse() {

@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Core extends AbstractCore {
     public String getVersion() throws GclCoreException {
         try {
             return getInfo().getVersion();
-        } catch (GclCoreException ex) {
+        } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving version", ex);
         }
     }
@@ -115,6 +116,9 @@ public class Core extends AbstractCore {
         try {
             return RestExecutor.returnData(gclRestClient.getStatus(), config.isConsentRequired());
         } catch (RestException ex) {
+            if (ex.getCause() instanceof ConnectException) {
+                throw ExceptionFactory.gclCoreException("GCL core not found at " + config.getGclClientUri(), ex);
+            }
             throw ExceptionFactory.gclCoreException("error retrieving GCL core info", ex);
         }
     }
@@ -345,16 +349,14 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers) throws GclCoreException {
+    public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers, final boolean isRetry) throws GclCoreException {
         int totalTime = 0;
         int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
-        boolean isRetry = false;
         boolean downloadsComplete;
         do {
             GclInfo info = getInfo();
             downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers, isRetry);
             if (!downloadsComplete) {
-                isRetry = true;
                 try {
                     Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
                     totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
@@ -363,6 +365,9 @@ public class Core extends AbstractCore {
                 }
             }
         } while (!downloadsComplete && totalTime < pollTimeout);
+        if (!downloadsComplete) {
+            throw ExceptionFactory.containerLoadingTimeoutExceeded();
+        }
         return getInfo();
     }
 
@@ -396,7 +401,7 @@ public class Core extends AbstractCore {
                 missing++;
             }
         }
-        if (errored > 0 || missing > 0 && isRetry) {
+        if (errored > 0 || missing > 0) {
             throw ExceptionFactory.containerLoadingFailed(currentContainers);
         }
         completed = ongoing == 0 && installed == containersToLoad.size();
