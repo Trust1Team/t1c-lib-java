@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsDownloadRequest {
@@ -19,18 +19,14 @@ public class DsDownloadRequest {
     private String proxyDomain;
 
     /**
-     * 
-     * @return
-     *     The os
+     * @return The os
      */
     public DsOs getOs() {
         return os;
     }
 
     /**
-     * 
-     * @param os
-     *     The os
+     * @param os The os
      */
     public void setOs(DsOs os) {
         this.os = os;
@@ -42,18 +38,14 @@ public class DsDownloadRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The proxyDomain
+     * @return The proxyDomain
      */
     public String getProxyDomain() {
         return proxyDomain;
     }
 
     /**
-     * 
-     * @param proxyDomain
-     *     The proxyDomain
+     * @param proxyDomain The proxyDomain
      */
     public void setProxyDomain(String proxyDomain) {
         this.proxyDomain = proxyDomain;

@@ -2,7 +2,6 @@ package com.t1t.t1c.mock;
 
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.core.*;
-import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;

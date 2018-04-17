@@ -7,8 +7,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
-import java.util.HashMap;
-import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class GclContainerInfo {
@@ -21,7 +19,7 @@ public class GclContainerInfo {
     private String version;
     @SerializedName("status")
     @Expose
-    private Status status;
+    private GclContainerStatus status;
 
     /**
      * @return The name
@@ -64,18 +62,18 @@ public class GclContainerInfo {
     /**
      * @return The status
      */
-    public Status getStatus() {
+    public GclContainerStatus getStatus() {
         return status;
     }
 
     /**
      * @param status The status
      */
-    public void setStatus(Status status) {
+    public void setStatus(GclContainerStatus status) {
         this.status = status;
     }
 
-    public GclContainerInfo withStatus(Status status) {
+    public GclContainerInfo withStatus(GclContainerStatus status) {
         this.status = status;
         return this;
     }
@@ -95,54 +93,11 @@ public class GclContainerInfo {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclContainerInfo)) {
+        if ((other instanceof GclContainerInfo) == false) {
             return false;
         }
         GclContainerInfo rhs = ((GclContainerInfo) other);
         return new EqualsBuilder().append(name, rhs.name).append(version, rhs.version).append(status, rhs.status).isEquals();
-    }
-
-    @Generated("org.jsonschema2pojo")
-    public static enum Status {
-
-        @SerializedName("DOWNLOAD_ERROR")
-        DOWNLOAD_ERROR("DOWNLOAD_ERROR"),
-        @SerializedName("INIT")
-        INIT("INIT"),
-        @SerializedName("DOWNLOADING")
-        DOWNLOADING("DOWNLOADING"),
-        @SerializedName("INSTALLED")
-        INSTALLED("INSTALLED"),
-        @SerializedName("ERROR")
-        ERROR("ERROR");
-        private static Map<String, Status> constants = new HashMap<String, Status>();
-
-        static {
-            for (Status c : values()) {
-                constants.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        private Status(String value) {
-            this.value = value;
-        }
-
-        public static Status fromValue(String value) {
-            Status constant = constants.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            } else {
-                return constant;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
     }
 
 }

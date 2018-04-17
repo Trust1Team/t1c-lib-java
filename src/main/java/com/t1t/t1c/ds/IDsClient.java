@@ -18,25 +18,6 @@ public interface IDsClient {
     DsSystemStatus getInfo() throws DsClientException;
 
     /**
-     * Returns device information stored centrally.
-     *
-     * @param deviceId the device ID
-     * @return the device information
-     * @throws DsClientException: on failure
-     */
-    DsDevice getDevice(String deviceId) throws DsClientException;
-
-    /**
-     * Refreshes (re-sign) a valid JWT.
-     * The client should verify if JWT is about to expire.
-     *
-     * @param token the token to refresh
-     * @return the refreshed token
-     * @throws DsClientException: on failure
-     */
-    String refreshJWT(String token) throws DsClientException;
-
-    /**
      * Retrieves the public key of the T1C-DS.
      * The key can be used for validation purposes.
      *

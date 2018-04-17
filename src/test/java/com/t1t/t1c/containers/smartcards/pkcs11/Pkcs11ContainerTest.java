@@ -190,7 +190,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
         List<GclPkcs11Slot> slots = container.getPkcs11SlotsWithTokensPresent(true);
         assertTrue(CollectionUtils.isNotEmpty(slots));
         assertEquals(1, slots.size());
-        assertEquals(Integer.valueOf(1), slots.get(0).getFlags());
+        assertEquals(Long.valueOf(1), slots.get(0).getFlags());
     }
 
     @Test
@@ -198,7 +198,7 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
         List<GclPkcs11Slot> slots = container.getPkcs11SlotsWithTokensPresent(false);
         assertTrue(CollectionUtils.isNotEmpty(slots));
         assertEquals(1, slots.size());
-        assertEquals(Integer.valueOf(0), slots.get(0).getFlags());
+        assertEquals(Long.valueOf(0), slots.get(0).getFlags());
     }
 
     @Test

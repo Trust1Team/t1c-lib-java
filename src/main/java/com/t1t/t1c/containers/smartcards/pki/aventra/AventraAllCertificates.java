@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.aventra;
 
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class AventraAllCertificates implements AllCertificates {
 
@@ -13,11 +13,11 @@ public class AventraAllCertificates implements AllCertificates {
     private T1cCertificate encryptionCertificate;
 
     public AventraAllCertificates(GclAventraAllCertificates certs, Boolean... parseCertificates) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificates);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
-        this.issuerCertificate = CertificateUtil.createT1cCertificate(certs.getIssuerCertificate(), parseCertificates);
-        this.encryptionCertificate = CertificateUtil.createT1cCertificate(certs.getEncryptionCertificate(), parseCertificates);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
+        this.rootCertificate = PkiUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificates);
+        this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
+        this.issuerCertificate = PkiUtil.createT1cCertificate(certs.getIssuerCertificate(), parseCertificates);
+        this.encryptionCertificate = PkiUtil.createT1cCertificate(certs.getEncryptionCertificate(), parseCertificates);
     }
 
     public T1cCertificate getRootCertificate() {

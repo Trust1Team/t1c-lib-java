@@ -72,11 +72,9 @@ public class T1cConfigParser implements Serializable {
             configObj.setDefaultPollingIntervalInSeconds(getDefaultPollingIntervalInSeconds());
             configObj.setDefaultPollingTimeoutInSeconds(getDefaultPollingTimeoutInSeconds());
             configObj.setHardwarePinPadForced(getHardwarePinPadForced());
-            configObj.setImplicitDownloads(getImplicitDownloads());
             configObj.setOsPinDialog(getOsPinDialog());
             configObj.setSessionTimeout(getDefaultSessionTimeout());
             configObj.setSyncManaged(getSyncManaged());
-            configObj.setLocalTestMode(getLocalTestMode());
             configObj.setPkcs11Config(getPkcs11Config());
             configObj.setProxyDomain(getProxyDomain());
             setAppConfig(configObj);
@@ -244,13 +242,11 @@ public class T1cConfigParser implements Serializable {
         log.debug("General - Default consent duration (days): {}", appConfig.getDefaultConsentDuration());
         log.debug("General - Default consent timeout (seconds): {}", appConfig.getDefaultConsentTimeout());
         log.debug("General - Forced hardware PIN pad: {}", appConfig.isHardwarePinPadForced());
-        log.debug("General - Implicit downloads: {}", appConfig.isImplicitDownloads());
         log.debug("General - OS PIN dialog: {}", appConfig.isOsPinDialog());
         log.debug("General - Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
         log.debug("General - Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
         log.debug("General - Default session timeout (seconds): {}", appConfig.getSessionTimeout());
         log.debug("General - Sync managed: {}", appConfig.isSyncManaged());
-        log.debug("Testing - Local test mode: {}", appConfig.isLocalTestMode());
         if (appConfig.getPkcs11Config() != null) {
             log.debug("PKCS11 - Module Linux Path: {}", appConfig.getPkcs11Config().getLinux());
             log.debug("PKCS11 - Module Mac OS Path: {}", appConfig.getPkcs11Config().getMac());
@@ -325,12 +321,6 @@ public class T1cConfigParser implements Serializable {
         }
         if (this.appConfig.isHardwarePinPadForced() == null) {
             this.appConfig.setHardwarePinPadForced(false);
-        }
-        if (this.appConfig.isImplicitDownloads() == null) {
-            this.appConfig.setImplicitDownloads(false);
-        }
-        if (this.appConfig.isLocalTestMode() == null) {
-            this.appConfig.setLocalTestMode(false);
         }
         if (this.appConfig.isOsPinDialog() == null) {
             this.appConfig.setOsPinDialog(false);

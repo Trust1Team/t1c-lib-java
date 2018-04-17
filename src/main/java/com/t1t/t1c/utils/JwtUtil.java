@@ -21,10 +21,12 @@ public final class JwtUtil {
 
     private static final Integer SECONDS_BEFORE_EXPIRATION = 5 * 60;
 
-    private JwtUtil() {}
+    private JwtUtil() {
+    }
 
     /**
      * If the token is expired, an
+     *
      * @param token
      * @return
      */

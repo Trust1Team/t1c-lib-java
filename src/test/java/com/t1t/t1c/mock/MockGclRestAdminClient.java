@@ -1,8 +1,8 @@
 package com.t1t.t1c.mock;
 
-import com.t1t.t1c.core.GclAdminCertificates;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclLoadContainersRequest;
+import com.t1t.t1c.core.GclPublicKeys;
 import com.t1t.t1c.core.GclUpdatePublicKeyRequest;
 import com.t1t.t1c.ds.DsAtrList;
 import com.t1t.t1c.exceptions.RestException;
@@ -35,7 +35,7 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
     }
 
     @Override
-    public Call<T1cResponse<GclAdminCertificates>> getCertificates() throws RestException {
+    public Call<T1cResponse<GclPublicKeys>> getCertificates() throws RestException {
         return delegate.returningResponse(getGclAdminCertificatesResponse()).getCertificates();
     }
 

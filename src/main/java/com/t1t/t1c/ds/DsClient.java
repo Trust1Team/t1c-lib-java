@@ -7,7 +7,6 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Guillaume Vandecasteele
@@ -29,24 +28,6 @@ public class DsClient implements IDsClient {
             return RestExecutor.executeCall(dsRestClient.getInfo(), false);
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
-        }
-    }
-
-    @Override
-    public DsDevice getDevice(String deviceId) throws DsClientException {
-        try {
-            return RestExecutor.executeCall(dsRestClient.getDevice(deviceId), false);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not retrieve device info from Distribution Service", ex);
-        }
-    }
-
-    @Override
-    public String refreshJWT(String token) throws DsClientException {
-        try {
-            return RestExecutor.executeCall(dsRestClient.refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token)), false).getToken();
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not refresh JWT on Distribution Service", ex);
         }
     }
 

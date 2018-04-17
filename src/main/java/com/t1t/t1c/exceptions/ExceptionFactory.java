@@ -6,7 +6,6 @@ import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.jose4j.jwt.consumer.InvalidJwtException;
 
 import java.util.List;
 
@@ -105,8 +104,9 @@ public final class ExceptionFactory {
 
     /**
      * Core version incompatibility exception
+     *
      * @param actualVersion the incompatible version
-     * @param downloadUrl download url for compatible package
+     * @param downloadUrl   download url for compatible package
      * @return the exception
      */
     public static IncompatibleCoreVersionException incompatibleCoreVersionException(String actualVersion, String downloadUrl) {
@@ -323,6 +323,7 @@ public final class ExceptionFactory {
 
     /**
      * Creates an InvalidTokenException
+     *
      * @param cause the cause
      * @return the exception
      */

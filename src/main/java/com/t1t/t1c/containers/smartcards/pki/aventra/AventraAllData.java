@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.aventra;
 
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class AventraAllData implements AllData {
 
@@ -15,11 +15,11 @@ public class AventraAllData implements AllData {
 
     public AventraAllData(GclAventraAllData data, Boolean... parseCertificates) {
         this.appletInfo = data.getAppletInfo();
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificates);
-        this.issuerCertificate = CertificateUtil.createT1cCertificate(data.getIssuerCertificate(), parseCertificates);
-        this.encryptionCertificate = CertificateUtil.createT1cCertificate(data.getEncryptionCertificate(), parseCertificates);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
+        this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
+        this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificates);
+        this.issuerCertificate = PkiUtil.createT1cCertificate(data.getIssuerCertificate(), parseCertificates);
+        this.encryptionCertificate = PkiUtil.createT1cCertificate(data.getEncryptionCertificate(), parseCertificates);
     }
 
     public GclAventraAppletInfo getAppletInfo() {

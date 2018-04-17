@@ -11,8 +11,8 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
-import com.t1t.t1c.utils.CertificateUtil;
 import com.t1t.t1c.utils.PinUtil;
+import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -135,7 +135,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
-            return new Pkcs11Certificates(CertificateUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
+            return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

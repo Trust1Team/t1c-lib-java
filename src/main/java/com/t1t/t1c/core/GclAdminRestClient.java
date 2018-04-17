@@ -9,15 +9,13 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
-import java.util.List;
-
 /**
  * Created by michallispashidis on 04/11/2017.
  */
 public interface GclAdminRestClient {
 
     @GET("admin/certificate")
-    Call<T1cResponse<GclAdminCertificates>> getCertificates() throws RestException;
+    Call<T1cResponse<GclPublicKeys>> getCertificates() throws RestException;
 
     @GET("admin/certificate/ds")
     Call<T1cResponse<String>> getDsCertificate() throws RestException;

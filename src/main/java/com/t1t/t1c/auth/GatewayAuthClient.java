@@ -1,15 +1,10 @@
 package com.t1t.t1c.auth;
 
-import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.InvalidTokenException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.JwtUtil;
-import org.apache.commons.lang3.StringUtils;
-import org.jose4j.jwt.JwtClaims;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Guillaume Vandecasteele
@@ -33,7 +28,8 @@ public class GatewayAuthClient implements IGatewayAuthClient {
             }
         } catch (InvalidTokenException ex) {
             token = obtainToken();
-        } if (JwtUtil.isTokenAlmostExpired(token)) {
+        }
+        if (JwtUtil.isTokenAlmostExpired(token)) {
             token = refreshToken(token);
         }
         return token;

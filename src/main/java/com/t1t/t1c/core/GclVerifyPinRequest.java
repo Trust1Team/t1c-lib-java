@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.core;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class GclVerifyPinRequest {
@@ -25,18 +25,14 @@ public class GclVerifyPinRequest {
     private GclPrivateKeyReference privateKeyReference;
 
     /**
-     * 
-     * @return
-     *     The pin
+     * @return The pin
      */
     public String getPin() {
         return pin;
     }
 
     /**
-     * 
-     * @param pin
-     *     The pin
+     * @param pin The pin
      */
     public void setPin(String pin) {
         this.pin = pin;
@@ -48,18 +44,14 @@ public class GclVerifyPinRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The pinpad
+     * @return The pinpad
      */
     public Boolean getPinpad() {
         return pinpad;
     }
 
     /**
-     * 
-     * @param pinpad
-     *     The pinpad
+     * @param pinpad The pinpad
      */
     public void setPinpad(Boolean pinpad) {
         this.pinpad = pinpad;
@@ -71,18 +63,14 @@ public class GclVerifyPinRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The osDialog
+     * @return The osDialog
      */
     public Boolean getOsDialog() {
         return osDialog;
     }
 
     /**
-     * 
-     * @param osDialog
-     *     The os_dialog
+     * @param osDialog The os_dialog
      */
     public void setOsDialog(Boolean osDialog) {
         this.osDialog = osDialog;
@@ -94,18 +82,14 @@ public class GclVerifyPinRequest {
     }
 
     /**
-     * 
-     * @return
-     *     The privateKeyReference
+     * @return The privateKeyReference
      */
     public GclPrivateKeyReference getPrivateKeyReference() {
         return privateKeyReference;
     }
 
     /**
-     * 
-     * @param privateKeyReference
-     *     The private_key_reference
+     * @param privateKeyReference The private_key_reference
      */
     public void setPrivateKeyReference(GclPrivateKeyReference privateKeyReference) {
         this.privateKeyReference = privateKeyReference;

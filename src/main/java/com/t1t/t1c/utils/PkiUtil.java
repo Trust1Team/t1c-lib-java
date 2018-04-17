@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.t1t.t1c.exceptions.CertificateOrderingException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.model.T1cCertificate;
+import com.t1t.t1c.model.T1cPublicKey;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,24 +12,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
+import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 
 /**
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public final class CertificateUtil {
+public final class PkiUtil {
 
-    private static final Logger log = LoggerFactory.getLogger(CertificateUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(PkiUtil.class);
 
     private static final String X509 = "X.509";
 
-    private CertificateUtil() {
+    private static final String RSA = "RSA";
+
+    private PkiUtil() {
     }
 
     public static Certificate parseCertificate(String base64EncodedCertificate) {
@@ -54,6 +62,18 @@ public final class CertificateUtil {
         return null;
     }
 
+    public static T1cPublicKey createT1cPublicKey(String publicKey, Boolean... parse) {
+        if (StringUtils.isNotEmpty(publicKey)) {
+            boolean doParse = doParse(parse);
+            T1cPublicKey pubKey = new T1cPublicKey().withDerEncoded(publicKey);
+            if (doParse) {
+                pubKey.setParsed(getPublicKey(publicKey));
+            }
+            return pubKey;
+        }
+        return null;
+    }
+
     public static List<T1cCertificate> createT1cCertificates(List<String> certificates, Boolean... parse) {
         boolean doParse = doParse(parse);
         List<T1cCertificate> returnValue = new ArrayList<>();
@@ -65,14 +85,6 @@ public final class CertificateUtil {
                 }
                 returnValue.add(cert);
             }
-        }
-        return returnValue;
-    }
-
-    private static boolean doParse(Boolean... parse) {
-        boolean returnValue = false;
-        if (parse != null && parse.length > 0 && parse[0] != null) {
-            returnValue = parse[0];
         }
         return returnValue;
     }
@@ -161,4 +173,22 @@ public final class CertificateUtil {
         }
     }
 
+    private static boolean doParse(Boolean... parse) {
+        boolean returnValue = false;
+        if (parse != null && parse.length > 0 && parse[0] != null) {
+            returnValue = parse[0];
+        }
+        return returnValue;
+    }
+
+    private static PublicKey getPublicKey(String pubKey) {
+        try {
+            byte[] content = Base64.decodeBase64(pubKey);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(content);
+            KeyFactory kf = KeyFactory.getInstance(RSA);
+            return kf.generatePublic(spec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            return null;
+        }
+    }
 }

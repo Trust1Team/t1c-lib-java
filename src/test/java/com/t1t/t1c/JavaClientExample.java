@@ -1,6 +1,5 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
@@ -21,16 +20,12 @@ import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
-import com.t1t.t1c.core.GclAgent;
-import com.t1t.t1c.core.GclConsent;
-import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
-import com.t1t.t1c.model.JavaInfo;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
-import com.t1t.t1c.utils.ClientFingerprintUtil;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -103,7 +98,7 @@ public class JavaClientExample {
 
     private static void grantConsent() {
         try {
-            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 10));
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclAlertLevel.ERROR, GclAlertPosition.CENTER, GclConsentType.READER, 10));
         } catch (UnsupportedOperationException ex) {
             System.out.println(ex.getMessage());
         }

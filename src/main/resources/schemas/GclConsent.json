@@ -15,34 +15,15 @@
     },
     "alert_level": {
       "type": "string",
-      "enum": [
-        "information",
-        "question",
-        "warning",
-        "error"
-      ]
+      "$ref": "GclAlertLevel.json"
     },
     "alert_position": {
       "type": "string",
-      "enum": [
-        "standard",
-        "center",
-        "left",
-        "right",
-        "top",
-        "top_left",
-        "top_right",
-        "bottom",
-        "bottom_left",
-        "bottom_right"
-      ]
+      "$ref": "GclAlertPosition.json"
     },
     "type": {
       "type": "string",
-      "enum": [
-        "reader",
-        "file_exchange"
-      ]
+      "$ref": "GclConsentType.json"
     },
     "timeout": {
       "type": "integer"

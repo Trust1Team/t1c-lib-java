@@ -42,8 +42,6 @@ public class LibConfig {
     private Integer defaultPollingIntervalInSeconds;
     private Integer defaultPollingTimeoutInSeconds;
     private Boolean hardwarePinPadForced = false;
-    private Boolean implicitDownloads = false;
-    private Boolean localTestMode = false;
     private Boolean osPinDialog = false;
     private ModuleConfiguration pkcs11Config;
     private Integer sessionTimeout;
@@ -220,22 +218,6 @@ public class LibConfig {
 
     public void setHardwarePinPadForced(Boolean hardwarePinPadForced) {
         this.hardwarePinPadForced = hardwarePinPadForced;
-    }
-
-    public Boolean isImplicitDownloads() {
-        return implicitDownloads;
-    }
-
-    public void setImplicitDownloads(Boolean implicitDownloads) {
-        this.implicitDownloads = implicitDownloads;
-    }
-
-    public Boolean isLocalTestMode() {
-        return localTestMode;
-    }
-
-    public void setLocalTestMode(Boolean localTestMode) {
-        this.localTestMode = localTestMode;
     }
 
     public Boolean isOsPinDialog() {

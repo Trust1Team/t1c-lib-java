@@ -1,6 +1,5 @@
 package com.t1t.t1c;
 
-import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.configuration.T1cConfigParser;
 import com.t1t.t1c.containers.ContainerType;
@@ -19,11 +18,15 @@ import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
-import com.t1t.t1c.core.*;
+import com.t1t.t1c.core.Core;
+import com.t1t.t1c.core.GclInfo;
+import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.ocv.OcvClient;
 import com.t1t.t1c.utils.ContainerUtil;
@@ -102,23 +105,23 @@ public class T1cClient implements IT1cClient {
         if (isV2Compatible(info)) {
 
             // Get the device's public key
-            String devicePublicKey = getCore().getDevicePubKey();
+            T1cPublicKey devicePublicKey = getCore().getDevicePubKey(true);
             // Set the device's public key in the PIN util for encryption
-            PinUtil.setDevicePubKey(devicePublicKey);
+            PinUtil.setDevicePublicKey(devicePublicKey);
 
             if (info.getManaged()) {
                 // Only attempt to sync if API key & DS URL are provided and managed sync is enabled
                 if (canRegisterOrSync() && connFactory.getConfig().isSyncManaged()) {
-                    doManagedSync(info, devicePublicKey);
+                    doManagedSync(info, devicePublicKey.getDerEncoded());
                 }
             } else {
                 try {
                     // Check the device activation status and activate if necessary
                     if (!info.getActivated()) {
-                        info = doUnmanagedActivation(info, devicePublicKey);
+                        info = doUnmanagedActivation(info, devicePublicKey.getDerEncoded());
                     }
                     // Sync the device
-                    doUnmanagedSync(info, devicePublicKey, false);
+                    doUnmanagedSync(info, devicePublicKey.getDerEncoded(), false);
                 } catch (Exception ex) {
                     throw ExceptionFactory.initializationException("Failed to initialize library", ex);
                 }
@@ -141,7 +144,7 @@ public class T1cClient implements IT1cClient {
             log.info("Loaded ATR list: {}", getCore().loadAtrList(syncResponse.getAtrList()));
             log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));
             // Poll the GCL to check container download status
-            info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses(), isRetry);
+            info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses());
             // Sync the new container states with the DS
             syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
             connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
@@ -169,9 +172,9 @@ public class T1cClient implements IT1cClient {
      */
     private void doManagedSync(final GclInfo currentInfo, final String devicePubKey) {
         try {
-             DsSyncResponseDto syncResponse = getDsClient().sync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePubKey));
-             // Reset the connection with the received info
-             connFactory.setConfig(configParser.parseConfig(connFactory.getConfig(), syncResponse));
+            DsSyncResponseDto syncResponse = getDsClient().sync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePubKey));
+            // Reset the connection with the received info
+            connFactory.setConfig(configParser.parseConfig(connFactory.getConfig(), syncResponse));
         } catch (Exception ex) {
             // If the sync fails, log the error and continue as if nothing happened
             log.warn("Managed sync failed: ", ex);
@@ -224,7 +227,6 @@ public class T1cClient implements IT1cClient {
                 .withProxyDomain(connFactory.getConfig().getProxyDomain());
         return request;
     }
-
 
 
     @Override

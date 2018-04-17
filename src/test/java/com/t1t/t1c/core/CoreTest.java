@@ -5,6 +5,7 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -52,9 +53,63 @@ public class CoreTest extends AbstractTestClass {
     }
 
     @Test
-    public void getPubKey() {
-        String publicKey = core.getDsPubKey();
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey);
+    public void getDsPubKey() {
+        T1cPublicKey publicKey = core.getDsPubKey(false);
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.getDerEncoded());
+    }
+
+    @Test
+    public void getDevicePubKey() {
+        T1cPublicKey publicKey = core.getDevicePubKey(false);
+        assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKey.getDerEncoded());
+    }
+
+    @Test
+    public void getSslPubKey() {
+        T1cPublicKey publicKey = core.getSslPubKey(false);
+        assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKey.getDerEncoded());
+    }
+
+    @Test
+    public void getDsPubKeyParsed() {
+        T1cPublicKey publicKey = core.getDsPubKey(true);
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.getDerEncoded());
+        assertNotNull(publicKey.getParsed());
+    }
+
+    @Test
+    public void getDevicePubKeyParsed() {
+        T1cPublicKey publicKey = core.getDevicePubKey(true);
+        assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKey.getDerEncoded());
+        assertNotNull(publicKey.getParsed());
+    }
+
+    @Test
+    public void getSslPubKeyParsed() {
+        T1cPublicKey publicKey = core.getSslPubKey(true);
+        assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKey.getDerEncoded());
+        assertNotNull(publicKey.getParsed());
+    }
+
+    @Test
+    public void getGclAdminCertificates() {
+        T1cAdminPublicKeys publicKeys = core.getAdminPublicKeys(false);
+        assertNotNull(publicKeys);
+        assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().getDerEncoded());
+    }
+
+    @Test
+    public void getGclAdminCertificatesParsed() {
+        T1cAdminPublicKeys publicKeys = core.getAdminPublicKeys(true);
+        assertNotNull(publicKeys);
+        assertNotNull(publicKeys.getDevice().getParsed());
+        assertNotNull(publicKeys.getDs().getParsed());
+        assertNotNull(publicKeys.getSsl().getParsed());
+        assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().getDerEncoded());
     }
 
     @Test

@@ -12,13 +12,7 @@
     },
     "status": {
       "type": "string",
-      "enum": [
-        "DOWNLOAD_ERROR",
-        "INIT",
-        "DOWNLOADING",
-        "INSTALLED",
-        "ERROR"
-      ]
+      "$ref": "GclContainerStatus.json"
     }
   }
 }

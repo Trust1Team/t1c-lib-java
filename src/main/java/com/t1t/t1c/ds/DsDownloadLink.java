@@ -1,12 +1,12 @@
-
 package com.t1t.t1c.ds;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class DsDownloadLink {
@@ -16,18 +16,14 @@ public class DsDownloadLink {
     private String link;
 
     /**
-     * 
-     * @return
-     *     The link
+     * @return The link
      */
     public String getLink() {
         return link;
     }
 
     /**
-     * 
-     * @param link
-     *     The link
+     * @param link The link
      */
     public void setLink(String link) {
         this.link = link;

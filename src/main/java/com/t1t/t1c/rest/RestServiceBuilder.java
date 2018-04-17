@@ -98,6 +98,7 @@ public final class RestServiceBuilder {
 
     /**
      * Gateway auth client that communicates through gateway
+     *
      * @param config
      * @return
      */

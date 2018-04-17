@@ -28,9 +28,8 @@ public final class ErrorCodes {
     public static final int ERROR_GCL_ADMIN_REST                        = 2002;
     public static final int ERROR_DS_REST_ERROR                         = 2003;
     public static final int ERROR_GENERIC_CONTAINER_EXCEPTION           = 2004;
-    public static final int ERROR_LUXID_CONTAINER_REST                  = 2006;
-    public static final int ERROR_OCV_REST                              = 2014;
-    public static final int ERROR_JSON_CONVERSION                       = 2015;
+    public static final int ERROR_OCV_REST                              = 2005;
+    public static final int ERROR_JSON_CONVERSION                       = 2006;
 
 
     public static final String INFO_REST_ERROR                          = "restError";
@@ -42,6 +41,7 @@ public final class ErrorCodes {
 
     public static final int ERROR_VERIFY_PIN                            = 3000;
     public static final int ERROR_CONTAINER_NOT_AVAILABLE               = 3001;
+    public static final int ERROR_LUXID_CONTAINER_REST                  = 3002;
 
     public static final String INFO_VERIFY_PIN_ERROR                    = "verifyPinError";
     public static final String INFO_CONTAINER_NOT_AVAILABLE_ERROR       = "containerNotAvailable";

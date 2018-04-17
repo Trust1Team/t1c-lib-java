@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.pki.luxtrust;
 
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -18,12 +18,12 @@ public class LuxTrustAllCertificates implements AllCertificates {
     private List<T1cCertificate> rootCertificates;
 
     public LuxTrustAllCertificates(GclLuxTrustAllCertificates certs, Boolean... parseCertificates) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
+        this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(certs.getRootCertificates())) {
             List<T1cCertificate> rootCerts = new ArrayList<>();
             for (String cert : certs.getRootCertificates()) {
-                rootCerts.add(CertificateUtil.createT1cCertificate(cert, parseCertificates));
+                rootCerts.add(PkiUtil.createT1cCertificate(cert, parseCertificates));
             }
             this.rootCertificates = rootCerts;
         }

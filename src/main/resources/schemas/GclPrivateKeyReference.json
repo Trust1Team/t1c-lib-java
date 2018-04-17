@@ -4,7 +4,10 @@
   "javaType": "com.t1t.t1c.core.GclPrivateKeyReference",
   "$id": "GclPrivateKeyReference",
   "enum": [
-    "sign", "authenticate", "non-repudiation", "key", "private_key"
+    "sign",
+    "authenticate",
+    "non-repudiation",
+    "key",
+    "private_key"
   ]
-
 }

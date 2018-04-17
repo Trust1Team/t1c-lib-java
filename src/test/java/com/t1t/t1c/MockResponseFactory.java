@@ -38,6 +38,7 @@ import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -85,7 +86,7 @@ public final class MockResponseFactory {
         return getSuccessResponse(true);
     }
 
-    public static T1cResponse<GclAdminCertificates> getGclAdminCertificatesResponse() {
+    public static T1cResponse<GclPublicKeys> getGclAdminCertificatesResponse() {
         return getSuccessResponse(getGclAdminCertificates());
     }
 
@@ -298,19 +299,19 @@ public final class MockResponseFactory {
                 .withOs("macOS")
                 .withOsid("macos")
                 .withUid("B7289D3AEB22D233")
-                .withContainers(Collections.singletonList(new GclContainerInfo().withName("beid").withVersion("v2.0.0").withStatus(GclContainerInfo.Status.INSTALLED)))
+                .withContainers(Collections.singletonList(new GclContainerInfo().withName("beid").withVersion("v2.0.0").withStatus(GclContainerStatus.INSTALLED)))
                 .withVersion("2.0.0");
     }
 
-    public static GclAdminCertificates getGclAdminCertificates() {
-        return new GclAdminCertificates()
+    public static GclPublicKeys getGclAdminCertificates() {
+        return new GclPublicKeys()
                 .withDevice(getGclAdminDeviceCertificate())
                 .withDs(getGclAdminDsCertificate())
                 .withSsl(getGclAdminSslCertificate());
     }
 
     public static String getGclAdminDeviceCertificate() {
-        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9F4jdHNAjTecTdss0RGPsuxPTV/QsutKzrDfobVS9ZM/X8rUK68j2g29HO3/I8JPNnytNaQm3OTQAu5OM6DwzFiPW9wSHhL0ombdkV4PI9gSyOngteLpThiIttgZ1Lh0JyOR7IBMJ7BnfY1W0x/7YS7+oc0wFtz/+uvLi37kahz77NfvLwztQjeyH4q2n3eBGRqfVPlAJyAYcc2G9Qn70Iu9I/F4EYGKhsOlLvDBlTlL5ducp94yYVafB8UvV19FfkqD/gLtx0q+jQYd7vJsAgoqR3vop6p2Z30V7dT2yPFCcRG7lvOVUaxOZdzBZ4WXTHK+OsKHTMyJiyDR+8V/dQIDAQAB";
+        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx0nI0kqfTCN4ppEt0K91+lqby/66pH6bK9Y3QrxuID9di8B0Qn27rQrQ/LeOfEpmk5ExhLlRgLdXBKEj8GX5Un91H30nKXsM18PsgP4XyOhkcsBE97vK4hraAOLRYphOGXqG93u179YbMORnwCnZuU008ypytjl+RyX/L5yWGDuQfCjX/bkOUPxmg7mJxC7GLQmnxMdjs9dkbwwmchQwLlVVURVkhqLOP1K0PIkbg8z1uIrN+7CSvCT31A4QaThAiRLj5ueU+HeENU6DEoCOfoZrZRRrjoyolS5GCaYGvlbMoWuECgpL0auhhfUnS+A+WtWiaRR5QzSzcnXZPmM+jwIDAQAB";
     }
 
     public static String getGclAdminDsCertificate() {
@@ -326,7 +327,7 @@ public final class MockResponseFactory {
     //
 
     public static T1cResponse<String> getSignedHashResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(pin)) {
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
             throw new RestException("sign failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -337,7 +338,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<Object> verifyPin(String pin) throws RestException {
-        if (!"1111".equals(pin)) {
+        if (!"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -803,7 +804,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclPtIdAddress> getPtIdAddressResponse(String pin) {
-        if (pin != null && !"1111".equals(pin)) {
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -1198,7 +1199,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<String> getGclOcraCounterResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(pin)) {
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -1704,5 +1705,9 @@ public final class MockResponseFactory {
         if (filter.contains("throwException"))
             throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
+    }
+
+    private static String getDevicePrivateKey() {
+        return "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDHScjSSp9MI3imkS3Qr3X6WpvL/rqkfpsr1jdCvG4gP12LwHRCfbutCtD8t458SmaTkTGEuVGAt1cEoSPwZflSf3UffScpewzXw+yA/hfI6GRywET3u8riGtoA4tFimE4Zeob3e7Xv1hsw5GfAKdm5TTTzKnK2OX5HJf8vnJYYO5B8KNf9uQ5Q/GaDuYnELsYtCafEx2Oz12RvDCZyFDAuVVVRFWSGos4/UrQ8iRuDzPW4is37sJK8JPfUDhBpOECJEuPm55T4d4Q1ToMSgI5+hmtlFGuOjKiVLkYJpga+Vsyha4QKCkvRq6GF9SdL4D5a1aJpFHlDNLNyddk+Yz6PAgMBAAECggEBALVAwGuy/wsqv9MO+9JvoyfePRDeTzbJB6xpGr2Rz794okY29gZ7gLQzwDv5XphgusbAKX+DZUNifLxzKtK8jHSiBA5tr66kgdvEEFiJwWwzIRjVEmUW4cGflmNz5+h6iZ3WuOZiF+lYnEZtlodKCQHl3KDFHKvrwpRHVL8i9ch21mmkItqA0GbhIU+uGZqRBvLPV5nJcAp1uQDIWeR7V8b0qFCYK1t4WzTfopczwK6OwuxQZG/graxCLWssven62l/HqZpybx+AtgU56qSeNYYT3nnz0uMYXjeYtmC3L8P0Et87NIBzX2qG2vCCrEb8ifQIxAsecKz7yBP7dFN9CxECgYEA/s3/uQWB2HMMKWjydgJTlfVz6I55l+HgWsRtAVRWyN4JzFBRHCmbhWClWIr7fMtIPFk7Bn7piYlE5LTWJxLIeR4ku4A68OBzW2GVhWllOlIbeE9rLyhHWaippWPcs8Fc80TyhpCw3gD+ceISdBwIMwTiMqTWN6qvItNaAxBiBr0CgYEAyDkdTtZkBOpTrDWbHjMTKUKYgtR6vzyU9C5vGYQ1y9aNAmEU1mM/p/zBPLTvo1UGoQQKPfkeJXsQaRl0OVSuWFmCmYk7Eb36tEgfWMUHQQRkZtuecZDnoa13JEmuNn/tX4tl5XMzGiSWqFH1UbHfND8HyQx/fNMTdn4Xf1vyBTsCgYEA1qZhG9Oo29enUicnwgQZuAVrXGjRxAIzhyNcFLeg2Fw8ctLiUVA3xHdzMxD55No3AyfEUqeNQyDRWb2Bfq8TFP0wwoe2n37ljwC4/geYkDXlEEgPKk3LNZuhNkPXA9ML45+ck4HGjW7W6scg9pE60wf1Kea003ZFTZgwhs5BVh0CgYArK/2AyUNpt+jwweI/gb3I8L4Xv57z6ykm+XglJVfAKvPepnYqv92y6BH2eAEP076JK2jV8ggpBr8EGmPwFK0/CZXaazecXL1Y8BAqQNmOkFbhwssIK7l2KAP/hA+XWsAhENqYvd0v7uG5S2q9AcBh8JFKLXKzxIN20jtYz8eAjwKBgQDV+O/Vty6NWq81DA0QNul4gN8zi3abUf57jicjQ1FTYAUT6VxRJl7cl4gcZsiO755OFa62GcvCWHN5AuEZq1pdI0s6+KvIlFqH7FZxocDkz/+MmcZlfH917pZ/SXSkqoPdjC/7Cip0I4fRHmn9QEuUPE5VtF7G3UBXdLbx8nkuEA==";
     }
 }

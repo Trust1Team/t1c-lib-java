@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.piv;
 
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 /**
  * @author Guillaume Vandecasteele
@@ -14,8 +14,8 @@ public class PivAllCertificates implements AllCertificates {
     private T1cCertificate signingCertificate;
 
     public PivAllCertificates(GclPivAllCertificates certs, Boolean... parseCertificate) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificate);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
+        this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificate);
     }
 
     /**

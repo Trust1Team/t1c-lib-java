@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.piv;
 
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class PivAllData implements AllData {
 
@@ -13,8 +13,8 @@ public class PivAllData implements AllData {
     private GclPivPrintedInformation printedInformation;
 
     public PivAllData(GclPivAllData data, Boolean... parseCertificate) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
+        this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
         this.facialImage = data.getFacialImage();
         this.printedInformation = data.getPrintedInformation();
     }

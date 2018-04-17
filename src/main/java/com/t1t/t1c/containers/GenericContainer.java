@@ -6,7 +6,7 @@ import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -77,6 +77,6 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     }
 
     protected Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certs) {
-        return CertificateUtil.orderCertificates(certs);
+        return PkiUtil.orderCertificates(certs);
     }
 }

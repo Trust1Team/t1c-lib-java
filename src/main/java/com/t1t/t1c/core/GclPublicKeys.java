@@ -1,15 +1,15 @@
-
 package com.t1t.t1c.core;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.annotation.Generated;
+
 @Generated("org.jsonschema2pojo")
-public class GclAdminCertificates {
+public class GclPublicKeys {
 
     @SerializedName("device")
     @Expose
@@ -22,70 +22,58 @@ public class GclAdminCertificates {
     private String ssl;
 
     /**
-     * 
-     * @return
-     *     The device
+     * @return The device
      */
     public String getDevice() {
         return device;
     }
 
     /**
-     * 
-     * @param device
-     *     The device
+     * @param device The device
      */
     public void setDevice(String device) {
         this.device = device;
     }
 
-    public GclAdminCertificates withDevice(String device) {
+    public GclPublicKeys withDevice(String device) {
         this.device = device;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The ds
+     * @return The ds
      */
     public String getDs() {
         return ds;
     }
 
     /**
-     * 
-     * @param ds
-     *     The ds
+     * @param ds The ds
      */
     public void setDs(String ds) {
         this.ds = ds;
     }
 
-    public GclAdminCertificates withDs(String ds) {
+    public GclPublicKeys withDs(String ds) {
         this.ds = ds;
         return this;
     }
 
     /**
-     * 
-     * @return
-     *     The ssl
+     * @return The ssl
      */
     public String getSsl() {
         return ssl;
     }
 
     /**
-     * 
-     * @param ssl
-     *     The ssl
+     * @param ssl The ssl
      */
     public void setSsl(String ssl) {
         this.ssl = ssl;
     }
 
-    public GclAdminCertificates withSsl(String ssl) {
+    public GclPublicKeys withSsl(String ssl) {
         this.ssl = ssl;
         return this;
     }
@@ -105,10 +93,10 @@ public class GclAdminCertificates {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclAdminCertificates) == false) {
+        if ((other instanceof GclPublicKeys) == false) {
             return false;
         }
-        GclAdminCertificates rhs = ((GclAdminCertificates) other);
+        GclPublicKeys rhs = ((GclPublicKeys) other);
         return new EqualsBuilder().append(device, rhs.device).append(ds, rhs.ds).append(ssl, rhs.ssl).isEquals();
     }
 

@@ -9,8 +9,10 @@ import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -68,27 +70,27 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public String getDevicePubKey() throws GclCoreException {
+    public T1cPublicKey getDevicePubKey(Boolean... parse) throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired());
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("Error retrieving device public key", ex);
         }
     }
 
     @Override
-    public String getSslPubKey() throws GclCoreException {
+    public T1cPublicKey getSslPubKey(Boolean... parse) throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired());
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getSslCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("Error retrieving SSL public key", ex);
         }
     }
 
     @Override
-    public String getDsPubKey() throws GclCoreException {
+    public T1cPublicKey getDsPubKey(Boolean... parse) throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired());
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
             GclError error = ex.getGclError();
             // If the error code returned is 201, that means the public has not been set (yet), return null
@@ -96,6 +98,15 @@ public class Core extends AbstractCore {
                 return null;
             }
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
+        }
+    }
+
+    @Override
+    public T1cAdminPublicKeys getAdminPublicKeys(Boolean... parse) throws GclCoreException {
+        try {
+            return new T1cAdminPublicKeys(RestExecutor.returnData(gclAdminRestClient.getCertificates(), config.isConsentRequired()), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving admin certificates", ex);
         }
     }
 
@@ -300,11 +311,11 @@ public class Core extends AbstractCore {
 
     @Override
     public boolean getConsent(String title, String codeWord) throws GclCoreException {
-        return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclConsent.AlertLevel.WARNING, GclConsent.AlertPosition.STANDARD, GclConsent.Type.READER, config.getDefaultConsentTimeout());
+        return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclAlertLevel.WARNING, GclAlertPosition.STANDARD, GclConsentType.READER, config.getDefaultConsentTimeout());
     }
 
     @Override
-    public boolean getConsent(final String title, final String codeWord, final Integer durationInDays, final GclConsent.AlertLevel alertLevel, final GclConsent.AlertPosition alertPosition, final GclConsent.Type consentType, final Integer timeoutInSeconds) {
+    public boolean getConsent(final String title, final String codeWord, final Integer durationInDays, final GclAlertLevel alertLevel, final GclAlertPosition alertPosition, final GclConsentType consentType, final Integer timeoutInSeconds) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
         Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
         Preconditions.checkArgument(timeoutInSeconds == null || timeoutInSeconds <= config.getDefaultConsentTimeout(), "Consent dialog timeout may not exceed default value!");
@@ -349,13 +360,13 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers, final boolean isRetry) throws GclCoreException {
+    public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers) throws GclCoreException {
         int totalTime = 0;
         int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
         boolean downloadsComplete;
         do {
             GclInfo info = getInfo();
-            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers, isRetry);
+            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
             if (!downloadsComplete) {
                 try {
                     Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
@@ -371,7 +382,7 @@ public class Core extends AbstractCore {
         return getInfo();
     }
 
-    private boolean checkIfDownloadsCompleted(List<GclContainerInfo> currentContainers, List<DsContainerResponse> containersToLoad, boolean isRetry) {
+    private boolean checkIfDownloadsCompleted(List<GclContainerInfo> currentContainers, List<DsContainerResponse> containersToLoad) {
         boolean completed;
         int errored = 0;
         int missing = 0;
@@ -382,7 +393,7 @@ public class Core extends AbstractCore {
             for (GclContainerInfo cc : currentContainers) {
                 if (ctl.getName().equalsIgnoreCase(cc.getName()) && ctl.getVersion().equalsIgnoreCase(cc.getVersion())) {
                     found = true;
-                    switch(cc.getStatus()) {
+                    switch (cc.getStatus()) {
                         case ERROR:
                         case DOWNLOAD_ERROR:
                             errored++;
@@ -416,16 +427,16 @@ public class Core extends AbstractCore {
         return timeoutInSeconds == null ? config.getDefaultConsentTimeout().longValue() : timeoutInSeconds.longValue();
     }
 
-    private GclConsent.AlertLevel getAlertLevel(final GclConsent.AlertLevel alertLevel) {
-        return alertLevel == null ? GclConsent.AlertLevel.WARNING : alertLevel;
+    private GclAlertLevel getAlertLevel(final GclAlertLevel alertLevel) {
+        return alertLevel == null ? GclAlertLevel.WARNING : alertLevel;
     }
 
-    private GclConsent.AlertPosition getAlertPosition(final GclConsent.AlertPosition alertPosition) {
-        return alertPosition == null ? GclConsent.AlertPosition.STANDARD : alertPosition;
+    private GclAlertPosition getAlertPosition(final GclAlertPosition alertPosition) {
+        return alertPosition == null ? GclAlertPosition.STANDARD : alertPosition;
     }
 
-    private GclConsent.Type getConsentType(final GclConsent.Type consentType) {
-        return consentType == null ? GclConsent.Type.READER : consentType;
+    private GclConsentType getConsentType(final GclConsentType consentType) {
+        return consentType == null ? GclConsentType.READER : consentType;
     }
 
     private List<GclReader> getReaders(boolean cardInserted) {

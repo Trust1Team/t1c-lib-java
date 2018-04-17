@@ -3,7 +3,7 @@ package com.t1t.t1c.containers.smartcards.pki.oberthur;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class OberthurAllData implements AllData, AllCertificates {
 
@@ -22,11 +22,11 @@ public class OberthurAllData implements AllData, AllCertificates {
     }
 
     public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean... parseCertificates) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(rootCertificate, parseCertificates);
-        this.signingCertificate = CertificateUtil.createT1cCertificate(signingCertificate, parseCertificates);
-        this.issuerCertificate = CertificateUtil.createT1cCertificate(issuerCertificate, parseCertificates);
-        this.encryptionCertificate = CertificateUtil.createT1cCertificate(encryptionCertificate, parseCertificates);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
+        this.rootCertificate = PkiUtil.createT1cCertificate(rootCertificate, parseCertificates);
+        this.signingCertificate = PkiUtil.createT1cCertificate(signingCertificate, parseCertificates);
+        this.issuerCertificate = PkiUtil.createT1cCertificate(issuerCertificate, parseCertificates);
+        this.encryptionCertificate = PkiUtil.createT1cCertificate(encryptionCertificate, parseCertificates);
     }
 
     public T1cCertificate getRootCertificate() {

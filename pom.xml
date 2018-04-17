@@ -324,7 +324,11 @@
                         </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsentType.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAlertPosition.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAlertLevel.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainerStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclContainerInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclContainerInfo.json</sourcePath>
@@ -332,7 +336,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminCertificates.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPublicKeys.json</sourcePath>
                         <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsAtrList.json</sourcePath>

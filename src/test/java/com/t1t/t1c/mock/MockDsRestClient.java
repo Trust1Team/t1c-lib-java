@@ -37,7 +37,7 @@ public class MockDsRestClient implements DsRestClient {
     @Override
     public Call<DsPublicKey> getPubKey(String deviceId, String encoding) {
         if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
-            return delegate.returningResponse(getPublicKeyResponseDer()).getPubKey(deviceId,null);
+            return delegate.returningResponse(getPublicKeyResponseDer()).getPubKey(deviceId, null);
         } else {
             return delegate.returningResponse(getPublicKeyResponsePem()).getPubKey(deviceId, encoding);
         }
