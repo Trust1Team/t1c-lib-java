@@ -63,9 +63,9 @@ public interface GclPtIdRestClient {
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
     Call<T1cResponse<String>> sign(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclAuthenticateOrSignData request) throws RestException, NoConsentException;
 
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
     Call<T1cResponse<GclPtIdAddress>> getAddress(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclVerifyPinRequest request) throws RestException, NoConsentException;
 
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/address")
     Call<T1cResponse<GclPtIdAddress>> getAddress(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException, NoConsentException;
 }

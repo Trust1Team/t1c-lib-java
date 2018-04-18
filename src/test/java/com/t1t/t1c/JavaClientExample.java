@@ -255,7 +255,8 @@ public class JavaClientExample {
 
                 System.out.println("PIN verified: " + container.verifyPin(pin));
                 //TODO - Container currently only supports verify PIN, re-enable methods below once implemented in container
-                /*System.out.println("Card data dump: " + container.getAllData().toString());
+
+                System.out.println("Card data dump: " + container.getAllData().toString());
                 System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
                 System.out.println("Authentication certificate: " + container.getAuthenticationCertificate().getBase64());
                 System.out.println("Authentication algorithm references: " + container.getAllAlgoRefsForAuthentication().toString());
@@ -270,7 +271,7 @@ public class JavaClientExample {
                         .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                         .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
                         .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());*/
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
             } catch (VerifyPinException ex) {
                 System.out.println("PIN verification failed: " + ex.getMessage());
@@ -542,13 +543,16 @@ public class JavaClientExample {
         if (StringUtils.isNotBlank(authenticatePin)) {
 
             // Authenticate data
-            String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-            System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                    .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                    .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                    .withHash(challenge)
-                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, authenticatePin))).getResult());
-
+            try {
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, authenticatePin))).getResult());
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN Error: " + ex.getMessage());
+            }
         }
 
         scan = new Scanner(System.in);
