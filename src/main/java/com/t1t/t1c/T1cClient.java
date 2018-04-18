@@ -113,7 +113,7 @@ public class T1cClient implements IT1cClient {
             if (info.getManaged()) {
                 // Only attempt to sync if API key & DS URL are provided and managed sync is enabled
                 if (canRegisterOrSync() && connFactory.getConfig().isSyncManaged()) {
-                    doManagedSync(info, devicePublicKey.getDerEncoded());
+                    info = doManagedSync(info, devicePublicKey.getDerEncoded());
                 }
             } else {
                 try {
@@ -122,7 +122,7 @@ public class T1cClient implements IT1cClient {
                         info = doUnmanagedActivation(info, devicePublicKey.getDerEncoded());
                     }
                     // Sync the device
-                    doUnmanagedSync(info, devicePublicKey.getDerEncoded(), false);
+                    info = doUnmanagedSync(info, devicePublicKey.getDerEncoded(), false);
                 } catch (Exception ex) {
                     throw ExceptionFactory.initializationException("Failed to initialize library", ex);
                 }
@@ -143,9 +143,9 @@ public class T1cClient implements IT1cClient {
         this.availableContainers = availableContainers;
     }
 
-    private void doUnmanagedSync(final GclInfo currentInfo, final String devicePublicKey, final boolean isRetry) {
+    private GclInfo doUnmanagedSync(final GclInfo currentInfo, final String devicePublicKey, final boolean isRetry) {
+        GclInfo info = currentInfo;
         try {
-            GclInfo info = currentInfo;
             // Check if the DS public key is loaded into the Core
             setDsPublicKeyIfAbsent(info.getUid());
             // Sync the device with the DS
@@ -165,6 +165,7 @@ public class T1cClient implements IT1cClient {
                 doUnmanagedSync(currentInfo, devicePublicKey, true);
             }
         }
+        return info;
     }
 
     private GclInfo doUnmanagedActivation(final GclInfo info, final String devicePubKey) {
@@ -182,7 +183,7 @@ public class T1cClient implements IT1cClient {
     /**
      * Perform a sync operation for a managed device
      */
-    private void doManagedSync(final GclInfo currentInfo, final String devicePubKey) {
+    private GclInfo doManagedSync(final GclInfo currentInfo, final String devicePubKey) {
         try {
             DsSyncResponseDto syncResponse = getDsClient().sync(currentInfo.getUid(), createRegistrationOrSyncRequest(currentInfo, devicePubKey));
             // Reset the connection with the received info
@@ -191,6 +192,7 @@ public class T1cClient implements IT1cClient {
             // If the sync fails, log the error and continue as if nothing happened
             log.warn("Managed sync failed: ", ex);
         }
+        return currentInfo;
     }
 
     private boolean isV2Compatible(GclInfo info) {
