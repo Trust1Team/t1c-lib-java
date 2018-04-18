@@ -650,7 +650,7 @@ public class JavaClientExample {
             System.out.println("Base64 root certificates: " + sb.toString());
             System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate().getBase64());
             System.out.println("Base64 non-repudiation certificate: " + container.getNonRepudiationCertificate().getBase64());
-            System.out.println("Card data dump: " + container.getAllData());
+            System.out.println("Card data dump: " + container.getAllData().toString());
             System.out.println("Card certificate dump: " + container.getAllCertificates());
         }
     }

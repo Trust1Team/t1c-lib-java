@@ -15,7 +15,7 @@ public class BeIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllData(GclBeIdAllData data, Boolean... parseCertificate) {
+    public BeIdAllData(GclBeIdAllData data, Boolean parseCertificate) {
         this.address = data.getAddress();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = PkiUtil.createT1cCertificate(data.getCitizenCertificate(), parseCertificate);

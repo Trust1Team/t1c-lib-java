@@ -9,6 +9,7 @@ import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.ContainerUtil;
@@ -70,7 +71,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getDevicePubKey(Boolean... parse) throws GclCoreException {
+    public T1cPublicKey getDevicePubKey() throws GclCoreException {
+        return getDevicePubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getDevicePubKey(Boolean parse) throws GclCoreException {
         try {
             return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
@@ -79,7 +85,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getSslPubKey(Boolean... parse) throws GclCoreException {
+    public T1cPublicKey getSslPubKey() throws GclCoreException {
+        return getSslPubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getSslPubKey(Boolean parse) throws GclCoreException {
         try {
             return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getSslCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
@@ -88,7 +99,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getDsPubKey(Boolean... parse) throws GclCoreException {
+    public T1cPublicKey getDsPubKey() throws GclCoreException {
+        return getDsPubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException {
         try {
             return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
@@ -102,7 +118,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cAdminPublicKeys getAdminPublicKeys(Boolean... parse) throws GclCoreException {
+    public T1cAdminPublicKeys getAdminPublicKeys() throws GclCoreException {
+        return getAdminPublicKeys(null);
+    }
+
+    @Override
+    public T1cAdminPublicKeys getAdminPublicKeys(Boolean parse) throws GclCoreException {
         try {
             return new T1cAdminPublicKeys(RestExecutor.returnData(gclAdminRestClient.getCertificates(), config.isConsentRequired()), parse);
         } catch (RestException ex) {

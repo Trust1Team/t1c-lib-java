@@ -10,7 +10,7 @@ public class DnieAllCertificates implements AllCertificates {
     private T1cCertificate intermediateCertificate;
     private T1cCertificate signingCertificate;
 
-    public DnieAllCertificates(GclDnieAllCertificates certificates, Boolean... parseCertificate) {
+    public DnieAllCertificates(GclDnieAllCertificates certificates, Boolean parseCertificate) {
 
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificate);
         this.intermediateCertificate = PkiUtil.createT1cCertificate(certificates.getIntermediateCertificate(), parseCertificate);

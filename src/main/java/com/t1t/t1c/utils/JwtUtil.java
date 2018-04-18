@@ -37,7 +37,7 @@ public final class JwtUtil {
             log.debug("Token is not expired, claims: {}", context.getJwtClaims());
             NumericDate shouldNotExceed = context.getJwtClaims().getExpirationTime();
             shouldNotExceed.addSeconds(SECONDS_BEFORE_EXPIRATION);
-            return !NumericDate.now().isOnOrAfter(shouldNotExceed);
+            return NumericDate.now().isOnOrAfter(shouldNotExceed);
         } catch (InvalidJwtException | MalformedClaimException ex) {
             throw ExceptionFactory.invalidTokenException(ex);
         }

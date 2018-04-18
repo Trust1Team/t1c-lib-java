@@ -67,47 +67,27 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     @Override
-    public Pkcs11AllData getAllData() throws GenericContainerException {
+    public Pkcs11AllData getAllData(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
         return new Pkcs11AllData(getPkcs11Slots());
     }
 
     @Override
-    public Pkcs11AllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return getAllData();
-    }
-
-    @Override
-    public Pkcs11AllData getAllData(Boolean... parseCertificates) throws GenericContainerException {
-        return getAllData();
-    }
-
-    @Override
-    public AllCertificates getAllCertificates() throws GenericContainerException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws GenericContainerException {
-        return getAllCertificates();
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws GenericContainerException {
-        return getAllCertificates();
-    }
-
-    @Override
-    public Boolean verifyPin(String... pin) throws GenericContainerException, VerifyPinException {
+    public Boolean verifyPin(String pin) throws GenericContainerException, VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have PIN verification implementation");
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
+    public String authenticate(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have authentication implementation");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws GenericContainerException {
+    public String sign(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have signing implementation");
     }
 
@@ -131,7 +111,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
-    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin, Boolean... parse) throws VerifyPinException, NoConsentException, RestException {
+    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin, Boolean parse) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
@@ -139,6 +119,10 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
+    }
+
+    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin) throws VerifyPinException, NoConsentException, RestException {
+        return getPkcs11Certificates(slotId, pin, null);
     }
 
     public GclPkcs11Info getPkcs11Info() throws RestException, NoConsentException {
@@ -192,7 +176,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide data dump");
     }
 }

@@ -30,6 +30,7 @@ public class LibConfig {
     private Boolean consentRequired = false;
     private Long contextToken;
     private String gclJwt;
+    private Boolean managed = false;
 
     // General Config
 
@@ -154,6 +155,14 @@ public class LibConfig {
 
     public void setGclJwt(String gclJwt) {
         this.gclJwt = gclJwt;
+    }
+
+    public Boolean isManaged() {
+        return managed;
+    }
+
+    public void setManaged(Boolean managed) {
+        this.managed = managed;
     }
 
     public Integer getAgentPort() {

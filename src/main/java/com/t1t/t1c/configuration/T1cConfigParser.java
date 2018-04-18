@@ -94,6 +94,7 @@ public class T1cConfigParser implements Serializable {
     public LibConfig parseConfig(LibConfig config, GclInfo info) {
         config.setCitrix(info.getCitrix());
         config.setConsentRequired(info.getConsent());
+        config.setManaged(info.getManaged());
         setAppConfig(config);
         validateConfig();
         printAppConfig();

@@ -50,7 +50,7 @@ public final class PkiUtil {
         }
     }
 
-    public static T1cCertificate createT1cCertificate(String certificate, Boolean... parse) {
+    public static T1cCertificate createT1cCertificate(String certificate, Boolean parse) {
         if (StringUtils.isNotEmpty(certificate)) {
             boolean doParse = doParse(parse);
             T1cCertificate cert = new T1cCertificate().withBase64(certificate);
@@ -62,7 +62,7 @@ public final class PkiUtil {
         return null;
     }
 
-    public static T1cPublicKey createT1cPublicKey(String publicKey, Boolean... parse) {
+    public static T1cPublicKey createT1cPublicKey(String publicKey, Boolean parse) {
         if (StringUtils.isNotEmpty(publicKey)) {
             boolean doParse = doParse(parse);
             T1cPublicKey pubKey = new T1cPublicKey().withDerEncoded(publicKey);
@@ -74,7 +74,7 @@ public final class PkiUtil {
         return null;
     }
 
-    public static List<T1cCertificate> createT1cCertificates(List<String> certificates, Boolean... parse) {
+    public static List<T1cCertificate> createT1cCertificates(List<String> certificates, Boolean parse) {
         boolean doParse = doParse(parse);
         List<T1cCertificate> returnValue = new ArrayList<>();
         for (String unparsed : certificates) {
@@ -173,12 +173,8 @@ public final class PkiUtil {
         }
     }
 
-    private static boolean doParse(Boolean... parse) {
-        boolean returnValue = false;
-        if (parse != null && parse.length > 0 && parse[0] != null) {
-            returnValue = parse[0];
-        }
-        return returnValue;
+    private static boolean doParse(Boolean parse) {
+        return parse == null ? false : parse;
     }
 
     private static PublicKey getPublicKey(String pubKey) {

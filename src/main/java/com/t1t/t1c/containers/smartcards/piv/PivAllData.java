@@ -12,7 +12,11 @@ public class PivAllData implements AllData {
     private GclPivFacialImage facialImage;
     private GclPivPrintedInformation printedInformation;
 
-    public PivAllData(GclPivAllData data, Boolean... parseCertificate) {
+    public PivAllData(GclPivAllData data) {
+        this(data, null);
+    }
+
+    public PivAllData(GclPivAllData data, Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
         this.facialImage = data.getFacialImage();

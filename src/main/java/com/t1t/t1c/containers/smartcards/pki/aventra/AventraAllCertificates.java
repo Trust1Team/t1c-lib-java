@@ -12,7 +12,11 @@ public class AventraAllCertificates implements AllCertificates {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public AventraAllCertificates(GclAventraAllCertificates certs, Boolean... parseCertificates) {
+    public AventraAllCertificates(GclAventraAllCertificates certs) {
+        this(certs, null);
+    }
+
+    public AventraAllCertificates(GclAventraAllCertificates certs, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);

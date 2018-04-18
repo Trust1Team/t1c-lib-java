@@ -18,10 +18,7 @@ import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
-import com.t1t.t1c.core.Core;
-import com.t1t.t1c.core.GclInfo;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.ICore;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.factories.ConnectionFactory;
@@ -36,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,9 +53,12 @@ import java.util.List;
  * The T1C client provides a connection factory object instance to be shared by all underlying containers.
  */
 public class T1cClient implements IT1cClient {
+
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
+
     private T1cConfigParser configParser;
     private ConnectionFactory connFactory;
+    private List<ContainerType> availableContainers;
 
     /*Constructors*/
     public T1cClient(LibConfig config) {
@@ -126,9 +127,20 @@ public class T1cClient implements IT1cClient {
                     throw ExceptionFactory.initializationException("Failed to initialize library", ex);
                 }
             }
+            setAvailableContainers(info);
         } else {
             throw ExceptionFactory.incompatibleCoreVersionException(info.getVersion(), getDsClient().getDownloadLink());
         }
+    }
+
+    private void setAvailableContainers(GclInfo info) {
+        List<ContainerType> availableContainers = new ArrayList<>();
+        for (GclContainerInfo containerInfo : info.getContainers()) {
+            if (containerInfo.getStatus().equals(GclContainerStatus.INSTALLED)) {
+                availableContainers.add(ContainerType.valueOfId(containerInfo.getName()));
+            }
+        }
+        this.availableContainers = availableContainers;
     }
 
     private void doUnmanagedSync(final GclInfo currentInfo, final String devicePublicKey, final boolean isRetry) {
@@ -251,56 +263,67 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public BeIdContainer getBeIdContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.BEID);
         return new BeIdContainer(connFactory.getConfig(), reader, connFactory.getGclBeIdRestClient());
     }
 
     @Override
     public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) {
+        containerAvailabilityCheck(ContainerType.LUXID);
         return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), pin);
     }
 
     @Override
     public LuxTrustContainer getLuxTrustContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.LUXTRUST);
         return new LuxTrustContainer(connFactory.getConfig(), reader, connFactory.getGclLuxTrustRestClient());
     }
 
     @Override
     public DnieContainer getDnieContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.DNIE);
         return new DnieContainer(connFactory.getConfig(), reader, connFactory.getGclDniRestClient());
     }
 
     @Override
     public EmvContainer getEmvContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.EMV);
         return new EmvContainer(connFactory.getConfig(), reader, connFactory.getGclEmvRestClient());
     }
 
     @Override
     public MobibContainer getMobibContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.MOBIB);
         return new MobibContainer(connFactory.getConfig(), reader, connFactory.getGclMobibRestClient());
     }
 
     @Override
     public OcraContainer getOcraContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.OCRA);
         return new OcraContainer(connFactory.getConfig(), reader, connFactory.getGclOcraRestClient());
     }
 
     @Override
     public AventraContainer getAventraContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.AVENTRA);
         return new AventraContainer(connFactory.getConfig(), reader, connFactory.getGclAventraRestClient());
     }
 
     @Override
     public OberthurContainer getOberthurContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.OBERTHUR);
         return new OberthurContainer(connFactory.getConfig(), reader, connFactory.getGclOberthurRestClient());
     }
 
     @Override
     public PivContainer getPivContainer(GclReader reader, String pacePin) {
+        containerAvailabilityCheck(ContainerType.PIV);
         return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pacePin);
     }
 
     @Override
     public PtEIdContainer getPtIdContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.PT);
         return new PtEIdContainer(connFactory.getConfig(), reader, connFactory.getGclPtRestClient());
     }
 
@@ -311,16 +334,23 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public Pkcs11Container getPkcs11Container(GclReader reader, ModuleConfiguration configuration) {
+        containerAvailabilityCheck(ContainerType.PKCS11);
         return new Pkcs11Container(connFactory.getConfig(), reader, connFactory.getGclSafenetRestClient(), configuration);
     }
 
     @Override
     public ReaderApiContainer getReaderApiContainer(GclReader reader) {
+        containerAvailabilityCheck(ContainerType.READER_API);
         return new ReaderApiContainer(connFactory.getConfig(), reader, connFactory.getGclReaderApiRestClient());
     }
 
     @Override
-    public IGenericContainer getGenericContainer(GclReader reader, String... pin) {
+    public IGenericContainer getGenericContainer(GclReader reader) {
+        return getGenericContainer(reader, null);
+    }
+
+    @Override
+    public IGenericContainer getGenericContainer(GclReader reader, String pin) {
         ContainerType type = ContainerUtil.determineContainer(reader.getCard());
         IGenericContainer container;
         String pacePin = PinUtil.getPinIfPresent(pin);
@@ -387,5 +417,10 @@ public class T1cClient implements IT1cClient {
         return getCore().getPinVerificationCapableReaders();
     }
 
+    private void containerAvailabilityCheck(ContainerType type) {
+        if (!this.availableContainers.contains(type)) {
+            throw ExceptionFactory.containerNotAvailableException(type);
+        }
+    }
 }
 

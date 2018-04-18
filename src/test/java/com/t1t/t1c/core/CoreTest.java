@@ -5,6 +5,7 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestServiceBuilder;
 import com.t1t.t1c.utils.ContainerUtil;

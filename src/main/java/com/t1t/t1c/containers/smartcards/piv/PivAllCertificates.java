@@ -13,7 +13,11 @@ public class PivAllCertificates implements AllCertificates {
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
 
-    public PivAllCertificates(GclPivAllCertificates certs, Boolean... parseCertificate) {
+    public PivAllCertificates(GclPivAllCertificates certs) {
+        this(certs, null);
+    }
+
+    public PivAllCertificates(GclPivAllCertificates certs, Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
         this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificate);
     }

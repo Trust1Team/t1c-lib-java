@@ -14,7 +14,7 @@ public class LuxIdAllCertificates implements AllCertificates {
     private T1cCertificate nonRepudiationCertificate;
     private List<T1cCertificate> rootCertificates;
 
-    public LuxIdAllCertificates(GclLuxIdAllCertificates certificates, Boolean... parseCertificates) {
+    public LuxIdAllCertificates(GclLuxIdAllCertificates certificates, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(certificates.getRootCertificates())) {

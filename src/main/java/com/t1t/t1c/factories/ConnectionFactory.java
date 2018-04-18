@@ -1,6 +1,7 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.readerapi.GclReaderApiRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
@@ -16,10 +17,13 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclCitrixRestClient;
+import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.rest.RestServiceBuilder;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele, Michallis

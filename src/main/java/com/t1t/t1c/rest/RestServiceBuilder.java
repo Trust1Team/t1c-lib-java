@@ -60,7 +60,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, config);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, config, false);
     }
 
     /**
@@ -71,7 +71,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, config);
+        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, config, false);
     }
 
     /**
@@ -82,7 +82,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config, true);
     }
 
     /**
@@ -122,7 +122,7 @@ public final class RestServiceBuilder {
         } else {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH);
         }
-        return getLocalClient(uri, clazz, config);
+        return getLocalClient(uri, clazz, config, false);
     }
 
     /**
@@ -161,10 +161,10 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, LibConfig config) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, LibConfig config, boolean sendAuthToken) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(getHttpClientSkipTLS(config))
+                    .client(getHttpClientSkipTLS(config, sendAuthToken))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -221,7 +221,7 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final LibConfig config, final boolean sendAuthToken) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
@@ -256,9 +256,9 @@ public final class RestServiceBuilder {
                     }
                 });
 
-        final boolean jwtPresent = StringUtils.isNotBlank(config.getGclJwt());
-        final boolean contextTokenPresent = config.getContextToken() != null;
-        if (jwtPresent || contextTokenPresent) {
+        final boolean jwtPresent = StringUtils.isNotBlank(config.getGclJwt()) && sendAuthToken;
+        final boolean contextTokenRequired = config.getContextToken() != null && !config.isManaged();
+        if (jwtPresent || contextTokenRequired) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
@@ -266,7 +266,7 @@ public final class RestServiceBuilder {
                     if (jwtPresent) {
                         requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
                     }
-                    if (contextTokenPresent) {
+                    if (contextTokenRequired) {
                         requestBuilder.addHeader(X_RELAY_STATE_PREFIX + config.getContextToken(), String.valueOf(config.getContextToken()));
                     }
                     return chain.proceed(requestBuilder.build());

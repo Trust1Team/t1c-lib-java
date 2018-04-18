@@ -16,7 +16,7 @@ public class BeIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean... parseCertificate) {
+    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = PkiUtil.createT1cCertificate(certs.getCitizenCertificate(), parseCertificate);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certs.getNonRepudiationCertificate(), parseCertificate);

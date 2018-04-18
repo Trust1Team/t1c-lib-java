@@ -18,7 +18,7 @@ public class LuxIdAllData implements AllData {
     private GclLuxIdSignatureImage signatureImage;
     private String signatureObject;
 
-    public LuxIdAllData(GclLuxIdAllData data, Boolean... parseCertificates) {
+    public LuxIdAllData(GclLuxIdAllData data, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(data.getRootCertificates())) {

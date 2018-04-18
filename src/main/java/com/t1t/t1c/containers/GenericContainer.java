@@ -1,7 +1,11 @@
 package com.t1t.t1c.containers;
 
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.NoConsentException;
+import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -41,6 +45,56 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
 
     public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pacePin);
 
+    @Override
+    public V getAllData() throws RestException, NoConsentException {
+        return getAllData(null, null);
+    }
+
+    @Override
+    public V getAllData(Boolean parseCertificates) throws RestException, NoConsentException {
+        return getAllData(null, parseCertificates);
+    }
+
+    @Override
+    public V getAllData(List<String> filterParams) throws RestException, NoConsentException {
+        return getAllData(filterParams, null);
+    }
+
+    @Override
+    public W getAllCertificates() throws RestException, NoConsentException {
+        return getAllCertificates(null, null);
+    }
+
+    @Override
+    public W getAllCertificates(Boolean parseCertificates) throws RestException, NoConsentException {
+        return getAllCertificates(null, parseCertificates);
+    }
+
+    @Override
+    public W getAllCertificates(List<String> filterParams) throws RestException, NoConsentException {
+        return getAllCertificates(filterParams, null);
+    }
+
+    @Override
+    public Boolean verifyPin() throws VerifyPinException, RestException, NoConsentException {
+        return verifyPin(null);
+    }
+
+    @Override
+    public String authenticate(String data, DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
+        return authenticate(data, algo, null);
+    }
+
+    @Override
+    public String sign(String data, DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
+        return sign(data, algo, null);
+    }
+
+    @Override
+    public ContainerData dumpData() throws RestException, UnsupportedOperationException, NoConsentException {
+        return dumpData(null);
+    }
+
     protected String createFilterParams(List<String> params) {
         String returnValue = null;
         if (CollectionUtils.isNotEmpty(params)) {
@@ -59,6 +113,8 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
         }
         return returnValue;
     }
+
+
 
     protected List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
         List<DigestAlgorithm> returnValue = new ArrayList<>();

@@ -12,7 +12,11 @@ public class PtIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public PtIdAllCertificates(GclPtIdAllCertificates certificates, Boolean... parseCertificates) {
+    public PtIdAllCertificates(GclPtIdAllCertificates certificates) {
+        this(certificates, null);
+    }
+
+    public PtIdAllCertificates(GclPtIdAllCertificates certificates, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
         this.rootAuthenticationCertificate = PkiUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);

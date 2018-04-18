@@ -1,6 +1,6 @@
-package com.t1t.t1c.core;
+package com.t1t.t1c.model;
 
-import com.t1t.t1c.model.T1cPublicKey;
+import com.t1t.t1c.core.GclPublicKeys;
 import com.t1t.t1c.utils.PkiUtil;
 
 /**
@@ -13,7 +13,7 @@ public class T1cAdminPublicKeys {
     private T1cPublicKey device;
     private T1cPublicKey ssl;
 
-    public T1cAdminPublicKeys(GclPublicKeys publicKeys, Boolean... parse) {
+    public T1cAdminPublicKeys(GclPublicKeys publicKeys, Boolean parse) {
         if (publicKeys != null) {
             this.ds = PkiUtil.createT1cPublicKey(publicKeys.getDs(), parse);
             this.device = PkiUtil.createT1cPublicKey(publicKeys.getDevice(), parse);

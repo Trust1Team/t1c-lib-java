@@ -13,7 +13,11 @@ public class AventraAllData implements AllData {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public AventraAllData(GclAventraAllData data, Boolean... parseCertificates) {
+    public AventraAllData(GclAventraAllData data) {
+        this(data, null);
+    }
+
+    public AventraAllData(GclAventraAllData data, Boolean parseCertificates) {
         this.appletInfo = data.getAppletInfo();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);

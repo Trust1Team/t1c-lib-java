@@ -33,8 +33,8 @@ public final class PinUtil {
     private PinUtil() {
     }
 
-    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String... pin) {
-        boolean pinPresent = pin.length > 0 && StringUtils.isNotBlank(pin[0]);
+    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String pin) {
+        boolean pinPresent = StringUtils.isNotBlank(pin);
         boolean hardwarePinPadPresent = reader.getPinpad();
         if (forcePinPad) {
             if (hardwarePinPadPresent) {
@@ -85,7 +85,7 @@ public final class PinUtil {
         PinUtil.DEVICE_PUBLIC_KEY = devicePublicKey;
     }
 
-    public static GclAuthenticateOrSignData createEncryptedAuthSignData(String data, String algorithmReference, Boolean pinpad, Boolean osPinDialog, String... pin) {
+    public static GclAuthenticateOrSignData createEncryptedAuthSignData(String data, String algorithmReference, Boolean pinpad, Boolean osPinDialog, String pin) {
         return new GclAuthenticateOrSignData()
                 .withData(data)
                 .withAlgorithmReference(algorithmReference)
@@ -94,24 +94,19 @@ public final class PinUtil {
                 .withPin(getEncryptedPinIfPresent(pin));
     }
 
-    public static String getEncryptedPinIfPresent(String... pin) {
-        if (pin != null && pin.length > 0 && StringUtils.isNotEmpty(pin[0])) {
-            return PinUtil.encryptPin(pin[0]);
-        }
-        return null;
+    public static String getEncryptedPinIfPresent(String pin) {
+        return StringUtils.isNotEmpty(pin) ? PinUtil.encryptPin(pin) : null;
     }
 
-    public static String getPinIfPresent(String... pin) {
-        if (pin != null && pin.length > 0 && StringUtils.isNotEmpty(pin[0])) {
-            return pin[0];
-        } else return "";
+    public static String getPinIfPresent(String pin) {
+        return StringUtils.isNotEmpty(pin) ? pin : "";
     }
 
-    public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, String... pin) {
+    public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, String pin) {
         return createEncryptedRequest(pinpad, osPinDialog, null, pin);
     }
 
-    public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, GclPrivateKeyReference privateKeyReference, String... pin) {
+    public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, GclPrivateKeyReference privateKeyReference, String pin) {
         return new GclVerifyPinRequest()
                 .withPin(getEncryptedPinIfPresent(pin))
                 .withPinpad(pinpad)

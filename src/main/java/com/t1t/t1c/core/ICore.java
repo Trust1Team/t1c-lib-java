@@ -4,6 +4,7 @@ import com.t1t.t1c.ds.DsAtrList;
 import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 
 import java.util.List;
@@ -41,29 +42,53 @@ public interface ICore {
     /**
      * Retrieve the Distribution Service public key set for the installed T1C-GCL.
      *
-     * @param parse Boolean toggle to parse the certificate
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    T1cPublicKey getDsPubKey(Boolean... parse) throws GclCoreException;
+    T1cPublicKey getDsPubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException;
 
     /**
      * Retrieve the device public key for the installed T1C-GCL.
      *
-     * @param parse Boolean toggle to parse the certificate
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    T1cPublicKey getDevicePubKey(Boolean... parse) throws GclCoreException;
+    T1cPublicKey getDevicePubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the device public key for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getDevicePubKey(Boolean parse) throws GclCoreException;
 
     /**
      * Retrieve the SSL public key for the installed T1C-GCL.
      *
-     * @param parse Boolean toggle to parse the certificate
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    T1cPublicKey getSslPubKey(Boolean... parse) throws GclCoreException;
+    T1cPublicKey getSslPubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the SSL public key for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getSslPubKey(Boolean parse) throws GclCoreException;
 
     /**
      * Retrieves all public keys/certificates for the installed T1C-GCL.
@@ -71,7 +96,16 @@ public interface ICore {
      * @return
      * @throws GclCoreException
      */
-    T1cAdminPublicKeys getAdminPublicKeys(Boolean... parse) throws GclCoreException;
+    T1cAdminPublicKeys getAdminPublicKeys() throws GclCoreException;
+
+    /**
+     * Retrieves all public keys/certificates for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return
+     * @throws GclCoreException
+     */
+    T1cAdminPublicKeys getAdminPublicKeys(Boolean parse) throws GclCoreException;
 
     /**
      * Set the public key for the installed T1C-GCL.

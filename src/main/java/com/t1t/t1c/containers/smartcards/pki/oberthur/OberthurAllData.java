@@ -13,7 +13,11 @@ public class OberthurAllData implements AllData, AllCertificates {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public OberthurAllData(GclOberthurAllData data, Boolean... parseCertificates) {
+    public OberthurAllData(GclOberthurAllData data) {
+        this(data, null);
+    }
+
+    public OberthurAllData(GclOberthurAllData data, Boolean parseCertificates) {
         this(data.getAuthenticationCertificate(),
                 data.getRootCertificate(),
                 data.getSigningCertificate(),
@@ -21,7 +25,7 @@ public class OberthurAllData implements AllData, AllCertificates {
                 data.getEncryptionCertificate(), parseCertificates);
     }
 
-    public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean... parseCertificates) {
+    public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(rootCertificate, parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(signingCertificate, parseCertificates);

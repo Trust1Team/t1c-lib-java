@@ -19,7 +19,11 @@ public class LuxTrustAllData implements AllData {
     private T1cCertificate signingCertificate;
     private List<T1cCertificate> rootCertificates;
 
-    public LuxTrustAllData(GclLuxTrustAllData data, Boolean... parseCertificates) {
+    public LuxTrustAllData(GclLuxTrustAllData data) {
+        this(data, null);
+    }
+
+    public LuxTrustAllData(GclLuxTrustAllData data, Boolean parseCertificates) {
         this.activated = data.getActivated();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificates);

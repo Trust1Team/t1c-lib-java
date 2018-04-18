@@ -17,7 +17,11 @@ public class LuxTrustAllCertificates implements AllCertificates {
     private T1cCertificate signingCertificate;
     private List<T1cCertificate> rootCertificates;
 
-    public LuxTrustAllCertificates(GclLuxTrustAllCertificates certs, Boolean... parseCertificates) {
+    public LuxTrustAllCertificates(GclLuxTrustAllCertificates certs) {
+        this(certs, null);
+    }
+
+    public LuxTrustAllCertificates(GclLuxTrustAllCertificates certs, Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(certs.getRootCertificates())) {

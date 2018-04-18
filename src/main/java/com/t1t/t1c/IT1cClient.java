@@ -39,7 +39,9 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    IGenericContainer getGenericContainer(GclReader reader, String... pacePin);
+    IGenericContainer getGenericContainer(GclReader reader, String pacePin);
+
+    IGenericContainer getGenericContainer(GclReader reader);
 
     BeIdContainer getBeIdContainer(GclReader reader);
 

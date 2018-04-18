@@ -14,6 +14,7 @@ import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.PinUtil;
 import com.t1t.t1c.utils.PkiUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -52,43 +53,22 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public BeIdAllData getAllData() throws RestException, NoConsentException {
-        return getAllData(null, null);
-    }
-
-    @Override
-    public BeIdAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public BeIdAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
         return new BeIdAllData(data, parseCertificates);
     }
 
     @Override
-    public BeIdAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllData(null, parseCertificates);
-    }
-
-    @Override
-    public BeIdAllCertificates getAllCertificates() throws RestException, NoConsentException {
-        return getAllCertificates(null, null);
-    }
-
-    @Override
-    public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
         return new BeIdAllCertificates(data, parseCertificates);
     }
 
     @Override
-    public BeIdAllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllCertificates(null, parseCertificates);
-    }
-
-    @Override
-    public Boolean verifyPin(String... pin) throws VerifyPinException, NoConsentException, RestException {
+    public Boolean verifyPin(String pin) throws VerifyPinException, NoConsentException, RestException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            if (pin != null && pin.length > 0) {
-                Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
+            if (StringUtils.isNotEmpty(pin)) {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
@@ -99,7 +79,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
+    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
@@ -111,7 +91,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
+    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
@@ -121,7 +101,6 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
-
 
     public GclBeIdRn getRnData() throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getRnData(getTypeId(), reader.getId()), config.isConsentRequired());
@@ -135,26 +114,45 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
         return RestExecutor.returnData(httpClient.getBeIdPicture(getTypeId(), reader.getId()), config.isConsentRequired());
     }
 
-    public T1cCertificate getRootCertificate(Boolean... parse) throws RestException, NoConsentException {
+    public T1cCertificate getRootCertificate(Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getCitizenCertificate(Boolean... parse) throws RestException, NoConsentException {
+    public T1cCertificate getCitizenCertificate(Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getCitizenCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getNonRepudiationCertificate(Boolean... parse) throws RestException, NoConsentException {
+    public T1cCertificate getNonRepudiationCertificate(Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean... parse) throws RestException, NoConsentException {
+    public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getRrnCertificate(Boolean... parse) throws RestException, NoConsentException {
+    public T1cCertificate getRrnCertificate(Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRrnCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
+    public T1cCertificate getRootCertificate() throws RestException, NoConsentException {
+        return getRootCertificate(null);
+    }
+
+    public T1cCertificate getCitizenCertificate() throws RestException, NoConsentException {
+        return getCitizenCertificate(null);
+    }
+
+    public T1cCertificate getNonRepudiationCertificate() throws RestException, NoConsentException {
+        return getNonRepudiationCertificate(null);
+    }
+
+    public T1cCertificate getAuthenticationCertificate() throws RestException, NoConsentException {
+        return getAuthenticationCertificate(null);
+    }
+
+    public T1cCertificate getRrnCertificate() throws RestException, NoConsentException {
+        return getRrnCertificate(null);
+    }
 
     @Override
     public ContainerType getType() {
@@ -189,7 +187,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(String pin) throws RestException, UnsupportedOperationException, NoConsentException {
         ContainerData data = new ContainerData();
         BeIdAllData allData = getAllData(true);
         GclBeIdRn rn = allData.getRn();
@@ -209,12 +207,6 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
         data.setValidityEndDate(rn.getCardValidityDateEnd());
         data.setAuthenticationCertificateChain(orderCertificates(allData.getAuthenticationCertificate(), allData.getCitizenCertificate(), allData.getRootCertificate()));
         data.setSigningCertificateChain(orderCertificates(allData.getNonRepudiationCertificate(), allData.getCitizenCertificate(), allData.getRootCertificate()));
-        List<Map<Integer, T1cCertificate>> certChains = new ArrayList<>();
-        certChains.add(data.getAuthenticationCertificateChain());
-        certChains.add(data.getSigningCertificateChain());
-        certChains.add(orderCertificates(allData.getCitizenCertificate(), allData.getRootCertificate()));
-        certChains.add(orderCertificates(allData.getRrnCertificate(), allData.getRootCertificate()));
-        data.setCertificateChains(certChains);
         data.setAllCertificates(getCertificatesMap(allData));
         return data;
     }
