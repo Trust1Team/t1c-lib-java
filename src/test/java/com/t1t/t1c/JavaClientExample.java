@@ -656,10 +656,11 @@ public class JavaClientExample {
     }
 
     private static void luxTrustUseCases(GclReader reader) {
+        LuxTrustContainer container = client.getLuxTrustContainer(reader);
+        System.out.println("Card is activated: " + container.isActivated());
         Scanner scan = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pin = scan.nextLine();
-        LuxTrustContainer container = client.getLuxTrustContainer(reader);
 
         boolean pinVerified = container.verifyPin(pin);
 

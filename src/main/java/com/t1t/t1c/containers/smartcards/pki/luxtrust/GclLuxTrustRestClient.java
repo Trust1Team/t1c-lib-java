@@ -26,7 +26,7 @@ public interface GclLuxTrustRestClient {
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + CERTIFICATES_PATH)
     Call<T1cResponse<GclLuxTrustAllCertificates>> getLuxTrustAllCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @Query("filter") String filter) throws RestException, NoConsentException;
 
-    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/activate")
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/activated")
     Call<T1cResponse<Object>> isLuxTrustActivated(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException, NoConsentException;
 
     @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/verify-pin")
