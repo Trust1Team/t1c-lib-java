@@ -37,9 +37,11 @@ import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.collections.CollectionUtils;
 
 import java.util.*;
 
@@ -1695,6 +1697,58 @@ public final class MockResponseFactory {
                 .withPort(57043L)
                 .withUsername("janedoe"));
         return agents;
+    }
+
+    public static Object getSupportedAlgorithms(ContainerType type) {
+        List<DigestAlgorithm> rval;
+        switch (type) {
+            case AVENTRA:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case BEID:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case DNIE:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case EMV:
+                rval = Collections.emptyList();
+                break;
+            case EST:
+                rval = Collections.emptyList();
+                break;
+            case LUXID:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case LUXTRUST:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case MOBIB:
+                rval = Collections.emptyList();
+                break;
+            case OBERTHUR:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case OCRA:
+                rval = Collections.emptyList();
+                break;
+            case PIV:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case PT:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case READER_API:
+                rval = Collections.emptyList();
+                break;
+            case PKCS11:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            default:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+        }
+        return rval;
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {

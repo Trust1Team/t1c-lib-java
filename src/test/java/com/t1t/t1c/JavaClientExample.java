@@ -58,6 +58,7 @@ public class JavaClientExample {
 
         client = new T1cClient(Paths.get("/usr/local/t1c/application.conf"));
         conf = client.getConnectionFactory().getConfig();
+        System.out.println("DownloadLink: " + client.getDownloadLink());
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");

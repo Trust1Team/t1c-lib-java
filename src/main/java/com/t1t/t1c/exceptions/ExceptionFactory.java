@@ -4,6 +4,7 @@ import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
 import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -80,16 +81,6 @@ public final class ExceptionFactory {
         String errorMessage = "Communication error with Distribution Service";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new DsClientException(errorMessage, cause);
-    }
-
-    /**
-     * Client configuration exception.
-     *
-     * @param message
-     * @return
-     */
-    public static ConfigException configException(String message) {
-        return new ConfigException(message);
     }
 
     /**
@@ -212,23 +203,13 @@ public final class ExceptionFactory {
     }
 
     /**
-     * Creates an authentication exception
+     * Creates an authz exception
      *
      * @param message
      * @return
      */
-    public static AuthenticateException authenticateException(String message) {
-        return new AuthenticateException(message);
-    }
-
-    /**
-     * Creates an authentication exception
-     *
-     * @param message
-     * @return
-     */
-    public static SigningException signingException(String message) {
-        return new SigningException(message);
+    public static AuthException authenticateException(String message) {
+        return new AuthException(message);
     }
 
     /**
@@ -329,5 +310,16 @@ public final class ExceptionFactory {
      */
     public static InvalidTokenException invalidTokenException(Throwable cause) {
         throw new InvalidTokenException(cause);
+    }
+
+    /**
+     * Creates an UnsupportedDigestAlgorithmException
+     *
+     * @param selectedAlgorithm the unsupported, selected algorithm
+     * @param supported the supported algorithm(s)
+     * @return the exception
+     */
+    public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
+        return new UnsupportedDigestAlgorithmException("Container does not support \"" + selectedAlgorithm.toString() + "\", must be one of: " + supported.toString());
     }
 }

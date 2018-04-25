@@ -1,8 +1,10 @@
 package com.t1t.t1c.containers;
 
+import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.exceptions.VerifyPinException;
@@ -21,8 +23,6 @@ import java.util.*;
  * @since 2017
  * <p>
  * Virtual container.
- * <p>
- * //TODO
  */
 public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
 
@@ -34,6 +34,8 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     protected transient String pacePin;
     protected LibConfig config;
     protected ContainerType type;
+    protected List<DigestAlgorithm> signAlgos;
+    protected List<DigestAlgorithm> authenticateAlgos;
 
     /*Instantiation*/
     public GenericContainer() {
@@ -134,5 +136,20 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
 
     protected Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certs) {
         return PkiUtil.orderCertificates(certs);
+    }
+
+    protected void isSignAlgorithmSupported(DigestAlgorithm selectedAlgorithm) {
+        isSupported(selectedAlgorithm, getAvailableSignAlgorithms());
+    }
+
+    protected void isAuthenticateAlgorithmSupported(DigestAlgorithm selectedAlgorithm) {
+        isSupported(selectedAlgorithm, getAvailableAuthenticationAlgorithms());
+    }
+
+    private void isSupported(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
+        Preconditions.checkNotNull(selectedAlgorithm, "digest algorithm must not be null");
+        if (!supported.contains(selectedAlgorithm)) {
+            throw ExceptionFactory.unsupportedDigestAlgorithm(selectedAlgorithm, supported);
+        }
     }
 }

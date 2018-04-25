@@ -82,8 +82,18 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not have authentication implementation");
+    }
+
+    @Override
     public String authenticate(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have authentication implementation");
+    }
+
+    @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("Container does not have signing implementation");
     }
 
     @Override

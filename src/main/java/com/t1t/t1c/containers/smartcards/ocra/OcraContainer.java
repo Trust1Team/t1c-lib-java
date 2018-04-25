@@ -76,8 +76,18 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
     public String authenticate(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
     @Override

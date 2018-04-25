@@ -15,6 +15,7 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.PinUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -77,13 +78,23 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
     public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
+    }
+
+    @Override
     public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
-        throw ExceptionFactory.unsupportedOperationException("container has no sign capabilities");
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
     @Override

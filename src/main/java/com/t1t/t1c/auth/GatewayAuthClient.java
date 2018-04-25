@@ -29,9 +29,6 @@ public class GatewayAuthClient implements IGatewayAuthClient {
         } catch (InvalidTokenException ex) {
             token = obtainToken();
         }
-        if (JwtUtil.isTokenAlmostExpired(token)) {
-            token = refreshToken(token);
-        }
         return token;
     }
 
@@ -39,7 +36,8 @@ public class GatewayAuthClient implements IGatewayAuthClient {
         try {
             return RestExecutor.executeCall(this.client.getToken(), false).getToken();
         } catch (RestException ex) {
-            throw ExceptionFactory.authenticateException(ex.getMessage());
+            // Fail safe, return null
+            return null;
         }
     }
 
@@ -47,7 +45,7 @@ public class GatewayAuthClient implements IGatewayAuthClient {
         try {
             return RestExecutor.executeCall(client.refreshToken(new GwJwt().withToken(token)), false).getToken();
         } catch (RestException ex) {
-            throw ExceptionFactory.authenticateException(ex.getMessage());
+            return null;
         }
     }
 }

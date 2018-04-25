@@ -151,6 +151,15 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
     Boolean verifyPin() throws VerifyPinException, RestException, NoConsentException;
 
     /**
+     * Returns a list of digest algorithms supported by the container for signing
+     *
+     * @return digest algorithms
+     * @throws RestException
+     * @throws NoConsentException
+     */
+    List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException;
+
+    /**
      * Signs a hash with the card's authentication certificate
      *
      * @param data the authentication payload
@@ -169,6 +178,15 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
      * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
      */
     String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, RestException, NoConsentException;
+
+    /**
+     * Returns a list of digest algorithms supported by the container for signing
+     *
+     * @return digest algorithms
+     * @throws RestException
+     * @throws NoConsentException
+     */
+    List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException;
 
     /**
      * Signs a hash with the card's signing (non-repudiation) certificate

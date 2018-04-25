@@ -9,6 +9,7 @@ public final class ErrorCodes {
     // HTTP status codes
     //
     public static final int HTTP_STATUS_CODE_INVALID_INPUT              = 400;
+    public static final int HTTP_STATUS_CODE_UNAUTHORIZED               = 401;
     public static final int HTTP_STATUS_CODE_SYSTEM_ERROR               = 500;
 
     //
@@ -47,21 +48,12 @@ public final class ErrorCodes {
     public static final String INFO_CONTAINER_NOT_AVAILABLE_ERROR       = "containerNotAvailable";
 
     //
-    // Authentication related
+    // Authentication/Signing related
     //
 
-    public static final int ERROR_AUTHENTICATE                          = 4000;
+    public static final int ERROR_UNSUPPORTED_DIGEST_ALGO         = 4000;
 
-    public static final String INFO_AUTHENTICATE_ERROR                  = "authenticateError";
-
-    //
-    // Signing related
-    //
-
-    public static final int ERROR_SIGNING                               = 5000;
-
-    public static final String INFO_SIGNING_ERROR                       = "signingError";
-
+    public static final String INFO_UNSUPPORTED_DIGEST_ALGO       = "unsupportedAuthenticateAlgo";
     //
     // Core related
     //
@@ -93,6 +85,8 @@ public final class ErrorCodes {
     //
 
     public static final int ERROR_INVALID_TOKEN                         = 9000;
+    public static final int ERROR_AUTH                                  = 9001;
 
     public static final String INFO_INVALID_TOKEN                       = "invalidToken";
+    public static final String INFO_AUTH_ERROR                          = "authError";
 }

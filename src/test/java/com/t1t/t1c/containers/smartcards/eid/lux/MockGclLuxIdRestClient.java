@@ -1,10 +1,12 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.utils.PinUtil;
 import retrofit2.Call;
@@ -91,5 +93,15 @@ public class MockGclLuxIdRestClient extends AbstractMockRestClient<GclLuxIdRestC
     @Override
     public Call<T1cResponse<List<String>>> getRootCertificates(String containerId, String readerId, Map<String, String> headers) throws RestException {
         return delegate.returningResponse(MockResponseFactory.getLuxIdRootCertificatesResponse()).getRootCertificates(containerId, readerId, headers);
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableSignAlgos();
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableAuthenticateAlgos();
     }
 }

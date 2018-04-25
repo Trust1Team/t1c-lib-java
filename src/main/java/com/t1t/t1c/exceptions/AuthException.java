@@ -4,24 +4,24 @@ package com.t1t.t1c.exceptions;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class AuthenticateException extends AbstractRuntimeException {
+public class AuthException extends AbstractRuntimeException {
 
-    public AuthenticateException(String message) {
+    public AuthException(String message) {
         super(message);
     }
 
     @Override
     public Integer getHttpCode() {
-        return ErrorCodes.HTTP_STATUS_CODE_INVALID_INPUT;
+        return ErrorCodes.HTTP_STATUS_CODE_UNAUTHORIZED;
     }
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.ERROR_AUTHENTICATE;
+        return ErrorCodes.ERROR_AUTH;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.INFO_AUTHENTICATE_ERROR;
+        return ErrorCodes.INFO_AUTH_ERROR;
     }
 }

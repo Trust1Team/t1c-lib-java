@@ -1,12 +1,15 @@
 package com.t1t.t1c.exceptions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Guillaume Vandecasteele
- * @since 2017
+ * @since 2018
  */
-public class SigningException extends AbstractRuntimeException {
+public class UnsupportedDigestAlgorithmException extends AbstractConsumerException {
 
-    public SigningException(String message) {
+    public UnsupportedDigestAlgorithmException(String message) {
         super(message);
     }
 
@@ -17,11 +20,11 @@ public class SigningException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.ERROR_SIGNING;
+        return ErrorCodes.ERROR_UNSUPPORTED_DIGEST_ALGO;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.INFO_SIGNING_ERROR;
+        return ErrorCodes.INFO_UNSUPPORTED_DIGEST_ALGO;
     }
 }

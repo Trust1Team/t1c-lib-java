@@ -65,13 +65,23 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
     public String authenticate(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
+    }
+
+    @Override
     public String sign(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
-        throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
     @Override

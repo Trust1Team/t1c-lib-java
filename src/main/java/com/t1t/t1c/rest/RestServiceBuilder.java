@@ -186,8 +186,12 @@ public final class RestServiceBuilder {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
-        final boolean jwtPresent = gatewayAuthClient != null;
-
+        String token = null;
+        if (gatewayAuthClient != null) {
+            token = gatewayAuthClient.getToken();
+        }
+        final boolean jwtPresent = StringUtils.isNotEmpty(token);
+        final String gwToken = token;
         if (apikeyPresent || jwtPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
@@ -197,7 +201,7 @@ public final class RestServiceBuilder {
                         requestBuilder.addHeader(APIKEY_HEADER_NAME, apikey);
                     }
                     if (jwtPresent) {
-                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + gatewayAuthClient.getToken());
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + gwToken);
                     }
                     return chain.proceed(requestBuilder.build());
                 }

@@ -2,6 +2,7 @@ package com.t1t.t1c.utils;
 
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.InvalidTokenException;
+import org.apache.commons.lang3.StringUtils;
 import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -32,6 +33,9 @@ public final class JwtUtil {
      */
     public static boolean isTokenAlmostExpired(String token) throws InvalidTokenException {
         try {
+            if (StringUtils.isEmpty(token)) {
+                return false;
+            }
             JwtConsumer consumer = new JwtConsumerBuilder().setSkipSignatureVerification().setSkipDefaultAudienceValidation().setAllowedClockSkewInSeconds(10).setRequireExpirationTime().build();
             JwtContext context = consumer.process(token);
             log.debug("Token is not expired, claims: {}", context.getJwtClaims());
