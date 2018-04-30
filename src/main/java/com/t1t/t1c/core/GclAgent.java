@@ -26,7 +26,7 @@ public class GclAgent {
     private Map<String, String> metadata;
     @SerializedName("port")
     @Expose
-    private Integer port;
+    private Long port;
     @SerializedName("username")
     @Expose
     private String username;
@@ -110,18 +110,18 @@ public class GclAgent {
     /**
      * @return The port
      */
-    public Integer getPort() {
+    public Long getPort() {
         return port;
     }
 
     /**
      * @param port The port
      */
-    public void setPort(Integer port) {
+    public void setPort(Long port) {
         this.port = port;
     }
 
-    public GclAgent withPort(Integer port) {
+    public GclAgent withPort(Long port) {
         this.port = port;
         return this;
     }

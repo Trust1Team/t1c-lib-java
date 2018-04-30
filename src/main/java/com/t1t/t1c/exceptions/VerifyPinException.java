@@ -28,11 +28,11 @@ public class VerifyPinException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.VERIFY_PIN_ERROR;
+        return ErrorCodes.ERROR_VERIFY_PIN;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.VERIFY_PIN_ERROR_INFO;
+        return ErrorCodes.INFO_VERIFY_PIN_ERROR;
     }
 }

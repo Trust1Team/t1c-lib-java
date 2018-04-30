@@ -13,7 +13,7 @@ public class GclLuxIdPicture {
 
     @SerializedName("height")
     @Expose
-    private Integer height;
+    private Long height;
     @SerializedName("image")
     @Expose
     private String image;
@@ -22,23 +22,23 @@ public class GclLuxIdPicture {
     private String rawData;
     @SerializedName("width")
     @Expose
-    private Integer width;
+    private Long width;
 
     /**
      * @return The height
      */
-    public Integer getHeight() {
+    public Long getHeight() {
         return height;
     }
 
     /**
      * @param height The height
      */
-    public void setHeight(Integer height) {
+    public void setHeight(Long height) {
         this.height = height;
     }
 
-    public GclLuxIdPicture withHeight(Integer height) {
+    public GclLuxIdPicture withHeight(Long height) {
         this.height = height;
         return this;
     }
@@ -84,18 +84,18 @@ public class GclLuxIdPicture {
     /**
      * @return The width
      */
-    public Integer getWidth() {
+    public Long getWidth() {
         return width;
     }
 
     /**
      * @param width The width
      */
-    public void setWidth(Integer width) {
+    public void setWidth(Long width) {
         this.width = width;
     }
 
-    public GclLuxIdPicture withWidth(Integer width) {
+    public GclLuxIdPicture withWidth(Long width) {
         this.width = width;
         return this;
     }

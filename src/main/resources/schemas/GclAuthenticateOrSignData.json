@@ -4,14 +4,24 @@
   "javaType": "com.t1t.t1c.core.GclAuthenticateOrSignData",
   "$id": "GclAuthenticateOrSignData",
   "properties": {
-    "algorithm_reference": {
+    "pin": {
       "type": "string"
     },
     "data": {
       "type": "string"
     },
-    "pin": {
+    "algorithm_reference": {
       "type": "string"
+    },
+    "pinpad": {
+      "type": "boolean"
+    },
+    "os_dialog": {
+      "type": "boolean"
+    },
+    "private_key_reference": {
+      "type": "object",
+      "$ref": "GclPrivateKeyReference.json"
     }
   }
 }

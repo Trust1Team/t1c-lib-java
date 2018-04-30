@@ -14,8 +14,15 @@ public class GclVerifyPinRequest {
     @SerializedName("pin")
     @Expose
     private String pin;
+    @SerializedName("pinpad")
+    @Expose
+    private Boolean pinpad;
+    @SerializedName("os_dialog")
+    @Expose
+    private Boolean osDialog;
     @SerializedName("private_key_reference")
-    private String privateKeyReference;
+    @Expose
+    private GclPrivateKeyReference privateKeyReference;
 
     /**
      * @return The pin
@@ -36,15 +43,59 @@ public class GclVerifyPinRequest {
         return this;
     }
 
-    public String getPrivateKeyReference() {
+    /**
+     * @return The pinpad
+     */
+    public Boolean getPinpad() {
+        return pinpad;
+    }
+
+    /**
+     * @param pinpad The pinpad
+     */
+    public void setPinpad(Boolean pinpad) {
+        this.pinpad = pinpad;
+    }
+
+    public GclVerifyPinRequest withPinpad(Boolean pinpad) {
+        this.pinpad = pinpad;
+        return this;
+    }
+
+    /**
+     * @return The osDialog
+     */
+    public Boolean getOsDialog() {
+        return osDialog;
+    }
+
+    /**
+     * @param osDialog The os_dialog
+     */
+    public void setOsDialog(Boolean osDialog) {
+        this.osDialog = osDialog;
+    }
+
+    public GclVerifyPinRequest withOsDialog(Boolean osDialog) {
+        this.osDialog = osDialog;
+        return this;
+    }
+
+    /**
+     * @return The privateKeyReference
+     */
+    public GclPrivateKeyReference getPrivateKeyReference() {
         return privateKeyReference;
     }
 
-    public void setPrivateKeyReference(String privateKeyReference) {
+    /**
+     * @param privateKeyReference The private_key_reference
+     */
+    public void setPrivateKeyReference(GclPrivateKeyReference privateKeyReference) {
         this.privateKeyReference = privateKeyReference;
     }
 
-    public GclVerifyPinRequest withPrivateKeyReference(String privateKeyReference) {
+    public GclVerifyPinRequest withPrivateKeyReference(GclPrivateKeyReference privateKeyReference) {
         this.privateKeyReference = privateKeyReference;
         return this;
     }
@@ -56,7 +107,7 @@ public class GclVerifyPinRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(pin).toHashCode();
+        return new HashCodeBuilder().append(pin).append(pinpad).append(osDialog).append(privateKeyReference).toHashCode();
     }
 
     @Override
@@ -64,11 +115,11 @@ public class GclVerifyPinRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclVerifyPinRequest)) {
+        if ((other instanceof GclVerifyPinRequest) == false) {
             return false;
         }
         GclVerifyPinRequest rhs = ((GclVerifyPinRequest) other);
-        return new EqualsBuilder().append(pin, rhs.pin).isEquals();
+        return new EqualsBuilder().append(pin, rhs.pin).append(pinpad, rhs.pinpad).append(osDialog, rhs.osDialog).append(privateKeyReference, rhs.privateKeyReference).isEquals();
     }
 
 }

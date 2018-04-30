@@ -30,11 +30,11 @@ public class GclClientException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.GCL_REST_ERROR;
+        return ErrorCodes.ERROR_GCL_REST;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.REST_ERROR_INFO;
+        return ErrorCodes.INFO_REST_ERROR;
     }
 }

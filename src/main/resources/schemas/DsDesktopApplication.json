@@ -5,7 +5,11 @@
   "$id": "DsDesktopApplication",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "JAVA",
+        "DOTNET"
+      ]
     },
     "version": {
       "type": "string"

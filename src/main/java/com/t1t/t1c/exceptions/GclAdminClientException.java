@@ -26,11 +26,11 @@ public class GclAdminClientException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.GCL_ADMIN_REST_ERROR;
+        return ErrorCodes.ERROR_GCL_ADMIN_REST;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.REST_ERROR_INFO;
+        return ErrorCodes.INFO_REST_ERROR;
     }
 }

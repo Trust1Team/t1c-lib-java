@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.model.AllCertificates;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 /**
  * @author Guillaume Vandecasteele
@@ -16,12 +16,12 @@ public class BeIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean... parseCertificate) {
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
-        this.citizenCertificate = CertificateUtil.createT1cCertificate(certs.getCitizenCertificate(), parseCertificate);
-        this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(certs.getNonRepudiationCertificate(), parseCertificate);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificate);
-        this.rrnCertificate = CertificateUtil.createT1cCertificate(certs.getRrnCertificate(), parseCertificate);
+    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean parseCertificate) {
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
+        this.citizenCertificate = PkiUtil.createT1cCertificate(certs.getCitizenCertificate(), parseCertificate);
+        this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certs.getNonRepudiationCertificate(), parseCertificate);
+        this.rootCertificate = PkiUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificate);
+        this.rrnCertificate = PkiUtil.createT1cCertificate(certs.getRrnCertificate(), parseCertificate);
     }
 
     /**

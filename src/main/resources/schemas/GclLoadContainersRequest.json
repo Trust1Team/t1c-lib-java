@@ -1,0 +1,15 @@
+{
+  "$id": "GclLoadContainersRequest",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclLoadContainersRequest",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "containerResponses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "DsContainerResponse.json"
+      }
+    }
+  }
+}

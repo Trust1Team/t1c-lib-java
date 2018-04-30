@@ -8,6 +8,7 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import okhttp3.MediaType;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Call;
@@ -20,14 +21,29 @@ import java.io.IOException;
  * @since 2017
  */
 public class RestExecutor {
+
     private static final Logger log = LoggerFactory.getLogger(RestExecutor.class);
 
-    public static final synchronized <T> T executeCall(Call<T> call, boolean consentRequired) throws RestException, NoConsentException {
+    private static final String ACCESS_TOKEN_HEADER_NAME = "access_token";
+
+    public static final synchronized <T> T executeCall(Call<T> call) throws RestException, NoConsentException {
+        return executeCall(call, true);
+    }
+
+    public static final synchronized <T> Pair<T, String> executeCallAndReturnAccessTokenHeader(Call<T> call, boolean consentRequired) {
+        return executeCall(call, true, consentRequired);
+    }
+
+    public static final synchronized <T> Pair<T, String> executeCall(Call<T> call, boolean extractTokenFromHeader, boolean consentRequired) {
         try {
             Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
                 log.debug("Response data: {}", new Gson().toJson(response.body()));
-                return response.body();
+                if (extractTokenFromHeader) {
+                    return Pair.of(response.body(), response.headers().get(ACCESS_TOKEN_HEADER_NAME));
+                } else {
+                    return Pair.of(response.body(), "");
+                }
             } else {
                 Integer httpCode = null;
                 String url = null;
@@ -39,13 +55,13 @@ public class RestExecutor {
                         jsonError = response.errorBody().source().readUtf8();
                     } else {
                         if (StringUtils.isNotBlank(response.errorBody().string())) {
-                            log.error("Something went wrong: {}", response.errorBody().string());
+                            log.debug("Something went wrong: {}", response.errorBody().string());
                             message.append(response.errorBody().string());
                         }
                     }
                 }
                 if (response.raw() != null) {
-                    log.error("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
+                    log.debug("Something went wrong, code: {}, message: {}", response.raw().code(), response.raw().message());
                     httpCode = response.raw().code();
                     if (StringUtils.isNotBlank(message.toString())) {
                         message.append(" - ");
@@ -67,6 +83,10 @@ public class RestExecutor {
             log.error("Failed to deserialize response: ", ex.getMessage());
             throw ExceptionFactory.jsonConversionException(ex.getMessage());
         }
+    }
+
+    public static final synchronized <T> T executeCall(Call<T> call, boolean consentRequired) throws RestException, NoConsentException {
+        return executeCall(call, false, consentRequired).getLeft();
     }
 
     public static synchronized <T> T returnData(Call<T1cResponse<T>> call, boolean consentRequired) throws RestException, NoConsentException {

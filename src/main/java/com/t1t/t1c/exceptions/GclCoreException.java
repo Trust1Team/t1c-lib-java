@@ -30,11 +30,11 @@ public class GclCoreException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.CORE_ERROR;
+        return ErrorCodes.ERROR_CORE;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.CORE_ERROR_INFO;
+        return ErrorCodes.INFO_CORE_ERROR;
     }
 }

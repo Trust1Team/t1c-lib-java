@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class GclInfo {
@@ -23,6 +25,9 @@ public class GclInfo {
     @SerializedName("consent")
     @Expose
     private Boolean consent;
+    @SerializedName("containers")
+    @Expose
+    private List<GclContainerInfo> containers = new ArrayList<GclContainerInfo>();
     @SerializedName("log_level")
     @Expose
     private String logLevel;
@@ -32,6 +37,12 @@ public class GclInfo {
     @SerializedName("os")
     @Expose
     private String os;
+    @SerializedName("osid")
+    @Expose
+    private String osid;
+    @SerializedName("osversion")
+    @Expose
+    private String osversion;
     @SerializedName("uid")
     @Expose
     private String uid;
@@ -116,6 +127,25 @@ public class GclInfo {
     }
 
     /**
+     * @return The containers
+     */
+    public List<GclContainerInfo> getContainers() {
+        return containers;
+    }
+
+    /**
+     * @param containers The containers
+     */
+    public void setContainers(List<GclContainerInfo> containers) {
+        this.containers = containers;
+    }
+
+    public GclInfo withContainers(List<GclContainerInfo> containers) {
+        this.containers = containers;
+        return this;
+    }
+
+    /**
      * @return The logLevel
      */
     public String getLogLevel() {
@@ -173,6 +203,44 @@ public class GclInfo {
     }
 
     /**
+     * @return The osid
+     */
+    public String getOsid() {
+        return osid;
+    }
+
+    /**
+     * @param osid The osid
+     */
+    public void setOsid(String osid) {
+        this.osid = osid;
+    }
+
+    public GclInfo withOsid(String osid) {
+        this.osid = osid;
+        return this;
+    }
+
+    /**
+     * @return The osversion
+     */
+    public String getOsversion() {
+        return osversion;
+    }
+
+    /**
+     * @param osversion The osversion
+     */
+    public void setOsversion(String osversion) {
+        this.osversion = osversion;
+    }
+
+    public GclInfo withOsversion(String osversion) {
+        this.osversion = osversion;
+        return this;
+    }
+
+    /**
      * @return The uid
      */
     public String getUid() {
@@ -217,7 +285,7 @@ public class GclInfo {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(activated).append(arch).append(citrix).append(consent).append(logLevel).append(managed).append(os).append(uid).append(version).toHashCode();
+        return new HashCodeBuilder().append(activated).append(arch).append(citrix).append(consent).append(containers).append(logLevel).append(managed).append(os).append(osid).append(osversion).append(uid).append(version).toHashCode();
     }
 
     @Override
@@ -229,7 +297,7 @@ public class GclInfo {
             return false;
         }
         GclInfo rhs = ((GclInfo) other);
-        return new EqualsBuilder().append(activated, rhs.activated).append(arch, rhs.arch).append(citrix, rhs.citrix).append(consent, rhs.consent).append(logLevel, rhs.logLevel).append(managed, rhs.managed).append(os, rhs.os).append(uid, rhs.uid).append(version, rhs.version).isEquals();
+        return new EqualsBuilder().append(activated, rhs.activated).append(arch, rhs.arch).append(citrix, rhs.citrix).append(consent, rhs.consent).append(containers, rhs.containers).append(logLevel, rhs.logLevel).append(managed, rhs.managed).append(os, rhs.os).append(osid, rhs.osid).append(osversion, rhs.osversion).append(uid, rhs.uid).append(version, rhs.version).isEquals();
     }
 
 }

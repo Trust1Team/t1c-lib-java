@@ -26,11 +26,11 @@ public class DsClientException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.DS_REST_ERROR;
+        return ErrorCodes.ERROR_DS_REST_ERROR;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.REST_ERROR_INFO;
+        return ErrorCodes.INFO_REST_ERROR;
     }
 }

@@ -5,8 +5,8 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
@@ -30,15 +30,15 @@ import java.util.Map;
 public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClient, GclEmvAllData, AllCertificates> {
 
     public EmvContainer(LibConfig config, GclReader reader, GclEmvRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, String pin) {
+    public EmvContainer createInstance(LibConfig config, GclReader reader, GclEmvRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pace = pace;
         this.type = ContainerType.EMV;
         return this;
     }
@@ -54,42 +54,21 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public GclEmvAllData getAllData() throws RestException, NoConsentException {
-        return getAllData(null, null);
-    }
-
-    @Override
-    public GclEmvAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public GclEmvAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getEmvAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public GclEmvAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllData(null, null);
-    }
-
-    @Override
-    public AllCertificates getAllCertificates() throws RestException, NoConsentException {
-        return getAllCertificates(null, null);
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllCertificates(null, null);
-    }
-
-    @Override
-    public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
-        PinUtil.pinEnforcementCheck(reader, config.isHardwarePinPadForced(), pin);
+    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            if (pin != null && pin.length > 0) {
-                Preconditions.checkArgument(pin.length == 1, "Only one PIN allowed as argument");
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), new GclVerifyPinRequest().withPin(pin[0])), config.isConsentRequired()));
+            if (StringUtils.isNotEmpty(pin)) {
+                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
             } else {
                 return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
             }
@@ -99,13 +78,23 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws VerifyPinException, NoConsentException, RestException {
-        throw ExceptionFactory.unsupportedOperationException("container has no sign capabilities");
+    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
+    }
+
+    @Override
+    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
     @Override
@@ -157,7 +146,7 @@ public class EmvContainer extends GenericContainer<EmvContainer, GclEmvRestClien
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         GclEmvAllData allData = getAllData(true);
 

@@ -13,7 +13,7 @@ public class GclAventraAppletInfo {
 
     @SerializedName("change_counter")
     @Expose
-    private Integer changeCounter;
+    private Long changeCounter;
     @SerializedName("name")
     @Expose
     private String name;
@@ -27,18 +27,18 @@ public class GclAventraAppletInfo {
     /**
      * @return The changeCounter
      */
-    public Integer getChangeCounter() {
+    public Long getChangeCounter() {
         return changeCounter;
     }
 
     /**
      * @param changeCounter The change_counter
      */
-    public void setChangeCounter(Integer changeCounter) {
+    public void setChangeCounter(Long changeCounter) {
         this.changeCounter = changeCounter;
     }
 
-    public GclAventraAppletInfo withChangeCounter(Integer changeCounter) {
+    public GclAventraAppletInfo withChangeCounter(Long changeCounter) {
         this.changeCounter = changeCounter;
         return this;
     }

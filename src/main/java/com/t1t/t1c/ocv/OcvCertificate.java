@@ -16,7 +16,7 @@ public class OcvCertificate {
     private String certificate;
     @SerializedName("order")
     @Expose
-    private Integer order;
+    private Long order;
 
     /**
      * @return The certificate
@@ -40,18 +40,18 @@ public class OcvCertificate {
     /**
      * @return The order
      */
-    public Integer getOrder() {
+    public Long getOrder() {
         return order;
     }
 
     /**
      * @param order The order
      */
-    public void setOrder(Integer order) {
+    public void setOrder(Long order) {
         this.order = order;
     }
 
-    public OcvCertificate withOrder(Integer order) {
+    public OcvCertificate withOrder(Long order) {
         this.order = order;
         return this;
     }

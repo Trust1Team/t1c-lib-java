@@ -52,11 +52,11 @@ public class RestException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.REST_ERROR;
+        return ErrorCodes.ERROR_REST;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.REST_ERROR_INFO;
+        return ErrorCodes.INFO_REST_ERROR;
     }
 }

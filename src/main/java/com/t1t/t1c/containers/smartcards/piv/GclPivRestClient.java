@@ -4,6 +4,7 @@ import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -55,5 +56,11 @@ public interface GclPivRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
     Call<T1cResponse<List<String>>> getSignAlgoRefs(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException, NoConsentException;
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos();
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos();
 
 }

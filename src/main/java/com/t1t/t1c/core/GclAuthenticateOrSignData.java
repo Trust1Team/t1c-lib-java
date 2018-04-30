@@ -11,32 +11,41 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class GclAuthenticateOrSignData {
 
-    @SerializedName("algorithm_reference")
-    @Expose
-    private String algorithmReference;
-    @SerializedName("data")
-    @Expose
-    private String data;
     @SerializedName("pin")
     @Expose
     private String pin;
+    @SerializedName("data")
+    @Expose
+    private String data;
+    @SerializedName("algorithm_reference")
+    @Expose
+    private String algorithmReference;
+    @SerializedName("pinpad")
+    @Expose
+    private Boolean pinpad;
+    @SerializedName("os_dialog")
+    @Expose
+    private Boolean osDialog;
+    @SerializedName("private_key_reference")
+    @Expose
+    private GclPrivateKeyReference privateKeyReference;
 
     /**
-     * @return The algorithmReference
+     * @return The pin
      */
-    public String getAlgorithmReference() {
-        return algorithmReference;
+    public String getPin() {
+        return pin;
     }
 
     /**
-     * @param algorithmReference The algorithm_reference
+     * @param pin The pin
      */
-    public void setAlgorithmReference(String algorithmReference) {
-        this.algorithmReference = algorithmReference;
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
-    public GclAuthenticateOrSignData withAlgorithmReference(String algorithmReference) {
-        this.algorithmReference = algorithmReference;
+    public GclAuthenticateOrSignData withPin(String pin) {
+        this.pin = pin;
         return this;
     }
 
@@ -60,21 +69,78 @@ public class GclAuthenticateOrSignData {
     }
 
     /**
-     * @return The pin
+     * @return The algorithmReference
      */
-    public String getPin() {
-        return pin;
+    public String getAlgorithmReference() {
+        return algorithmReference;
     }
 
     /**
-     * @param pin The pin
+     * @param algorithmReference The algorithm_reference
      */
-    public void setPin(String pin) {
-        this.pin = pin;
+    public void setAlgorithmReference(String algorithmReference) {
+        this.algorithmReference = algorithmReference;
     }
 
-    public GclAuthenticateOrSignData withPin(String pin) {
-        this.pin = pin;
+    public GclAuthenticateOrSignData withAlgorithmReference(String algorithmReference) {
+        this.algorithmReference = algorithmReference;
+        return this;
+    }
+
+    /**
+     * @return The pinpad
+     */
+    public Boolean getPinpad() {
+        return pinpad;
+    }
+
+    /**
+     * @param pinpad The pinpad
+     */
+    public void setPinpad(Boolean pinpad) {
+        this.pinpad = pinpad;
+    }
+
+    public GclAuthenticateOrSignData withPinpad(Boolean pinpad) {
+        this.pinpad = pinpad;
+        return this;
+    }
+
+    /**
+     * @return The osDialog
+     */
+    public Boolean getOsDialog() {
+        return osDialog;
+    }
+
+    /**
+     * @param osDialog The os_dialog
+     */
+    public void setOsDialog(Boolean osDialog) {
+        this.osDialog = osDialog;
+    }
+
+    public GclAuthenticateOrSignData withOsDialog(Boolean osDialog) {
+        this.osDialog = osDialog;
+        return this;
+    }
+
+    /**
+     * @return The privateKeyReference
+     */
+    public GclPrivateKeyReference getPrivateKeyReference() {
+        return privateKeyReference;
+    }
+
+    /**
+     * @param privateKeyReference The private_key_reference
+     */
+    public void setPrivateKeyReference(GclPrivateKeyReference privateKeyReference) {
+        this.privateKeyReference = privateKeyReference;
+    }
+
+    public GclAuthenticateOrSignData withPrivateKeyReference(GclPrivateKeyReference privateKeyReference) {
+        this.privateKeyReference = privateKeyReference;
         return this;
     }
 
@@ -85,7 +151,7 @@ public class GclAuthenticateOrSignData {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(algorithmReference).append(data).append(pin).toHashCode();
+        return new HashCodeBuilder().append(pin).append(data).append(algorithmReference).append(pinpad).append(osDialog).append(privateKeyReference).toHashCode();
     }
 
     @Override
@@ -93,11 +159,11 @@ public class GclAuthenticateOrSignData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclAuthenticateOrSignData)) {
+        if ((other instanceof GclAuthenticateOrSignData) == false) {
             return false;
         }
         GclAuthenticateOrSignData rhs = ((GclAuthenticateOrSignData) other);
-        return new EqualsBuilder().append(algorithmReference, rhs.algorithmReference).append(data, rhs.data).append(pin, rhs.pin).isEquals();
+        return new EqualsBuilder().append(pin, rhs.pin).append(data, rhs.data).append(algorithmReference, rhs.algorithmReference).append(pinpad, rhs.pinpad).append(osDialog, rhs.osDialog).append(privateKeyReference, rhs.privateKeyReference).isEquals();
     }
 
 }

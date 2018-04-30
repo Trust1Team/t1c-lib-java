@@ -241,16 +241,16 @@ public class MobibContainerTest extends AbstractTestClass {
         assertEquals("6", obj.getCardHolderStartDate());
         obj.setCardRevalidationDate("7");
         assertEquals("7", obj.getCardRevalidationDate());
-        obj.setCardType(1);
-        assertEquals(Integer.valueOf(1), obj.getCardType());
-        obj.setCompanyId(2);
-        assertEquals(Integer.valueOf(2), obj.getCompanyId());
-        obj.setGender(3);
-        assertEquals(Integer.valueOf(3), obj.getGender());
-        obj.setLanguage(4);
-        assertEquals(Integer.valueOf(4), obj.getLanguage());
-        obj.setVersion(5);
-        assertEquals(Integer.valueOf(5), obj.getVersion());
+        obj.setCardType(1L);
+        assertEquals(Long.valueOf(1), obj.getCardType());
+        obj.setCompanyId(2L);
+        assertEquals(Long.valueOf(2), obj.getCompanyId());
+        obj.setGender(3L);
+        assertEquals(Long.valueOf(3), obj.getGender());
+        obj.setLanguage(4L);
+        assertEquals(Long.valueOf(4), obj.getLanguage());
+        obj.setVersion(5L);
+        assertEquals(Long.valueOf(5), obj.getVersion());
     }
 
     @Test
@@ -263,40 +263,40 @@ public class MobibContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setAuthenticatorKvc(1);
-        assertEquals(Integer.valueOf(1), obj.getAuthenticatorKvc());
+        obj.setAuthenticatorKvc(1L);
+        assertEquals(Long.valueOf(1), obj.getAuthenticatorKvc());
 
-        obj.setAuthenticatorValue(2);
-        assertEquals(Integer.valueOf(2), obj.getAuthenticatorValue());
+        obj.setAuthenticatorValue(2L);
+        assertEquals(Long.valueOf(2), obj.getAuthenticatorValue());
 
         obj.setJourneyInterchangesAllowed(false);
 
-        obj.setOperatorMap(3);
-        assertEquals(Integer.valueOf(3), obj.getOperatorMap());
+        obj.setOperatorMap(3L);
+        assertEquals(Long.valueOf(3), obj.getOperatorMap());
 
-        obj.setPassengersMax(4);
-        assertEquals(Integer.valueOf(4), obj.getPassengersMax());
+        obj.setPassengersMax(4L);
+        assertEquals(Long.valueOf(4), obj.getPassengersMax());
 
-        obj.setPriceAmount(5);
-        assertEquals(Integer.valueOf(5), obj.getPriceAmount());
+        obj.setPriceAmount(5L);
+        assertEquals(Long.valueOf(5), obj.getPriceAmount());
 
-        obj.setProvider(6);
-        assertEquals(Integer.valueOf(6), obj.getProvider());
+        obj.setProvider(6L);
+        assertEquals(Long.valueOf(6), obj.getProvider());
 
-        obj.setRestrictCode(7);
-        assertEquals(Integer.valueOf(7), obj.getRestrictCode());
+        obj.setRestrictCode(7L);
+        assertEquals(Long.valueOf(7), obj.getRestrictCode());
 
-        obj.setRestrictTime(8);
-        assertEquals(Integer.valueOf(8), obj.getRestrictTime());
+        obj.setRestrictTime(8L);
+        assertEquals(Long.valueOf(8), obj.getRestrictTime());
 
         obj.setSaleDate("s");
         assertEquals("s", obj.getSaleDate());
 
-        obj.setSaleSamCount(9);
-        assertEquals(Integer.valueOf(9), obj.getSaleSamCount());
+        obj.setSaleSamCount(9L);
+        assertEquals(Long.valueOf(9), obj.getSaleSamCount());
 
-        obj.setSaleSamId(10);
-        assertEquals(Integer.valueOf(10), obj.getSaleSamId());
+        obj.setSaleSamId(10L);
+        assertEquals(Long.valueOf(10), obj.getSaleSamId());
 
         List<GclMobibSpatial> s = Collections.singletonList(new GclMobibSpatial().withRouteDestination(true));
         obj.setSpatials(s);
@@ -306,8 +306,8 @@ public class MobibContainerTest extends AbstractTestClass {
         obj.setTariff(t);
         assertEquals(t, obj.getTariff());
 
-        obj.setTypeId(11);
-        assertEquals(Integer.valueOf(11), obj.getTypeId());
+        obj.setTypeId(11L);
+        assertEquals(Long.valueOf(11), obj.getTypeId());
 
         GclMobibValidityDuration d = new GclMobibValidityDuration();
         obj.setValidityDuration(d);
@@ -316,11 +316,11 @@ public class MobibContainerTest extends AbstractTestClass {
         obj.setValidityStartDate("v");
         assertEquals("v", obj.getValidityStartDate());
 
-        obj.setVehicleClassAllowed(12);
-        assertEquals(Integer.valueOf(12), obj.getVehicleClassAllowed());
+        obj.setVehicleClassAllowed(12L);
+        assertEquals(Long.valueOf(12), obj.getVehicleClassAllowed());
 
-        obj.setVersion(13);
-        assertEquals(Integer.valueOf(13), obj.getVersion());
+        obj.setVersion(13L);
+        assertEquals(Long.valueOf(13), obj.getVersion());
     }
 
     @Test
@@ -333,11 +333,11 @@ public class MobibContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setJourneys(1);
-        assertEquals(Integer.valueOf(1), obj.getJourneys());
+        obj.setJourneys(1L);
+        assertEquals(Long.valueOf(1), obj.getJourneys());
 
-        obj.setType(2);
-        assertEquals(Integer.valueOf(2), obj.getType());
+        obj.setType(2L);
+        assertEquals(Long.valueOf(2), obj.getType());
 
         obj.setTime("s");
         assertEquals("s", obj.getTime());
@@ -356,11 +356,11 @@ public class MobibContainerTest extends AbstractTestClass {
         obj.setRouteDestination(false);
         assertFalse(obj.getRouteDestination());
 
-        obj.setRouteOrigin(1);
-        assertEquals(Integer.valueOf(1), obj.getRouteOrigin());
+        obj.setRouteOrigin(1L);
+        assertEquals(Long.valueOf(1), obj.getRouteOrigin());
 
-        obj.setType(2);
-        assertEquals(Integer.valueOf(2), obj.getType());
+        obj.setType(2L);
+        assertEquals(Long.valueOf(2), obj.getType());
     }
 
     @Test
@@ -380,8 +380,8 @@ public class MobibContainerTest extends AbstractTestClass {
         obj.setMultimodal(false);
         assertFalse(obj.getMultimodal());
 
-        obj.setNameref(1);
-        assertEquals(Integer.valueOf(1), obj.getNameref());
+        obj.setNameref(1L);
+        assertEquals(Long.valueOf(1), obj.getNameref());
     }
 
     @Test
@@ -394,11 +394,11 @@ public class MobibContainerTest extends AbstractTestClass {
         assertNotEquals(obj, "string");
         assertTrue(StringUtils.isNotEmpty(obj.toString()));
 
-        obj.setUnit(1);
-        assertEquals(Integer.valueOf(1), obj.getUnit());
+        obj.setUnit(1L);
+        assertEquals(Long.valueOf(1), obj.getUnit());
 
-        obj.setValue(2);
-        assertEquals(Integer.valueOf(2), obj.getValue());
+        obj.setValue(2L);
+        assertEquals(Long.valueOf(2), obj.getValue());
     }
 
     @Test(expected = UnsupportedOperationException.class)

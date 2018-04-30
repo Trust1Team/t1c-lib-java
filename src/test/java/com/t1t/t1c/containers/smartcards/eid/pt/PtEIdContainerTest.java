@@ -542,8 +542,33 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
 
     @Test
-    public void testGenericDataDump() {
+    public void testGenericDataDumpNoPin() {
         ContainerData data = container.dumpData();
+        assertNotNull(data);
+        assertNotNull(data.getGivenName());
+        assertNotNull(data.getSurName());
+        assertNotNull(data.getFullName());
+        assertNotNull(data.getDateOfBirth());
+        assertNotNull(data.getGender());
+
+        assertNull(data.getStreetAndNumber());
+        assertNull(data.getMunicipality());
+        assertNull(data.getZipCode());
+
+        assertNotNull(data.getNationality());
+        assertNotNull(data.getBase64Picture());
+        assertNotNull(data.getValidityStartDate());
+        assertNotNull(data.getValidityEndDate());
+        assertNotNull(data.getDocumentId());
+
+        assertNotNull(data.getAuthenticationCertificateChain());
+        assertNotNull(data.getSigningCertificateChain());
+        assertNotNull(data.getAllCertificates());
+    }
+
+    @Test
+    public void testGenericDataDump() {
+        ContainerData data = container.dumpData("1111");
         assertNotNull(data);
         assertNotNull(data.getGivenName());
         assertNotNull(data.getSurName());
@@ -563,7 +588,6 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
-        assertNotNull(data.getCertificateChains());
         assertNotNull(data.getAllCertificates());
     }
 }

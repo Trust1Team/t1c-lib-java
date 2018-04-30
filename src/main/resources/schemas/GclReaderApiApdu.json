@@ -1,0 +1,27 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclReaderApiApdu",
+  "javaType": "com.t1t.t1c.containers.readerapi.GclReaderApiApdu",
+  "type": "object",
+  "properties": {
+    "cla": {
+      "type": "string"
+    },
+    "ins": {
+      "type": "string"
+    },
+    "p1": {
+      "type": "string"
+    },
+    "p2": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string"
+    },
+    "le": {
+      "type": "string"
+    }
+  }
+}

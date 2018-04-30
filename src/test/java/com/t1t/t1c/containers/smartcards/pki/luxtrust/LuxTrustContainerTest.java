@@ -145,11 +145,6 @@ public class LuxTrustContainerTest extends AbstractTestClass {
         container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void authenticateInvalidDigestAlgorithm() {
-        container.authenticate("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.MD5, "1111");
-    }
-
     @Test
     public void sign() {
         String signedHash = container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1111");
@@ -159,11 +154,6 @@ public class LuxTrustContainerTest extends AbstractTestClass {
     @Test(expected = VerifyPinException.class)
     public void signPinIncorrect() {
         container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.SHA256, "1112");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void signInvalidDigestAlgorithm() {
-        container.sign("ehlWXR2mz8/m04On93dZ5w==", DigestAlgorithm.MD5, "1111");
     }
 
     @Test
@@ -328,7 +318,6 @@ public class LuxTrustContainerTest extends AbstractTestClass {
 
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
-        assertNotNull(data.getCertificateChains());
         assertNotNull(data.getAllCertificates());
     }
 }

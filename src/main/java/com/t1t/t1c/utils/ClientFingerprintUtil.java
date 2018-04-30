@@ -69,7 +69,7 @@ public final class ClientFingerprintUtil {
         return rval;
     }
 
-    private static String createFingerprint() {
+    public static String createFingerprint() {
         String cuid = Cuid.createCuid();
         String calc = cuid.substring(1, 9).toUpperCase();
         Long decoded = Long.parseLong(calc, 36);

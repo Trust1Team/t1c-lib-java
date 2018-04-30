@@ -1,7 +1,8 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingRestClient;
+import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.readerapi.GclReaderApiRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;
@@ -10,16 +11,19 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvRestClient;
 import com.t1t.t1c.containers.smartcards.mobib.GclMobibRestClient;
 import com.t1t.t1c.containers.smartcards.ocra.GclOcraRestClient;
 import com.t1t.t1c.containers.smartcards.piv.GclPivRestClient;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetRestClient;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11RestClient;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraRestClient;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustRestClient;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurRestClient;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclCitrixRestClient;
+import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclRestClient;
 import com.t1t.t1c.ds.DsRestClient;
 import com.t1t.t1c.ocv.OcvRestClient;
 import com.t1t.t1c.rest.RestServiceBuilder;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
@@ -47,10 +51,10 @@ public final class ConnectionFactory {
     private GclMobibRestClient gclMobibRestClient;
     private GclOcraRestClient gclOcraRestClient;
     private GclPivRestClient gclPivRestClient;
-    private GclSafeNetRestClient gclSafenetRestClient;
+    private GclPkcs11RestClient gclSafenetRestClient;
     private GclAventraRestClient gclAventraRestClient;
     private GclOberthurRestClient gclOberthurRestClient;
-    private GclRemoteLoadingRestClient gclRemoteLoadingRestClient;
+    private GclReaderApiRestClient gclReaderApiRestClient;
 
     public ConnectionFactory(LibConfig config) {
         this.config = config;
@@ -59,6 +63,7 @@ public final class ConnectionFactory {
 
     private void resetConnections() {
         //global connections
+
         this.dsRestClient = RestServiceBuilder.getDsRestClient(config);
         this.gclRestClient = RestServiceBuilder.getGclRestClient(config);
         this.gclCitrixRestClient = RestServiceBuilder.getGclCitrixRestClient(config);
@@ -74,10 +79,10 @@ public final class ConnectionFactory {
         this.gclMobibRestClient = RestServiceBuilder.getContainerRestClient(config, GclMobibRestClient.class);
         this.gclOcraRestClient = RestServiceBuilder.getContainerRestClient(config, GclOcraRestClient.class);
         this.gclPivRestClient = RestServiceBuilder.getContainerRestClient(config, GclPivRestClient.class);
-        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclSafeNetRestClient.class);
+        this.gclSafenetRestClient = RestServiceBuilder.getContainerRestClient(config, GclPkcs11RestClient.class);
         this.gclAventraRestClient = RestServiceBuilder.getContainerRestClient(config, GclAventraRestClient.class);
         this.gclOberthurRestClient = RestServiceBuilder.getContainerRestClient(config, GclOberthurRestClient.class);
-        this.gclRemoteLoadingRestClient = RestServiceBuilder.getContainerRestClient(config, GclRemoteLoadingRestClient.class);
+        this.gclReaderApiRestClient = RestServiceBuilder.getContainerRestClient(config, GclReaderApiRestClient.class);
     }
 
     /*Getters*/
@@ -137,7 +142,7 @@ public final class ConnectionFactory {
         return gclPivRestClient;
     }
 
-    public GclSafeNetRestClient getGclSafenetRestClient() {
+    public GclPkcs11RestClient getGclSafenetRestClient() {
         return gclSafenetRestClient;
     }
 
@@ -149,8 +154,8 @@ public final class ConnectionFactory {
         return gclOberthurRestClient;
     }
 
-    public GclRemoteLoadingRestClient getGclRemoteLoadingRestClient() {
-        return gclRemoteLoadingRestClient;
+    public GclReaderApiRestClient getGclReaderApiRestClient() {
+        return gclReaderApiRestClient;
     }
 
     public LibConfig getConfig() {

@@ -7,8 +7,6 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
-import com.t1t.t1c.utils.UriUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Guillaume Vandecasteele
@@ -34,48 +32,16 @@ public class DsClient implements IDsClient {
     }
 
     @Override
-    public DsDevice getDevice(String deviceId) throws DsClientException {
-        try {
-            return RestExecutor.executeCall(dsRestClient.getDevice(deviceId), false);
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not retrieve device info from Distribution Service", ex);
-        }
+    public DsPublicKey getPublicKey(String deviceId) throws DsClientException {
+        return getPublicKey(deviceId, null);
     }
 
     @Override
-    public String getJWT() throws DsClientException {
+    public DsPublicKey getPublicKey(String deviceId, DsPublicKeyEncoding encoding) throws DsClientException {
+        String encodingParam = encoding == null ? null : encoding.getQueryParamValue();
         try {
-            return RestExecutor.executeCall(dsRestClient.getJWT(), false).getToken();
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not retrieve JWT from Distribution Service", ex);
-        }
-    }
-
-    @Override
-    public String refreshJWT(String token) throws DsClientException {
-        try {
-            return RestExecutor.executeCall(dsRestClient.refreshJWT(new DsTokenRefreshRequest().withOriginalJWT(token)), false).getToken();
-        } catch (RestException ex) {
-            throw ExceptionFactory.dsClientException("Could not refresh JWT on Distribution Service", ex);
-        }
-    }
-
-    @Override
-    public String getPublicKey() throws DsClientException {
-        return getPublicKey(null);
-    }
-
-    @Override
-    public String getPublicKey(DsPublicKeyEncoding encoding) throws DsClientException {
-        String encodingParam;
-        if (encoding == null) {
-            encodingParam = null;
-        } else {
-            encodingParam = encoding.getQueryParamValue();
-        }
-        try {
-            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(encodingParam), false);
-            return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse.getPubkey() : null;
+            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(deviceId, encodingParam), false);
+            return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse : null;
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }
@@ -97,28 +63,29 @@ public class DsClient implements IDsClient {
                     .withOs(new DsOs()
                             .withArchitecture(info.getOs().getArchitecture())
                             .withName(info.getOs().getName())
-                            .withVersion(info.getOs().getVersion()));
-            DsDownloadPath clientResponse = RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false);
-            if (StringUtils.isNotBlank(clientResponse.getPath())) {
-                return UriUtils.constructURI(config.getDsUri(), clientResponse.getPath());
-            } else return null;
+                            .withVersion(info.getOs().getVersion()))
+                    .withProxyDomain(config.getProxyDomain());
+            return RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false).getLink();
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
         }
     }
 
     @Override
-    public String register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+    public DsSyncResponseDto register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
         try {
-            if (!request.getActivated()) {
-                return RestExecutor.executeCall(dsRestClient.register(deviceId, request), false).getToken();
-            } else {
-                return RestExecutor.executeCall(dsRestClient.sync(deviceId, request), false).getToken();
-            }
+            return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.register(deviceId, request), false));
         } catch (RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
         }
     }
 
-
+    @Override
+    public DsSyncResponseDto sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+        try {
+            return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.sync(deviceId, request), false));
+        } catch (RestException ex) {
+            throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
+        }
+    }
 }

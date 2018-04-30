@@ -7,7 +7,10 @@
     "success": {
       "type": "boolean"
     },
-    "pubkey": {
+    "encryptedPublicKey": {
+      "type": "string"
+    },
+    "encryptedAesKey": {
       "type": "string"
     }
   }

@@ -9,8 +9,9 @@ import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.IDsClient;
@@ -74,7 +75,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetLuxIdContainer() {
-        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), "123456");
+        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), new GclPace().withPin("123456"));
 
         assertNotNull(container);
     }
@@ -134,9 +135,9 @@ public class T1cClientTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGetSafenetContainer() {
+    public void testGetPkcs11Container() {
         try {
-            SafeNetContainer container = getClient().getSafeNetContainer(new GclReader().withId(MockResponseFactory.SAFENET_READER_ID).withPinpad(false));
+            Pkcs11Container container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(false));
             assertNotNull(container);
         } catch (IllegalArgumentException ex) {
             assertTrue(ex.getMessage().contains("Driver not found"));
@@ -144,13 +145,8 @@ public class T1cClientTest extends AbstractTestClass {
     }
 
     @Test
-    public void testGetReaderContainer() {
-        assertNotNull(getClient().getReaderApiContainer());
-    }
-
-    @Test
-    public void testGetRemoteLoadingContainer() {
-        assertNotNull(getClient().getRemoteLoadingContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
+    public void testGetReaderApiContainer() {
+        assertNotNull(getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
     }
 
     @Test

@@ -25,7 +25,7 @@ public class GclBeIdAddress {
     private String streetAndNumber;
     @SerializedName("version")
     @Expose
-    private Integer version;
+    private Long version;
     @SerializedName("zipcode")
     @Expose
     private String zipcode;
@@ -109,18 +109,18 @@ public class GclBeIdAddress {
     /**
      * @return The version
      */
-    public Integer getVersion() {
+    public Long getVersion() {
         return version;
     }
 
     /**
      * @param version The version
      */
-    public void setVersion(Integer version) {
+    public void setVersion(Long version) {
         this.version = version;
     }
 
-    public GclBeIdAddress withVersion(Integer version) {
+    public GclBeIdAddress withVersion(Long version) {
         this.version = version;
         return this;
     }

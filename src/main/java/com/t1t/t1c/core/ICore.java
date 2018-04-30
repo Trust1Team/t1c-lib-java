@@ -1,7 +1,11 @@
 package com.t1t.t1c.core;
 
+import com.t1t.t1c.ds.DsAtrList;
+import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cAdminPublicKeys;
+import com.t1t.t1c.model.T1cPublicKey;
 
 import java.util.List;
 import java.util.Map;
@@ -36,22 +40,83 @@ public interface ICore {
     Boolean activate() throws GclCoreException;
 
     /**
-     * Retrieve the public key for the installed T1C-GCL.
+     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
      *
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    String getPubKey() throws GclCoreException;
+    T1cPublicKey getDsPubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException;
+
+    /**
+     * Retrieve the device public key for the installed T1C-GCL.
+     *
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getDevicePubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the device public key for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getDevicePubKey(Boolean parse) throws GclCoreException;
+
+    /**
+     * Retrieve the SSL public key for the installed T1C-GCL.
+     *
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getSslPubKey() throws GclCoreException;
+
+    /**
+     * Retrieve the SSL public key for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return the public key
+     * @throws GclCoreException: on failure
+     */
+    T1cPublicKey getSslPubKey(Boolean parse) throws GclCoreException;
+
+    /**
+     * Retrieves all public keys/certificates for the installed T1C-GCL.
+     *
+     * @return
+     * @throws GclCoreException
+     */
+    T1cAdminPublicKeys getAdminPublicKeys() throws GclCoreException;
+
+    /**
+     * Retrieves all public keys/certificates for the installed T1C-GCL.
+     *
+     * @param parse Boolean toggle to parse the public key
+     * @return
+     * @throws GclCoreException
+     */
+    T1cAdminPublicKeys getAdminPublicKeys(Boolean parse) throws GclCoreException;
 
     /**
      * Set the public key for the installed T1C-GCL.
      * The public key can be updated.
      *
-     * @param publicKey the public key to set.
+     * @param encryptedPublicKey the public key to set.
+     * @param encryptedAesKey    the aes key with which the public key was encrypted
      * @return true if successful
      * @throws GclCoreException: on failure
      */
-    Boolean setPubKey(String publicKey) throws GclCoreException;
+    Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException;
 
     /**
      * Return T1C-GCL status information.
@@ -60,14 +125,6 @@ public interface ICore {
      * @throws GclCoreException: on failure
      */
     GclInfo getInfo() throws GclCoreException;
-
-    /**
-     * Return installed containers.
-     *
-     * @return the list of containers
-     * @throws GclCoreException: on failure
-     */
-    List<GclContainer> getContainers() throws GclCoreException;
 
     /**
      * Poll for readers until a reader with an inserted card is found.
@@ -246,5 +303,32 @@ public interface ICore {
      * @param timeoutInSeconds the timeout of the consent popup in seconds. If the user does not respond within this timespan, no consent will be granted. Defaults to 30s but can be overridden in the configuration. To prevent SocketTimeoutExceptions, the value <b>must</b> be less than the configured default value.
      * @return true if granted, false if not.
      */
-    boolean getConsent(String title, String codeWord, Integer durationInDays, GclConsent.AlertLevel alertLevel, GclConsent.AlertPosition alertPosition, GclConsent.Type consentType, Integer timeoutInSeconds);
+    boolean getConsent(String title, String codeWord, Integer durationInDays, GclAlertLevel alertLevel, GclAlertPosition alertPosition, GclConsentType consentType, Integer timeoutInSeconds);
+
+    /**
+     * Loads the containers specified by the DS in the Core
+     *
+     * @param containerResponses the container info
+     * @return true if successful
+     * @throws GclCoreException
+     */
+    boolean loadContainers(List<DsContainerResponse> containerResponses) throws GclCoreException;
+
+    /**
+     * Loads the ATR list obtained from the DS
+     *
+     * @param atrList the ATR list to load
+     * @return true if successful
+     * @throws GclCoreException
+     */
+    boolean loadAtrList(DsAtrList atrList) throws GclCoreException;
+
+    /**
+     * Poll the GCL for a configured duration or until all downloads are completed
+     *
+     * @param containers the containers to load
+     * @return the GCL info
+     * @throws GclCoreException
+     */
+    GclInfo pollContainerDownloadStatus(List<DsContainerResponse> containers) throws GclCoreException;
 }

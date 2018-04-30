@@ -14,9 +14,12 @@ public class DsPublicKey {
     @SerializedName("success")
     @Expose
     private Boolean success;
-    @SerializedName("pubkey")
+    @SerializedName("encryptedPublicKey")
     @Expose
-    private String pubkey;
+    private String encryptedPublicKey;
+    @SerializedName("encryptedAesKey")
+    @Expose
+    private String encryptedAesKey;
 
     /**
      * @return The success
@@ -38,21 +41,40 @@ public class DsPublicKey {
     }
 
     /**
-     * @return The pubkey
+     * @return The encryptedPublicKey
      */
-    public String getPubkey() {
-        return pubkey;
+    public String getEncryptedPublicKey() {
+        return encryptedPublicKey;
     }
 
     /**
-     * @param pubkey The pubkey
+     * @param encryptedPublicKey The encryptedPublicKey
      */
-    public void setPubkey(String pubkey) {
-        this.pubkey = pubkey;
+    public void setEncryptedPublicKey(String encryptedPublicKey) {
+        this.encryptedPublicKey = encryptedPublicKey;
     }
 
-    public DsPublicKey withPubkey(String pubkey) {
-        this.pubkey = pubkey;
+    public DsPublicKey withEncryptedPublicKey(String encryptedPublicKey) {
+        this.encryptedPublicKey = encryptedPublicKey;
+        return this;
+    }
+
+    /**
+     * @return The encryptedAesKey
+     */
+    public String getEncryptedAesKey() {
+        return encryptedAesKey;
+    }
+
+    /**
+     * @param encryptedAesKey The encryptedAesKey
+     */
+    public void setEncryptedAesKey(String encryptedAesKey) {
+        this.encryptedAesKey = encryptedAesKey;
+    }
+
+    public DsPublicKey withEncryptedAesKey(String encryptedAesKey) {
+        this.encryptedAesKey = encryptedAesKey;
         return this;
     }
 
@@ -63,7 +85,7 @@ public class DsPublicKey {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(success).append(pubkey).toHashCode();
+        return new HashCodeBuilder().append(success).append(encryptedPublicKey).append(encryptedAesKey).toHashCode();
     }
 
     @Override
@@ -75,7 +97,7 @@ public class DsPublicKey {
             return false;
         }
         DsPublicKey rhs = ((DsPublicKey) other);
-        return new EqualsBuilder().append(success, rhs.success).append(pubkey, rhs.pubkey).isEquals();
+        return new EqualsBuilder().append(success, rhs.success).append(encryptedPublicKey, rhs.encryptedPublicKey).append(encryptedAesKey, rhs.encryptedAesKey).isEquals();
     }
 
 }

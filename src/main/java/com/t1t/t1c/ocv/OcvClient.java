@@ -42,7 +42,7 @@ public class OcvClient implements IOcvClient {
     public OcvCertificateChainValidationResponse validateCertificateChain(String... certificates) throws OcvClientException {
         if (certificates != null && certificates.length > 0) {
             List<OcvCertificate> orderedCertificates = new ArrayList<>();
-            int order = 0;
+            long order = 0;
             for (String certificate : certificates) {
                 orderedCertificates.add(new OcvCertificate().withOrder(order).withCertificate(certificate));
                 order++;

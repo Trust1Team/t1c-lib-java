@@ -31,7 +31,6 @@ public class ContainerData {
 
     private Map<Integer, T1cCertificate> authenticationCertificateChain;
     private Map<Integer, T1cCertificate> signingCertificateChain;
-    private List<Map<Integer, T1cCertificate>> certificateChains;
     private Map<String, T1cCertificate> allCertificates;
 
 
@@ -171,16 +170,6 @@ public class ContainerData {
         this.signingCertificateChain = signingCertificateChain;
     }
 
-    @Deprecated
-    public List<Map<Integer, T1cCertificate>> getCertificateChains() {
-        return certificateChains;
-    }
-
-    @Deprecated
-    public void setCertificateChains(List<Map<Integer, T1cCertificate>> certificateChains) {
-        this.certificateChains = certificateChains;
-    }
-
     public Map<String, T1cCertificate> getAllCertificates() {
         return allCertificates;
     }
@@ -209,7 +198,6 @@ public class ContainerData {
                 ", base64SignatureImage='" + base64SignatureImage + '\'' +
                 ", authenticationCertificateChain=" + authenticationCertificateChain +
                 ", signingCertificateChain=" + signingCertificateChain +
-                ", certificateChains=" + certificateChains +
                 ", allCertificates=" + allCertificates +
                 '}';
     }

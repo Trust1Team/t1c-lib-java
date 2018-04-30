@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclContainerStatus",
+  "$id": "GclContainerStatus",
+  "enum": [
+    "DOWNLOAD_ERROR",
+    "INIT",
+    "DOWNLOADING",
+    "INSTALLED",
+    "ERROR"
+  ]
+}
+}
