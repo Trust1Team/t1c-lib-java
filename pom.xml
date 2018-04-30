@@ -4,7 +4,7 @@
 
     <groupId>com.t1t.t1c</groupId>
     <artifactId>Connector</artifactId>
-    <version>1.0.1</version>
+    <version>2.0.0</version>
     <packaging>jar</packaging>
 
     <name>Connector</name>
@@ -316,13 +316,39 @@
                     <!--<sourceDirectory>${basedir}/src/main/resources/schema</sourceDirectory>-->
                     <!--We didn't provided the sourceDirectory, because alphabetical order makes nomenclature of classes bug out-->
                     <sourcePaths>
+                        <!-- GCL core -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAgent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPrivateKeyReference.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsentType.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAlertPosition.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAlertLevel.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainerStatus.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainerInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainerInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPublicKeys.json</sourcePath>
                         <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/DsBrowser.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsAtrList.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsContainerStorage.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsContainerResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclLoadContainersRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsOs.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsClientInfo.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDevice.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDeviceRegistrationRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadPath.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsRegistrationSyncResponse.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadLink.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDownloadRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsSystemStatus.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsPublicKey.json</sourcePath>
@@ -343,20 +369,6 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
                         </sourcePath>
-                        <!-- GCL core -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAgent.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminActivationResponse.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
-                        </sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclConsent.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclContainer.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclError.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclInfo.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
                         <!-- BE ID -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>
@@ -399,10 +411,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivPrintedInformation.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllCertificates.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPivAllData.json</sourcePath>
-                        <!-- SAFENET -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetInfo.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclSafeNetSlot.json</sourcePath>
+                        <!-- PKCS11 -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Request.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Info.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPkcs11Slot.json</sourcePath>
                         <!-- Aventra -->
                         <sourcePath>
                             ${basedir}/src/main/resources/schemas/GclAventraPinResetRequest.json
@@ -422,20 +434,23 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclOberthurAllCertificates.json</sourcePath>
                         <!-- REMOTE LOADING -->
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingApdu.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommand.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCommandRequest.json
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiApdu.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiCommand.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiCommandRequest.json
                         </sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidRequest.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingCcidFeature.json</sourcePath>
-                        <sourcePath>${basedir}/src/main/resources/schemas/GclRemoteLoadingOpenSessionRequest.json
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiCcidRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiCcidFeature.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclReaderApiOpenSessionRequest.json
                         </sourcePath>
+                        <!-- GATEWAY -->
+                        <sourcePath>${basedir}/src/main/resources/schemas/GwJwt.json</sourcePath>
                         <!-- More to come -->
                     </sourcePaths>
                     <excludes></excludes>
                     <targetPackage>com.t1t.t1c.model.rest</targetPackage>
                     <sourceType>jsonschema</sourceType>
                     <annotationStyle>gson</annotationStyle>
+                    <useLongIntegers>true</useLongIntegers>
                     <generateBuilders>true</generateBuilders>
                     <useCommonsLang3>true</useCommonsLang3>
                 </configuration>

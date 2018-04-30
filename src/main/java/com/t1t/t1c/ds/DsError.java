@@ -16,7 +16,7 @@ public class DsError {
     private String type;
     @SerializedName("errorCode")
     @Expose
-    private Integer errorCode;
+    private Long errorCode;
     @SerializedName("message")
     @Expose
     private String message;
@@ -49,18 +49,18 @@ public class DsError {
     /**
      * @return The errorCode
      */
-    public Integer getErrorCode() {
+    public Long getErrorCode() {
         return errorCode;
     }
 
     /**
      * @param errorCode The errorCode
      */
-    public void setErrorCode(Integer errorCode) {
+    public void setErrorCode(Long errorCode) {
         this.errorCode = errorCode;
     }
 
-    public DsError withErrorCode(Integer errorCode) {
+    public DsError withErrorCode(Long errorCode) {
         this.errorCode = errorCode;
         return this;
     }

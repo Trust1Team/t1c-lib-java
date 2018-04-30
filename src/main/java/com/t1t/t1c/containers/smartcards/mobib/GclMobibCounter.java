@@ -16,10 +16,10 @@ public class GclMobibCounter {
     private String time;
     @SerializedName("type")
     @Expose
-    private Integer type;
+    private Long type;
     @SerializedName("journeys")
     @Expose
-    private Integer journeys;
+    private Long journeys;
 
     /**
      * @return The time
@@ -43,18 +43,18 @@ public class GclMobibCounter {
     /**
      * @return The type
      */
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
     /**
      * @param type The type
      */
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
-    public GclMobibCounter withType(Integer type) {
+    public GclMobibCounter withType(Long type) {
         this.type = type;
         return this;
     }
@@ -62,18 +62,18 @@ public class GclMobibCounter {
     /**
      * @return The journeys
      */
-    public Integer getJourneys() {
+    public Long getJourneys() {
         return journeys;
     }
 
     /**
      * @param journeys The journeys
      */
-    public void setJourneys(Integer journeys) {
+    public void setJourneys(Long journeys) {
         this.journeys = journeys;
     }
 
-    public GclMobibCounter withJourneys(Integer journeys) {
+    public GclMobibCounter withJourneys(Long journeys) {
         this.journeys = journeys;
         return this;
     }

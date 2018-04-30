@@ -368,15 +368,15 @@ public class BeIdContainerTest extends AbstractTestClass {
         assertEquals("sign", address.getSignature());
         address.setStreetAndNumber("street");
         assertEquals("street", address.getStreetAndNumber());
-        address.setVersion(1);
-        assertEquals(Integer.valueOf(1), address.getVersion());
+        address.setVersion(1L);
+        assertEquals(Long.valueOf(1), address.getVersion());
         address.setZipcode("1000");
         assertEquals("1000", address.getZipcode());
         assertEquals(address.withMunicipality("Brussels"), address);
         assertEquals(address.withRawData("rawdata"), address);
         assertEquals(address.withSignature("signature"), address);
         assertEquals(address.withStreetAndNumber("street 1"), address);
-        assertEquals(address.withVersion(2), address);
+        assertEquals(address.withVersion(2L), address);
         assertEquals(address.withZipcode("9000"), address);
         GclBeIdAddress obj1 = new GclBeIdAddress().withZipcode("1000");
         GclBeIdAddress obj2 = new GclBeIdAddress().withZipcode("1000");
@@ -460,8 +460,8 @@ public class BeIdContainerTest extends AbstractTestClass {
         assertEquals("2", obj1.getSpecialStatus());
         obj1.setThirdName("f");
         assertEquals("f", obj1.getThirdName());
-        obj1.setVersion(1);
-        assertEquals(Integer.valueOf(1), obj1.getVersion());
+        obj1.setVersion(1L);
+        assertEquals(Long.valueOf(1), obj1.getVersion());
         obj1 = MockResponseFactory.getGclBeIdRnData();
         GclBeIdRn obj2 = MockResponseFactory.getGclBeIdRnData();
         assertEquals(obj1.hashCode(), obj2.hashCode());
@@ -505,7 +505,6 @@ public class BeIdContainerTest extends AbstractTestClass {
 
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
-        assertNotNull(data.getCertificateChains());
         assertNotNull(data.getAllCertificates());
     }
 }

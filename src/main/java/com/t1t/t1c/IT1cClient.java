@@ -2,17 +2,17 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainerConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
@@ -40,11 +40,13 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    IGenericContainer getGenericContainer(GclReader reader, String... pin);
+    IGenericContainer getGenericContainer(GclReader reader, GclPace pace);
+
+    IGenericContainer getGenericContainer(GclReader reader);
 
     BeIdContainer getBeIdContainer(GclReader reader);
 
-    LuxIdContainer getLuxIdContainer(GclReader reader, String pin);
+    LuxIdContainer getLuxIdContainer(GclReader reader, GclPace pace);
 
     LuxTrustContainer getLuxTrustContainer(GclReader reader);
 
@@ -60,18 +62,16 @@ public interface IT1cClient {
 
     OberthurContainer getOberthurContainer(GclReader reader);
 
-    PivContainer getPivContainer(GclReader reader, String pin);
+    PivContainer getPivContainer(GclReader reader, String pacePin);
 
     PtEIdContainer getPtIdContainer(GclReader reader);
 
-    SafeNetContainer getSafeNetContainer(GclReader reader);
+    Pkcs11Container getPkcs11Container(GclReader reader);
 
-    SafeNetContainer getSafeNetContainer(GclReader reader, SafeNetContainerConfiguration configuration);
+    Pkcs11Container getPkcs11Container(GclReader reader, ModuleConfiguration configuration);
 
     /*Functional containers*/
-    RemoteLoadingContainer getRemoteLoadingContainer(GclReader reader);
-
-    ReaderApiContainer getReaderApiContainer();
+    ReaderApiContainer getReaderApiContainer(GclReader reader);
 
     /*DS Functionality*/
     String getDownloadLink();

@@ -11,26 +11,48 @@ import javax.annotation.Generated;
 @Generated("org.jsonschema2pojo")
 public class GclUpdatePublicKeyRequest {
 
-    @SerializedName("certificate")
+    @SerializedName("encryptedPublicKey")
     @Expose
-    private String certificate;
+    private String encryptedPublicKey;
+    @SerializedName("encryptedAesKey")
+    @Expose
+    private String encryptedAesKey;
 
     /**
-     * @return The certificate
+     * @return The encryptedPublicKey
      */
-    public String getCertificate() {
-        return certificate;
+    public String getEncryptedPublicKey() {
+        return encryptedPublicKey;
     }
 
     /**
-     * @param certificate The certificate
+     * @param encryptedPublicKey The encryptedPublicKey
      */
-    public void setCertificate(String certificate) {
-        this.certificate = certificate;
+    public void setEncryptedPublicKey(String encryptedPublicKey) {
+        this.encryptedPublicKey = encryptedPublicKey;
     }
 
-    public GclUpdatePublicKeyRequest withCertificate(String certificate) {
-        this.certificate = certificate;
+    public GclUpdatePublicKeyRequest withEncryptedPublicKey(String encryptedPublicKey) {
+        this.encryptedPublicKey = encryptedPublicKey;
+        return this;
+    }
+
+    /**
+     * @return The encryptedAesKey
+     */
+    public String getEncryptedAesKey() {
+        return encryptedAesKey;
+    }
+
+    /**
+     * @param encryptedAesKey The encryptedAesKey
+     */
+    public void setEncryptedAesKey(String encryptedAesKey) {
+        this.encryptedAesKey = encryptedAesKey;
+    }
+
+    public GclUpdatePublicKeyRequest withEncryptedAesKey(String encryptedAesKey) {
+        this.encryptedAesKey = encryptedAesKey;
         return this;
     }
 
@@ -41,7 +63,7 @@ public class GclUpdatePublicKeyRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(certificate).toHashCode();
+        return new HashCodeBuilder().append(encryptedPublicKey).append(encryptedAesKey).toHashCode();
     }
 
     @Override
@@ -53,7 +75,7 @@ public class GclUpdatePublicKeyRequest {
             return false;
         }
         GclUpdatePublicKeyRequest rhs = ((GclUpdatePublicKeyRequest) other);
-        return new EqualsBuilder().append(certificate, rhs.certificate).isEquals();
+        return new EqualsBuilder().append(encryptedPublicKey, rhs.encryptedPublicKey).append(encryptedAesKey, rhs.encryptedAesKey).isEquals();
     }
 
 }

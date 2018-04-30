@@ -7,12 +7,6 @@ import static org.testng.Assert.assertEquals;
 public class UriUtilsTest {
 
     @Test
-    public void testConstructURI() throws Exception {
-        String expected = "https://domain:80/contextpath/";
-        assertEquals(expected, UriUtils.constructURI("https://domain:80", "contextpath"));
-    }
-
-    @Test
     public void testUriFinalSlashAppender() throws Exception {
         final String uriWithFinalSlash = "https://some.uri/";
         final String uriWithoutFinalSlash = "https://some.uri";

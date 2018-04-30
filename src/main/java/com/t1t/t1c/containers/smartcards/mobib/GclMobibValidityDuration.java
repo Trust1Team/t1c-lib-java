@@ -13,26 +13,26 @@ public class GclMobibValidityDuration {
 
     @SerializedName("unit")
     @Expose
-    private Integer unit;
+    private Long unit;
     @SerializedName("value")
     @Expose
-    private Integer value;
+    private Long value;
 
     /**
      * @return The unit
      */
-    public Integer getUnit() {
+    public Long getUnit() {
         return unit;
     }
 
     /**
      * @param unit The unit
      */
-    public void setUnit(Integer unit) {
+    public void setUnit(Long unit) {
         this.unit = unit;
     }
 
-    public GclMobibValidityDuration withUnit(Integer unit) {
+    public GclMobibValidityDuration withUnit(Long unit) {
         this.unit = unit;
         return this;
     }
@@ -40,18 +40,18 @@ public class GclMobibValidityDuration {
     /**
      * @return The value
      */
-    public Integer getValue() {
+    public Long getValue() {
         return value;
     }
 
     /**
      * @param value The value
      */
-    public void setValue(Integer value) {
+    public void setValue(Long value) {
         this.value = value;
     }
 
-    public GclMobibValidityDuration withValue(Integer value) {
+    public GclMobibValidityDuration withValue(Long value) {
         this.value = value;
         return this;
     }

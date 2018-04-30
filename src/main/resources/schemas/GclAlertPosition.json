@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclAlertPosition",
+  "$id": "GclAlertPosition",
+  "enum": [
+    "standard",
+    "center",
+    "left",
+    "right",
+    "top",
+    "top_left",
+    "top_right",
+    "bottom",
+    "bottom_left",
+    "bottom_right"
+  ]
+}

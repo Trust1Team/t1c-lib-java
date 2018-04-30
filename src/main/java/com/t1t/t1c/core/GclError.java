@@ -13,7 +13,7 @@ public class GclError {
 
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private Long code;
     @SerializedName("description")
     @Expose
     private String description;
@@ -24,18 +24,18 @@ public class GclError {
     /**
      * @return The code
      */
-    public Integer getCode() {
+    public Long getCode() {
         return code;
     }
 
     /**
      * @param code The code
      */
-    public void setCode(Integer code) {
+    public void setCode(Long code) {
         this.code = code;
     }
 
-    public GclError withCode(Integer code) {
+    public GclError withCode(Long code) {
         this.code = code;
         return this;
     }

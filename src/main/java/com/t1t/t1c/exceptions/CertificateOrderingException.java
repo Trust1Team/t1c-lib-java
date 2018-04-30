@@ -17,11 +17,11 @@ public class CertificateOrderingException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.CERTIFICATE_ORDERING_ERROR;
+        return ErrorCodes.ERROR_CERTIFICATE_ORDERING;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.CERTIFICATE_ORDERING_ERROR_INFO;
+        return ErrorCodes.INFO_CERTIFICATE_ORDERING_ERROR;
     }
 }

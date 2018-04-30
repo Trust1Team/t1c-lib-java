@@ -7,8 +7,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
-import java.util.HashMap;
-import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class GclConsent {
@@ -21,19 +19,19 @@ public class GclConsent {
     private String text;
     @SerializedName("days")
     @Expose
-    private Integer days;
+    private Long days;
     @SerializedName("alert_level")
     @Expose
-    private AlertLevel alertLevel;
+    private GclAlertLevel alertLevel;
     @SerializedName("alert_position")
     @Expose
-    private AlertPosition alertPosition;
+    private GclAlertPosition alertPosition;
     @SerializedName("type")
     @Expose
-    private Type type;
+    private GclConsentType type;
     @SerializedName("timeout")
     @Expose
-    private Integer timeout;
+    private Long timeout;
 
     /**
      * @return The title
@@ -76,18 +74,18 @@ public class GclConsent {
     /**
      * @return The days
      */
-    public Integer getDays() {
+    public Long getDays() {
         return days;
     }
 
     /**
      * @param days The days
      */
-    public void setDays(Integer days) {
+    public void setDays(Long days) {
         this.days = days;
     }
 
-    public GclConsent withDays(Integer days) {
+    public GclConsent withDays(Long days) {
         this.days = days;
         return this;
     }
@@ -95,18 +93,18 @@ public class GclConsent {
     /**
      * @return The alertLevel
      */
-    public AlertLevel getAlertLevel() {
+    public GclAlertLevel getAlertLevel() {
         return alertLevel;
     }
 
     /**
      * @param alertLevel The alert_level
      */
-    public void setAlertLevel(AlertLevel alertLevel) {
+    public void setAlertLevel(GclAlertLevel alertLevel) {
         this.alertLevel = alertLevel;
     }
 
-    public GclConsent withAlertLevel(AlertLevel alertLevel) {
+    public GclConsent withAlertLevel(GclAlertLevel alertLevel) {
         this.alertLevel = alertLevel;
         return this;
     }
@@ -114,18 +112,18 @@ public class GclConsent {
     /**
      * @return The alertPosition
      */
-    public AlertPosition getAlertPosition() {
+    public GclAlertPosition getAlertPosition() {
         return alertPosition;
     }
 
     /**
      * @param alertPosition The alert_position
      */
-    public void setAlertPosition(AlertPosition alertPosition) {
+    public void setAlertPosition(GclAlertPosition alertPosition) {
         this.alertPosition = alertPosition;
     }
 
-    public GclConsent withAlertPosition(AlertPosition alertPosition) {
+    public GclConsent withAlertPosition(GclAlertPosition alertPosition) {
         this.alertPosition = alertPosition;
         return this;
     }
@@ -133,18 +131,18 @@ public class GclConsent {
     /**
      * @return The type
      */
-    public Type getType() {
+    public GclConsentType getType() {
         return type;
     }
 
     /**
      * @param type The type
      */
-    public void setType(Type type) {
+    public void setType(GclConsentType type) {
         this.type = type;
     }
 
-    public GclConsent withType(Type type) {
+    public GclConsent withType(GclConsentType type) {
         this.type = type;
         return this;
     }
@@ -152,18 +150,18 @@ public class GclConsent {
     /**
      * @return The timeout
      */
-    public Integer getTimeout() {
+    public Long getTimeout() {
         return timeout;
     }
 
     /**
      * @param timeout The timeout
      */
-    public void setTimeout(Integer timeout) {
+    public void setTimeout(Long timeout) {
         this.timeout = timeout;
     }
 
-    public GclConsent withTimeout(Integer timeout) {
+    public GclConsent withTimeout(Long timeout) {
         this.timeout = timeout;
         return this;
     }
@@ -183,142 +181,11 @@ public class GclConsent {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclConsent)) {
+        if ((other instanceof GclConsent) == false) {
             return false;
         }
         GclConsent rhs = ((GclConsent) other);
         return new EqualsBuilder().append(title, rhs.title).append(text, rhs.text).append(days, rhs.days).append(alertLevel, rhs.alertLevel).append(alertPosition, rhs.alertPosition).append(type, rhs.type).append(timeout, rhs.timeout).isEquals();
-    }
-
-    @Generated("org.jsonschema2pojo")
-    public static enum AlertLevel {
-
-        @SerializedName("information")
-        INFORMATION("information"),
-        @SerializedName("question")
-        QUESTION("question"),
-        @SerializedName("warning")
-        WARNING("warning"),
-        @SerializedName("error")
-        ERROR("error");
-        private static Map<String, AlertLevel> constants = new HashMap<String, AlertLevel>();
-
-        static {
-            for (AlertLevel c : values()) {
-                constants.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        private AlertLevel(String value) {
-            this.value = value;
-        }
-
-        public static AlertLevel fromValue(String value) {
-            AlertLevel constant = constants.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            } else {
-                return constant;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-    }
-
-    @Generated("org.jsonschema2pojo")
-    public static enum AlertPosition {
-
-        @SerializedName("standard")
-        STANDARD("standard"),
-        @SerializedName("center")
-        CENTER("center"),
-        @SerializedName("left")
-        LEFT("left"),
-        @SerializedName("right")
-        RIGHT("right"),
-        @SerializedName("top")
-        TOP("top"),
-        @SerializedName("top_left")
-        TOP_LEFT("top_left"),
-        @SerializedName("top_right")
-        TOP_RIGHT("top_right"),
-        @SerializedName("bottom")
-        BOTTOM("bottom"),
-        @SerializedName("bottom_left")
-        BOTTOM_LEFT("bottom_left"),
-        @SerializedName("bottom_right")
-        BOTTOM_RIGHT("bottom_right");
-        private static Map<String, AlertPosition> constants = new HashMap<String, AlertPosition>();
-
-        static {
-            for (AlertPosition c : values()) {
-                constants.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        private AlertPosition(String value) {
-            this.value = value;
-        }
-
-        public static AlertPosition fromValue(String value) {
-            AlertPosition constant = constants.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            } else {
-                return constant;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
-    }
-
-    @Generated("org.jsonschema2pojo")
-    public static enum Type {
-
-        @SerializedName("reader")
-        READER("reader"),
-        @SerializedName("file_exchange")
-        FILE_EXCHANGE("file_exchange");
-        private static Map<String, Type> constants = new HashMap<String, Type>();
-
-        static {
-            for (Type c : values()) {
-                constants.put(c.value, c);
-            }
-        }
-
-        private final String value;
-
-        private Type(String value) {
-            this.value = value;
-        }
-
-        public static Type fromValue(String value) {
-            Type constant = constants.get(value);
-            if (constant == null) {
-                throw new IllegalArgumentException(value);
-            } else {
-                return constant;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return this.value;
-        }
-
     }
 
 }

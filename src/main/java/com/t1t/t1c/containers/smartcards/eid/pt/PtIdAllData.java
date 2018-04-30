@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.eid.pt;
 
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class PtIdAllData implements AllData {
 
@@ -13,13 +13,17 @@ public class PtIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public PtIdAllData(GclPtIdAllData data, Boolean... parseCertificates) {
+    public PtIdAllData(GclPtIdAllData data) {
+        this(data, null);
+    }
+
+    public PtIdAllData(GclPtIdAllData data, Boolean parseCertificates) {
         this.id = data.getId();
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
-        this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
-        this.rootAuthenticationCertificate = CertificateUtil.createT1cCertificate(data.getRootAuthenticationCertificate(), parseCertificates);
-        this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
-        this.rootNonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getRootNonRepudiationCertificate(), parseCertificates);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
+        this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
+        this.rootAuthenticationCertificate = PkiUtil.createT1cCertificate(data.getRootAuthenticationCertificate(), parseCertificates);
+        this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
+        this.rootNonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getRootNonRepudiationCertificate(), parseCertificates);
     }
 
     /**

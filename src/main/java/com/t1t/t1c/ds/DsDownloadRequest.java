@@ -14,15 +14,9 @@ public class DsDownloadRequest {
     @SerializedName("os")
     @Expose
     private DsOs os;
-    @SerializedName("browser")
+    @SerializedName("proxyDomain")
     @Expose
-    private DsBrowser browser;
-    @SerializedName("ua")
-    @Expose
-    private String ua;
-    @SerializedName("manufacturer")
-    @Expose
-    private String manufacturer;
+    private String proxyDomain;
 
     /**
      * @return The os
@@ -44,59 +38,21 @@ public class DsDownloadRequest {
     }
 
     /**
-     * @return The browser
+     * @return The proxyDomain
      */
-    public DsBrowser getBrowser() {
-        return browser;
+    public String getProxyDomain() {
+        return proxyDomain;
     }
 
     /**
-     * @param browser The browser
+     * @param proxyDomain The proxyDomain
      */
-    public void setBrowser(DsBrowser browser) {
-        this.browser = browser;
+    public void setProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
     }
 
-    public DsDownloadRequest withBrowser(DsBrowser browser) {
-        this.browser = browser;
-        return this;
-    }
-
-    /**
-     * @return The ua
-     */
-    public String getUa() {
-        return ua;
-    }
-
-    /**
-     * @param ua The ua
-     */
-    public void setUa(String ua) {
-        this.ua = ua;
-    }
-
-    public DsDownloadRequest withUa(String ua) {
-        this.ua = ua;
-        return this;
-    }
-
-    /**
-     * @return The manufacturer
-     */
-    public String getManufacturer() {
-        return manufacturer;
-    }
-
-    /**
-     * @param manufacturer The manufacturer
-     */
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public DsDownloadRequest withManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+    public DsDownloadRequest withProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
         return this;
     }
 
@@ -107,7 +63,7 @@ public class DsDownloadRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(os).append(browser).append(ua).append(manufacturer).toHashCode();
+        return new HashCodeBuilder().append(os).append(proxyDomain).toHashCode();
     }
 
     @Override
@@ -115,11 +71,11 @@ public class DsDownloadRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof DsDownloadRequest)) {
+        if ((other instanceof DsDownloadRequest) == false) {
             return false;
         }
         DsDownloadRequest rhs = ((DsDownloadRequest) other);
-        return new EqualsBuilder().append(os, rhs.os).append(browser, rhs.browser).append(ua, rhs.ua).append(manufacturer, rhs.manufacturer).isEquals();
+        return new EqualsBuilder().append(os, rhs.os).append(proxyDomain, rhs.proxyDomain).isEquals();
     }
 
 }

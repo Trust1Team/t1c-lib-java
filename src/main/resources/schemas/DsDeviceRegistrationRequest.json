@@ -4,23 +4,11 @@
   "javaType": "com.t1t.t1c.ds.DsDeviceRegistrationRequest",
   "type": "object",
   "properties": {
-    "os": {
-      "type": "object",
-      "$ref": "DsOs.json"
-    },
     "managed": {
       "type": "boolean"
     },
-    "browser": {
-      "type": "object",
-      "$ref": "DsBrowser.json"
-    },
-    "desktopApplication": {
-      "type": "object",
-      "$ref": "DsDesktopApplication.json"
-    },
-    "ua": {
-      "type": "string"
+    "activated": {
+      "type": "boolean"
     },
     "uuid": {
       "type": "string"
@@ -28,10 +16,29 @@
     "version": {
       "type": "string"
     },
-    "activated": {
-      "type": "boolean"
+    "derEncodedPublicKey": {
+      "type": "string"
     },
-    "manufacturer": {
+    "os": {
+      "type": "object",
+      "$ref": "DsOs.json"
+    },
+    "desktopApplication": {
+      "type": "object",
+      "$ref": "DsDesktopApplication.json"
+    },
+    "clientInfo": {
+      "type": "object",
+      "$ref": "DsClientInfo.json"
+    },
+    "containerStates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclContainerInfo.json"
+      }
+    },
+    "proxyDomain": {
       "type": "string"
     }
   }

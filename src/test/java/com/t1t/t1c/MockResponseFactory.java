@@ -1,8 +1,8 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCcidFeature;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingCommand;
+import com.t1t.t1c.containers.readerapi.GclReaderApiCcidFeature;
+import com.t1t.t1c.containers.readerapi.GclReaderApiCommand;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllData;
@@ -25,8 +25,8 @@ import com.t1t.t1c.containers.smartcards.piv.GclPivAllCertificates;
 import com.t1t.t1c.containers.smartcards.piv.GclPivAllData;
 import com.t1t.t1c.containers.smartcards.piv.GclPivFacialImage;
 import com.t1t.t1c.containers.smartcards.piv.GclPivPrintedInformation;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetInfo;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Info;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Slot;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllCertificates;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAllData;
 import com.t1t.t1c.containers.smartcards.pki.aventra.GclAventraAppletInfo;
@@ -34,13 +34,14 @@ import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllCertificates
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.GclLuxTrustAllData;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.GclOberthurAllData;
 import com.t1t.t1c.core.*;
-import com.t1t.t1c.ds.DsDevice;
-import com.t1t.t1c.ds.DsDownloadPath;
-import com.t1t.t1c.ds.DsToken;
+import com.t1t.t1c.ds.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.collections.CollectionUtils;
 
 import java.util.*;
 
@@ -63,7 +64,7 @@ public final class MockResponseFactory {
     public static final String OCRA_READER_ID = "57a3e2e71c48ce10";
     public static final String PIV_READER_ID = "57a3e2e71c48ce11";
     public static final String PT_READER_ID = "57a3e2e71c48ce12";
-    public static final String SAFENET_READER_ID = "57a3e2e71c48ce13";
+    public static final String PKCS11_READER_ID = "57a3e2e71c48ce13";
     public static final String REMOTE_LOADING_READER_ID = "57a3e2e71c48ce14";
 
     private MockResponseFactory() {
@@ -87,12 +88,24 @@ public final class MockResponseFactory {
         return getSuccessResponse(true);
     }
 
-    public static T1cResponse<String> getGclAdminCertificateResponse() {
-        return getSuccessResponse(getGclAdminCertificate());
+    public static T1cResponse<GclPublicKeys> getGclAdminCertificatesResponse() {
+        return getSuccessResponse(getGclAdminCertificates());
     }
 
-    public static T1cResponse<GclInfo> getGclV1StatusResponse() {
-        return getSuccessResponse(getGclV1Status());
+    public static T1cResponse<String> getGclAdminDsCertificateResponse() {
+        return getSuccessResponse(getGclAdminDsCertificate());
+    }
+
+    public static T1cResponse<String> getGclAdminDeviceCertificateResponse() {
+        return getSuccessResponse(getGclAdminDeviceCertificate());
+    }
+
+    public static T1cResponse<String> getGclAdminSslCertificateResponse() {
+        return getSuccessResponse(getGclAdminSslCertificate());
+    }
+
+    public static T1cResponse<GclInfo> getGclStatusResponse() {
+        return getSuccessResponse(getGclV2Status());
     }
 
     public static T1cResponse<List<GclReader>> getGclReadersResponse(Boolean onlyCardsInserted) {
@@ -101,18 +114,6 @@ public final class MockResponseFactory {
 
     public static T1cResponse<GclReader> getGclReaderResponse(String readerId) {
         return getSuccessResponse(getGclReader(readerId));
-    }
-
-    public static T1cResponse<List<GclContainer>> getAllContainersResponse() {
-        return new T1cResponse<List<GclContainer>>().withSuccess(true).withData(getAllContainers());
-    }
-
-    public static List<GclContainer> getAllContainers() {
-        List<GclContainer> containers = new ArrayList<>();
-        for (ContainerType type : ContainerType.values()) {
-            containers.add(new GclContainer().withId(type.getId()).withName(type.getId()).withVersion("1.0"));
-        }
-        return containers;
     }
 
     public static GclReader getGclReader(String readerId) {
@@ -289,7 +290,7 @@ public final class MockResponseFactory {
         return new GclReader().withName("Bit4id miniLector").withPinpad(pinPad).withId(id).withCard(card);
     }
 
-    public static GclInfo getGclV1Status() {
+    public static GclInfo getGclV2Status() {
         return new GclInfo()
                 .withActivated(true)
                 .withArch("x86_64")
@@ -297,13 +298,38 @@ public final class MockResponseFactory {
                 .withConsent(false)
                 .withLogLevel("info")
                 .withManaged(false)
-                .withOs("10.13.1")
+                .withOs("macOS")
+                .withOsid("macos")
                 .withUid("B7289D3AEB22D233")
-                .withVersion("1.2.5");
+                .withContainers(getContainerInfos())
+                .withVersion("2.0.0");
     }
 
-    public static String getGclAdminCertificate() {
+    private static List<GclContainerInfo> getContainerInfos() {
+        List<GclContainerInfo> containers = new ArrayList<>();
+        for (ContainerType type : ContainerType.values()) {
+            containers.add(new GclContainerInfo().withName(type.getId()).withVersion("v2.0.0").withStatus(GclContainerStatus.INSTALLED));
+        }
+        return containers;
+    }
+
+    public static GclPublicKeys getGclAdminCertificates() {
+        return new GclPublicKeys()
+                .withDevice(getGclAdminDeviceCertificate())
+                .withDs(getGclAdminDsCertificate())
+                .withSsl(getGclAdminSslCertificate());
+    }
+
+    public static String getGclAdminDeviceCertificate() {
+        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx0nI0kqfTCN4ppEt0K91+lqby/66pH6bK9Y3QrxuID9di8B0Qn27rQrQ/LeOfEpmk5ExhLlRgLdXBKEj8GX5Un91H30nKXsM18PsgP4XyOhkcsBE97vK4hraAOLRYphOGXqG93u179YbMORnwCnZuU008ypytjl+RyX/L5yWGDuQfCjX/bkOUPxmg7mJxC7GLQmnxMdjs9dkbwwmchQwLlVVURVkhqLOP1K0PIkbg8z1uIrN+7CSvCT31A4QaThAiRLj5ueU+HeENU6DEoCOfoZrZRRrjoyolS5GCaYGvlbMoWuECgpL0auhhfUnS+A+WtWiaRR5QzSzcnXZPmM+jwIDAQAB";
+    }
+
+    public static String getGclAdminDsCertificate() {
         return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB";
+    }
+
+    public static String getGclAdminSslCertificate() {
+        return "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9F4jdHNAjTecTdss0RGPsuxPTV/QsutKzrDfobVS9ZM/X8rUK68j2g29HO3/I8JPNnytNaQm3OTQAu5OM6DwzFiPW9wSHhL0ombdkV4PI9gSyOngteLpThiIttgZ1Lh0JyOR7IBMJ7BnfY1W0x/7YS7+oc0wFtz/+uvLi37kahz77NfvLwztQjeyH4q2n3eBGRqfVPlAJyAYcc2G9Qn70Iu9I/F4EYGKhsOlLvDBlTlL5ducp94yYVafB8UvV19FfkqD/gLtx0q+jQYd7vJsAgoqR3vop6p2Z30V7dT2yPFCcRG7lvOVUaxOZdzBZ4WXTHK+OsKHTMyJiyDR+8V/dQIDAQAB";
     }
 
     //
@@ -311,8 +337,8 @@ public final class MockResponseFactory {
     //
 
     public static T1cResponse<String> getSignedHashResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(pin)) {
-            throw new RestException("sign failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+            throw new RestException("sign failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -322,8 +348,8 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<Object> verifyPin(String pin) throws RestException {
-        if (!"1111".equals(pin)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+        if (!"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -424,7 +450,7 @@ public final class MockResponseFactory {
                 .withRawData("U3RhdGlvbnN0cmFhdCAxIAIEOTAwMAMER2VudA==")
                 .withSignature("lI+0Jcu/a/Ubi6gGgNA1hCTXC2JUz81XelmpKHMolGAugCGXLMhg5CI2y80SPGokcol/UQYOrl+ZDqQIqxlFb3OzFUbsW4YRXpm5BS7ZT3DRr+n2uc7PDMkZ1BhvB7V2mYgCMZLLDyyXPoMYbM/MJ0tL/6tdIKds/DlKu3nkk6rGoi77DyIpi2OGL67v1ItbvL6eW9jzW/NcxdpULciql6lK+bAfMWs8lYqdFxADU65m/Ac9vmNHofYAVv8GQt3OiPZrL97ysisDJ6gbtX1I05P4czNv4msU2GqxYIQUqRFEoKLs//VooS75hwjbU5/QVUtvXjxusqWvUomNG65AzQ==")
                 .withStreetAndNumber("Stationstraat 1")
-                .withVersion(0)
+                .withVersion(0L)
                 .withZipcode("9000");
     }
 
@@ -449,7 +475,7 @@ public final class MockResponseFactory {
                 .withSignature("tRdHRSu/OxNTV2O8fpikBxxxxxxxxxxBck4NttikWWto98Kax2dgxYl8mYJ8USB90R9yeUJOZCHCwvYVnEIaglTNgci3D0BOhK4b+xVLgogxsXPVnIHBhM99v5tVXoIu9DVUXrlCmkGJm1X/qUBTAouu6tzs2TimF5yUXOKFQAsoHNIr+Id7DDMiJ6QEhUE3BBy3tfb+Fr7VYBWpvq2daHpP8Se2vXAvZ6lOh56xgsNHthaLA1l4Wlro7pgBGvlXPDMnU/uFI3/0XaGC3UWs6izzWUkqsE3swvCdwfGkKRhaTIe9LWF898TUoZqs8/5GDt1qMARL/lB5Qbw==")
                 .withSpecialStatus("0")
                 .withThirdName("P")
-                .withVersion(0);
+                .withVersion(0L);
     }
 
     public static String getBeIdCitizenCertificate() {
@@ -556,9 +582,9 @@ public final class MockResponseFactory {
     }
 
     public static GclLuxIdPicture getGclLuxIdPicture() {
-        return new GclLuxIdPicture().withHeight(320)
+        return new GclLuxIdPicture().withHeight(320L)
                 .withImage("/0//UQAvAAAAAADwAAABQAAAAAAAAAAAAAAA8AAA....uq9eK159DRO61Ufrf9ICA/9k=")
-                .withWidth(240)
+                .withWidth(240L)
                 .withRawData("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");
     }
 
@@ -668,61 +694,61 @@ public final class MockResponseFactory {
     // Remote loading responses
     //
 
-    public static T1cResponse<String> getRemoteLoadingAtrResponse() {
-        return getSuccessResponse(getRemoteLoadingAtr());
+    public static T1cResponse<String> getReaderApiAtrResponse() {
+        return getSuccessResponse(getReaderApiAtr());
     }
 
-    public static T1cResponse<GclRemoteLoadingCommand> getRemoteLoadingCommandResponse() {
-        return getSuccessResponse(getGclRemoteLoadingCommand(0));
+    public static T1cResponse<GclReaderApiCommand> getReaderApiCommandResponse() {
+        return getSuccessResponse(getGclReaderApiCommand(0));
     }
 
-    public static T1cResponse<List<GclRemoteLoadingCommand>> getRemoteLoadingCommandsResponses(int amountOfCommands) {
-        List<GclRemoteLoadingCommand> remoteLoadingCommands = new ArrayList<>();
+    public static T1cResponse<List<GclReaderApiCommand>> getReaderApiCommandsResponses(int amountOfCommands) {
+        List<GclReaderApiCommand> readerApiCommands = new ArrayList<>();
         for (int i = 0; i < amountOfCommands; i++) {
-            remoteLoadingCommands.add(getGclRemoteLoadingCommand(i));
+            readerApiCommands.add(getGclReaderApiCommand(i));
         }
-        return getSuccessResponse(remoteLoadingCommands);
+        return getSuccessResponse(readerApiCommands);
     }
 
-    public static T1cResponse<List<GclRemoteLoadingCcidFeature>> getRemoteLoadingCcidFeaturesResponse() {
-        return getSuccessResponse(getGclRemoteLoadingCcidFeatures());
+    public static T1cResponse<List<GclReaderApiCcidFeature>> getReaderApiCcidFeaturesResponse() {
+        return getSuccessResponse(getGclReaderApiCcidFeatures());
     }
 
-    public static T1cResponse<Boolean> getRemoteLoadingIsPresentResponse() {
+    public static T1cResponse<Boolean> getReaderApiIsPresentResponse() {
         return getSuccessResponse(true);
     }
 
-    public static T1cResponse<String> getRemoteLoadingOpenSessionResponse() {
-        return getSuccessResponse(getRemoteLoadingSessionId());
+    public static T1cResponse<String> getReaderApiOpenSessionResponse() {
+        return getSuccessResponse(getReaderApiSessionId());
     }
 
-    public static T1cResponse<String> getRemoteLoadingCloseSessionResponse(String sessionId) {
+    public static T1cResponse<String> getReaderApiCloseSessionResponse(String sessionId) {
         return getSuccessResponse(sessionId);
     }
 
-    public static String getRemoteLoadingSessionId() {
+    public static String getReaderApiSessionId() {
         return "sessionId";
     }
 
-    public static List<GclRemoteLoadingCcidFeature> getGclRemoteLoadingCcidFeatures() {
-        List<GclRemoteLoadingCcidFeature> features = new ArrayList<>();
-        features.add(new GclRemoteLoadingCcidFeature()
+    public static List<GclReaderApiCcidFeature> getGclReaderApiCcidFeatures() {
+        List<GclReaderApiCcidFeature> features = new ArrayList<>();
+        features.add(new GclReaderApiCcidFeature()
                 .withId("VERIFY_PIN_DIRECT")
-                .withControlCode(1));
-        features.add(new GclRemoteLoadingCcidFeature()
+                .withControlCode(1L));
+        features.add(new GclReaderApiCcidFeature()
                 .withId("MODIFY_PIN_DIRECT")
-                .withControlCode(2));
+                .withControlCode(2L));
         return features;
     }
 
-    public static GclRemoteLoadingCommand getGclRemoteLoadingCommand(int txIncrement) {
-        return new GclRemoteLoadingCommand()
+    public static GclReaderApiCommand getGclReaderApiCommand(int txIncrement) {
+        return new GclReaderApiCommand()
                 .withRx("RESPONSE_DATA")
                 .withTx("00B00000B" + txIncrement)
                 .withSw("9000");
     }
 
-    public static String getRemoteLoadingAtr() {
+    public static String getReaderApiAtr() {
         return "3B8F800180318065B0850300EF120FFF82900073";
     }
 
@@ -788,8 +814,8 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclPtIdAddress> getPtIdAddressResponse(String pin) {
-        if (pin != null && !"1111".equals(pin)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -1049,15 +1075,15 @@ public final class MockResponseFactory {
                 new GclEmvApplication()
                         .withAid("A0000000048002")
                         .withLabel("SECURE CODE")
-                        .withPriority(0),
+                        .withPriority(0L),
                 new GclEmvApplication()
                         .withAid("D056000666111010")
                         .withLabel("BANCONTACT")
-                        .withPriority(1),
+                        .withPriority(1L),
                 new GclEmvApplication()
                         .withAid("A0000000043060")
                         .withLabel("MAESTRO")
-                        .withPriority(1)
+                        .withPriority(1L)
         );
     }
 
@@ -1103,41 +1129,41 @@ public final class MockResponseFactory {
 
     public static GclMobibContract getGclMobibContract() {
         return new GclMobibContract()
-                .withAuthenticatorKvc(122)
-                .withAuthenticatorValue(14646958)
+                .withAuthenticatorKvc(122L)
+                .withAuthenticatorValue(14646958L)
                 .withJourneyInterchangesAllowed(true)
-                .withOperatorMap(15)
-                .withPassengersMax(0)
-                .withPriceAmount(0)
-                .withProvider(1)
-                .withRestrictCode(5)
-                .withRestrictTime(2)
+                .withOperatorMap(15L)
+                .withPassengersMax(0L)
+                .withPriceAmount(0L)
+                .withProvider(1L)
+                .withRestrictCode(5L)
+                .withRestrictTime(2L)
                 .withSaleDate("2015-03-06")
-                .withSaleSamCount(398)
-                .withSaleSamId(1135996)
+                .withSaleSamCount(398L)
+                .withSaleSamId(1135996L)
                 .withSpatials(Arrays.asList(getGclMobibSpatial(), getGclMobibSpatial()))
                 .withTariff(getGclMobibTariff())
-                .withTypeId(15373)
+                .withTypeId(15373L)
                 .withValidityDuration(getGclMobibValidityDuration())
                 .withValidityStartDate("2015-03-06")
-                .withVehicleClassAllowed(0)
-                .withVersion(4);
+                .withVehicleClassAllowed(0L)
+                .withVersion(4L);
     }
 
     public static GclMobibSpatial getGclMobibSpatial() {
-        return new GclMobibSpatial().withRouteDestination(false).withRouteOrigin(1).withType(6);
+        return new GclMobibSpatial().withRouteDestination(false).withRouteOrigin(1L).withType(6L);
     }
 
     public static GclMobibTariff getGclMobibTariff() {
-        return new GclMobibTariff().withCounter(getGclMobibCounter()).withMultimodal(true).withNameref(3);
+        return new GclMobibTariff().withCounter(getGclMobibCounter()).withMultimodal(true).withNameref(3L);
     }
 
     public static GclMobibCounter getGclMobibCounter() {
-        return new GclMobibCounter().withTime("2017-02-21T06:20:00").withType(2).withJourneys(0);
+        return new GclMobibCounter().withTime("2017-02-21T06:20:00").withType(2L).withJourneys(0L);
     }
 
     public static GclMobibValidityDuration getGclMobibValidityDuration() {
-        return new GclMobibValidityDuration().withUnit(3).withValue(3);
+        return new GclMobibValidityDuration().withUnit(3L).withValue(3L);
     }
 
     public static GclMobibCardIssuing getGclMobibCardIssuing() {
@@ -1149,11 +1175,11 @@ public final class MockResponseFactory {
                 .withCardHolderName("TEST|KAART                                         ")
                 .withCardHolderStartDate("2015-03-06")
                 .withCardRevalidationDate("not-a-date-time")
-                .withCardType(1)
-                .withCompanyId(1)
-                .withGender(1)
-                .withLanguage(1)
-                .withVersion(1);
+                .withCardType(1L)
+                .withCompanyId(1L)
+                .withGender(1L)
+                .withLanguage(1L)
+                .withVersion(1L);
     }
 
     public static String getGclMobibPicture() {
@@ -1173,7 +1199,7 @@ public final class MockResponseFactory {
 
     public static T1cResponse<Long> getGclOcraChallengeResponse(String pin) throws RestException {
         if (pin != null && !"1111".equals(pin)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -1183,8 +1209,8 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<String> getGclOcraCounterResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(pin)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -1207,7 +1233,7 @@ public final class MockResponseFactory {
 
     public static T1cResponse<Object> getGclAventraResetPinResponse(String puk) {
         if (StringUtils.isNotEmpty(puk) && !"1111".equals(puk)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
@@ -1283,7 +1309,7 @@ public final class MockResponseFactory {
 
     public static GclAventraAppletInfo getGclAventraAppletInfo() {
         return new GclAventraAppletInfo()
-                .withChangeCounter(77)
+                .withChangeCounter(77L)
                 .withName("MyEID")
                 .withSerial("00006064024054982647")
                 .withVersion("3.3.3");
@@ -1507,64 +1533,64 @@ public final class MockResponseFactory {
     }
 
     //
-    // SafeNet responses
+    // Pkcs11 responses
     //
 
-    public static T1cResponse<GclSafeNetInfo> getSafeNetInfoResponse() {
-        return getSuccessResponse(getGclSafeNetInfo());
+    public static T1cResponse<GclPkcs11Info> getPkcs11InfoResponse() {
+        return getSuccessResponse(getGclPkcs11Info());
     }
 
-    public static T1cResponse<List<GclSafeNetSlot>> getSafeNetSlotsResponse(Boolean tokenPresent) {
-        List<GclSafeNetSlot> slots;
+    public static T1cResponse<List<GclPkcs11Slot>> getPkcs11SlotsResponse(Boolean tokenPresent) {
+        List<GclPkcs11Slot> slots;
         if (tokenPresent == null) {
-            slots = Arrays.asList(getGclSafeNetSlotWithToken(), getGclSafeNetSlotWithoutToken());
+            slots = Arrays.asList(getGclPkcs11SlotWithToken(), getGclPkcs11SlotWithoutToken());
         } else if (tokenPresent) {
-            slots = Collections.singletonList(getGclSafeNetSlotWithToken());
+            slots = Collections.singletonList(getGclPkcs11SlotWithToken());
         } else {
-            slots = Collections.singletonList(getGclSafeNetSlotWithoutToken());
+            slots = Collections.singletonList(getGclPkcs11SlotWithoutToken());
         }
         return getSuccessResponse(slots);
     }
 
-    public static T1cResponse<List<String>> getSafeNetCertificatesResponse(String pin) {
+    public static T1cResponse<List<String>> getPkcs11CertificatesResponse(String pin) {
         if (!"1111".equals(pin)) {
-            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v1/plugins/pluginid/readerid/method", "{\n" +
+            throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
                     "  \"success\": false\n" +
                     "}");
         }
-        return getSuccessResponse(getSafeNetCertificates());
+        return getSuccessResponse(getPkcs11Certificates());
     }
 
-    public static List<String> getSafeNetCertificates() {
-        //TODO - Return actual SafeNet test certificates
+    public static List<String> getPkcs11Certificates() {
+        //TODO - Return actual Pkcs11 test certificates
         return getLuxTrustRootCertificates();
     }
 
-    public static GclSafeNetInfo getGclSafeNetInfo() {
-        return new GclSafeNetInfo()
+    public static GclPkcs11Info getGclPkcs11Info() {
+        return new GclPkcs11Info()
                 .withCryptokiVersion("2.20")
-                .withManufacturerId("SafeNet, Inc.")
-                .withFlags(7)
-                .withLibraryDescription("SafeNet eToken PKCS#11")
+                .withManufacturerId("Pkcs11, Inc.")
+                .withFlags(7L)
+                .withLibraryDescription("Pkcs11 eToken PKCS#11")
                 .withLibraryVersion("9.1");
     }
 
-    public static GclSafeNetSlot getGclSafeNetSlotWithToken() {
-        return new GclSafeNetSlot()
-                .withSlotId(0)
-                .withDescription("SafeNet eToken 5100")
-                .withFlags(1)
+    public static GclPkcs11Slot getGclPkcs11SlotWithToken() {
+        return new GclPkcs11Slot()
+                .withSlotId(0L)
+                .withDescription("Pkcs11 eToken 5100")
+                .withFlags(1L)
                 .withHardwareVersion("2.0")
                 .withFirmwareVersion("0.0");
     }
 
-    public static GclSafeNetSlot getGclSafeNetSlotWithoutToken() {
-        return new GclSafeNetSlot()
-                .withSlotId(0)
-                .withDescription("SafeNet eToken 5100")
-                .withFlags(0)
+    public static GclPkcs11Slot getGclPkcs11SlotWithoutToken() {
+        return new GclPkcs11Slot()
+                .withSlotId(0L)
+                .withDescription("Pkcs11 eToken 5100")
+                .withFlags(0L)
                 .withHardwareVersion("2.0")
                 .withFirmwareVersion("0.0");
     }
@@ -1592,8 +1618,61 @@ public final class MockResponseFactory {
         return new DsToken().withToken("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vVDFDLURTIiwiYXVkIjoiR0NMIiwiZXhwIjoxNTEwMjg2MDIwLCJqdGkiOiItVE9MMWNHZHVLTl9LTGFGLVZSSkJ3IiwiaWF0IjoxNTEwMjgyNDIwLCJuYmYiOjE1MTAyODIzMDAsInN1YiI6IkdDTC1JRCIsImFjdGl2YXRpb24iOnRydWUsInBsdWdpbnMiOlsicGx1Z2luMSIsInBsdWdpbjIiLCJwbHVnaW4zIl19.JncS0rdgQ19r-lj5Yvtkw3evx3iufPX19WhoTrOW0H_Qu6L7HagkOZlszRMEivm2trYldvOivtzqNJFuz0XODcJE6rKF3DOlkyUkE-PHgPd-NFd8ME21FHCKLswkcJw4xPxAhreat6ybN3BuH1cdAMgrqFkR-avsKQOLYmW2LwSsmApdv7HBEo6YX3IxfX7HbzSI71D6fxEhqIsvg8u5ZrJGAjdFPEaIeo58yDDjZ-zwa7tKpg9w5Jt5Ubl3VePyLOE9zl1CycYov-qod9BC6pOuYptYrayY8pzGKSXrYdpEMoqRAXGCfrpIAxVUuR0prcTpHKeUU6lFPUzdanw8DQ");
     }
 
-    public static DsDownloadPath getDownloadPath() {
-        return new DsDownloadPath().withPath("/trust1team/gclds-file/v1/installer.dmg");
+    public static DsDownloadLink getDownloadLinkResponse(String proxyDomain) {
+        return new DsDownloadLink().withLink(getDownloadLink(proxyDomain));
+    }
+
+    public static String getDownloadLink(String proxyDomain) {
+        return proxyDomain + "/trust1team/gclds-file/v1/installer.dmg";
+    }
+
+    public static DsRegistrationSyncResponse getDsRegistrationResponse() {
+        return new DsRegistrationSyncResponse()
+                .withUuid("FFF4D9C72F54A886")
+                .withActivated(false)
+                .withManaged(false)
+                .withCoreVersion("2.0.0")
+                .withContextToken(6L);
+    }
+
+    public static DsRegistrationSyncResponse getDsSyncResponse() {
+        return new DsRegistrationSyncResponse()
+                .withUuid("FFF4D9C72F54A886")
+                .withActivated(true)
+                .withManaged(false)
+                .withCoreVersion("2.0.0")
+                .withContextToken(6L)
+                .withContainerResponses(
+                        Collections.singletonList(new DsContainerResponse()
+                                .withId("beid-v2.0.0")
+                                .withName("beid")
+                                .withVersion("v2.0.0")
+                                .withOsStorage(Arrays.asList(
+                                        new DsContainerStorage()
+                                                .withHash("656aebd2ac65b6a9a1128d4d0a4b5ba73f9c46fc7620a2ace11a2c5280769c8f")
+                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win32.zip")
+                                                .withOs("win32"),
+                                        new DsContainerStorage()
+                                                .withHash("c4f5eda290b61577403fea74ae9d53f9000b7f715e4c5d2e64bb0c3efd351560")
+                                                .withOs("win64")
+                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win64.zip"),
+                                        new DsContainerStorage()
+                                                .withHash("6099b8dfe1f698f03ee350a124584de25622ae93661736a7636a506c80976f3c")
+                                                .withOs("macos")
+                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/macos.zip"),
+                                        new DsContainerStorage()
+                                                .withHash("968ffc5443480beb4f5e49b92068b5f50f0b5937b6e18bd563272d4ba092d823")
+                                                .withOs("linux")
+                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/linux.zip")))
+                                .withLanguage("CPLUSPLUS")
+                                .withAvailability("PUB")
+                                .withDependsOn(Collections.<String>emptyList())
+                                .withStatus("INIT")
+                                .withAllowedOrigins(Collections.singletonList("*"))
+                        ))
+                .withAtrList(new DsAtrList()
+                        .withHash("aabd94a5a37e91ed5ef2ceed2fec90282505f69d0534e07b3b9d159325c00696")
+                        .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/atr/list-0.txt"));
     }
 
     public static T1cResponse<List<GclAgent>> getAgentsResponse(Map<String, String> filters) {
@@ -1616,16 +1695,68 @@ public final class MockResponseFactory {
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:09:41.521521")
                 .withMetadata(Collections.<String, String>emptyMap())
-                .withPort(57061)
+                .withPort(57061L)
                 .withUsername("johndoe"));
         agents.add(new GclAgent()
                 .withChallenge("43244235-d1e5-gfd548-a850-6hthrf9313po34")
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:15:41.521521")
                 .withMetadata(Collections.<String, String>emptyMap())
-                .withPort(57043)
+                .withPort(57043L)
                 .withUsername("janedoe"));
         return agents;
+    }
+
+    public static T1cResponse<List<DigestAlgorithm>> getSupportedAlgorithms(ContainerType type) {
+        List<DigestAlgorithm> rval;
+        switch (type) {
+            case AVENTRA:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case BEID:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case DNIE:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case EMV:
+                rval = Collections.emptyList();
+                break;
+            case EST:
+                rval = Collections.emptyList();
+                break;
+            case LUXID:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case LUXTRUST:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case MOBIB:
+                rval = Collections.emptyList();
+                break;
+            case OBERTHUR:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
+                break;
+            case OCRA:
+                rval = Collections.emptyList();
+                break;
+            case PIV:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case PT:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            case READER_API:
+                rval = Collections.emptyList();
+                break;
+            case PKCS11:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+            default:
+                rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
+                break;
+        }
+        return getSuccessResponse(rval);
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {
@@ -1636,5 +1767,9 @@ public final class MockResponseFactory {
         if (filter.contains("throwException"))
             throw ExceptionFactory.restException("request failed", 400, "https://localhost:10443/v1", null);
         return Arrays.asList(filter.split(","));
+    }
+
+    private static String getDevicePrivateKey() {
+        return "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDHScjSSp9MI3imkS3Qr3X6WpvL/rqkfpsr1jdCvG4gP12LwHRCfbutCtD8t458SmaTkTGEuVGAt1cEoSPwZflSf3UffScpewzXw+yA/hfI6GRywET3u8riGtoA4tFimE4Zeob3e7Xv1hsw5GfAKdm5TTTzKnK2OX5HJf8vnJYYO5B8KNf9uQ5Q/GaDuYnELsYtCafEx2Oz12RvDCZyFDAuVVVRFWSGos4/UrQ8iRuDzPW4is37sJK8JPfUDhBpOECJEuPm55T4d4Q1ToMSgI5+hmtlFGuOjKiVLkYJpga+Vsyha4QKCkvRq6GF9SdL4D5a1aJpFHlDNLNyddk+Yz6PAgMBAAECggEBALVAwGuy/wsqv9MO+9JvoyfePRDeTzbJB6xpGr2Rz794okY29gZ7gLQzwDv5XphgusbAKX+DZUNifLxzKtK8jHSiBA5tr66kgdvEEFiJwWwzIRjVEmUW4cGflmNz5+h6iZ3WuOZiF+lYnEZtlodKCQHl3KDFHKvrwpRHVL8i9ch21mmkItqA0GbhIU+uGZqRBvLPV5nJcAp1uQDIWeR7V8b0qFCYK1t4WzTfopczwK6OwuxQZG/graxCLWssven62l/HqZpybx+AtgU56qSeNYYT3nnz0uMYXjeYtmC3L8P0Et87NIBzX2qG2vCCrEb8ifQIxAsecKz7yBP7dFN9CxECgYEA/s3/uQWB2HMMKWjydgJTlfVz6I55l+HgWsRtAVRWyN4JzFBRHCmbhWClWIr7fMtIPFk7Bn7piYlE5LTWJxLIeR4ku4A68OBzW2GVhWllOlIbeE9rLyhHWaippWPcs8Fc80TyhpCw3gD+ceISdBwIMwTiMqTWN6qvItNaAxBiBr0CgYEAyDkdTtZkBOpTrDWbHjMTKUKYgtR6vzyU9C5vGYQ1y9aNAmEU1mM/p/zBPLTvo1UGoQQKPfkeJXsQaRl0OVSuWFmCmYk7Eb36tEgfWMUHQQRkZtuecZDnoa13JEmuNn/tX4tl5XMzGiSWqFH1UbHfND8HyQx/fNMTdn4Xf1vyBTsCgYEA1qZhG9Oo29enUicnwgQZuAVrXGjRxAIzhyNcFLeg2Fw8ctLiUVA3xHdzMxD55No3AyfEUqeNQyDRWb2Bfq8TFP0wwoe2n37ljwC4/geYkDXlEEgPKk3LNZuhNkPXA9ML45+ck4HGjW7W6scg9pE60wf1Kea003ZFTZgwhs5BVh0CgYArK/2AyUNpt+jwweI/gb3I8L4Xv57z6ykm+XglJVfAKvPepnYqv92y6BH2eAEP076JK2jV8ggpBr8EGmPwFK0/CZXaazecXL1Y8BAqQNmOkFbhwssIK7l2KAP/hA+XWsAhENqYvd0v7uG5S2q9AcBh8JFKLXKzxIN20jtYz8eAjwKBgQDV+O/Vty6NWq81DA0QNul4gN8zi3abUf57jicjQ1FTYAUT6VxRJl7cl4gcZsiO755OFa62GcvCWHN5AuEZq1pdI0s6+KvIlFqH7FZxocDkz/+MmcZlfH917pZ/SXSkqoPdjC/7Cip0I4fRHmn9QEuUPE5VtF7G3UBXdLbx8nkuEA==";
     }
 }

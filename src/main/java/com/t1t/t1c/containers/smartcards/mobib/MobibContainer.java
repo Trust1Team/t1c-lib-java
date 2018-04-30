@@ -4,6 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
@@ -26,15 +27,15 @@ import java.util.Map;
 public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRestClient, GclMobibAllData, AllCertificates> {
 
     public MobibContainer(LibConfig config, GclReader reader, GclMobibRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, String pin) {
+    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pin = pin;
+        this.pace = pace;
         this.type = ContainerType.MOBIB;
         return this;
     }
@@ -50,48 +51,38 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public GclMobibAllData getAllData() throws RestException, NoConsentException {
-        return getAllData(null, null);
-    }
-
-    @Override
-    public GclMobibAllData getAllData(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public GclMobibAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getMobibAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public GclMobibAllData getAllData(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllData(null, null);
-    }
-
-    @Override
-    public AllCertificates getAllCertificates() throws RestException, NoConsentException {
-        return getAllCertificates(null, null);
-    }
-
-    @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean... parseCertificates) throws RestException, NoConsentException {
+    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public AllCertificates getAllCertificates(Boolean... parseCertificates) throws RestException, NoConsentException {
-        return getAllCertificates(null, null);
-    }
-
-    @Override
-    public Boolean verifyPin(String... pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("container has no verify PIN capabilities");
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String... pin) throws RestException, NoConsentException {
+    public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String... pin) throws RestException, NoConsentException {
+    public String authenticate(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
+    }
+
+    @Override
+    public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
+    }
+
+    @Override
+    public String sign(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
+        throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
     @Override
@@ -141,7 +132,7 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public ContainerData dumpData(String... pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
         ContainerData data = new ContainerData();
         GclMobibAllData allData = getAllData(true);
 

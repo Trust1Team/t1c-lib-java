@@ -30,11 +30,11 @@ public class JsonConversionException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.JSON_CONVERSION_ERROR;
+        return ErrorCodes.ERROR_JSON_CONVERSION;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.JSON_CONVERSION_ERROR_INFO;
+        return ErrorCodes.INFO_JSON_CONVERSION_ERROR;
     }
 }

@@ -19,7 +19,7 @@ public class GclMobibTariff {
     private Boolean multimodal;
     @SerializedName("nameref")
     @Expose
-    private Integer nameref;
+    private Long nameref;
 
     /**
      * @return The counter
@@ -62,18 +62,18 @@ public class GclMobibTariff {
     /**
      * @return The nameref
      */
-    public Integer getNameref() {
+    public Long getNameref() {
         return nameref;
     }
 
     /**
      * @param nameref The nameref
      */
-    public void setNameref(Integer nameref) {
+    public void setNameref(Long nameref) {
         this.nameref = nameref;
     }
 
-    public GclMobibTariff withNameref(Integer nameref) {
+    public GclMobibTariff withNameref(Long nameref) {
         this.nameref = nameref;
         return this;
     }

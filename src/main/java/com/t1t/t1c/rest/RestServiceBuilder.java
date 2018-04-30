@@ -1,5 +1,8 @@
 package com.t1t.t1c.rest;
 
+import com.t1t.t1c.auth.GatewayAuthClient;
+import com.t1t.t1c.auth.GatewayAuthRestClient;
+import com.t1t.t1c.auth.IGatewayAuthClient;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.core.GclAdminRestClient;
 import com.t1t.t1c.core.GclCitrixRestClient;
@@ -32,11 +35,14 @@ import java.util.concurrent.TimeUnit;
  * @since 2017
  */
 public final class RestServiceBuilder {
+
     private static final Logger log = LoggerFactory.getLogger(RestServiceBuilder.class);
+
     /* Headers */
-    private static final String CONTAINER_CONTEXT_PATH = "plugins/";
+    private static final String CONTAINER_CONTEXT_PATH = "containers/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String ORIGIN_HEADER_NAME = "origin";
     private static final String ORIGIN_HEADER_VALUE = "https://localhost";
@@ -54,7 +60,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclRestClient getGclRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclRestClient.class, null, config);
+        return getLocalClient(config.getGclClientUri(), GclRestClient.class, config, false);
     }
 
     /**
@@ -65,7 +71,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, null, config);
+        return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, config, false);
     }
 
     /**
@@ -76,7 +82,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
-        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config.getJwt(), config);
+        return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config, true);
     }
 
     /**
@@ -87,7 +93,17 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), null);
+        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
+    }
+
+    /**
+     * Gateway auth client that communicates through gateway
+     *
+     * @param config
+     * @return
+     */
+    public static IGatewayAuthClient getGatewayAuthClient(LibConfig config) {
+        return new GatewayAuthClient(getClient(config.getAuthUri(), GatewayAuthRestClient.class, config.getApiKey(), null));
     }
 
     /**
@@ -101,12 +117,12 @@ public final class RestServiceBuilder {
      */
     public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
         String uri;
-        if (config.getCitrix() && config.getAgentPort() != null) {
+        if (config.isCitrix() && config.getAgentPort() != null) {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + String.format(CITRIX_AGENT_PATH, config.getAgentPort()) + CONTAINER_CONTEXT_PATH);
         } else {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + CONTAINER_CONTEXT_PATH);
         }
-        return getLocalClient(uri, clazz, null, config);
+        return getLocalClient(uri, clazz, config, false);
     }
 
     /**
@@ -117,7 +133,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), null);
+        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
     }
 
     /**
@@ -126,14 +142,14 @@ public final class RestServiceBuilder {
      * @param uri
      * @param iFace
      * @param apikey
-     * @param jwt
+     * @param gatewayAuthClient
      * @param <T>
      * @return
      */
-    private static <T> T getClient(String uri, Class<T> iFace, String apikey, String jwt) {
+    private static <T> T getClient(String uri, Class<T> iFace, String apikey, IGatewayAuthClient gatewayAuthClient) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(gethttpClient(apikey, jwt))
+                    .client(gethttpClient(apikey, gatewayAuthClient))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -145,10 +161,10 @@ public final class RestServiceBuilder {
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, String jwt, LibConfig config) {
+    private static <T> T getLocalClient(String uri, Class<T> iFace, LibConfig config, boolean sendAuthToken) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(getHttpClientSkipTLS(jwt, config))
+                    .client(getHttpClientSkipTLS(config, sendAuthToken))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -163,15 +179,19 @@ public final class RestServiceBuilder {
      * Builds a http client instance.
      *
      * @param apikey
-     * @param jwt
+     * @param gatewayAuthClient
      * @return
      */
-    private static OkHttpClient gethttpClient(final String apikey, final String jwt) {
+    private static OkHttpClient gethttpClient(final String apikey, final IGatewayAuthClient gatewayAuthClient) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
-        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
-
+        String token = null;
+        if (gatewayAuthClient != null) {
+            token = gatewayAuthClient.getToken();
+        }
+        final boolean jwtPresent = StringUtils.isNotEmpty(token);
+        final String gwToken = token;
         if (apikeyPresent || jwtPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
@@ -181,11 +201,7 @@ public final class RestServiceBuilder {
                         requestBuilder.addHeader(APIKEY_HEADER_NAME, apikey);
                     }
                     if (jwtPresent) {
-                        if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                        } else {
-                            requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
-                        }
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + gwToken);
                     }
                     return chain.proceed(requestBuilder.build());
                 }
@@ -209,7 +225,7 @@ public final class RestServiceBuilder {
      * @throws CertificateException
      * @throws KeyManagementException
      */
-    private static OkHttpClient getHttpClientSkipTLS(final String jwt, final LibConfig config) throws NoSuchAlgorithmException, KeyManagementException {
+    private static OkHttpClient getHttpClientSkipTLS(final LibConfig config, final boolean sendAuthToken) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
         X509TrustManager x509TrustManager = new X509TrustManager() {
@@ -244,34 +260,36 @@ public final class RestServiceBuilder {
                     }
                 });
 
-        final boolean jwtPresent = StringUtils.isNotBlank(jwt);
-        if (jwtPresent) {
+        final boolean jwtPresent = StringUtils.isNotBlank(config.getGclJwt()) && sendAuthToken;
+        final boolean contextTokenRequired = config.getContextToken() != null && !config.isManaged();
+        if (jwtPresent || contextTokenRequired) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder requestBuilder = chain.request().newBuilder();
-                    if (jwt.startsWith(AUTHORIZATION_HEADER_VALUE_PREFIX)) {
-                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, jwt);
-                    } else {
-                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + jwt);
+                    if (jwtPresent) {
+                        requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
+                    }
+                    if (contextTokenRequired) {
+                        requestBuilder.addHeader(X_RELAY_STATE_PREFIX + config.getContextToken(), String.valueOf(config.getContextToken()));
                     }
                     return chain.proceed(requestBuilder.build());
                 }
             });
         }
-        if (config.isTokenCompatible()) {
-            okHttpBuilder.addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder requestBuilder = chain.request().newBuilder();
-                    requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
-                    String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
-                    log.debug("client fingerprint: {}", fingerprint);
-                    requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
-                    return chain.proceed(requestBuilder.build());
-                }
-            });
-        }
+
+        okHttpBuilder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request.Builder requestBuilder = chain.request().newBuilder();
+                requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
+                String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
+                log.debug("client fingerprint: {}", fingerprint);
+                requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
+                return chain.proceed(requestBuilder.build());
+            }
+        });
+
         // Set timeouts a little higher, because reading data from cards can take time
         // The timeout should also be greater than the consent timeout, otherwise an error will occur when exceeding it
         // As such the timeout should default to either 30 seconds or the default consent timeout + 1s

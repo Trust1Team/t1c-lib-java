@@ -4,6 +4,7 @@ import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -38,7 +39,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "123456");
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), new GclPace().withPin("123456"));
     }
 
     @Test
@@ -334,10 +335,10 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test
     public void testGclLuxIdPicture() {
         GclLuxIdPicture pic = MockResponseFactory.getGclLuxIdPicture();
-        pic.setHeight(1);
-        assertEquals(Integer.valueOf(1), pic.getHeight());
-        pic.setWidth(2);
-        assertEquals(Integer.valueOf(2), pic.getWidth());
+        pic.setHeight(1L);
+        assertEquals(Long.valueOf(1), pic.getHeight());
+        pic.setWidth(2L);
+        assertEquals(Long.valueOf(2), pic.getWidth());
         pic.setImage("img");
         assertEquals("img", pic.getImage());
         pic.setRawData("raw");
@@ -431,7 +432,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
     @Test
     public void testLuxIdContainerException() {
         LuxIdContainerException ex = ExceptionFactory.luxIdContainerException("message");
-        assertEquals(Integer.valueOf(ErrorCodes.LUXID_CONTAINER_REST_ERROR), ex.getErrorCode());
+        assertEquals(Integer.valueOf(ErrorCodes.ERROR_LUXID_CONTAINER_REST), ex.getErrorCode());
     }
 
     @Test
@@ -467,7 +468,6 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
-        assertNotNull(data.getCertificateChains());
         assertNotNull(data.getAllCertificates());
     }
 }

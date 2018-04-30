@@ -1,11 +1,10 @@
 package com.t1t.t1c;
 
-import com.t1t.t1c.configuration.Environment;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.remoteloading.GclRemoteLoadingApdu;
-import com.t1t.t1c.containers.remoteloading.RemoteLoadingContainer;
+import com.t1t.t1c.containers.readerapi.GclReaderApiApdu;
+import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
@@ -16,14 +15,12 @@ import com.t1t.t1c.containers.smartcards.emv.GclEmvPublicKeyCertificate;
 import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.piv.PivContainer;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.GclSafeNetSlot;
-import com.t1t.t1c.containers.smartcards.pkcs11.safenet.SafeNetContainer;
+import com.t1t.t1c.containers.smartcards.pkcs11.GclPkcs11Slot;
+import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.aventra.AventraContainer;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
 import com.t1t.t1c.containers.smartcards.pki.oberthur.OberthurContainer;
-import com.t1t.t1c.core.GclAgent;
-import com.t1t.t1c.core.GclConsent;
-import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.VerifyPinException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -32,6 +29,7 @@ import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -39,31 +37,12 @@ import java.util.*;
  * @since 2017
  */
 public class JavaClientExample {
-    /*Uris*/
-    private static final String OCV_URI = "https://accapim.t1t.be/trust1team/ocv-api/v1";
-    private static final String DS_URI = "https://accapim.t1t.be/trust1team/gclds/v1";
-    private static final String URI_T1C_GCL = "https://localhost:10443/v1/";
-    /*Keys*/
-    private static String API_KEY = "INSERT_API_KEY";
+
     private static IT1cClient client;
     private static LibConfig conf;
 
     public static void main(String[] args) {
         try {
-            /*Config*/
-            conf = new LibConfig();
-            conf.setEnvironment(Environment.DEV);
-            conf.setDsUri(DS_URI);
-            conf.setOcvUri(OCV_URI);
-            conf.setGclClientUri(URI_T1C_GCL);
-            conf.setApiKey(API_KEY);
-            conf.setHardwarePinPadForced(false);
-            conf.setDefaultPollingIntervalInSeconds(5);
-            conf.setDefaultPollingTimeoutInSeconds(10);
-            conf.setDefaultConsentDuration(2);
-            conf.setDefaultConsentTimeout(35);
-            conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
-
             showMenu();
         } catch (NoConsentException ex) {
             System.out.println("Consent required: Grant consent and try again");
@@ -74,13 +53,19 @@ public class JavaClientExample {
     private static void showMenu() {
         Scanner scan = new Scanner(System.in);
         /*Instantiate client*/
-        client = new T1cClient(conf);
+
+        // Copy the example configuration file to a folder of your choosing and adjust it below
+
+        client = new T1cClient(Paths.get("/usr/local/t1c/application.conf"));
+        conf = client.getConnectionFactory().getConfig();
+        System.out.println("DownloadLink: " + client.getDownloadLink());
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
         System.out.println("3. Grant consent");
         System.out.println("4. Select Citrix agent");
-        System.out.println("5. Exit");
+        System.out.println("5. Get Reader API container");
+        System.out.println("6. Exit");
         System.out.println("===============================================");
         System.out.print("Please make a choice: ");
         String choice = scan.nextLine();
@@ -100,7 +85,10 @@ public class JavaClientExample {
                 executeCitrixFunctionality();
                 break;
             case "5":
-                // Do nothing
+                readerApiUseCases(client.getCore().pollCardInserted());
+                break;
+            case "6":
+                //Do nothing
                 break;
             default:
                 System.out.println("Invalid choice");
@@ -111,7 +99,7 @@ public class JavaClientExample {
 
     private static void grantConsent() {
         try {
-            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclConsent.AlertLevel.ERROR, GclConsent.AlertPosition.CENTER, GclConsent.Type.READER, 35));
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclAlertLevel.ERROR, GclAlertPosition.CENTER, GclConsentType.READER, 10));
         } catch (UnsupportedOperationException ex) {
             System.out.println(ex.getMessage());
         }
@@ -139,7 +127,7 @@ public class JavaClientExample {
                 Integer choice = Integer.valueOf(input);
                 if (choice >= 0 && choice < agents.size()) {
                     GclAgent chosenAgent = agents.get(choice);
-                    conf.setAgentPort(chosenAgent.getPort());
+                    conf.setAgentPort(chosenAgent.getPort().intValue());
                     showMenu();
                 } else if (choice != i) {
                     System.out.println("Invalid choice");
@@ -159,7 +147,7 @@ public class JavaClientExample {
         Scanner scan = new Scanner(System.in);
         System.out.print("Provide PIN (optional, press enter to skip): ");
         String pin = scan.nextLine();
-        IGenericContainer container = client.getGenericContainer(reader, pin);
+        IGenericContainer container = client.getGenericContainer(reader, new GclPace().withPin(pin));
         // This returns a marker interface, the return value still needs to be cast to the correct class
         System.out.println("Container all data: " + container.getAllData());
         System.out.println("Container Certificates: " + container.getAllCertificates());
@@ -193,7 +181,6 @@ public class JavaClientExample {
                 aventraUseCases(reader);
                 break;
             case BEID:
-                remoteLoadingUseCases(reader);
                 beIdUseCases(reader);
                 break;
             case DNIE:
@@ -225,8 +212,8 @@ public class JavaClientExample {
             case PT:
                 ptIdUseCases(reader);
                 break;
-            case SAFENET:
-                safeNetUseCases(reader);
+            case PKCS11:
+                pkcs11UseCases(reader);
                 break;
             default:
                 System.out.println("No matching container type found: " + type);
@@ -234,23 +221,23 @@ public class JavaClientExample {
         }
     }
 
-    private static void safeNetUseCases(GclReader reader) {
+    private static void pkcs11UseCases(GclReader reader) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pin = scanner.nextLine();
 
-        SafeNetContainer container = client.getSafeNetContainer(reader);
+        Pkcs11Container container = client.getPkcs11Container(reader);
 
         System.out.println("Container data dump: " + container.getAllData().toString());
 
-        System.out.println("SafeNet info: " + container.getSafeNetInfo().toString());
+        System.out.println("Pkcs11 info: " + container.getPkcs11Info().toString());
 
-        List<GclSafeNetSlot> slots = container.getSafeNetSlots();
+        List<GclPkcs11Slot> slots = container.getPkcs11Slots();
         try {
-            for (GclSafeNetSlot slot : slots) {
-                System.out.println("SafeNet slot: " + slot.toString());
+            for (GclPkcs11Slot slot : slots) {
+                System.out.println("Pkcs11 slot: " + slot.toString());
                 if (StringUtils.isNotEmpty(pin)) {
-                    System.out.println("Slot certificates: " + container.getSafeNetCertificates(slot.getSlotId(), pin));
+                    System.out.println("Slot certificates: " + container.getPkcs11Certificates(slot.getSlotId(), pin));
                 }
             }
         } catch (VerifyPinException ex) {
@@ -269,7 +256,8 @@ public class JavaClientExample {
 
                 System.out.println("PIN verified: " + container.verifyPin(pin));
                 //TODO - Container currently only supports verify PIN, re-enable methods below once implemented in container
-                /*System.out.println("Card data dump: " + container.getAllData().toString());
+
+                System.out.println("Card data dump: " + container.getAllData().toString());
                 System.out.println("Card certificates dump: " + container.getAllCertificates().toString());
                 System.out.println("Authentication certificate: " + container.getAuthenticationCertificate().getBase64());
                 System.out.println("Authentication algorithm references: " + container.getAllAlgoRefsForAuthentication().toString());
@@ -284,7 +272,7 @@ public class JavaClientExample {
                         .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
                         .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
                         .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());*/
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
             } catch (VerifyPinException ex) {
                 System.out.println("PIN verification failed: " + ex.getMessage());
@@ -556,13 +544,16 @@ public class JavaClientExample {
         if (StringUtils.isNotBlank(authenticatePin)) {
 
             // Authenticate data
-            String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-            System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                    .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                    .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                    .withHash(challenge)
-                    .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, authenticatePin))).getResult());
-
+            try {
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, authenticatePin))).getResult());
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN Error: " + ex.getMessage());
+            }
         }
 
         scan = new Scanner(System.in);
@@ -631,7 +622,7 @@ public class JavaClientExample {
         Scanner scan = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pin = scan.nextLine();
-        LuxIdContainer container = client.getLuxIdContainer(reader, pin);
+        LuxIdContainer container = client.getLuxIdContainer(reader, new GclPace().withPin(pin));
 
         boolean pinVerified = container.verifyPin(pin);
 
@@ -664,7 +655,7 @@ public class JavaClientExample {
             System.out.println("Base64 root certificates: " + sb.toString());
             System.out.println("Base64 authentication certificate: " + container.getAuthenticationCertificate().getBase64());
             System.out.println("Base64 non-repudiation certificate: " + container.getNonRepudiationCertificate().getBase64());
-            System.out.println("Card data dump: " + container.getAllData());
+            System.out.println("Card data dump: " + container.getAllData().toString());
             System.out.println("Card certificate dump: " + container.getAllCertificates());
         }
     }
@@ -708,8 +699,8 @@ public class JavaClientExample {
         }
     }
 
-    private static void remoteLoadingUseCases(GclReader reader) {
-        RemoteLoadingContainer container = client.getRemoteLoadingContainer(reader);
+    private static void readerApiUseCases(GclReader reader) {
+        ReaderApiContainer container = client.getReaderApiContainer(reader);
 
         System.out.println("ATR: " + container.getAtr());
 
@@ -724,7 +715,7 @@ public class JavaClientExample {
         );
 
         System.out.println("Executed APDU: " + container.executeApduCall(
-                new GclRemoteLoadingApdu()
+                new GclReaderApiApdu()
                         .withCla("F1")
                         .withIns("95")
                         .withP1("F7")
@@ -734,13 +725,13 @@ public class JavaClientExample {
 
         System.out.println("Executed APDUs: " + container.executeApduCalls(
                 Arrays.asList(
-                        new GclRemoteLoadingApdu()
+                        new GclReaderApiApdu()
                                 .withCla("F1")
                                 .withIns("95")
                                 .withP1("F7")
                                 .withP2("E4")
                                 .withData("FE0000040001300000"),
-                        new GclRemoteLoadingApdu()
+                        new GclReaderApiApdu()
                                 .withCla("F1")
                                 .withIns("95")
                                 .withP1("F7")

@@ -2,7 +2,7 @@ package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.t1t.t1c.model.AllData;
 import com.t1t.t1c.model.T1cCertificate;
-import com.t1t.t1c.utils.CertificateUtil;
+import com.t1t.t1c.utils.PkiUtil;
 
 public class BeIdAllData implements AllData {
 
@@ -15,15 +15,15 @@ public class BeIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllData(GclBeIdAllData data, Boolean... parseCertificate) {
+    public BeIdAllData(GclBeIdAllData data, Boolean parseCertificate) {
         this.address = data.getAddress();
-        this.authenticationCertificate = CertificateUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
-        this.citizenCertificate = CertificateUtil.createT1cCertificate(data.getCitizenCertificate(), parseCertificate);
-        this.nonRepudiationCertificate = CertificateUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificate);
+        this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
+        this.citizenCertificate = PkiUtil.createT1cCertificate(data.getCitizenCertificate(), parseCertificate);
+        this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificate);
         this.picture = data.getPicture();
         this.rn = data.getRn();
-        this.rootCertificate = CertificateUtil.createT1cCertificate(data.getRootCertificate(), parseCertificate);
-        this.rrnCertificate = CertificateUtil.createT1cCertificate(data.getRrnCertificate(), parseCertificate);
+        this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificate);
+        this.rrnCertificate = PkiUtil.createT1cCertificate(data.getRrnCertificate(), parseCertificate);
     }
 
     /**

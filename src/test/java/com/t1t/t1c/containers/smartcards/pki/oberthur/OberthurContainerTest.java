@@ -327,7 +327,7 @@ public class OberthurContainerTest extends AbstractTestClass {
         assertEquals(newCert, obj.getEncryptionCertificate());
         obj.setSigningCertificate(newCert);
         assertEquals(newCert, obj.getSigningCertificate());
-        assertNotNull(new GclAventraAppletInfo().withChangeCounter(1));
+        assertNotNull(new GclAventraAppletInfo().withChangeCounter(1L));
     }
 
     @Test
@@ -373,7 +373,6 @@ public class OberthurContainerTest extends AbstractTestClass {
 
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
-        assertNotNull(data.getCertificateChains());
         assertNotNull(data.getAllCertificates());
     }
 }

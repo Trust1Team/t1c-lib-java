@@ -7,13 +7,15 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
+import java.util.HashMap;
+import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class DsDesktopApplication {
 
     @SerializedName("name")
     @Expose
-    private String name;
+    private Name name;
     @SerializedName("version")
     @Expose
     private String version;
@@ -21,18 +23,18 @@ public class DsDesktopApplication {
     /**
      * @return The name
      */
-    public String getName() {
+    public Name getName() {
         return name;
     }
 
     /**
      * @param name The name
      */
-    public void setName(String name) {
+    public void setName(Name name) {
         this.name = name;
     }
 
-    public DsDesktopApplication withName(String name) {
+    public DsDesktopApplication withName(Name name) {
         this.name = name;
         return this;
     }
@@ -76,6 +78,43 @@ public class DsDesktopApplication {
         }
         DsDesktopApplication rhs = ((DsDesktopApplication) other);
         return new EqualsBuilder().append(name, rhs.name).append(version, rhs.version).isEquals();
+    }
+
+    @Generated("org.jsonschema2pojo")
+    public static enum Name {
+
+        @SerializedName("JAVA")
+        JAVA("JAVA"),
+        @SerializedName("DOTNET")
+        DOTNET("DOTNET");
+        private static Map<String, Name> constants = new HashMap<String, Name>();
+
+        static {
+            for (Name c : values()) {
+                constants.put(c.value, c);
+            }
+        }
+
+        private final String value;
+
+        private Name(String value) {
+            this.value = value;
+        }
+
+        public static Name fromValue(String value) {
+            Name constant = constants.get(value);
+            if (constant == null) {
+                throw new IllegalArgumentException(value);
+            } else {
+                return constant;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
     }
 
 }

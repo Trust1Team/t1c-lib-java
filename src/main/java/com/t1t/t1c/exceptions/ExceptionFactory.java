@@ -2,9 +2,13 @@ package com.t1t.t1c.exceptions;
 
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
+import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.utils.ContainerUtil;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
 
 /**
  * Simple factory for creating REST exceptions.
@@ -80,16 +84,6 @@ public final class ExceptionFactory {
     }
 
     /**
-     * Client configuration exception.
-     *
-     * @param message
-     * @return
-     */
-    public static ConfigException configException(String message) {
-        return new ConfigException(message);
-    }
-
-    /**
      * Client initialization exception
      *
      * @param message
@@ -97,6 +91,29 @@ public final class ExceptionFactory {
      */
     public static InitializationException initializationException(String message) {
         return new InitializationException(message);
+    }
+
+    /**
+     * Core version incompatibility exception
+     *
+     * @param actualVersion the incompatible version
+     * @param downloadUrl   download url for compatible package
+     * @return the exception
+     */
+    public static IncompatibleCoreVersionException incompatibleCoreVersionException(String actualVersion, String downloadUrl) {
+        String message = "GCL version \"" + actualVersion + "\" not compatible with library. Download and install new version: " + downloadUrl;
+        return new IncompatibleCoreVersionException(message, downloadUrl);
+    }
+
+    /**
+     * Client initialization exception
+     *
+     * @param message
+     * @param cause
+     * @return
+     */
+    public static InitializationException initializationException(String message, Throwable cause) {
+        return new InitializationException(message, cause);
     }
 
     /**
@@ -179,30 +196,20 @@ public final class ExceptionFactory {
      */
     public static VerifyPinException verifyPinException(GclError error) {
         if (error != null) {
-            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode()));
+            return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode().intValue()));
         } else {
             return verifyPinException("No error message present, cannot determine cause");
         }
     }
 
     /**
-     * Creates an authentication exception
+     * Creates an authz exception
      *
      * @param message
      * @return
      */
-    public static AuthenticateException authenticateException(String message) {
-        return new AuthenticateException(message);
-    }
-
-    /**
-     * Creates an authentication exception
-     *
-     * @param message
-     * @return
-     */
-    public static SigningException signingException(String message) {
-        return new SigningException(message);
+    public static AuthException authenticateException(String message) {
+        return new AuthException(message);
     }
 
     /**
@@ -244,6 +251,25 @@ public final class ExceptionFactory {
     }
 
     /**
+     * Creates a GCL Core exception
+     *
+     * @param containerInfo
+     * @return
+     */
+    public static GclCoreException containerLoadingFailed(List<GclContainerInfo> containerInfo) {
+        return new GclCoreException("Container download failed: " + containerInfo.toString());
+    }
+
+    /**
+     * Creates a GCL Core exception
+     *
+     * @return
+     */
+    public static GclCoreException containerLoadingTimeoutExceeded() {
+        return new GclCoreException("Download timeout period for container download exceeded");
+    }
+
+    /**
      * Creates a lux ID container exception
      *
      * @return
@@ -274,5 +300,26 @@ public final class ExceptionFactory {
      */
     public static NoConsentException noConsentException(String message, Integer httpCode, String url) {
         return new NoConsentException(message, httpCode, url);
+    }
+
+    /**
+     * Creates an InvalidTokenException
+     *
+     * @param cause the cause
+     * @return the exception
+     */
+    public static InvalidTokenException invalidTokenException(Throwable cause) {
+        throw new InvalidTokenException(cause);
+    }
+
+    /**
+     * Creates an UnsupportedDigestAlgorithmException
+     *
+     * @param selectedAlgorithm the unsupported, selected algorithm
+     * @param supported the supported algorithm(s)
+     * @return the exception
+     */
+    public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
+        return new UnsupportedDigestAlgorithmException("Container does not support \"" + selectedAlgorithm.toString() + "\", must be one of: " + supported.toString());
     }
 }

@@ -1,0 +1,12 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclReaderApiCommandRequest",
+  "javaType": "com.t1t.t1c.containers.readerapi.GclReaderApiCommandRequest",
+  "type": "object",
+  "properties": {
+    "tx": {
+      "type": "string"
+    }
+  }
+}

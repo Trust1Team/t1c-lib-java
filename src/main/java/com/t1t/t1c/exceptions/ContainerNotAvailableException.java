@@ -17,11 +17,11 @@ public class ContainerNotAvailableException extends AbstractRuntimeException {
 
     @Override
     public Integer getErrorCode() {
-        return ErrorCodes.CONTAINER_NOT_AVAILABLE_ERROR;
+        return ErrorCodes.ERROR_CONTAINER_NOT_AVAILABLE;
     }
 
     @Override
     public String getMoreInfoUrl() {
-        return ErrorCodes.CONTAINER_NOT_AVAILABLE_ERROR_INFO;
+        return ErrorCodes.INFO_CONTAINER_NOT_AVAILABLE_ERROR;
     }
 }

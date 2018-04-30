@@ -8,14 +8,7 @@
       "type": "object",
       "$ref": "DsOs.json"
     },
-    "browser": {
-      "type": "object",
-      "$ref": "DsBrowser.json"
-    },
-    "ua": {
-      "type": "string"
-    },
-    "manufacturer": {
+    "proxyDomain": {
       "type": "string"
     }
   }

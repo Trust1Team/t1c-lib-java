@@ -19,7 +19,7 @@ public class GclEmvApplication {
     private String label;
     @SerializedName("priority")
     @Expose
-    private Integer priority;
+    private Long priority;
 
     /**
      * @return The aid
@@ -62,18 +62,18 @@ public class GclEmvApplication {
     /**
      * @return The priority
      */
-    public Integer getPriority() {
+    public Long getPriority() {
         return priority;
     }
 
     /**
      * @param priority The priority
      */
-    public void setPriority(Integer priority) {
+    public void setPriority(Long priority) {
         this.priority = priority;
     }
 
-    public GclEmvApplication withPriority(Integer priority) {
+    public GclEmvApplication withPriority(Long priority) {
         this.priority = priority;
         return this;
     }

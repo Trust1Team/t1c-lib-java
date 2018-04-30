@@ -2,18 +2,24 @@ package com.t1t.t1c.core;
 
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
+import com.t1t.t1c.ds.DsAtrList;
+import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
 import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
+import com.t1t.t1c.model.T1cAdminPublicKeys;
+import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +30,11 @@ import java.util.Map;
  * @Since 2017
  */
 public class Core extends AbstractCore {
+
     private static final Logger log = LoggerFactory.getLogger(Core.class);
+
+    private static final Integer DOWNLOAD_STATUS_POLL_INTERVAL = 250;
+
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
     private GclCitrixRestClient gclCitrixRestClient;
@@ -46,7 +56,7 @@ public class Core extends AbstractCore {
     public String getVersion() throws GclCoreException {
         try {
             return getInfo().getVersion();
-        } catch (GclCoreException ex) {
+        } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving version", ex);
         }
     }
@@ -61,20 +71,73 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public String getPubKey() throws GclCoreException {
+    public T1cPublicKey getDevicePubKey() throws GclCoreException {
+        return getDevicePubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getDevicePubKey(Boolean parse) throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getPublicKey(), config.isConsentRequired());
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired()), parse);
         } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving device public key", ex);
+        }
+    }
+
+    @Override
+    public T1cPublicKey getSslPubKey() throws GclCoreException {
+        return getSslPubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getSslPubKey(Boolean parse) throws GclCoreException {
+        try {
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getSslCertificate(), config.isConsentRequired()), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving SSL public key", ex);
+        }
+    }
+
+    @Override
+    public T1cPublicKey getDsPubKey() throws GclCoreException {
+        return getDsPubKey(null);
+    }
+
+    @Override
+    public T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException {
+        try {
+            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired()), parse);
+        } catch (RestException ex) {
+            GclError error = ex.getGclError();
+            // If the error code returned is 201, that means the public has not been set (yet), return null
+            if (error != null && error.getCode() == 201) {
+                return null;
+            }
             throw ExceptionFactory.gclCoreException("error retrieving GCL public key", ex);
         }
     }
 
     @Override
-    public Boolean setPubKey(String publicKey) throws GclCoreException {
+    public T1cAdminPublicKeys getAdminPublicKeys() throws GclCoreException {
+        return getAdminPublicKeys(null);
+    }
+
+    @Override
+    public T1cAdminPublicKeys getAdminPublicKeys(Boolean parse) throws GclCoreException {
         try {
-            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest();
-            keyReq.setCertificate(publicKey);
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setPublicKey(keyReq), config.isConsentRequired()));
+            return new T1cAdminPublicKeys(RestExecutor.returnData(gclAdminRestClient.getCertificates(), config.isConsentRequired()), parse);
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Error retrieving admin certificates", ex);
+        }
+    }
+
+    @Override
+    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException {
+        try {
+            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
+                    .withEncryptedPublicKey(encryptedPublicKey)
+                    .withEncryptedAesKey(encryptedAesKey);
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
         }
@@ -83,18 +146,12 @@ public class Core extends AbstractCore {
     @Override
     public GclInfo getInfo() throws GclCoreException {
         try {
-            return RestExecutor.returnData(gclRestClient.getV1Status(), config.isConsentRequired());
+            return RestExecutor.returnData(gclRestClient.getStatus(), config.isConsentRequired());
         } catch (RestException ex) {
+            if (ex.getCause() instanceof ConnectException) {
+                throw ExceptionFactory.gclCoreException("GCL core not found at " + config.getGclClientUri(), ex);
+            }
             throw ExceptionFactory.gclCoreException("error retrieving GCL core info", ex);
-        }
-    }
-
-    @Override
-    public List<GclContainer> getContainers() throws GclCoreException {
-        try {
-            return RestExecutor.returnData(gclRestClient.getV1Containers(), config.isConsentRequired());
-        } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("error retrieving list of available containers", ex);
         }
     }
 
@@ -249,7 +306,7 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
-        if (config.getCitrix()) {
+        if (config.isCitrix()) {
             try {
                 try {
                     return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
@@ -275,11 +332,11 @@ public class Core extends AbstractCore {
 
     @Override
     public boolean getConsent(String title, String codeWord) throws GclCoreException {
-        return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclConsent.AlertLevel.WARNING, GclConsent.AlertPosition.STANDARD, GclConsent.Type.READER, config.getDefaultConsentTimeout());
+        return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclAlertLevel.WARNING, GclAlertPosition.STANDARD, GclConsentType.READER, config.getDefaultConsentTimeout());
     }
 
     @Override
-    public boolean getConsent(final String title, final String codeWord, final Integer durationInDays, final GclConsent.AlertLevel alertLevel, final GclConsent.AlertPosition alertPosition, final GclConsent.Type consentType, final Integer timeoutInSeconds) {
+    public boolean getConsent(final String title, final String codeWord, final Integer durationInDays, final GclAlertLevel alertLevel, final GclAlertPosition alertPosition, final GclConsentType consentType, final Integer timeoutInSeconds) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
         Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
         Preconditions.checkArgument(timeoutInSeconds == null || timeoutInSeconds <= config.getDefaultConsentTimeout(), "Consent dialog timeout may not exceed default value!");
@@ -305,24 +362,102 @@ public class Core extends AbstractCore {
         }
     }
 
-    private Integer getDurationInDays(final Integer durationInDays) {
-        return durationInDays == null ? config.getDefaultConsentDuration() : durationInDays;
+    @Override
+    public boolean loadContainers(List<DsContainerResponse> containerResponses) throws GclCoreException {
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadContainers(new GclLoadContainersRequest().withContainerResponses(containerResponses))));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Failed to load containers: ", ex);
+        }
     }
 
-    private Integer getTimeoutInSeconds(final Integer timeoutInSeconds) {
-        return timeoutInSeconds == null ? config.getDefaultConsentTimeout() : timeoutInSeconds;
+    @Override
+    public boolean loadAtrList(DsAtrList atrList) throws GclCoreException {
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadAtrList(atrList)));
+        } catch (RestException ex) {
+            throw ExceptionFactory.gclCoreException("Failed to load ATR list: ", ex);
+        }
     }
 
-    private GclConsent.AlertLevel getAlertLevel(final GclConsent.AlertLevel alertLevel) {
-        return alertLevel == null ? GclConsent.AlertLevel.WARNING : alertLevel;
+    @Override
+    public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers) throws GclCoreException {
+        int totalTime = 0;
+        int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
+        boolean downloadsComplete;
+        do {
+            GclInfo info = getInfo();
+            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
+            if (!downloadsComplete) {
+                try {
+                    Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
+                    totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
+                } catch (InterruptedException ex) {
+                    log.warn("error sleeping through polling interval: ", ex);
+                }
+            }
+        } while (!downloadsComplete && totalTime < pollTimeout);
+        if (!downloadsComplete) {
+            throw ExceptionFactory.containerLoadingTimeoutExceeded();
+        }
+        return getInfo();
     }
 
-    private GclConsent.AlertPosition getAlertPosition(final GclConsent.AlertPosition alertPosition) {
-        return alertPosition == null ? GclConsent.AlertPosition.STANDARD : alertPosition;
+    private boolean checkIfDownloadsCompleted(List<GclContainerInfo> currentContainers, List<DsContainerResponse> containersToLoad) {
+        boolean completed;
+        int errored = 0;
+        int missing = 0;
+        int ongoing = 0;
+        int installed = 0;
+        for (DsContainerResponse ctl : containersToLoad) {
+            boolean found = false;
+            for (GclContainerInfo cc : currentContainers) {
+                if (ctl.getName().equalsIgnoreCase(cc.getName()) && ctl.getVersion().equalsIgnoreCase(cc.getVersion())) {
+                    found = true;
+                    switch (cc.getStatus()) {
+                        case ERROR:
+                        case DOWNLOAD_ERROR:
+                            errored++;
+                            break;
+                        case INIT:
+                        case DOWNLOADING:
+                            ongoing++;
+                            break;
+                        case INSTALLED:
+                            installed++;
+                            break;
+                    }
+                }
+            }
+            if (!found) {
+                missing++;
+            }
+        }
+        if (errored > 0 || missing > 0) {
+            throw ExceptionFactory.containerLoadingFailed(currentContainers);
+        }
+        completed = ongoing == 0 && installed == containersToLoad.size();
+        return completed;
     }
 
-    private GclConsent.Type getConsentType(final GclConsent.Type consentType) {
-        return consentType == null ? GclConsent.Type.READER : consentType;
+    private Long getDurationInDays(final Integer durationInDays) {
+        return durationInDays == null ? config.getDefaultConsentDuration().longValue() : durationInDays.longValue();
+    }
+
+    private Long getTimeoutInSeconds(final Integer timeoutInSeconds) {
+        return timeoutInSeconds == null ? config.getDefaultConsentTimeout().longValue() : timeoutInSeconds.longValue();
+    }
+
+    private GclAlertLevel getAlertLevel(final GclAlertLevel alertLevel) {
+        return alertLevel == null ? GclAlertLevel.WARNING : alertLevel;
+    }
+
+    private GclAlertPosition getAlertPosition(final GclAlertPosition alertPosition) {
+        return alertPosition == null ? GclAlertPosition.STANDARD : alertPosition;
+    }
+
+    private GclConsentType getConsentType(final GclConsentType consentType) {
+        return consentType == null ? GclConsentType.READER : consentType;
     }
 
     private List<GclReader> getReaders(boolean cardInserted) {
@@ -337,7 +472,7 @@ public class Core extends AbstractCore {
         }
     }
 
-    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) throws GclCoreException {
+    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
         int interval = config.getDefaultPollingIntervalInSeconds();
         if (pollIntervalInSeconds != null) {
             Preconditions.checkArgument(pollIntervalInSeconds > 0 && pollIntervalInSeconds < 60, "Polling interval must be a value between 0 & 60");
@@ -346,7 +481,7 @@ public class Core extends AbstractCore {
         return 1000 * interval;
     }
 
-    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) throws GclCoreException {
+    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
         int timeout = config.getDefaultPollingTimeoutInSeconds();
         if (pollTimeoutInSeconds != null) {
             Preconditions.checkArgument(pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60, "Polling timout must be a value between 0 & 60");
@@ -355,45 +490,12 @@ public class Core extends AbstractCore {
         return 1000 * timeout;
     }
 
-    private boolean checkCitrix() {
-        return config.getCitrix() && config.getAgentPort() != null;
+    private int getDownloadStatusPollingTimeoutInMillis() {
+        int timeout = config.getContainerDownloadTimeout();
+        return 1000 * timeout;
     }
 
-/*    //TODO
-    private void checkJwtValidity() throws GclCoreException {
-        if (config.getEnvironment() != Environment.DEV) {
-            JwtConsumer consumer = new JwtConsumerBuilder().setRequireExpirationTime().setSkipSignatureVerification().setSkipAllDefaultValidators().setDisableRequireSignature().setRelaxVerificationKeyValidation().build();
-            String jwt = config.getJwt();
-            if (StringUtils.isNotEmpty(jwt)) {
-                try {
-                    JwtContext context = consumer.process(jwt);
-                    NumericDate refreshTreshold = NumericDate.now();
-                    refreshTreshold.addSeconds(-240);
-                    if (context.getJwtClaims().getExpirationTime().isOnOrAfter(refreshTreshold)) {
-                        jwt = ConnectionFactory.getDsClient().refreshJWT(jwt);
-                        if (StringUtils.isNotEmpty(jwt)) {
-                            config.setJwt(jwt);
-                            ConnectionFactory.setConfig(config);
-                            setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                        }
-                    }
-                } catch (InvalidJwtException | MalformedClaimException ex) {
-                    log.error("Token invalid: ", ex);
-                    jwt = ConnectionFactory.getDsClient().getJWT();
-                    if (StringUtils.isNotEmpty(jwt)) {
-                        config.setJwt(jwt);
-                        ConnectionFactory.setConfig(config);
-                        setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                    }
-                }
-            } else {
-                jwt = ConnectionFactory.getDsClient().getJWT();
-                if (StringUtils.isNotEmpty(jwt)) {
-                    config.setJwt(jwt);
-                    ConnectionFactory.setConfig(config);
-                    setHttpClient(ConnectionFactory.getGclAdminRestClient());
-                }
-            }
-        }
-    }*/
+    private boolean checkCitrix() {
+        return config.isCitrix() && config.getAgentPort() != null;
+    }
 }

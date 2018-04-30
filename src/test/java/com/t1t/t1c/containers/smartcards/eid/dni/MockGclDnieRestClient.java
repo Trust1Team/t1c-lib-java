@@ -1,13 +1,18 @@
 package com.t1t.t1c.containers.smartcards.eid.dni;
 
 import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.utils.PinUtil;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
+
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
@@ -66,7 +71,7 @@ public class MockGclDnieRestClient extends AbstractMockRestClient<GclDniRestClie
 
     @Override
     public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.verifyPin("1111")).verifyPin(containerId, readerId);
+        return delegate.returningResponse(MockResponseFactory.verifyPin(PinUtil.encryptPin("1111"))).verifyPin(containerId, readerId);
     }
 
     @Override
@@ -77,5 +82,15 @@ public class MockGclDnieRestClient extends AbstractMockRestClient<GclDniRestClie
     @Override
     public Call<T1cResponse<String>> sign(String containerId, String readerId, GclAuthenticateOrSignData request) throws RestException {
         return delegate.returningResponse(MockResponseFactory.getSignedHashResponse(request.getPin())).sign(containerId, readerId, request);
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.DNIE)).getAvailableSignAlgos();
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.DNIE)).getAvailableAuthenticateAlgos();
     }
 }

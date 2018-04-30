@@ -1,11 +1,14 @@
 package com.t1t.t1c.containers.smartcards.pki.oberthur;
 
 import com.t1t.t1c.MockResponseFactory;
+import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.core.GclAuthenticateOrSignData;
 import com.t1t.t1c.core.GclVerifyPinRequest;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
+import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
+import com.t1t.t1c.utils.PinUtil;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -38,7 +41,7 @@ public class MockGclOberthurRestClient extends AbstractMockRestClient<GclOberthu
 
     @Override
     public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.verifyPin("1111")).verifyPin(containerId, readerId);
+        return delegate.returningResponse(MockResponseFactory.verifyPin(PinUtil.encryptPin("1111"))).verifyPin(containerId, readerId);
     }
 
     @Override
@@ -84,5 +87,15 @@ public class MockGclOberthurRestClient extends AbstractMockRestClient<GclOberthu
     @Override
     public Call<T1cResponse<String>> getEncryptionCertificate(String containerId, String readerId) throws RestException {
         return delegate.returningResponse(MockResponseFactory.getGclOberthurEncryptionCertificateResponse()).getEncryptionCertificate(containerId, readerId);
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableSignAlgos();
+    }
+
+    @Override
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableAuthenticateAlgos();
     }
 }
