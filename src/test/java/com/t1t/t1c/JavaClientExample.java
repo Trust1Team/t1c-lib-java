@@ -147,7 +147,7 @@ public class JavaClientExample {
         Scanner scan = new Scanner(System.in);
         System.out.print("Provide PIN (optional, press enter to skip): ");
         String pin = scan.nextLine();
-        IGenericContainer container = client.getGenericContainer(reader, pin);
+        IGenericContainer container = client.getGenericContainer(reader, new GclPace().withPin(pin));
         // This returns a marker interface, the return value still needs to be cast to the correct class
         System.out.println("Container all data: " + container.getAllData());
         System.out.println("Container Certificates: " + container.getAllCertificates());
@@ -622,7 +622,7 @@ public class JavaClientExample {
         Scanner scan = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pin = scan.nextLine();
-        LuxIdContainer container = client.getLuxIdContainer(reader, pin);
+        LuxIdContainer container = client.getLuxIdContainer(reader, new GclPace().withPin(pin));
 
         boolean pinVerified = container.verifyPin(pin);
 

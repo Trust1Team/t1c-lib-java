@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
@@ -29,14 +30,15 @@ import java.util.Map;
 public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestClient, DnieAllData, DnieAllCertificates> {
 
     public DnieContainer(LibConfig config, GclReader reader, GclDniRestClient gclDniRestClient) {
-        super(config, reader, gclDniRestClient, null);
+        super(config, reader, gclDniRestClient);
     }
 
     @Override
-    public DnieContainer createInstance(LibConfig config, GclReader reader, GclDniRestClient httpClient, String pin) {
+    public DnieContainer createInstance(LibConfig config, GclReader reader, GclDniRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
+        this.pace = pace;
         this.type = ContainerType.DNIE;
         return this;
     }

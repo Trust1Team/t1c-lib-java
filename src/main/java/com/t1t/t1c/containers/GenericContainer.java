@@ -3,6 +3,7 @@ package com.t1t.t1c.containers;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
@@ -27,11 +28,14 @@ import java.util.*;
 public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
 
     protected static final String ENCRYPTED_PIN_HEADER_NAME = "X-Encrypted-Pin";
+    protected static final String ENCRYPTED_CAN_HEADER_NAME = "X-Encrypted-Can";
+    protected static final String ENCRYPTED_MRZ_HEADER_NAME = "X-Encrypted-Mrz";
+    protected static final String ENCRYPTED_PUK_HEADER_NAME = "X-Encrypted-Puk";
 
     /*Properties*/
     protected GclReader reader;
     protected U httpClient;
-    protected transient String pacePin;
+    protected transient GclPace pace;
     protected LibConfig config;
     protected ContainerType type;
     protected List<DigestAlgorithm> signAlgos;
@@ -41,11 +45,15 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     public GenericContainer() {
     }
 
-    public GenericContainer(LibConfig config, GclReader reader, U httpClient, String pacePin) {
-        createInstance(config, reader, httpClient, pacePin);
+    public GenericContainer(LibConfig config, GclReader reader, U httpClient) {
+        createInstance(config, reader, httpClient, new GclPace());
     }
 
-    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pacePin);
+    public GenericContainer(LibConfig config, GclReader reader, U httpClient, GclPace pace) {
+        createInstance(config, reader, httpClient, pace);
+    }
+
+    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, GclPace pace);
 
     @Override
     public V getAllData() throws RestException, NoConsentException {

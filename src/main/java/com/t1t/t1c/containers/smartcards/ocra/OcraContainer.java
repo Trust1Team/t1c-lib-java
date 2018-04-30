@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
@@ -28,15 +29,15 @@ import java.util.Map;
 public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestClient, GclOcraAllData, AllCertificates> {
 
     public OcraContainer(LibConfig config, GclReader reader, GclOcraRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, String pacePin) {
+    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.OCRA;
         return this;
     }

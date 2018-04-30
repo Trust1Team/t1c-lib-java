@@ -4,6 +4,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
@@ -26,15 +27,15 @@ import java.util.Map;
 public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRestClient, GclMobibAllData, AllCertificates> {
 
     public MobibContainer(LibConfig config, GclReader reader, GclMobibRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, String pacePin) {
+    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.MOBIB;
         return this;
     }

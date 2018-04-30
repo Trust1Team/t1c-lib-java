@@ -7,6 +7,7 @@ import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
@@ -270,9 +271,9 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public LuxIdContainer getLuxIdContainer(GclReader reader, String pin) {
+    public LuxIdContainer getLuxIdContainer(GclReader reader, GclPace pace) {
         containerAvailabilityCheck(ContainerType.LUXID);
-        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), pin);
+        return new LuxIdContainer(connFactory.getConfig(), reader, connFactory.getGclLuxIdRestClient(), pace);
     }
 
     @Override
@@ -318,9 +319,9 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public PivContainer getPivContainer(GclReader reader, String pacePin) {
+    public PivContainer getPivContainer(GclReader reader, String pin) {
         containerAvailabilityCheck(ContainerType.PIV);
-        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pacePin);
+        return new PivContainer(connFactory.getConfig(), reader, connFactory.getGclPivRestClient(), pin);
     }
 
     @Override
@@ -352,10 +353,9 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public IGenericContainer getGenericContainer(GclReader reader, String pin) {
+    public IGenericContainer getGenericContainer(GclReader reader, GclPace pace) {
         ContainerType type = ContainerUtil.determineContainer(reader.getCard());
         IGenericContainer container;
-        String pacePin = PinUtil.getPinIfPresent(pin);
         switch (type) {
             case AVENTRA:
                 container = getAventraContainer(reader);
@@ -370,7 +370,7 @@ public class T1cClient implements IT1cClient {
                 container = getEmvContainer(reader);
                 break;
             case LUXID:
-                container = getLuxIdContainer(reader, pacePin);
+                container = getLuxIdContainer(reader, pace);
                 break;
             case LUXTRUST:
                 container = getLuxTrustContainer(reader);
@@ -385,7 +385,7 @@ public class T1cClient implements IT1cClient {
                 container = getOcraContainer(reader);
                 break;
             case PIV:
-                container = getPivContainer(reader, pacePin);
+                container = getPivContainer(reader, pace.getPin());
                 break;
             case PT:
                 container = getPtIdContainer(reader);

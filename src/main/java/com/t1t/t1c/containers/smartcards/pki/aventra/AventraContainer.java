@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclPrivateKeyReference;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -31,15 +32,15 @@ import java.util.Map;
 public class AventraContainer extends GenericContainer<AventraContainer, GclAventraRestClient, AventraAllData, AventraAllCertificates> {
 
     public AventraContainer(LibConfig config, GclReader reader, GclAventraRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public AventraContainer createInstance(LibConfig config, GclReader reader, GclAventraRestClient httpClient, String pacePin) {
+    public AventraContainer createInstance(LibConfig config, GclReader reader, GclAventraRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.AVENTRA;
         return this;
     }

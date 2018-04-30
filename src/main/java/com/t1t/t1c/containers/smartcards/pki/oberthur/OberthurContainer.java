@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclPrivateKeyReference;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.GenericContainerException;
@@ -31,15 +32,15 @@ import java.util.Map;
 public class OberthurContainer extends GenericContainer<OberthurContainer, GclOberthurRestClient, OberthurAllData, OberthurAllData> {
 
     public OberthurContainer(LibConfig config, GclReader reader, GclOberthurRestClient httpClient) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
     }
 
     @Override
-    public OberthurContainer createInstance(LibConfig config, GclReader reader, GclOberthurRestClient httpClient, String pacePin) {
+    public OberthurContainer createInstance(LibConfig config, GclReader reader, GclOberthurRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.OBERTHUR;
         return this;
     }

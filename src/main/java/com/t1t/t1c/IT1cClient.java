@@ -4,6 +4,7 @@ import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
 import com.t1t.t1c.containers.smartcards.emv.EmvContainer;
@@ -39,13 +40,13 @@ public interface IT1cClient {
     IOcvClient getOcvClient();
 
     /*Containers*/
-    IGenericContainer getGenericContainer(GclReader reader, String pacePin);
+    IGenericContainer getGenericContainer(GclReader reader, GclPace pace);
 
     IGenericContainer getGenericContainer(GclReader reader);
 
     BeIdContainer getBeIdContainer(GclReader reader);
 
-    LuxIdContainer getLuxIdContainer(GclReader reader, String pacePin);
+    LuxIdContainer getLuxIdContainer(GclReader reader, GclPace pace);
 
     LuxTrustContainer getLuxTrustContainer(GclReader reader);
 

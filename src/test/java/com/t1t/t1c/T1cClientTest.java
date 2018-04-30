@@ -11,6 +11,7 @@ import com.t1t.t1c.containers.smartcards.mobib.MobibContainer;
 import com.t1t.t1c.containers.smartcards.ocra.OcraContainer;
 import com.t1t.t1c.containers.smartcards.pkcs11.Pkcs11Container;
 import com.t1t.t1c.containers.smartcards.pki.luxtrust.LuxTrustContainer;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.core.ICore;
 import com.t1t.t1c.ds.IDsClient;
@@ -74,7 +75,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetLuxIdContainer() {
-        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), "123456");
+        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), new GclPace().withPin("123456"));
 
         assertNotNull(container);
     }

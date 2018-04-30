@@ -301,8 +301,16 @@ public final class MockResponseFactory {
                 .withOs("macOS")
                 .withOsid("macos")
                 .withUid("B7289D3AEB22D233")
-                .withContainers(Collections.singletonList(new GclContainerInfo().withName("beid").withVersion("v2.0.0").withStatus(GclContainerStatus.INSTALLED)))
+                .withContainers(getContainerInfos())
                 .withVersion("2.0.0");
+    }
+
+    private static List<GclContainerInfo> getContainerInfos() {
+        List<GclContainerInfo> containers = new ArrayList<>();
+        for (ContainerType type : ContainerType.values()) {
+            containers.add(new GclContainerInfo().withName(type.getId()).withVersion("v2.0.0").withStatus(GclContainerStatus.INSTALLED));
+        }
+        return containers;
     }
 
     public static GclPublicKeys getGclAdminCertificates() {
@@ -1699,7 +1707,7 @@ public final class MockResponseFactory {
         return agents;
     }
 
-    public static Object getSupportedAlgorithms(ContainerType type) {
+    public static T1cResponse<List<DigestAlgorithm>> getSupportedAlgorithms(ContainerType type) {
         List<DigestAlgorithm> rval;
         switch (type) {
             case AVENTRA:
@@ -1748,7 +1756,7 @@ public final class MockResponseFactory {
                 rval = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512);
                 break;
         }
-        return rval;
+        return getSuccessResponse(rval);
     }
 
     private static List<String> splitFilterParams(String filter) throws RestException {

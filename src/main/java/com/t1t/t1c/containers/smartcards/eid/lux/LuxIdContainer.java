@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
@@ -28,21 +29,16 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
 
     private Map<String, String> headers;
 
-    public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, String pacePin) {
-        super(config, reader, gclLuxIdRestClient, pacePin);
+    public LuxIdContainer(LibConfig config, GclReader reader, GclLuxIdRestClient gclLuxIdRestClient, GclPace pace) {
+        super(config, reader, gclLuxIdRestClient, pace);
     }
 
     @Override
-    public LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, String pacePin) throws LuxIdContainerException {
-        if (StringUtils.isEmpty(pacePin)) {
-            throw ExceptionFactory.luxIdContainerException("PIN is required to initialize Lux ID container");
-        }
+    public LuxIdContainer createInstance(LibConfig config, GclReader reader, GclLuxIdRestClient httpClient, GclPace pace) throws LuxIdContainerException {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
-        this.headers = new HashMap<>();
-        this.headers.put(ENCRYPTED_PIN_HEADER_NAME, PinUtil.getEncryptedPinIfPresent(pacePin));
+        setPace(pace);
         this.type = ContainerType.LUXID;
         return this;
     }
@@ -237,6 +233,26 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         return orderCertificates(certsToOrder);
     }
 
+    public Boolean resetPin(String puk, String newPin) throws VerifyPinException {
+        throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
+    }
+
+    public Boolean resetPin() throws VerifyPinException {
+        return resetPin(null, null);
+    }
+
+    public Boolean unblock() {
+        return unblock(null);
+    }
+
+    public Boolean unblock(String can) {
+        throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
+    }
+
+    public Boolean unverifyPin() {
+        throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
+    }
+
     private Map<String, T1cCertificate> getCertificatesMap(LuxIdAllData allData) {
         Map<String, T1cCertificate> certs = new HashMap<>();
         for (int i = 0; i < allData.getRootCertificates().size(); i++) {
@@ -245,5 +261,29 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         certs.put("authentication-certificate", allData.getAuthenticationCertificate());
         certs.put("non-repudiation-certificate", allData.getNonRepudiationCertificate());
         return certs;
+    }
+
+    public GclPace getPace(){
+        return this.pace;
+    }
+
+    private void setPace(GclPace pace) {
+        if (pace == null || (StringUtils.isEmpty(pace.getCan()) && StringUtils.isEmpty(pace.getPin()) && StringUtils.isEmpty(pace.getPuk()) && StringUtils.isEmpty(pace.getMrz()))) {
+            throw ExceptionFactory.luxIdContainerException("PIN, PUK, MRZ or CAN is required to initialize Lux ID container");
+        }
+        this.pace = pace;
+        this.headers = new HashMap<>();
+        if (StringUtils.isNotEmpty(pace.getPin())) {
+            this.headers.put(ENCRYPTED_PIN_HEADER_NAME, PinUtil.getEncryptedPinIfPresent(pace.getPin()));
+        }
+        if (StringUtils.isNotEmpty(pace.getPuk())) {
+            this.headers.put(ENCRYPTED_PUK_HEADER_NAME, PinUtil.getEncryptedPinIfPresent(pace.getPuk()));
+        }
+        if (StringUtils.isNotEmpty(pace.getCan())) {
+            this.headers.put(ENCRYPTED_CAN_HEADER_NAME, PinUtil.getEncryptedPinIfPresent(pace.getCan()));
+        }
+        if (StringUtils.isNotEmpty(pace.getMrz())) {
+            this.headers.put(ENCRYPTED_MRZ_HEADER_NAME, PinUtil.getEncryptedPinIfPresent(pace.getMrz()));
+        }
     }
 }

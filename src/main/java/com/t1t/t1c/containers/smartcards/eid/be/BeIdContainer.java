@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
@@ -29,16 +30,16 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     private static final String SPACE = " ";
 
     public BeIdContainer(LibConfig config, GclReader reader, GclBeIdRestClient gclBeIdRestClient) {
-        super(config, reader, gclBeIdRestClient, null);
+        super(config, reader, gclBeIdRestClient);
     }
 
     /*Dynamic instance creation*/
     @Override
-    public BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeIdRestClient httpClient, String pacePin) {
+    public BeIdContainer createInstance(LibConfig config, GclReader reader, GclBeIdRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.BEID;
         return this;
     }

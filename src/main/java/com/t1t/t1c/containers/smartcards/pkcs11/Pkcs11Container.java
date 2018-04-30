@@ -5,6 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.*;
 import com.t1t.t1c.model.AllCertificates;
@@ -39,16 +40,16 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     public Pkcs11Container(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, ModuleConfiguration pkcs11Config) {
-        super(config, reader, httpClient, null);
+        super(config, reader, httpClient);
         configureModulePath(pkcs11Config);
     }
 
     @Override
-    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, String pacePin) {
+    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
-        this.pacePin = pacePin;
+        this.pace = pace;
         this.type = ContainerType.PKCS11;
         if (this.modulePath == null) {
             configureModulePath(new ModuleConfiguration());
