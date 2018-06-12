@@ -75,12 +75,12 @@ public class MockGclLuxTrustRestClient extends AbstractMockRestClient<GclLuxTrus
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXTRUST)).getAvailableSignAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXTRUST)).getAvailableSignAlgos(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXTRUST)).getAvailableAuthenticateAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXTRUST)).getAvailableAuthenticateAlgos(containerId, readerId);
     }
 }

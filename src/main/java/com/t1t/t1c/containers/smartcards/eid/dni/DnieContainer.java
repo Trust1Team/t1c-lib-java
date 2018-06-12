@@ -68,11 +68,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            if (StringUtils.isNotEmpty(pin)) {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-            } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
-            }
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -82,7 +78,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
-                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(), config.isConsentRequired());
+                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -107,7 +103,7 @@ public class DnieContainer extends GenericContainer<DnieContainer, GclDniRestCli
     public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
-                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(), config.isConsentRequired());
+                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);

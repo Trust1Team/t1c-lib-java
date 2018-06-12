@@ -90,12 +90,12 @@ public class MockGclOberthurRestClient extends AbstractMockRestClient<GclOberthu
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableSignAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableSignAlgos(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableAuthenticateAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.OBERTHUR)).getAvailableAuthenticateAlgos(containerId, readerId);
     }
 }

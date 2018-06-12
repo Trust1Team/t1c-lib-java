@@ -98,10 +98,6 @@ public final class PinUtil {
         return StringUtils.isNotEmpty(pin) ? PinUtil.encryptPin(pin) : null;
     }
 
-    public static String getPinIfPresent(String pin) {
-        return StringUtils.isNotEmpty(pin) ? pin : "";
-    }
-
     public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, String pin) {
         return createEncryptedRequest(pinpad, osPinDialog, null, pin);
     }

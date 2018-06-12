@@ -64,8 +64,8 @@ public interface GclAventraRestClient {
     Call<T1cResponse<Object>> resetPin(@Path("containerId") String containerId, @Path("reader") String readerId, @Body GclAventraPinResetRequest request) throws RestException, NoConsentException;
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos();
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos();
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
 }

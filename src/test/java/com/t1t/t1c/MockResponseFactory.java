@@ -348,7 +348,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<Object> verifyPin(String pin) throws RestException {
-        if (!"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+        if (StringUtils.isNotEmpty(pin) && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +

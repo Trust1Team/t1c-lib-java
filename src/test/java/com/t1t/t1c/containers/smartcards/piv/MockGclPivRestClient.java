@@ -85,12 +85,12 @@ public class MockGclPivRestClient extends AbstractMockRestClient<GclPivRestClien
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.PIV)).getAvailableSignAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.PIV)).getAvailableSignAlgos(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.PIV)).getAvailableAuthenticateAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.PIV)).getAvailableAuthenticateAlgos(containerId, readerId);
     }
 }

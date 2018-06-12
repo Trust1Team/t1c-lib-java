@@ -56,13 +56,13 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
 
     @Override
     public BeIdAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(type.getId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        GclBeIdAllData data = RestExecutor.returnData(httpClient.getBeIdAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
         return new BeIdAllData(data, parseCertificates);
     }
 
     @Override
     public BeIdAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(type.getId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        GclBeIdAllCertificates data = RestExecutor.returnData(httpClient.getBeIdAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
         return new BeIdAllCertificates(data, parseCertificates);
     }
 
@@ -70,11 +70,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     public Boolean verifyPin(String pin) throws VerifyPinException, NoConsentException, RestException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            if (StringUtils.isNotEmpty(pin)) {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-            } else {
-                return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(type.getId(), reader.getId()), config.isConsentRequired()));
-            }
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -84,7 +80,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
-                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(), config.isConsentRequired());
+                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -110,7 +106,7 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
     public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
-                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(), config.isConsentRequired());
+                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
