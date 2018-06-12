@@ -106,12 +106,12 @@ public class MockGclBeIdRestClient extends AbstractMockRestClient<GclBeIdRestCli
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.BEID)).getAvailableSignAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.BEID)).getAvailableSignAlgos(containerId, readerId);
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos() {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.BEID)).getAvailableAuthenticateAlgos();
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.BEID)).getAvailableAuthenticateAlgos(containerId, readerId);
     }
 }

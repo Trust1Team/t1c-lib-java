@@ -70,8 +70,8 @@ public interface GclBeIdRestClient {
     Call<T1cResponse<String>> getRrnCertificate(@Path("containerId") String containerId, @Path("reader") String readerId) throws RestException, NoConsentException;
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos();
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos();
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
 }

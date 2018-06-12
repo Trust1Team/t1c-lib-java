@@ -1,6 +1,5 @@
 package com.t1t.t1c.auth;
 
-import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.InvalidTokenException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.rest.RestExecutor;
