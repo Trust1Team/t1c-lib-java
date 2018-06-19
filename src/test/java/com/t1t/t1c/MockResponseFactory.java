@@ -41,7 +41,6 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
 import com.t1t.t1c.utils.PinUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.collections.CollectionUtils;
 
 import java.util.*;
 

@@ -55,4 +55,13 @@ public class OcvClient implements IOcvClient {
             }
         } else return null;
     }
+
+    @Override
+    public OcvSignatureValidationResponse validateSignature(String base64RawData, String base64Signature, DigestAlgorithm digestAlgorithm, String base64SignatureCertificate) throws OcvClientException {
+        try {
+            return RestExecutor.executeCall(ocvRestClient.validateSignature(new OcvSignatureValidationRequest().withRawData(base64RawData).withSignature(base64Signature).withDigest(digestAlgorithm.getStringValue()).withCertificate(base64SignatureCertificate)), false);
+        } catch (RestException ex) {
+            throw ExceptionFactory.ocvException("Could not validate signature", ex);
+        }
+    }
 }

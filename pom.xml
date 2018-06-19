@@ -369,6 +369,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
                         </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvSignatureValidationRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvSignatureValidationResponse.json
+                        </sourcePath>
                         <!-- BE ID -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>

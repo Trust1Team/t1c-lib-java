@@ -1,0 +1,14 @@
+{
+  "$id": "OcvSignatureValidationResponse",
+  "javaType": "com.t1t.t1c.ocv.OcvSignatureValidationResponse",
+  "type": "object",
+  "extends": {
+    "$ref": "OcvSignatureValidationRequest.json"
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "result": {
+      "type": "boolean"
+    }
+  }
+}

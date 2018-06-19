@@ -2,10 +2,15 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.readerapi.GclReaderApiApdu;
 import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
@@ -27,6 +32,8 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Paths;
@@ -322,24 +329,7 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
     }
 
     private static void aventraUseCases(GclReader reader) {
@@ -374,24 +364,7 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
 
         Scanner resetPin = new Scanner(System.in);
         System.out.print("Reset PIN? (Y/n): ");
@@ -510,23 +483,7 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
     }
 
     private static void ptIdUseCases(GclReader reader) {
@@ -599,9 +556,6 @@ public class JavaClientExample {
 
         BeIdContainer container = client.getBeIdContainer(reader);
 
-        // With hardware PinPad/Without Java lib PIN input
-        //System.out.println("PIN verified: " + container.verifyPin());
-
         Scanner scan = new Scanner(System.in);
         String pin = null;
         if (!reader.getPinpad()) {
@@ -625,9 +579,11 @@ public class JavaClientExample {
                         .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
                 // Rn data
-                System.out.println("RN Data: " + container.getRnData().toString());
+                GclBeIdRn rn = container.getRnData();
+                System.out.println("RN Data: " + rn.toString());
                 // Address
-                System.out.println("Address: " + container.getBeIdAddress().toString());
+                GclBeIdAddress ad = container.getBeIdAddress();
+                System.out.println("Address: " + ad.toString());
                 // Picture
                 System.out.println("Base64 picture: " + container.getBeIdPicture());
                 // Root certificate
@@ -642,9 +598,15 @@ public class JavaClientExample {
                 System.out.println("Base64 RRN certificate: " + container.getRrnCertificate().getBase64());
 
                 // Card data dump
-                System.out.println("Card data dump: " + container.getAllData().toString());
+                BeIdAllData bData = container.getAllData(false);
+                System.out.println("Card data dump: " + bData.toString());
                 // Card certificate dump
                 System.out.println("Card certificate dump: " + container.getAllCertificates());
+
+                // Validate RN data
+                System.out.println("RN Data valid?: " + client.getOcvClient().validateSignature(rn.getRawData(), rn.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
+                // Validate Address
+                System.out.println("Address Data valid?: " + client.getOcvClient().validateSignature(Base64.encodeBase64String(ArrayUtils.addAll(Base64.decodeBase64(ad.getRawData()), Base64.decodeBase64(ad.getSignature()))), ad.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
             }
         } catch (VerifyPinException ex) {
             System.out.println("PIN verification failed: " + ex.getMessage());
@@ -791,6 +753,30 @@ public class JavaClientExample {
         String sessionId = container.openSession(30);
         System.out.println("Session ID: " + sessionId);
         System.out.println("Close session: " + container.closeSession(sessionId));
+    }
+
+    public static void executeGenericCardUseCases(GenericContainer container, String pin) {
+        try {
+            if (container.verifyPin(pin)) {
+                System.out.println("PIN verified");
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                ContainerData data = container.dumpData();
+
+                String authCert = data.getAuthenticationCertificateChain().get(0).getBase64();
+
+                // Authenticate data
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(authCert)
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
+            }
+        } catch (VerifyPinException ex) {
+            System.out.println("PIN verification failed: " + ex.getMessage());
+        }
     }
 
 }

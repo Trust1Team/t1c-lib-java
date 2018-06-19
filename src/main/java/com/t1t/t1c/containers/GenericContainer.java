@@ -125,7 +125,6 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     }
 
 
-
     protected List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
         List<DigestAlgorithm> returnValue = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(algoRefs)) {

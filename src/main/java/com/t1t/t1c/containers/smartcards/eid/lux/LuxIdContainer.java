@@ -258,7 +258,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         return certs;
     }
 
-    public GclPace getPace(){
+    public GclPace getPace() {
         return this.pace;
     }
 

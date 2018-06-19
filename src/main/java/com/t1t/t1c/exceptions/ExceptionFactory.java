@@ -316,7 +316,7 @@ public final class ExceptionFactory {
      * Creates an UnsupportedDigestAlgorithmException
      *
      * @param selectedAlgorithm the unsupported, selected algorithm
-     * @param supported the supported algorithm(s)
+     * @param supported         the supported algorithm(s)
      * @return the exception
      */
     public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
