@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.containers.smartcards.eid.be;
 
 import com.google.gson.annotations.Expose;
@@ -10,7 +11,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclBeIdAllData implements AllData {
+public class GclBeIdAllData implements AllData
+{
 
     @SerializedName("address")
     @Expose
@@ -36,16 +38,23 @@ public class GclBeIdAllData implements AllData {
     @SerializedName("rrn_certificate")
     @Expose
     private String rrnCertificate;
+    @SerializedName("token")
+    @Expose
+    private GclBeIdToken token;
 
     /**
-     * @return The address
+     * 
+     * @return
+     *     The address
      */
     public GclBeIdAddress getAddress() {
         return address;
     }
 
     /**
-     * @param address The address
+     * 
+     * @param address
+     *     The address
      */
     public void setAddress(GclBeIdAddress address) {
         this.address = address;
@@ -57,14 +66,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The authenticationCertificate
+     * 
+     * @return
+     *     The authenticationCertificate
      */
     public String getAuthenticationCertificate() {
         return authenticationCertificate;
     }
 
     /**
-     * @param authenticationCertificate The authentication_certificate
+     * 
+     * @param authenticationCertificate
+     *     The authentication_certificate
      */
     public void setAuthenticationCertificate(String authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
@@ -76,14 +89,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The citizenCertificate
+     * 
+     * @return
+     *     The citizenCertificate
      */
     public String getCitizenCertificate() {
         return citizenCertificate;
     }
 
     /**
-     * @param citizenCertificate The citizen_certificate
+     * 
+     * @param citizenCertificate
+     *     The citizen_certificate
      */
     public void setCitizenCertificate(String citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
@@ -95,14 +112,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The nonRepudiationCertificate
+     * 
+     * @return
+     *     The nonRepudiationCertificate
      */
     public String getNonRepudiationCertificate() {
         return nonRepudiationCertificate;
     }
 
     /**
-     * @param nonRepudiationCertificate The non_repudiation_certificate
+     * 
+     * @param nonRepudiationCertificate
+     *     The non_repudiation_certificate
      */
     public void setNonRepudiationCertificate(String nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
@@ -114,14 +135,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The picture
+     * 
+     * @return
+     *     The picture
      */
     public String getPicture() {
         return picture;
     }
 
     /**
-     * @param picture The picture
+     * 
+     * @param picture
+     *     The picture
      */
     public void setPicture(String picture) {
         this.picture = picture;
@@ -133,14 +158,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The rn
+     * 
+     * @return
+     *     The rn
      */
     public GclBeIdRn getRn() {
         return rn;
     }
 
     /**
-     * @param rn The rn
+     * 
+     * @param rn
+     *     The rn
      */
     public void setRn(GclBeIdRn rn) {
         this.rn = rn;
@@ -152,14 +181,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The rootCertificate
+     * 
+     * @return
+     *     The rootCertificate
      */
     public String getRootCertificate() {
         return rootCertificate;
     }
 
     /**
-     * @param rootCertificate The root_certificate
+     * 
+     * @param rootCertificate
+     *     The root_certificate
      */
     public void setRootCertificate(String rootCertificate) {
         this.rootCertificate = rootCertificate;
@@ -171,14 +204,18 @@ public class GclBeIdAllData implements AllData {
     }
 
     /**
-     * @return The rrnCertificate
+     * 
+     * @return
+     *     The rrnCertificate
      */
     public String getRrnCertificate() {
         return rrnCertificate;
     }
 
     /**
-     * @param rrnCertificate The rrn_certificate
+     * 
+     * @param rrnCertificate
+     *     The rrn_certificate
      */
     public void setRrnCertificate(String rrnCertificate) {
         this.rrnCertificate = rrnCertificate;
@@ -189,6 +226,29 @@ public class GclBeIdAllData implements AllData {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     *     The token
+     */
+    public GclBeIdToken getToken() {
+        return token;
+    }
+
+    /**
+     * 
+     * @param token
+     *     The token
+     */
+    public void setToken(GclBeIdToken token) {
+        this.token = token;
+    }
+
+    public GclBeIdAllData withToken(GclBeIdToken token) {
+        this.token = token;
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -196,7 +256,7 @@ public class GclBeIdAllData implements AllData {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(address).append(authenticationCertificate).append(citizenCertificate).append(nonRepudiationCertificate).append(picture).append(rn).append(rootCertificate).append(rrnCertificate).toHashCode();
+        return new HashCodeBuilder().append(address).append(authenticationCertificate).append(citizenCertificate).append(nonRepudiationCertificate).append(picture).append(rn).append(rootCertificate).append(rrnCertificate).append(token).toHashCode();
     }
 
     @Override
@@ -208,7 +268,7 @@ public class GclBeIdAllData implements AllData {
             return false;
         }
         GclBeIdAllData rhs = ((GclBeIdAllData) other);
-        return new EqualsBuilder().append(address, rhs.address).append(authenticationCertificate, rhs.authenticationCertificate).append(citizenCertificate, rhs.citizenCertificate).append(nonRepudiationCertificate, rhs.nonRepudiationCertificate).append(picture, rhs.picture).append(rn, rhs.rn).append(rootCertificate, rhs.rootCertificate).append(rrnCertificate, rhs.rrnCertificate).isEquals();
+        return new EqualsBuilder().append(address, rhs.address).append(authenticationCertificate, rhs.authenticationCertificate).append(citizenCertificate, rhs.citizenCertificate).append(nonRepudiationCertificate, rhs.nonRepudiationCertificate).append(picture, rhs.picture).append(rn, rhs.rn).append(rootCertificate, rhs.rootCertificate).append(rrnCertificate, rhs.rrnCertificate).append(token, rhs.token).isEquals();
     }
 
 }

@@ -74,4 +74,7 @@ public interface GclBeIdRestClient {
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
     Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
+
+    @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/token")
+    Call<T1cResponse<GclBeIdToken>> getBeIdToken(@Path("containerId") String containerId, @Path("reader") String readerId);
 }

@@ -7,7 +7,6 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele, Michallis
@@ -27,8 +26,11 @@ public interface GclRestClient {
     @GET("card-readers/{reader}")
     Call<T1cResponse<GclReader>> getCardReader(@Path("reader") String readerId) throws RestException, NoConsentException;
 
-    @GET("agent")
-    Call<T1cResponse<List<GclAgent>>> getAgents(@QueryMap Map<String, String> filters) throws RestException;
+    @POST("agent")
+    Call<T1cResponse<List<GclAgent>>> getAgents(@Body GclAgentRequestFilter request) throws RestException;
+
+    @POST("agent/resolve")
+    Call<T1cResponse<List<GclAgent>>> resolveAgent(@Body GclAgentResolutionRequest request) throws RestException;
 
     @POST("consent")
     Call<T1cResponse<Boolean>> getConsent(@Body GclConsent request);

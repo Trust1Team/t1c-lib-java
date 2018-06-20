@@ -182,6 +182,10 @@ public class BeIdContainer extends GenericContainer<BeIdContainer, GclBeIdRestCl
         return getRrnCertificate(null);
     }
 
+    public GclBeIdToken getToken() throws RestException, NoConsentException {
+        return RestExecutor.returnData(httpClient.getBeIdToken(getTypeId(), reader.getId()), config.isConsentRequired());
+    }
+
     @Override
     public ContainerType getType() {
         return ContainerType.BEID;

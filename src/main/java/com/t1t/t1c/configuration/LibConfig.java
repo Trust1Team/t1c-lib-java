@@ -19,6 +19,7 @@ public class LibConfig {
     private String gclClientUri;
     private String ocvUri;
     private String proxyDomain;
+    private String dsNamespace;
 
     // Auth
 
@@ -115,6 +116,14 @@ public class LibConfig {
 
     public void setProxyDomain(String proxyDomain) {
         this.proxyDomain = proxyDomain;
+    }
+
+    public String getDsNamespace() {
+        return dsNamespace;
+    }
+
+    public void setDsNamespace(String dsNamespace) {
+        this.dsNamespace = dsNamespace;
     }
 
     public String getApiKey() {

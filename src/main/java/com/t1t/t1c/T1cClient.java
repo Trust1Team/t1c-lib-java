@@ -27,7 +27,7 @@ import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.ocv.IOcvClient;
 import com.t1t.t1c.ocv.OcvClient;
 import com.t1t.t1c.utils.ContainerUtil;
-import com.t1t.t1c.utils.PinUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +108,7 @@ public class T1cClient implements IT1cClient {
             // Get the device's public key
             T1cPublicKey devicePublicKey = getCore().getDevicePubKey(true);
             // Set the device's public key in the PIN util for encryption
-            PinUtil.setDevicePublicKey(devicePublicKey);
+            CryptUtil.setDevicePublicKey(devicePublicKey);
 
             if (info.getManaged()) {
                 // Only attempt to sync if API key & DS URL are provided and managed sync is enabled

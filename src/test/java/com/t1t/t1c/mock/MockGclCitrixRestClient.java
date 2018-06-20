@@ -8,7 +8,6 @@ import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -48,13 +47,13 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
     }
 
     @Override
-    public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
-        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(filters)).getAgents(filters);
+    public Call<T1cResponse<List<GclAgent>>> getAgents(GclAgentRequestFilter request) {
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(request.getUsername())).getAgents(request);
     }
 
     @Override
-    public Call<T1cResponse<GclAgent>> getAgent(Map<String, String> filters) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getAgentResponse(filters)).getAgent(filters);
+    public Call<T1cResponse<List<GclAgent>>> resolveAgent(GclAgentResolutionRequest request) throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(request.getChallenge())).resolveAgent(request);
     }
 
     @Override

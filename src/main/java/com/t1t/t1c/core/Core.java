@@ -6,24 +6,24 @@ import com.t1t.t1c.ds.DsAtrList;
 import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
-import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.ClipboardUtil;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.datatransfer.Transferable;
 import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author Michallis Pashidis
@@ -34,6 +34,8 @@ public class Core extends AbstractCore {
     private static final Logger log = LoggerFactory.getLogger(Core.class);
 
     private static final Integer DOWNLOAD_STATUS_POLL_INTERVAL = 250;
+
+    private static final String USER_PROP_NAME = "user.name";
 
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
@@ -305,18 +307,32 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
+    public List<GclAgent> resolveAgent() throws GclCoreException {
+        String encryptedUsername = CryptUtil.encrypt(System.getProperty(USER_PROP_NAME)) + "blah";
+        return getAgents(encryptedUsername);
+    }
+
+    @Override
+    public List<GclAgent> resolveAgent(String challenge) throws GclCoreException {
         if (config.isCitrix()) {
             try {
-                try {
-                    return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
-                } catch (JsonConversionException ex) {
-                    if (ex.isObjectInsteadOfArray()) {
-                        return Collections.singletonList(RestExecutor.returnData(gclCitrixRestClient.getAgent(filterParams), false));
-                    } else {
-                        throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
-                    }
-                }
+                Transferable clipboardBackup = ClipboardUtil.saveStringToClipboard(challenge);
+                List<GclAgent> agents = RestExecutor.returnData(gclCitrixRestClient.resolveAgent(new GclAgentResolutionRequest().withChallenge(challenge)), false);
+                ClipboardUtil.setClipboarContents(clipboardBackup);
+                return agents;
+            } catch (RestException ex) {
+                throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+            }
+        } else {
+            throw ExceptionFactory.unsupportedOperationException("Not a citrix environment");
+        }
+    }
+
+    @Override
+    public List<GclAgent> getAgents(String usernameToFilter) throws GclCoreException {
+        if (config.isCitrix()) {
+            try {
+                return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(usernameToFilter)), false);
             } catch (RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
@@ -327,7 +343,7 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents() throws GclCoreException {
-        return getAgents(Collections.<String, String>emptyMap());
+        return getAgents(null);
     }
 
     @Override

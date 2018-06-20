@@ -306,7 +306,6 @@ public class CoreTest extends AbstractTestClass {
         assertTrue(StringUtils.isNotEmpty(agents.get(0).getHostname()));
         assertTrue(StringUtils.isNotEmpty(agents.get(0).getLastUpdate()));
         assertNotNull(agents.get(0).getPort());
-        assertNotNull(agents.get(0).getMetadata());
     }
 
     @Test(expected = IllegalArgumentException.class)

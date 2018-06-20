@@ -8,7 +8,6 @@ import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -265,13 +264,36 @@ public interface ICore {
     List<GclReader> getPinVerificationCapableReaders() throws GclCoreException;
 
     /**
+     * Resolve the local agent. This is done based on a UUID that will be stored in the contents of the local agent's
+     * clipboard. Once resolved, the previous contents of the clipboard will be restored. Even though it is unlikely
+     * that more than one agent will have the same challenge value in its clipboard at the same time, we return a list
+     * of possible agents in that unlikely event.
+     *
+     * @return the agents matching the challenge
+     * @throws GclCoreException on failure
+     */
+    List<GclAgent> resolveAgent() throws GclCoreException;
+
+    /**
+     * Resolve the local agent. This is done based on a UUID that will be stored in the contents of the local agent's
+     * clipboard. Once resolved, the previous contents of the clipboard will be restored. Even though it is unlikely
+     * that more than one agent will have the same challenge value in its clipboard at the same time, we return a list
+     * of possible agents in that unlikely event.
+     *
+     * @param challenge the challenge to verify
+     * @return the agents matching the challenge
+     * @throws GclCoreException on failure
+     */
+    List<GclAgent> resolveAgent(String challenge) throws GclCoreException;
+
+    /**
      * Get list of available agents, matching the provided String filter parameters.
      *
-     * @param filterParams values to filter
-     * @return
+     * @param usernameToFilter the user name to filter the results to
+     * @return list of agents matching the filter
      * @throws GclCoreException
      */
-    List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException;
+    List<GclAgent> getAgents(String usernameToFilter) throws GclCoreException;
 
     /**
      * Get list of available agents
