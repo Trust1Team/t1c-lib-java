@@ -4,11 +4,13 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.readerapi.GclReaderApiApdu;
-import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiApdu;
+import com.t1t.t1c.containers.functional.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
@@ -30,11 +32,14 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Paths;
 import java.util.*;
+
 
 /**
  * @author Guillaume Vandecasteele
@@ -549,7 +554,7 @@ public class JavaClientExample {
 
         try {
             if (container.verifyPin(pin)) {
-                /*System.out.println("PIN verified");
+                System.out.println("PIN verified");
 
                 // Sign data
                 System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
@@ -581,17 +586,16 @@ public class JavaClientExample {
                 // RRN certificate
                 System.out.println("Base64 RRN certificate: " + container.getRrnCertificate().getBase64());
 
-                // Card data dump*/
+                // Card data dump
                 BeIdAllData bData = container.getAllData(false);
-                System.out.println("Card data dump: " + bData.getToken().toString());
-                /*// Card certificate dump
+                System.out.println("Card data dump: " + bData.toString());
+                // Card certificate dump
                 System.out.println("Card certificate dump: " + container.getAllCertificates());
 
                 // Validate RN data
                 System.out.println("RN Data valid?: " + client.getOcvClient().validateSignature(rn.getRawData(), rn.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
                 // Validate Address
-                4
-                System.out.println("Address Data valid?: " + client.getOcvClient().validateSignature(Base64.encodeBase64String(ArrayUtils.addAll(Base64.decodeBase64(ad.getRawData()), Base64.decodeBase64(ad.getSignature()))), ad.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());*/
+                System.out.println("Address Data valid?: " + client.getOcvClient().validateSignature(Base64.encodeBase64String(ArrayUtils.addAll(Base64.decodeBase64(ad.getRawData()), Base64.decodeBase64(ad.getSignature()))), ad.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
             }
         } catch (VerifyPinException ex) {
             System.out.println("PIN verification failed: " + ex.getMessage());

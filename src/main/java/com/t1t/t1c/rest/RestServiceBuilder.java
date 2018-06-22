@@ -26,7 +26,6 @@ import javax.net.ssl.*;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +41,7 @@ public final class RestServiceBuilder {
     private static final String CONTAINER_CONTEXT_PATH = "containers/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-";
+    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-%s-NS";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String ORIGIN_HEADER_NAME = "origin";
     private static final String ORIGIN_HEADER_VALUE = "https://localhost";
@@ -93,7 +92,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static DsRestClient getDsRestClient(LibConfig config) {
-        return getClient(config.getDsUri(), DsRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
+        return getClient(config.getDsUri(), DsRestClient.class, config, getGatewayAuthClient(config));
     }
 
     /**
@@ -103,7 +102,11 @@ public final class RestServiceBuilder {
      * @return
      */
     public static IGatewayAuthClient getGatewayAuthClient(LibConfig config) {
-        return new GatewayAuthClient(getClient(config.getAuthUri(), GatewayAuthRestClient.class, config.getApiKey(), null));
+        if (StringUtils.isNotEmpty(config.getApiKey())) {
+            return new GatewayAuthClient(getClient(config.getAuthUri(), GatewayAuthRestClient.class, config, null));
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -133,7 +136,7 @@ public final class RestServiceBuilder {
      * @return
      */
     public static OcvRestClient getOcvRestClient(LibConfig config) {
-        return getClient(config.getOcvUri(), OcvRestClient.class, config.getApiKey(), getGatewayAuthClient(config));
+        return getClient(config.getOcvUri(), OcvRestClient.class, config, getGatewayAuthClient(config));
     }
 
     /**
@@ -141,15 +144,15 @@ public final class RestServiceBuilder {
      *
      * @param uri
      * @param iFace
-     * @param apikey
+     * @param config
      * @param gatewayAuthClient
      * @param <T>
      * @return
      */
-    private static <T> T getClient(String uri, Class<T> iFace, String apikey, IGatewayAuthClient gatewayAuthClient) {
+    private static <T> T getClient(String uri, Class<T> iFace, LibConfig config, IGatewayAuthClient gatewayAuthClient) {
         try {
             Builder retrofitBuilder = new Builder()
-                    .client(gethttpClient(apikey, gatewayAuthClient))
+                    .client(gethttpClient(config, gatewayAuthClient))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
@@ -178,18 +181,29 @@ public final class RestServiceBuilder {
     /**
      * Builds a http client instance.
      *
-     * @param apikey
+     * @param config
      * @param gatewayAuthClient
      * @return
      */
-    private static OkHttpClient gethttpClient(final String apikey, final IGatewayAuthClient gatewayAuthClient) {
+    private static OkHttpClient gethttpClient(final LibConfig config, final IGatewayAuthClient gatewayAuthClient) {
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
-        final boolean apikeyPresent = StringUtils.isNotBlank(apikey);
-        String token = null;
+        final boolean apikeyPresent = StringUtils.isNotBlank(config.getApiKey());
+
+        String token;
         if (gatewayAuthClient != null) {
             token = gatewayAuthClient.getToken();
+        } else {
+            token = config.getGwJwt();
         }
+
+        if (config.getCustomSslConfig() != null) {
+            okHttpBuilder.sslSocketFactory(config.getCustomSslConfig().getSslContext().getSocketFactory(), config.getCustomSslConfig().getTrustManager());
+            if (config.getCustomSslConfig().getHostnameVerifier() != null) {
+                okHttpBuilder.hostnameVerifier(config.getCustomSslConfig().getHostnameVerifier());
+            }
+        }
+
         final boolean jwtPresent = StringUtils.isNotEmpty(token);
         final String gwToken = token;
         if (apikeyPresent || jwtPresent) {
@@ -198,7 +212,7 @@ public final class RestServiceBuilder {
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder requestBuilder = chain.request().newBuilder();
                     if (apikeyPresent) {
-                        requestBuilder.addHeader(APIKEY_HEADER_NAME, apikey);
+                        requestBuilder.addHeader(APIKEY_HEADER_NAME, config.getApiKey());
                     }
                     if (jwtPresent) {
                         requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + gwToken);
@@ -222,7 +236,6 @@ public final class RestServiceBuilder {
      *
      * @return
      * @throws NoSuchAlgorithmException
-     * @throws CertificateException
      * @throws KeyManagementException
      */
     private static OkHttpClient getHttpClientSkipTLS(final LibConfig config, final boolean sendAuthToken) throws NoSuchAlgorithmException, KeyManagementException {
@@ -271,7 +284,7 @@ public final class RestServiceBuilder {
                         requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
                     }
                     if (contextTokenRequired) {
-                        requestBuilder.addHeader(X_RELAY_STATE_PREFIX + config.getContextToken(), String.valueOf(config.getContextToken()));
+                        requestBuilder.addHeader(String.format(X_RELAY_STATE_PREFIX, String.valueOf(config.getContextToken())), String.valueOf(config.getContextToken()));
                     }
                     return chain.proceed(requestBuilder.build());
                 }

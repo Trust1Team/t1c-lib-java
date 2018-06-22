@@ -1,7 +1,7 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.functional.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;

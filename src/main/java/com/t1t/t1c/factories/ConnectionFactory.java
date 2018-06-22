@@ -1,7 +1,7 @@
 package com.t1t.t1c.factories;
 
 import com.t1t.t1c.configuration.LibConfig;
-import com.t1t.t1c.containers.readerapi.GclReaderApiRestClient;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiRestClient;
 import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRestClient;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDniRestClient;
 import com.t1t.t1c.containers.smartcards.eid.lux.GclLuxIdRestClient;

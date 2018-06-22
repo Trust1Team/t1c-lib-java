@@ -322,4 +322,13 @@ public final class ExceptionFactory {
     public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
         return new UnsupportedDigestAlgorithmException("Container does not support \"" + selectedAlgorithm.toString() + "\", must be one of: " + supported.toString());
     }
+
+    /**
+     * Creates an illegal argument exception for constructors
+     * @param argumentName the name of the argument
+     * @return the exception
+     */
+    public static IllegalArgumentException nullOrEmptyConstructorArgument(String argumentName) {
+        return new IllegalArgumentException(String.format("\"%s\" is null or empty", argumentName));
+    }
 }

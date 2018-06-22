@@ -1,7 +1,14 @@
 package com.t1t.t1c.configuration;
 
 import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
+import com.t1t.t1c.rest.SslConfig;
 import com.t1t.t1c.utils.UriUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created by michallispashidis on 04/11/2017.
@@ -19,11 +26,12 @@ public class LibConfig {
     private String gclClientUri;
     private String ocvUri;
     private String proxyDomain;
-    private String dsNamespace;
+    private String dsNameSpace;
 
     // Auth
 
     private String apiKey;
+    private String gwJwt;
 
     // Post-initialization values
 
@@ -48,6 +56,7 @@ public class LibConfig {
     private ModuleConfiguration pkcs11Config;
     private Integer sessionTimeout;
     private Boolean syncManaged = true;
+    private SslConfig customSslConfig;
 
     // Dynamic properties
 
@@ -86,6 +95,14 @@ public class LibConfig {
         this.authUri = authUri;
     }
 
+    public String getGwJwt() {
+        return gwJwt;
+    }
+
+    public void setGwJwt(String gwJwt) {
+        this.gwJwt = gwJwt;
+    }
+
     public String getDsUri() {
         return dsUri;
     }
@@ -108,22 +125,6 @@ public class LibConfig {
 
     public void setOcvUri(String ocvUri) {
         this.ocvUri = UriUtils.uriFinalSlashAppender(ocvUri);
-    }
-
-    public String getProxyDomain() {
-        return proxyDomain;
-    }
-
-    public void setProxyDomain(String proxyDomain) {
-        this.proxyDomain = proxyDomain;
-    }
-
-    public String getDsNamespace() {
-        return dsNamespace;
-    }
-
-    public void setDsNamespace(String dsNamespace) {
-        this.dsNamespace = dsNamespace;
     }
 
     public String getApiKey() {
@@ -268,5 +269,47 @@ public class LibConfig {
 
     public void setSyncManaged(Boolean syncManaged) {
         this.syncManaged = syncManaged;
+    }
+
+    public SslConfig getCustomSslConfig() {
+        return customSslConfig;
+    }
+
+    public void setCustomSslConfig(SslConfig customSslConfig) {
+        this.customSslConfig = customSslConfig;
+    }
+
+    public String getDsNamespace() {
+        if (StringUtils.isNotEmpty(this.dsUri)) {
+            if (StringUtils.isNotEmpty(this.dsNameSpace) && this.dsUri.contains(dsNameSpace)) {
+                return this.dsNameSpace;
+            } else {
+                try {
+                    URI uri = new URL(this.dsUri).toURI();
+                    this.dsNameSpace = uri.getHost();
+                    return this.dsNameSpace;
+                } catch (MalformedURLException | URISyntaxException ex) {
+                    // Do nothing
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getProxyDomain() {
+        if (StringUtils.isNotEmpty(this.dsUri)) {
+            if (StringUtils.isNotEmpty(this.proxyDomain) && this.dsUri.contains(this.proxyDomain)) {
+                return proxyDomain;
+            } else {
+                try {
+                    URI uri = new URL(this.dsUri).toURI();
+                    this.proxyDomain = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null).toString();
+                    return this.proxyDomain;
+                } catch (MalformedURLException | URISyntaxException ex) {
+                    // Do nothing
+                }
+            }
+        }
+        return null;
     }
 }

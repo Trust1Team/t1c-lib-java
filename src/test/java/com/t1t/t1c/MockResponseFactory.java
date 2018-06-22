@@ -1,8 +1,8 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.readerapi.GclReaderApiCcidFeature;
-import com.t1t.t1c.containers.readerapi.GclReaderApiCommand;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCcidFeature;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCommand;
 import com.t1t.t1c.containers.smartcards.eid.be.*;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllData;

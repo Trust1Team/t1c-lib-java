@@ -76,7 +76,6 @@ public class T1cConfigParser implements Serializable {
             configObj.setSessionTimeout(getDefaultSessionTimeout());
             configObj.setSyncManaged(getSyncManaged());
             configObj.setPkcs11Config(getPkcs11Config());
-            configObj.setProxyDomain(getProxyDomain());
             setAppConfig(configObj);
             validateConfig();
             printAppConfig();
@@ -201,10 +200,6 @@ public class T1cConfigParser implements Serializable {
         return getConfigInteger(IConfig.LIB_GEN_SESSION_TIMEOUT);
     }
 
-    private String getProxyDomain() {
-        return getConfigString(IConfig.LIB_URIS_PROXYDOMAIN);
-    }
-
     public LibConfig getAppConfig() {
         return appConfig;
     }
@@ -278,9 +273,6 @@ public class T1cConfigParser implements Serializable {
         }
         if (StringUtils.isEmpty(appConfig.getOcvUri())) {
             this.appConfig.setOcvUri(URI_OCV);
-        }
-        if (StringUtils.isEmpty(this.appConfig.getProxyDomain())) {
-            this.appConfig.setProxyDomain(URI_PROXY_DOMAIN);
         }
         if (StringUtils.isEmpty(this.appConfig.getApiKey())) {
             this.appConfig.setApiKey(""); // for managed instances - when DS and OCV are not used

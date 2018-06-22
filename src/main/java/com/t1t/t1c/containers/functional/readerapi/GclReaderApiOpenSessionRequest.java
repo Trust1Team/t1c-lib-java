@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.readerapi;
+package com.t1t.t1c.containers.functional.readerapi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,28 +9,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclReaderApiCommandRequest {
+public class GclReaderApiOpenSessionRequest {
 
-    @SerializedName("tx")
+    @SerializedName("timeout")
     @Expose
-    private String tx;
+    private Long timeout;
 
     /**
-     * @return The tx
+     * @return The timeout
      */
-    public String getTx() {
-        return tx;
+    public Long getTimeout() {
+        return timeout;
     }
 
     /**
-     * @param tx The tx
+     * @param timeout The timeout
      */
-    public void setTx(String tx) {
-        this.tx = tx;
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 
-    public GclReaderApiCommandRequest withTx(String tx) {
-        this.tx = tx;
+    public GclReaderApiOpenSessionRequest withTimeout(Long timeout) {
+        this.timeout = timeout;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class GclReaderApiCommandRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(tx).toHashCode();
+        return new HashCodeBuilder().append(timeout).toHashCode();
     }
 
     @Override
@@ -49,11 +49,11 @@ public class GclReaderApiCommandRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclReaderApiCommandRequest)) {
+        if (!(other instanceof GclReaderApiOpenSessionRequest)) {
             return false;
         }
-        GclReaderApiCommandRequest rhs = ((GclReaderApiCommandRequest) other);
-        return new EqualsBuilder().append(tx, rhs.tx).isEquals();
+        GclReaderApiOpenSessionRequest rhs = ((GclReaderApiOpenSessionRequest) other);
+        return new EqualsBuilder().append(timeout, rhs.timeout).isEquals();
     }
 
 }
