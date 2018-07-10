@@ -5,8 +5,7 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.GenericContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
-import com.t1t.t1c.core.GclPace;
-import com.t1t.t1c.core.GclReader;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
@@ -79,7 +78,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
-                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId(), headers), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -104,7 +103,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
     public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
-                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId(), headers), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -228,7 +227,53 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
         return orderCertificates(certsToOrder);
     }
 
-    public Boolean resetPin(String puk, String newPin) throws VerifyPinException {
+    public Integer getPinTryCounter(GclPinReference reference) throws NoConsentException, RestException {
+        return RestExecutor.returnData(httpClient.getPinTryCount(getTypeId(), reader.getId(), headers, new GclPinTryCounterRequest().withPinReference(reference)), config.isConsentRequired());
+    }
+
+    public Boolean changePin(String oldPin, String newPin) throws NoConsentException, RestException {
+        PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), oldPin, newPin);
+        try {
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.changePin(getTypeId(), reader.getId(), headers, PinUtil.createEncryptedPinChangeRequest(reader.getPinpad(), config.isOsPinDialog(), oldPin, newPin)), config.isConsentRequired()));
+        } catch (RestException ex) {
+            throw PinUtil.checkPinExceptionMessage(ex);
+        }
+    }
+
+    /**
+     * Unblock the PIN with the PUK code.
+     * @param puk the PUK code.
+     * @return true if successfull, false if not.
+     * @throws NoConsentException when no consent has been granted.
+     * @throws RestException when a REST layer exception occurs.
+     */
+    public Boolean resetPin(String puk) throws NoConsentException, RestException {
+        return resetPin(puk, null);
+    }
+
+    /**
+     * Unblock the card with the PUK code and set a new PIN.
+     * @param puk the PUK code.
+     * @param newPin the new PIN
+     * @return true if successful, false if not
+     * @throws NoConsentException when no consent has been granted.
+     * @throws RestException when a REST layer exception occurs
+     */
+    public Boolean resetPin(String puk, String newPin) throws NoConsentException, RestException {
+
+        try {
+            if (StringUtils.isEmpty(newPin) && config.isOsPinDialog()) {
+                PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), puk);
+            } else {
+                PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), puk, newPin);
+            }
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.resetPin(getTypeId(), reader.getId(), headers, PinUtil.createEncryptedPinResetRequest(reader.getPinpad(), config.isOsPinDialog(), puk, newPin)), config.isConsentRequired()));
+        } catch (RestException ex) {
+            throw PinUtil.checkPinExceptionMessage(ex);
+        }
+    }
+
+    /*public Boolean resetPin(String puk, String newPin) throws VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
     }
 
@@ -246,7 +291,7 @@ public class LuxIdContainer extends GenericContainer<LuxIdContainer, GclLuxIdRes
 
     public Boolean unverifyPin() {
         throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
-    }
+    }*/
 
     private Map<String, T1cCertificate> getCertificatesMap(LuxIdAllData allData) {
         Map<String, T1cCertificate> certs = new HashMap<>();

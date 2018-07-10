@@ -1,9 +1,6 @@
 package com.t1t.t1c.utils;
 
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
-import com.t1t.t1c.core.GclPrivateKeyReference;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.AbstractRuntimeException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
@@ -18,8 +15,13 @@ public final class PinUtil {
     private PinUtil() {
     }
 
-    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String pin) {
-        boolean pinPresent = StringUtils.isNotBlank(pin);
+    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String... pins) {
+        boolean pinPresent = true;
+        for (String pin : pins) {
+            if (StringUtils.isEmpty(pin)) {
+                pinPresent = false;
+            }
+        }
         boolean hardwarePinPadPresent = reader.getPinpad();
         if (forcePinPad) {
             if (hardwarePinPadPresent) {
@@ -65,5 +67,20 @@ public final class PinUtil {
                 .withPinpad(pinpad)
                 .withOsDialog(osPinDialog)
                 .withPrivateKeyReference(privateKeyReference);
+    }
+
+    public static GclChangePinRequest createEncryptedPinChangeRequest(Boolean pinpad, Boolean osPinDialog, String oldPin, String newPin) {
+        return new GclChangePinRequest()
+                .withNewPin(getEncryptedPinIfPresent(newPin))
+                .withOldPin(getEncryptedPinIfPresent(oldPin))
+                .withOsDialog(osPinDialog);
+    }
+
+    public static GclResetPinRequest createEncryptedPinResetRequest(Boolean pinpad, Boolean osPinDialog, String puk, String newPin) {
+        return new GclResetPinRequest()
+                .withOsDialog(osPinDialog)
+                .withPin(getEncryptedPinIfPresent(newPin))
+                .withPuk(getEncryptedPinIfPresent(puk))
+                .withResetOnly(StringUtils.isEmpty(newPin) && osPinDialog);
     }
 }

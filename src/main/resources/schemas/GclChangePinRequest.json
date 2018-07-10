@@ -1,0 +1,17 @@
+{
+  "$id": "GclChangePinRequest",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclChangePinRequest",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "old_pin": {
+      "type": "string"
+    },
+    "new_pin": {
+      "type": "string"
+    },
+    "os_dialog": {
+      "type": "boolean"
+    }
+  }
+}

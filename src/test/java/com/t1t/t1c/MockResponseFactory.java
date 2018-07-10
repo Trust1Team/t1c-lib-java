@@ -79,6 +79,10 @@ public final class MockResponseFactory {
         return new T1cResponse<T>().withSuccess(true).withData(data);
     }
 
+    private static <T> T1cResponse<T> getFailureResponse(T data) {
+        return new T1cResponse<T>().withSuccess(false).withData(data);
+    }
+
     //
     // GCL Core
     //
@@ -1783,5 +1787,16 @@ public final class MockResponseFactory {
                 .withSerialNumber("534C479040110001123175F912924239")
                 .withVersion(0L)
                 .withVersionRfu(48L);
+    }
+
+    public static T1cResponse<Integer> getPinTryCount(GclPinTryCounterRequest request) {
+        switch (request.getPinReference()) {
+            case USER:
+                return getSuccessResponse(1);
+            case ADMIN:
+                return getSuccessResponse(2);
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 }

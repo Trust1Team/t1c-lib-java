@@ -323,6 +323,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
                         </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclChangePinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclResetPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPinReference.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPinTryCounterRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclConsentType.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAlertPosition.json</sourcePath>
