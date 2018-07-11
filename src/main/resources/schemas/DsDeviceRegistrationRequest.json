@@ -4,9 +4,6 @@
   "javaType": "com.t1t.t1c.ds.DsDeviceRegistrationRequest",
   "type": "object",
   "properties": {
-    "managed": {
-      "type": "boolean"
-    },
     "activated": {
       "type": "boolean"
     },
@@ -39,6 +36,9 @@
       }
     },
     "proxyDomain": {
+      "type": "string"
+    },
+    "namespace": {
       "type": "string"
     }
   }

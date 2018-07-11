@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -14,9 +15,6 @@ import java.util.List;
 @Generated("org.jsonschema2pojo")
 public class DsDeviceRegistrationRequest {
 
-    @SerializedName("managed")
-    @Expose
-    private Boolean managed;
     @SerializedName("activated")
     @Expose
     private Boolean activated;
@@ -44,35 +42,23 @@ public class DsDeviceRegistrationRequest {
     @SerializedName("proxyDomain")
     @Expose
     private String proxyDomain;
+    @SerializedName("namespace")
+    @Expose
+    private String namespace;
 
     /**
-     * @return The managed
-     */
-    public Boolean getManaged() {
-        return managed;
-    }
-
-    /**
-     * @param managed The managed
-     */
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
-    }
-
-    public DsDeviceRegistrationRequest withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
-     * @return The activated
+     * 
+     * @return
+     *     The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * @param activated The activated
+     * 
+     * @param activated
+     *     The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -84,14 +70,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The uuid
+     * 
+     * @return
+     *     The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid The uuid
+     * 
+     * @param uuid
+     *     The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -103,14 +93,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The version
+     * 
+     * @return
+     *     The version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * @param version The version
+     * 
+     * @param version
+     *     The version
      */
     public void setVersion(String version) {
         this.version = version;
@@ -122,14 +116,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The derEncodedPublicKey
+     * 
+     * @return
+     *     The derEncodedPublicKey
      */
     public String getDerEncodedPublicKey() {
         return derEncodedPublicKey;
     }
 
     /**
-     * @param derEncodedPublicKey The derEncodedPublicKey
+     * 
+     * @param derEncodedPublicKey
+     *     The derEncodedPublicKey
      */
     public void setDerEncodedPublicKey(String derEncodedPublicKey) {
         this.derEncodedPublicKey = derEncodedPublicKey;
@@ -141,14 +139,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The os
+     * 
+     * @return
+     *     The os
      */
     public DsOs getOs() {
         return os;
     }
 
     /**
-     * @param os The os
+     * 
+     * @param os
+     *     The os
      */
     public void setOs(DsOs os) {
         this.os = os;
@@ -160,14 +162,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The desktopApplication
+     * 
+     * @return
+     *     The desktopApplication
      */
     public DsDesktopApplication getDesktopApplication() {
         return desktopApplication;
     }
 
     /**
-     * @param desktopApplication The desktopApplication
+     * 
+     * @param desktopApplication
+     *     The desktopApplication
      */
     public void setDesktopApplication(DsDesktopApplication desktopApplication) {
         this.desktopApplication = desktopApplication;
@@ -179,14 +185,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The clientInfo
+     * 
+     * @return
+     *     The clientInfo
      */
     public DsClientInfo getClientInfo() {
         return clientInfo;
     }
 
     /**
-     * @param clientInfo The clientInfo
+     * 
+     * @param clientInfo
+     *     The clientInfo
      */
     public void setClientInfo(DsClientInfo clientInfo) {
         this.clientInfo = clientInfo;
@@ -198,14 +208,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The containerStates
+     * 
+     * @return
+     *     The containerStates
      */
     public List<GclContainerInfo> getContainerStates() {
         return containerStates;
     }
 
     /**
-     * @param containerStates The containerStates
+     * 
+     * @param containerStates
+     *     The containerStates
      */
     public void setContainerStates(List<GclContainerInfo> containerStates) {
         this.containerStates = containerStates;
@@ -217,14 +231,18 @@ public class DsDeviceRegistrationRequest {
     }
 
     /**
-     * @return The proxyDomain
+     * 
+     * @return
+     *     The proxyDomain
      */
     public String getProxyDomain() {
         return proxyDomain;
     }
 
     /**
-     * @param proxyDomain The proxyDomain
+     * 
+     * @param proxyDomain
+     *     The proxyDomain
      */
     public void setProxyDomain(String proxyDomain) {
         this.proxyDomain = proxyDomain;
@@ -235,6 +253,29 @@ public class DsDeviceRegistrationRequest {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     *     The namespace
+     */
+    public String getNamespace() {
+        return namespace;
+    }
+
+    /**
+     * 
+     * @param namespace
+     *     The namespace
+     */
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public DsDeviceRegistrationRequest withNamespace(String namespace) {
+        this.namespace = namespace;
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -242,7 +283,7 @@ public class DsDeviceRegistrationRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(managed).append(activated).append(uuid).append(version).append(derEncodedPublicKey).append(os).append(desktopApplication).append(clientInfo).append(containerStates).append(proxyDomain).toHashCode();
+        return new HashCodeBuilder().append(activated).append(uuid).append(version).append(derEncodedPublicKey).append(os).append(desktopApplication).append(clientInfo).append(containerStates).append(proxyDomain).append(namespace).toHashCode();
     }
 
     @Override
@@ -254,7 +295,7 @@ public class DsDeviceRegistrationRequest {
             return false;
         }
         DsDeviceRegistrationRequest rhs = ((DsDeviceRegistrationRequest) other);
-        return new EqualsBuilder().append(managed, rhs.managed).append(activated, rhs.activated).append(uuid, rhs.uuid).append(version, rhs.version).append(derEncodedPublicKey, rhs.derEncodedPublicKey).append(os, rhs.os).append(desktopApplication, rhs.desktopApplication).append(clientInfo, rhs.clientInfo).append(containerStates, rhs.containerStates).append(proxyDomain, rhs.proxyDomain).isEquals();
+        return new EqualsBuilder().append(activated, rhs.activated).append(uuid, rhs.uuid).append(version, rhs.version).append(derEncodedPublicKey, rhs.derEncodedPublicKey).append(os, rhs.os).append(desktopApplication, rhs.desktopApplication).append(clientInfo, rhs.clientInfo).append(containerStates, rhs.containerStates).append(proxyDomain, rhs.proxyDomain).append(namespace, rhs.namespace).isEquals();
     }
 
 }

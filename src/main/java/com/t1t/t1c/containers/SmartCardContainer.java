@@ -25,7 +25,7 @@ import java.util.*;
  * <p>
  * Virtual container.
  */
-public abstract class GenericContainer<T extends GenericContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
+public abstract class SmartCardContainer<T extends SmartCardContainer, U, V extends AllData, W extends AllCertificates> implements IGenericContainer<V, W> {
 
     protected static final String ENCRYPTED_PIN_HEADER_NAME = "X-Encrypted-Pin";
     protected static final String ENCRYPTED_CAN_HEADER_NAME = "X-Encrypted-Can";
@@ -37,23 +37,23 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
     protected U httpClient;
     protected transient GclPace pace;
     protected LibConfig config;
-    protected ContainerType type;
+    protected ContainerVersion containerVersion;
     protected List<DigestAlgorithm> signAlgos;
     protected List<DigestAlgorithm> authenticateAlgos;
 
     /*Instantiation*/
-    public GenericContainer() {
+    public SmartCardContainer() {
     }
 
-    public GenericContainer(LibConfig config, GclReader reader, U httpClient) {
-        createInstance(config, reader, httpClient, new GclPace());
+    public SmartCardContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient) {
+        createInstance(config, reader, containerVersion, httpClient, new GclPace());
     }
 
-    public GenericContainer(LibConfig config, GclReader reader, U httpClient, GclPace pace) {
-        createInstance(config, reader, httpClient, pace);
+    public SmartCardContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient, GclPace pace) {
+        createInstance(config, reader, containerVersion, httpClient, pace);
     }
 
-    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, GclPace pace);
+    public abstract T createInstance(LibConfig config, GclReader reader, String containerVersion, U httpClient, GclPace pace);
 
     @Override
     public V getAllData() throws RestException, NoConsentException {
@@ -158,5 +158,20 @@ public abstract class GenericContainer<T extends GenericContainer, U, V extends 
         if (!supported.contains(selectedAlgorithm)) {
             throw ExceptionFactory.unsupportedDigestAlgorithm(selectedAlgorithm, supported);
         }
+    }
+
+    @Override
+    public ContainerType getType() {
+        return containerVersion.getType();
+    }
+
+    @Override
+    public String getTypeId() {
+        return getType().getId();
+    }
+
+    @Override
+    public String getContainerVersionId() {
+        return this.containerVersion.getId();
     }
 }

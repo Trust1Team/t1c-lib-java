@@ -3,7 +3,7 @@ package com.t1t.t1c.containers.smartcards.piv;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
@@ -27,23 +27,23 @@ import java.util.Map;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class PivContainer extends GenericContainer<PivContainer, GclPivRestClient, PivAllData, PivAllCertificates> {
+public class PivContainer extends SmartCardContainer<PivContainer, GclPivRestClient, PivAllData, PivAllCertificates> {
 
     private String pin;
 
-    public PivContainer(LibConfig config, GclReader reader, GclPivRestClient httpClient, String pin) {
-        super(config, reader, httpClient, new GclPace().withPin(pin));
+    public PivContainer(LibConfig config, GclReader reader, String containerVersion, GclPivRestClient httpClient, String pin) {
+        super(config, reader, containerVersion, httpClient, new GclPace().withPin(pin));
     }
 
     @Override
-    public PivContainer createInstance(LibConfig config, GclReader reader, GclPivRestClient httpClient, GclPace pace) {
+    public PivContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclPivRestClient httpClient, GclPace pace) {
         Preconditions.checkArgument(StringUtils.isNotEmpty(pace.getPin()), "PIN required to initialize PIV container");
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
         this.pin = pace.getPin();
-        this.type = ContainerType.PIV;
+        this.containerVersion = new ContainerVersion(ContainerType.PIV;
         return this;
     }
 
@@ -59,19 +59,19 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
 
     @Override
     public PivAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return new PivAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
+        return new PivAllData(RestExecutor.returnData(httpClient.getAllData(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
     public PivAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return new PivAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
+        return new PivAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
     public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -81,7 +81,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
-                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerVersionId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -97,7 +97,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.authenticate(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -107,7 +107,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
-                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerVersionId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
@@ -123,7 +123,7 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
             Preconditions.checkNotNull(data, "data to sign must not be null");
             Preconditions.checkNotNull(algo, "digest algorithm must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.sign(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -150,19 +150,19 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     public GclPivPrintedInformation getPrintedInformation() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getPrintedInformation(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getPrintedInformation(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired());
     }
 
     public GclPivFacialImage getFacialImage() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getFacialImage(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getFacialImage(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired());
     }
 
     public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getSigningCertificate(Boolean parse) throws RestException, NoConsentException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), this.pin)), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getAuthenticationCertificate() throws RestException, NoConsentException {
@@ -174,11 +174,11 @@ public class PivContainer extends GenericContainer<PivContainer, GclPivRestClien
     }
 
     public List<DigestAlgorithm> getAllAlgoRefsForAuthentication() throws RestException, NoConsentException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
+        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getContainerVersionId(), reader.getId()), config.isConsentRequired()));
     }
 
     public List<DigestAlgorithm> getAllAlgoRefsForSigning() throws RestException, NoConsentException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
+        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getContainerVersionId(), reader.getId()), config.isConsentRequired()));
     }
 
     @Override

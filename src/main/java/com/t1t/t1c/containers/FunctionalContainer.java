@@ -13,16 +13,28 @@ public abstract class FunctionalContainer<T extends FunctionalContainer, U> impl
     protected U httpClient;
     protected transient String pin;
     protected LibConfig config;
-    protected ContainerType type;
+    protected ContainerVersion containerVersion;
 
     /*Instantiation*/
     public FunctionalContainer() {
     }
 
-    public FunctionalContainer(LibConfig config, GclReader reader, U httpClient, String pin) {
-        createInstance(config, reader, httpClient, pin);
+    public FunctionalContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient, String pin) {
+        createInstance(config, reader, containerVersion, httpClient, pin);
     }
 
-    public abstract T createInstance(LibConfig config, GclReader reader, U httpClient, String pin);
+    public abstract T createInstance(LibConfig config, GclReader reader, String containerVersion, U httpClient, String pin);
+
+    @Override
+    public ContainerType getType() {
+        return containerVersion.getType();
+    }
+
+    @Override
+    public String getTypeId() {
+        return getType().getId();
+    }
+
+
 
 }

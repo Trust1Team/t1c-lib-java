@@ -2,7 +2,7 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.IGenericContainer;
 import com.t1t.t1c.containers.functional.readerapi.GclReaderApiApdu;
 import com.t1t.t1c.containers.functional.readerapi.ReaderApiContainer;
@@ -744,7 +744,7 @@ public class JavaClientExample {
         System.out.println("Close session: " + container.closeSession(sessionId));
     }
 
-    public static void executeGenericCardUseCases(GenericContainer container, String pin) {
+    public static void executeGenericCardUseCases(SmartCardContainer container, String pin) {
         try {
             if (container.verifyPin(pin)) {
                 System.out.println("PIN verified");

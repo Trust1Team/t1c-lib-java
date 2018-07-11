@@ -41,7 +41,7 @@ public final class RestServiceBuilder {
     private static final String CONTAINER_CONTEXT_PATH = "containers/";
     private static final String APIKEY_HEADER_NAME = "apikey";
     private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
-    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-%s-NS";
+    private static final String X_RELAY_STATE_PREFIX = "X-Relay-State-%s";
     private static final String AUTHORIZATION_HEADER_VALUE_PREFIX = "Bearer ";
     private static final String ORIGIN_HEADER_NAME = "origin";
     private static final String ORIGIN_HEADER_VALUE = "https://localhost";
@@ -274,7 +274,7 @@ public final class RestServiceBuilder {
                 });
 
         final boolean jwtPresent = StringUtils.isNotBlank(config.getGclJwt()) && sendAuthToken;
-        final boolean contextTokenRequired = config.getContextToken() != null && !config.isManaged();
+        final boolean contextTokenRequired = config.getContextToken() != null;
         if (jwtPresent || contextTokenRequired) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
@@ -284,7 +284,7 @@ public final class RestServiceBuilder {
                         requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
                     }
                     if (contextTokenRequired) {
-                        requestBuilder.addHeader(String.format(X_RELAY_STATE_PREFIX, String.valueOf(config.getContextToken())), String.valueOf(config.getContextToken()));
+                        requestBuilder.addHeader(String.format(X_RELAY_STATE_PREFIX, config.getContextToken()), config.getContextToken());
                     }
                     return chain.proceed(requestBuilder.build());
                 }

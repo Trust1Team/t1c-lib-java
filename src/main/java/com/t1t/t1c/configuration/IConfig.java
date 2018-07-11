@@ -40,7 +40,6 @@ public interface IConfig {
     String LIB_GEN_IMPLICIT_DOWNLOADS = "t1c.general.implicitDownloads";
     String LIB_GEN_OS_PIN_DIALOG = "t1c.general.osPinDialog";
     String LIB_GEN_SESSION_TIMEOUT = "t1c.general.sessionTimeoutInSeconds";
-    String LIB_GEN_SYNC_MANAGED = "t1c.general.syncManaged";
 
     //Test
 

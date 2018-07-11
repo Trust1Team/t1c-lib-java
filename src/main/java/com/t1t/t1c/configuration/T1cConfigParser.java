@@ -74,7 +74,6 @@ public class T1cConfigParser implements Serializable {
             configObj.setHardwarePinPadForced(getHardwarePinPadForced());
             configObj.setOsPinDialog(getOsPinDialog());
             configObj.setSessionTimeout(getDefaultSessionTimeout());
-            configObj.setSyncManaged(getSyncManaged());
             configObj.setPkcs11Config(getPkcs11Config());
             setAppConfig(configObj);
             validateConfig();
@@ -93,7 +92,6 @@ public class T1cConfigParser implements Serializable {
     public LibConfig parseConfig(LibConfig config, GclInfo info) {
         config.setCitrix(info.getCitrix());
         config.setConsentRequired(info.getConsent());
-        config.setManaged(info.getManaged());
         setAppConfig(config);
         validateConfig();
         printAppConfig();
@@ -126,10 +124,6 @@ public class T1cConfigParser implements Serializable {
 
     private Boolean getLocalTestMode() {
         return getConfigBoolean(IConfig.LIB_TEST_LOCAL_MODE);
-    }
-
-    private Boolean getSyncManaged() {
-        return getConfigBoolean(IConfig.LIB_GEN_SYNC_MANAGED);
     }
 
     private Boolean getOsPinDialog() {
@@ -242,7 +236,6 @@ public class T1cConfigParser implements Serializable {
         log.debug("General - Default polling interval (seconds): {}", appConfig.getDefaultPollingIntervalInSeconds());
         log.debug("General - Default polling timeout (seconds): {}", appConfig.getDefaultPollingTimeoutInSeconds());
         log.debug("General - Default session timeout (seconds): {}", appConfig.getSessionTimeout());
-        log.debug("General - Sync managed: {}", appConfig.isSyncManaged());
         if (appConfig.getPkcs11Config() != null) {
             log.debug("PKCS11 - Module Linux Path: {}", appConfig.getPkcs11Config().getLinux());
             log.debug("PKCS11 - Module Mac OS Path: {}", appConfig.getPkcs11Config().getMac());
@@ -254,8 +247,7 @@ public class T1cConfigParser implements Serializable {
     /**
      * Validates the configuration.
      * Empty values are configured with PROD defaults
-     * When the apikey is not provided, the client will not interact with cloud services,
-     * this is the case for managed T1C instances.
+     * When the apikey is not provided, the client will not interact with cloud services.
      */
     public void validateConfig() {
 
@@ -275,7 +267,7 @@ public class T1cConfigParser implements Serializable {
             this.appConfig.setOcvUri(URI_OCV);
         }
         if (StringUtils.isEmpty(this.appConfig.getApiKey())) {
-            this.appConfig.setApiKey(""); // for managed instances - when DS and OCV are not used
+            this.appConfig.setApiKey(""); // for instances where DS and OCV are not used
         }
         if (StringUtils.isEmpty(this.appConfig.getClientFingerprintDirectoryPath())) {
             throw ExceptionFactory.initializationException("File path for client fingerprint token required");
@@ -320,9 +312,6 @@ public class T1cConfigParser implements Serializable {
         }
         if (this.appConfig.getSessionTimeout() == null || this.getAppConfig().getSessionTimeout() <= 0) {
             this.appConfig.setSessionTimeout(DEFAULT_SESSION_TIMEOUT);
-        }
-        if (this.appConfig.isSyncManaged() == null) {
-            this.appConfig.setSyncManaged(true);
         }
         if (this.appConfig.isCitrix() == null) {
             this.appConfig.setCitrix(false);

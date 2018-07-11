@@ -44,34 +44,34 @@ public interface IT1cClient {
 
     IGenericContainer getGenericContainer(GclReader reader);
 
-    BeIdContainer getBeIdContainer(GclReader reader);
+    BeIdContainer getBeIdContainer(GclReader reader, String version);
 
-    LuxIdContainer getLuxIdContainer(GclReader reader, GclPace pace);
+    LuxIdContainer getLuxIdContainer(GclReader reader, String version, GclPace pace);
 
-    LuxTrustContainer getLuxTrustContainer(GclReader reader);
+    LuxTrustContainer getLuxTrustContainer(GclReader reader, String version);
 
-    DnieContainer getDnieContainer(GclReader reader);
+    DnieContainer getDnieContainer(GclReader reader, String version);
 
-    EmvContainer getEmvContainer(GclReader reader);
+    EmvContainer getEmvContainer(GclReader reader, String version);
 
-    MobibContainer getMobibContainer(GclReader reader);
+    MobibContainer getMobibContainer(GclReader reader, String version);
 
-    OcraContainer getOcraContainer(GclReader reader);
+    OcraContainer getOcraContainer(GclReader reader, String version);
 
-    AventraContainer getAventraContainer(GclReader reader);
+    AventraContainer getAventraContainer(GclReader reader, String version);
 
-    OberthurContainer getOberthurContainer(GclReader reader);
+    OberthurContainer getOberthurContainer(GclReader reader, String version);
 
-    PivContainer getPivContainer(GclReader reader, String pacePin);
+    PivContainer getPivContainer(GclReader reader, String version, String pacePin);
 
-    PtEIdContainer getPtIdContainer(GclReader reader);
+    PtEIdContainer getPtIdContainer(GclReader reader, String version);
 
-    Pkcs11Container getPkcs11Container(GclReader reader);
+    Pkcs11Container getPkcs11Container(GclReader reader, String version);
 
-    Pkcs11Container getPkcs11Container(GclReader reader, ModuleConfiguration configuration);
+    Pkcs11Container getPkcs11Container(GclReader reader, String version, ModuleConfiguration configuration);
 
     /*Functional containers*/
-    ReaderApiContainer getReaderApiContainer(GclReader reader);
+    ReaderApiContainer getReaderApiContainer(GclReader reader, String version);
 
     /*DS Functionality*/
     String getDownloadLink();

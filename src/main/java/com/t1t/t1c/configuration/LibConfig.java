@@ -37,9 +37,8 @@ public class LibConfig {
 
     private Boolean citrix;
     private Boolean consentRequired = false;
-    private Long contextToken;
+    private String contextToken;
     private String gclJwt;
-    private Boolean managed = false;
 
     // General Config
 
@@ -55,7 +54,7 @@ public class LibConfig {
     private Boolean osPinDialog = false;
     private ModuleConfiguration pkcs11Config;
     private Integer sessionTimeout;
-    private Boolean syncManaged = true;
+
     private SslConfig customSslConfig;
 
     // Dynamic properties
@@ -151,11 +150,11 @@ public class LibConfig {
         this.consentRequired = consentRequired;
     }
 
-    public Long getContextToken() {
+    public String getContextToken() {
         return contextToken;
     }
 
-    public void setContextToken(Long contextToken) {
+    public void setContextToken(String contextToken) {
         this.contextToken = contextToken;
     }
 
@@ -165,14 +164,6 @@ public class LibConfig {
 
     public void setGclJwt(String gclJwt) {
         this.gclJwt = gclJwt;
-    }
-
-    public Boolean isManaged() {
-        return managed;
-    }
-
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
     }
 
     public Integer getAgentPort() {
@@ -261,14 +252,6 @@ public class LibConfig {
 
     public void setSessionTimeout(Integer sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
-    }
-
-    public Boolean isSyncManaged() {
-        return syncManaged;
-    }
-
-    public void setSyncManaged(Boolean syncManaged) {
-        this.syncManaged = syncManaged;
     }
 
     public SslConfig getCustomSslConfig() {

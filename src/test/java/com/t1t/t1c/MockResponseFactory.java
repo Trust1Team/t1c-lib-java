@@ -300,7 +300,6 @@ public final class MockResponseFactory {
                 .withCitrix(false)
                 .withConsent(false)
                 .withLogLevel("info")
-                .withManaged(false)
                 .withOs("macOS")
                 .withOsid("macos")
                 .withUid("B7289D3AEB22D233")
@@ -1614,7 +1613,10 @@ public final class MockResponseFactory {
     }
 
     public static DsDevice getDsDevice() {
-        return new DsDevice().withActivated(true).withCoreVersion("1.4.0").withManaged(false).withUuid("B7289D3AEB22D233");
+        return new DsDevice()
+                .withActivated(true)
+                .withCoreVersion("1.4.0")
+                .withUuid("B7289D3AEB22D233");
     }
 
     public static DsToken getToken() {
@@ -1633,7 +1635,6 @@ public final class MockResponseFactory {
         return new DsRegistrationSyncResponse()
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(false)
-                .withManaged(false)
                 .withCoreVersion("2.0.0")
                 .withContextToken(6L);
     }
@@ -1642,7 +1643,6 @@ public final class MockResponseFactory {
         return new DsRegistrationSyncResponse()
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(true)
-                .withManaged(false)
                 .withCoreVersion("2.0.0")
                 .withContextToken(6L)
                 .withContainerResponses(

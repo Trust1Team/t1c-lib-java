@@ -10,14 +10,11 @@
     "activated": {
       "type": "boolean"
     },
-    "managed": {
-      "type": "boolean"
-    },
     "coreVersion": {
       "type": "string"
     },
     "contextToken": {
-      "type": "integer"
+      "type": "string"
     },
     "containerResponses": {
       "type": "array",

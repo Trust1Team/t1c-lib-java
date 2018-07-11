@@ -12,9 +12,8 @@ public class DsSyncResponseDto {
 
     private String uuid;
     private Boolean activated;
-    private Boolean managed;
     private String coreVersion;
-    private Long contextToken;
+    private String contextToken;
     private List<DsContainerResponse> containerResponses;
     private DsAtrList atrList;
     private String gclJwt;
@@ -22,7 +21,6 @@ public class DsSyncResponseDto {
     public DsSyncResponseDto(Pair<DsRegistrationSyncResponse, String> response) {
         this.uuid = response.getLeft().getUuid();
         this.activated = response.getLeft().getActivated();
-        this.managed = response.getLeft().getManaged();
         this.coreVersion = response.getLeft().getCoreVersion();
         this.contextToken = response.getLeft().getContextToken();
         this.containerResponses = response.getLeft().getContainerResponses();
@@ -46,14 +44,6 @@ public class DsSyncResponseDto {
         this.activated = activated;
     }
 
-    public Boolean getManaged() {
-        return managed;
-    }
-
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
-    }
-
     public String getCoreVersion() {
         return coreVersion;
     }
@@ -62,11 +52,11 @@ public class DsSyncResponseDto {
         this.coreVersion = coreVersion;
     }
 
-    public Long getContextToken() {
+    public String getContextToken() {
         return contextToken;
     }
 
-    public void setContextToken(Long contextToken) {
+    public void setContextToken(String contextToken) {
         this.contextToken = contextToken;
     }
 
