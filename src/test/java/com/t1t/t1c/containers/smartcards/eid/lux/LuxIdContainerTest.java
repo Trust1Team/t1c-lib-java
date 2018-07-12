@@ -40,7 +40,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), new GclPace().withPin("123456"));
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "v2.0.0", new GclPace().withPin("123456"));
     }
 
     @Test
@@ -261,7 +261,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test(expected = LuxIdContainerException.class)
     public void createInstance() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), null);
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "v2.0.0", null);
     }
 
     @Test

@@ -18,6 +18,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -55,8 +56,8 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getDsPubKey() {
-        T1cPublicKey publicKey = core.getDsPubKey(false);
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.getDerEncoded());
+        Map<String, T1cPublicKey> publicKey = core.getDsPubKeys(false);
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.get("accapim.t1t.be").getDerEncoded());
     }
 
     @Test
@@ -73,9 +74,9 @@ public class CoreTest extends AbstractTestClass {
 
     @Test
     public void getDsPubKeyParsed() {
-        T1cPublicKey publicKey = core.getDsPubKey(true);
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.getDerEncoded());
-        assertNotNull(publicKey.getParsed());
+        Map<String, T1cPublicKey> publicKey = core.getDsPubKeys(true);
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKey.get("accapim.t1t.be").getDerEncoded());
+        assertNotNull(publicKey.get("accapim.t1t.be").getParsed());
     }
 
     @Test
@@ -98,7 +99,7 @@ public class CoreTest extends AbstractTestClass {
         assertNotNull(publicKeys);
         assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
         assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be"));
     }
 
     @Test
@@ -106,16 +107,16 @@ public class CoreTest extends AbstractTestClass {
         T1cAdminPublicKeys publicKeys = core.getAdminPublicKeys(true);
         assertNotNull(publicKeys);
         assertNotNull(publicKeys.getDevice().getParsed());
-        assertNotNull(publicKeys.getDs().getParsed());
+        assertNotNull(publicKeys.getDs());
         assertNotNull(publicKeys.getSsl().getParsed());
         assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
         assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().getDerEncoded());
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be"));
     }
 
     @Test
     public void setPubKey() {
-        assertTrue(core.setDsPubKey(MockResponseFactory.getGclAdminDsCertificate(), "AESKEY"));
+        assertTrue(core.setDsPubKey(MockResponseFactory.getGclAdminDsCertificate(), "AESKEY", "accapim.t1t.be"));
     }
 
     @Test

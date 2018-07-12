@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 import java.awt.datatransfer.Transferable;
 import java.net.ConnectException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Michallis Pashidis
@@ -101,14 +103,19 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getDsPubKey() throws GclCoreException {
-        return getDsPubKey(null);
+    public Map<String, T1cPublicKey> getDsPubKeys() throws GclCoreException {
+        return getDsPubKeys(null);
     }
 
     @Override
-    public T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException {
+    public Map<String, T1cPublicKey> getDsPubKeys(Boolean parse) throws GclCoreException {
         try {
-            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired()), parse);
+            List<GclDsPublicKey> keys = RestExecutor.returnData(gclAdminRestClient.getDsCertificates(), config.isConsentRequired());
+            Map<String, T1cPublicKey> pubKeys = new HashMap<>();
+            for (GclDsPublicKey pb : keys) {
+                pubKeys.put(pb.getNs(), PkiUtil.createT1cPublicKey(pb.getBase64(), parse));
+            }
+            return pubKeys;
         } catch (RestException ex) {
             GclError error = ex.getGclError();
             // If the error code returned is 201, that means the public has not been set (yet), return null
@@ -134,11 +141,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException {
+    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey, String namespace) throws GclCoreException {
         try {
             GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
                     .withEncryptedPublicKey(encryptedPublicKey)
-                    .withEncryptedAesKey(encryptedAesKey);
+                    .withEncryptedAesKey(encryptedAesKey)
+                    .withNs(namespace);
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);

@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.piv;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
@@ -43,7 +44,7 @@ public class PivContainer extends SmartCardContainer<PivContainer, GclPivRestCli
         this.httpClient = httpClient;
         this.pace = pace;
         this.pin = pace.getPin();
-        this.containerVersion = new ContainerVersion(ContainerType.PIV;
+        this.containerVersion = new ContainerVersion(ContainerType.PIV, containerVersion);
         return this;
     }
 
@@ -127,16 +128,6 @@ public class PivContainer extends SmartCardContainer<PivContainer, GclPivRestCli
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
-    }
-
-    @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
     }
 
     @Override

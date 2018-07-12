@@ -2,8 +2,9 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.SmartCardContainer;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.IGenericContainer;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.functional.readerapi.GclReaderApiApdu;
 import com.t1t.t1c.containers.functional.readerapi.ReaderApiContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
@@ -106,6 +107,54 @@ public class JavaClientExample {
         }
     }
 
+    private static void executeReaderSpecificContainerFunctionality(GclReader reader) {
+        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
+
+        switch (type) {
+            case AVENTRA:
+                aventraUseCases(reader);
+                break;
+            case BEID:
+                beIdUseCases(reader);
+                break;
+            case DNIE:
+                dnieUseCases(reader);
+                break;
+            case EMV:
+                emvUseCases(reader);
+                break;
+            case EST:
+                break;
+            case LUXID:
+                luxIdUseCases(reader);
+                break;
+            case LUXTRUST:
+                luxTrustUseCases(reader);
+                break;
+            case MOBIB:
+                mobibUseCases(reader);
+                break;
+            case OBERTHUR:
+                oberthurUseCases(reader);
+                break;
+            case OCRA:
+                ocraUseCases(reader);
+                break;
+            case PIV:
+                pivUseCases(reader);
+                break;
+            case PT:
+                ptIdUseCases(reader);
+                break;
+            case PKCS11:
+                pkcs11UseCases(reader);
+                break;
+            default:
+                System.out.println("No matching container type found: " + type);
+                break;
+        }
+    }
+
     private static void grantConsent() {
         try {
             System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclAlertLevel.ERROR, GclAlertPosition.CENTER, GclConsentType.READER, 10));
@@ -169,57 +218,9 @@ public class JavaClientExample {
         }
     }
 
-
-    private static void executeReaderSpecificContainerFunctionality(GclReader reader) {
-        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
-
-        switch (type) {
-            case AVENTRA:
-                aventraUseCases(reader);
-                break;
-            case BEID:
-                beIdUseCases(reader);
-                break;
-            case DNIE:
-                dnieUseCases(reader);
-                break;
-            case EMV:
-                emvUseCases(reader);
-                break;
-            case EST:
-                break;
-            case LUXID:
-                luxIdUseCases(reader);
-                break;
-            case LUXTRUST:
-                luxTrustUseCases(reader);
-                break;
-            case MOBIB:
-                mobibUseCases(reader);
-                break;
-            case OBERTHUR:
-                oberthurUseCases(reader);
-                break;
-            case OCRA:
-                ocraUseCases(reader);
-                break;
-            case PIV:
-                pivUseCases(reader);
-                break;
-            case PT:
-                ptIdUseCases(reader);
-                break;
-            case PKCS11:
-                pkcs11UseCases(reader);
-                break;
-            default:
-                System.out.println("No matching container type found: " + type);
-                break;
-        }
-    }
-
     private static void pkcs11UseCases(GclReader reader) {
-        Pkcs11Container container = client.getPkcs11Container(reader);
+        String version = getVersion(ContainerType.PKCS11);
+        Pkcs11Container container = client.getPkcs11Container(reader, version);
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -244,14 +245,13 @@ public class JavaClientExample {
     }
 
     private static void pivUseCases(GclReader reader) {
-
-
+        String version = getVersion(ContainerType.PIV);
         Scanner paceScanner = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pacePin = paceScanner.nextLine();
 
         if (StringUtils.isNotEmpty(pacePin)) {
-            PivContainer container = client.getPivContainer(reader, pacePin);
+            PivContainer container = client.getPivContainer(reader, version, pacePin);
 
             Scanner scan = new Scanner(System.in);
             String pin = null;
@@ -289,7 +289,8 @@ public class JavaClientExample {
     }
 
     private static void oberthurUseCases(GclReader reader) {
-        OberthurContainer container = client.getOberthurContainer(reader);
+        String version = getVersion(ContainerType.OBERTHUR);
+        OberthurContainer container = client.getOberthurContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -322,7 +323,8 @@ public class JavaClientExample {
     }
 
     private static void aventraUseCases(GclReader reader) {
-        AventraContainer container = client.getAventraContainer(reader);
+        String version = getVersion(ContainerType.AVENTRA);
+        AventraContainer container = client.getAventraContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -382,7 +384,8 @@ public class JavaClientExample {
     }
 
     private static void ocraUseCases(GclReader reader) {
-        OcraContainer container = client.getOcraContainer(reader);
+        String version = getVersion(ContainerType.OCRA);
+        OcraContainer container = client.getOcraContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -406,7 +409,8 @@ public class JavaClientExample {
     }
 
     private static void mobibUseCases(GclReader reader) {
-        MobibContainer container = client.getMobibContainer(reader);
+        String version = getVersion(ContainerType.MOBIB);
+        MobibContainer container = client.getMobibContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData());
 
@@ -420,7 +424,8 @@ public class JavaClientExample {
     }
 
     private static void emvUseCases(GclReader reader) {
-        EmvContainer container = client.getEmvContainer(reader);
+        String version = getVersion(ContainerType.EMV);
+        EmvContainer container = client.getEmvContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -452,7 +457,8 @@ public class JavaClientExample {
     }
 
     private static void dnieUseCases(GclReader reader) {
-        DnieContainer container = client.getDnieContainer(reader);
+        String version = getVersion(ContainerType.DNIE);
+        DnieContainer container = client.getDnieContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -476,7 +482,8 @@ public class JavaClientExample {
     }
 
     private static void ptIdUseCases(GclReader reader) {
-        PtEIdContainer container = client.getPtIdContainer(reader);
+        String version = getVersion(ContainerType.PT);
+        PtEIdContainer container = client.getPtIdContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -542,8 +549,8 @@ public class JavaClientExample {
     }
 
     private static void beIdUseCases(GclReader reader) {
-
-        BeIdContainer container = client.getBeIdContainer(reader);
+        String version = getVersion(ContainerType.BEID);
+        BeIdContainer container = client.getBeIdContainer(reader, version);
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -603,10 +610,11 @@ public class JavaClientExample {
     }
 
     private static void luxIdUseCases(GclReader reader) {
+        String version = getVersion(ContainerType.LUXID);
         Scanner paceScan = new Scanner(System.in);
         System.out.print("Please provide PACE PIN: ");
         String pacePin = paceScan.nextLine();
-        LuxIdContainer container = client.getLuxIdContainer(reader, new GclPace().withPin(pacePin));
+        LuxIdContainer container = client.getLuxIdContainer(reader, version, new GclPace().withPin(pacePin));
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -651,7 +659,8 @@ public class JavaClientExample {
     }
 
     private static void luxTrustUseCases(GclReader reader) {
-        LuxTrustContainer container = client.getLuxTrustContainer(reader);
+        String version = getVersion(ContainerType.LUXTRUST);
+        LuxTrustContainer container = client.getLuxTrustContainer(reader, version);
         System.out.println("Card is activated: " + container.isActivated());
 
         Scanner scan = new Scanner(System.in);
@@ -693,7 +702,8 @@ public class JavaClientExample {
     }
 
     private static void readerApiUseCases(GclReader reader) {
-        ReaderApiContainer container = client.getReaderApiContainer(reader);
+        String version = getVersion(ContainerType.READER_API);
+        ReaderApiContainer container = client.getReaderApiContainer(reader, version);
 
         System.out.println("ATR: " + container.getAtr());
 
@@ -744,6 +754,7 @@ public class JavaClientExample {
         System.out.println("Close session: " + container.closeSession(sessionId));
     }
 
+
     public static void executeGenericCardUseCases(SmartCardContainer container, String pin) {
         try {
             if (container.verifyPin(pin)) {
@@ -768,4 +779,42 @@ public class JavaClientExample {
         }
     }
 
+    private static String getVersion(ContainerType type) {
+        List<ContainerVersion> versions = client.getAvailableContainerVersions();
+        List<String> requestedContainerVersions = new ArrayList<>();
+        for (ContainerVersion version : versions) {
+            if (version.getType().equals(type)) {
+                requestedContainerVersions.add(version.getVersion());
+            }
+        }
+        if (requestedContainerVersions.size() == 1) {
+            return requestedContainerVersions.get(0);
+        } else if (requestedContainerVersions.size() > 1) {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("===============================================");
+            int j = 0;
+            for (int i = 0; i < requestedContainerVersions.size(); i++) {
+                System.out.println(i + ". " + requestedContainerVersions.get(i));
+                j = i + 1;
+            }
+            System.out.println(j + ". Exit");
+            System.out.println("===============================================");
+            String choice = scan.nextLine();
+            try {
+                if (choice.equals(String.valueOf(j))) {
+                    return null;
+                } else {
+                    int i = Integer.valueOf(choice);
+                    return requestedContainerVersions.get(i);
+                }
+            } catch (Exception ex) {
+                System.out.println("Invalid choice");
+                return null;
+            }
+
+        } else {
+            System.out.println("No available versions for this container type: " + type);
+            return null;
+        }
+    }
 }

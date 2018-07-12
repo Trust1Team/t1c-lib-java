@@ -31,7 +31,7 @@ public class ReaderApiContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true));
+        container = getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

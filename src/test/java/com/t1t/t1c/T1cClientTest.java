@@ -68,76 +68,76 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetBeIdContainer() {
-        BeIdContainer container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false));
+        BeIdContainer container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(false), "v2.0.0");
 
         assertNotNull(container);
     }
 
     @Test
     public void testGetLuxIdContainer() {
-        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), new GclPace().withPin("123456"));
+        LuxIdContainer container = getClient().getLuxIdContainer(new GclReader().withId(MockResponseFactory.LUXID_READER_ID).withPinpad(false), "v2.0.0", new GclPace().withPin("123456"));
 
         assertNotNull(container);
     }
 
     @Test
     public void testGetLuxTrustContainer() {
-        LuxTrustContainer container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false));
+        LuxTrustContainer container = getClient().getLuxTrustContainer(new GclReader().withId(MockResponseFactory.LUXTRUST_READER_ID).withPinpad(false), "v2.0.0");
 
         assertNotNull(container);
     }
 
     @Test
     public void testGetDnieContainer() {
-        DnieContainer container = getClient().getDnieContainer(new GclReader().withId(MockResponseFactory.DNIE_READER_ID).withPinpad(false));
+        DnieContainer container = getClient().getDnieContainer(new GclReader().withId(MockResponseFactory.DNIE_READER_ID).withPinpad(false), "v2.0.0");
 
         assertNotNull(container);
     }
 
     @Test
     public void testGetPtIdContainer() {
-        PtEIdContainer container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(false));
+        PtEIdContainer container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(false), "v2.0.0");
 
         assertNotNull(container);
     }
 
     @Test()
     public void testGetEmvContainer() {
-        EmvContainer container = getClient().getEmvContainer(new GclReader().withId(MockResponseFactory.EMV_READER_ID).withPinpad(false));
+        EmvContainer container = getClient().getEmvContainer(new GclReader().withId(MockResponseFactory.EMV_READER_ID).withPinpad(false), "v2.0.0");
         assertNotNull(container);
     }
 
     @Test()
     public void testGetMobibContainer() {
-        MobibContainer container = getClient().getMobibContainer(new GclReader().withId(MockResponseFactory.MOBIB_READER_ID).withPinpad(false));
+        MobibContainer container = getClient().getMobibContainer(new GclReader().withId(MockResponseFactory.MOBIB_READER_ID).withPinpad(false), "v2.0.0");
         assertNotNull(container);
     }
 
     @Test
     public void testGetOcraContainer() {
-        OcraContainer container = getClient().getOcraContainer(new GclReader().withId(MockResponseFactory.OCRA_READER_ID).withPinpad(false));
+        OcraContainer container = getClient().getOcraContainer(new GclReader().withId(MockResponseFactory.OCRA_READER_ID).withPinpad(false), "v2.0.0");
         assertNotNull(container);
     }
 
     @Test
     public void testGetAventraContainer() {
-        assertNotNull(getClient().getAventraContainer(new GclReader().withId(MockResponseFactory.AVENTRA_READER_ID).withPinpad(false)));
+        assertNotNull(getClient().getAventraContainer(new GclReader().withId(MockResponseFactory.AVENTRA_READER_ID).withPinpad(false), "v2.0.0"));
     }
 
     @Test
     public void testGetOberthurContainer() {
-        assertNotNull(getClient().getOberthurContainer(new GclReader().withId(MockResponseFactory.OBERTHUR_READER_ID).withPinpad(false)));
+        assertNotNull(getClient().getOberthurContainer(new GclReader().withId(MockResponseFactory.OBERTHUR_READER_ID).withPinpad(false), "v2.0.0"));
     }
 
     @Test
     public void testGetPivContainer() {
-        assertNotNull(getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(false), "1111"));
+        assertNotNull(getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(false), "v2.0.0", "1111"));
     }
 
     @Test
     public void testGetPkcs11Container() {
         try {
-            Pkcs11Container container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(false));
+            Pkcs11Container container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(false), "v2.0.0");
             assertNotNull(container);
         } catch (IllegalArgumentException ex) {
             assertTrue(ex.getMessage().contains("Driver not found"));
@@ -146,7 +146,7 @@ public class T1cClientTest extends AbstractTestClass {
 
     @Test
     public void testGetReaderApiContainer() {
-        assertNotNull(getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false)));
+        assertNotNull(getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(false), "v2.0.0"));
     }
 
     @Test

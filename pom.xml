@@ -340,6 +340,7 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDsPublicKey.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPublicKeys.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAgentResolutionRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAgentRequestFilter.json</sourcePath>

@@ -8,7 +8,11 @@
       "type": "string"
     },
     "ds": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "GclDsPublicKey.json"
+      }
     },
     "ssl": {
       "type": "string"

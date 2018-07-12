@@ -15,10 +15,6 @@ public abstract class FunctionalContainer<T extends FunctionalContainer, U> impl
     protected LibConfig config;
     protected ContainerVersion containerVersion;
 
-    /*Instantiation*/
-    public FunctionalContainer() {
-    }
-
     public FunctionalContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient, String pin) {
         createInstance(config, reader, containerVersion, httpClient, pin);
     }
@@ -35,6 +31,8 @@ public abstract class FunctionalContainer<T extends FunctionalContainer, U> impl
         return getType().getId();
     }
 
-
-
+    @Override
+    public String getContainerVersionId() {
+        return containerVersion.getId();
+    }
 }

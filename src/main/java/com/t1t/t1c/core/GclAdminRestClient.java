@@ -9,6 +9,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
+import java.util.List;
+
 /**
  * Created by michallispashidis on 04/11/2017.
  */
@@ -18,7 +20,7 @@ public interface GclAdminRestClient {
     Call<T1cResponse<GclPublicKeys>> getCertificates() throws RestException;
 
     @GET("admin/certificate/ds")
-    Call<T1cResponse<String>> getDsCertificate() throws RestException;
+    Call<T1cResponse<List<GclDsPublicKey>>> getDsCertificates() throws RestException;
 
     @GET("admin/certificate/device")
     Call<T1cResponse<String>> getDeviceCertificate() throws RestException;

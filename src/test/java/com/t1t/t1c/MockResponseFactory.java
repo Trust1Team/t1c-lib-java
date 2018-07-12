@@ -95,8 +95,8 @@ public final class MockResponseFactory {
         return getSuccessResponse(getGclAdminCertificates());
     }
 
-    public static T1cResponse<String> getGclAdminDsCertificateResponse() {
-        return getSuccessResponse(getGclAdminDsCertificate());
+    public static T1cResponse<List<GclDsPublicKey>> getGclAdminDsCertificateResponse() {
+        return getSuccessResponse(Collections.singletonList(new GclDsPublicKey().withNs("accapimt.t1t.be").withBase64(getGclAdminDsCertificate())));
     }
 
     public static T1cResponse<String> getGclAdminDeviceCertificateResponse() {
@@ -318,7 +318,7 @@ public final class MockResponseFactory {
     public static GclPublicKeys getGclAdminCertificates() {
         return new GclPublicKeys()
                 .withDevice(getGclAdminDeviceCertificate())
-                .withDs(getGclAdminDsCertificate())
+                .withDs(Collections.singletonList(new GclDsPublicKey().withNs("accapimt.t1t.be").withBase64(getGclAdminDsCertificate())))
                 .withSsl(getGclAdminSslCertificate());
     }
 
@@ -1600,16 +1600,20 @@ public final class MockResponseFactory {
 
     // TODO clean up the rest of the responses below
 
-    public static T1cResponse<String> getPublicKeyResponseDer() {
-        return new T1cResponse<String>()
+    public static T1cResponse<DsPublicKey> getPublicKeyResponseDer() {
+        return new T1cResponse<DsPublicKey>()
                 .withSuccess(true)
-                .withData("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB");
+                .withData(getDsPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB"));
     }
 
-    public static T1cResponse<String> getPublicKeyResponsePem() {
-        return new T1cResponse<String>()
+    public static DsPublicKey getDsPublicKey(String key) {
+        return new DsPublicKey().withEncryptedPublicKey(key).withEncryptedAesKey("AESKEY").withNs("accapimt.t1t.be");
+    }
+
+    public static T1cResponse<DsPublicKey> getPublicKeyResponsePem() {
+        return new T1cResponse<DsPublicKey>()
                 .withSuccess(true)
-                .withData("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==");
+                .withData(getDsPublicKey("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="));
     }
 
     public static DsDevice getDsDevice() {
@@ -1636,7 +1640,7 @@ public final class MockResponseFactory {
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(false)
                 .withCoreVersion("2.0.0")
-                .withContextToken(6L);
+                .withContextToken("6-accapim.t1t.be");
     }
 
     public static DsRegistrationSyncResponse getDsSyncResponse() {
@@ -1644,7 +1648,7 @@ public final class MockResponseFactory {
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(true)
                 .withCoreVersion("2.0.0")
-                .withContextToken(6L)
+                .withContextToken("6-accapim.t1t.be")
                 .withContainerResponses(
                         Collections.singletonList(new DsContainerResponse()
                                 .withId("beid-v2.0.0")

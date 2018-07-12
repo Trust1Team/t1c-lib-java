@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.smartcards.ocra;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
@@ -38,7 +39,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
-        this.containerVersion = new ContainerVersion(ContainerType.OCRA;
+        this.containerVersion = new ContainerVersion(ContainerType.OCRA, containerVersion);
         return this;
     }
 
@@ -90,16 +91,6 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     @Override
     public String sign(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
-    }
-
-    @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
     }
 
     @Override

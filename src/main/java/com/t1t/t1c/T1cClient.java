@@ -58,8 +58,6 @@ public class T1cClient implements IT1cClient {
 
     private static final Logger log = LoggerFactory.getLogger(T1cClient.class);
 
-    private static final String CONTAINER_VERSION_FORMAT = "%s-%s";
-
     private T1cConfigParser configParser;
     private ConnectionFactory connFactory;
     private List<ContainerVersion> installedContainerVersions;
@@ -125,7 +123,6 @@ public class T1cClient implements IT1cClient {
             } else {
                 log.info("Distribution service URI, API key or JWT not configured, registration/synchronisation/activation disabled");
             }
-            setInstalledContainerVersions(info);
         } else {
             throw ExceptionFactory.incompatibleCoreVersionException(info.getVersion(), getDsClient().getDownloadLink());
         }
@@ -153,7 +150,7 @@ public class T1cClient implements IT1cClient {
         GclInfo info = currentInfo;
         try {
             // Check if the DS public key is loaded into the Core
-            setDsPublicKeyIfAbsent(info.getUid());
+            setDsPublicKey(info.getUid());
             // Sync the device with the DS
             DsSyncResponseDto syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
             // Reset the connections with the newly obtained DS JWT and context token
@@ -163,6 +160,7 @@ public class T1cClient implements IT1cClient {
             log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));
             // Poll the GCL to check container download status
             info = getCore().pollContainerDownloadStatus(syncResponse.getContainerResponses());
+            setInstalledContainerVersions(info);
             // Sync the new container states with the DS
             syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
             setAvailableApplicationContainerVersions(syncResponse.getContainerResponses());
@@ -170,6 +168,8 @@ public class T1cClient implements IT1cClient {
         } catch (Exception ex) {
             if (!isRetry) {
                 doSync(currentInfo, devicePublicKey, true);
+            } else {
+                log.error("Error performing synchronisation: ", ex);
             }
         }
         return info;
@@ -181,7 +181,7 @@ public class T1cClient implements IT1cClient {
         // Reset the connection to make use of the newly obtained JWT from the DS
         connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), registrationResponse));
         // Set the pub key
-        setDsPublicKeyIfAbsent(info.getUid());
+        setDsPublicKey(info.getUid());
         // Activate the device
         log.info("Core activated: {}", getCore().activate());
         return getCore().getInfo();
@@ -192,13 +192,10 @@ public class T1cClient implements IT1cClient {
         return sanitized.compareToIgnoreCase("2.0.0") >= 0;
     }
 
-    private void setDsPublicKeyIfAbsent(String deviceId) {
-        // Check if the DS public key is set
-        if (getCore().getDsPubKey() == null) {
-            // Get the encrypted DS key for the device
-            DsPublicKey dsPublicKey = getDsClient().getPublicKey(deviceId);
-            log.info("Loaded DS Public key: {}", getCore().setDsPubKey(dsPublicKey.getEncryptedPublicKey(), dsPublicKey.getEncryptedAesKey()));
-        }
+    private void setDsPublicKey(String deviceId) {
+        // Get the encrypted DS key for the device
+        DsPublicKey dsPublicKey = getDsClient().getPublicKey(deviceId);
+        log.info("Loaded DS Public key: {}", getCore().setDsPubKey(dsPublicKey.getEncryptedPublicKey(), dsPublicKey.getEncryptedAesKey(), dsPublicKey.getNs()));
     }
 
     /**
@@ -255,85 +252,85 @@ public class T1cClient implements IT1cClient {
 
     @Override
     public BeIdContainer getBeIdContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.BEID, version);
+        containerVersionAvailabilityCheck(ContainerType.BEID, version);
         return new BeIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclBeIdRestClient());
     }
 
     @Override
     public LuxIdContainer getLuxIdContainer(GclReader reader, String version, GclPace pace) {
-        containerAvailabilityCheck(ContainerType.LUXID, version);
+        containerVersionAvailabilityCheck(ContainerType.LUXID, version);
         return new LuxIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclLuxIdRestClient(), pace);
     }
 
     @Override
     public LuxTrustContainer getLuxTrustContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.LUXTRUST, version);
+        containerVersionAvailabilityCheck(ContainerType.LUXTRUST, version);
         return new LuxTrustContainer(connFactory.getConfig(), reader, version, connFactory.getGclLuxTrustRestClient());
     }
 
     @Override
     public DnieContainer getDnieContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.DNIE, version);
+        containerVersionAvailabilityCheck(ContainerType.DNIE, version);
         return new DnieContainer(connFactory.getConfig(), reader, version, connFactory.getGclDniRestClient());
     }
 
     @Override
     public EmvContainer getEmvContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.EMV, version);
+        containerVersionAvailabilityCheck(ContainerType.EMV, version);
         return new EmvContainer(connFactory.getConfig(), reader, version, connFactory.getGclEmvRestClient());
     }
 
     @Override
     public MobibContainer getMobibContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.MOBIB, version);
+        containerVersionAvailabilityCheck(ContainerType.MOBIB, version);
         return new MobibContainer(connFactory.getConfig(), reader, version, connFactory.getGclMobibRestClient());
     }
 
     @Override
     public OcraContainer getOcraContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.OCRA, version);
+        containerVersionAvailabilityCheck(ContainerType.OCRA, version);
         return new OcraContainer(connFactory.getConfig(), reader, version, connFactory.getGclOcraRestClient());
     }
 
     @Override
     public AventraContainer getAventraContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.AVENTRA, version);
+        containerVersionAvailabilityCheck(ContainerType.AVENTRA, version);
         return new AventraContainer(connFactory.getConfig(), reader, version, connFactory.getGclAventraRestClient());
     }
 
     @Override
     public OberthurContainer getOberthurContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.OBERTHUR, version);
+        containerVersionAvailabilityCheck(ContainerType.OBERTHUR, version);
         return new OberthurContainer(connFactory.getConfig(), reader, version, connFactory.getGclOberthurRestClient());
     }
 
     @Override
     public PivContainer getPivContainer(GclReader reader, String version, String pin) {
-        containerAvailabilityCheck(ContainerType.PIV, version);
+        containerVersionAvailabilityCheck(ContainerType.PIV, version);
         return new PivContainer(connFactory.getConfig(), reader, version, connFactory.getGclPivRestClient(), pin);
     }
 
     @Override
     public PtEIdContainer getPtIdContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.PT, version);
+        containerVersionAvailabilityCheck(ContainerType.PT, version);
         return new PtEIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclPtRestClient());
     }
 
     @Override
     public Pkcs11Container getPkcs11Container(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.PIV, version);
+        containerVersionAvailabilityCheck(ContainerType.PIV, version);
         return getPkcs11Container(reader, version, new ModuleConfiguration());
     }
 
     @Override
     public Pkcs11Container getPkcs11Container(GclReader reader, String version, ModuleConfiguration configuration) {
-        containerAvailabilityCheck(ContainerType.PKCS11, version);
+        containerVersionAvailabilityCheck(ContainerType.PKCS11, version);
         return new Pkcs11Container(connFactory.getConfig(), reader, version, connFactory.getGclSafenetRestClient(), configuration);
     }
 
     @Override
     public ReaderApiContainer getReaderApiContainer(GclReader reader, String version) {
-        containerAvailabilityCheck(ContainerType.READER_API, version);
+        containerVersionAvailabilityCheck(ContainerType.READER_API, version);
         return new ReaderApiContainer(connFactory.getConfig(), reader, version, connFactory.getGclReaderApiRestClient());
     }
 
@@ -348,40 +345,40 @@ public class T1cClient implements IT1cClient {
         IGenericContainer container;
         switch (type) {
             case AVENTRA:
-                container = getAventraContainer(reader, null);
+                container = getAventraContainer(reader, getFirstAvailableVersion(type));
                 break;
             case BEID:
-                container = getBeIdContainer(reader, null);
+                container = getBeIdContainer(reader, getFirstAvailableVersion(type));
                 break;
             case DNIE:
-                container = getDnieContainer(reader, null);
+                container = getDnieContainer(reader, getFirstAvailableVersion(type));
                 break;
             case EMV:
-                container = getEmvContainer(reader, null);
+                container = getEmvContainer(reader, getFirstAvailableVersion(type));
                 break;
             case LUXID:
-                container = getLuxIdContainer(reader, null, pace);
+                container = getLuxIdContainer(reader, getFirstAvailableVersion(type), pace);
                 break;
             case LUXTRUST:
-                container = getLuxTrustContainer(reader, null);
+                container = getLuxTrustContainer(reader, getFirstAvailableVersion(type));
                 break;
             case MOBIB:
-                container = getMobibContainer(reader, null);
+                container = getMobibContainer(reader, getFirstAvailableVersion(type));
                 break;
             case OBERTHUR:
-                container = getOberthurContainer(reader, null);
+                container = getOberthurContainer(reader, getFirstAvailableVersion(type));
                 break;
             case OCRA:
-                container = getOcraContainer(reader, null);
+                container = getOcraContainer(reader, getFirstAvailableVersion(type));
                 break;
             case PIV:
-                container = getPivContainer(reader, null, pace.getPin());
+                container = getPivContainer(reader, getFirstAvailableVersion(type), pace.getPin());
                 break;
             case PT:
-                container = getPtIdContainer(reader, null);
+                container = getPtIdContainer(reader, getFirstAvailableVersion(type));
                 break;
             case PKCS11:
-                container = getPkcs11Container(reader, null, new ModuleConfiguration());
+                container = getPkcs11Container(reader, getFirstAvailableVersion(type), new ModuleConfiguration());
                 break;
             default:
                 throw ExceptionFactory.genericContainerException("No generic container available for this reader");
@@ -409,10 +406,32 @@ public class T1cClient implements IT1cClient {
         return getCore().getPinVerificationCapableReaders();
     }
 
-    private void containerAvailabilityCheck(ContainerType type, String version) {
-        if (!this.installedContainerVersions.contains(new ContainerVersion(type, version))) {
-            throw ExceptionFactory.containerNotAvailableException(type);
+    @Override
+    public List<ContainerVersion> getAvailableContainerVersions() {
+        return this.availableApplicationContainerVersions;
+    }
+
+    @Override
+    public List<ContainerVersion> getInstalledContainerVersions() {
+        return this.installedContainerVersions;
+    }
+
+    private void containerVersionAvailabilityCheck(ContainerType type, String version) {
+        ContainerVersion cv = new ContainerVersion(type, version);
+        if (CollectionUtils.isNotEmpty(this.availableApplicationContainerVersions) && !this.availableApplicationContainerVersions.contains(new ContainerVersion(type, version))) {
+            throw ExceptionFactory.containerVersionNotAvailableException(cv);
         }
+    }
+
+    private String getFirstAvailableVersion(ContainerType type) {
+        for (ContainerVersion cv : availableApplicationContainerVersions) {
+            if (cv.getType().equals(type)) return cv.getVersion();
+        }
+        // Fall back to the first installed version
+        for (ContainerVersion cv : installedContainerVersions) {
+            if (cv.getType().equals(type)) return cv.getVersion();
+        }
+        throw ExceptionFactory.containerVersionNotAvailableException(new ContainerVersion(type, "unknown"));
     }
 }
 

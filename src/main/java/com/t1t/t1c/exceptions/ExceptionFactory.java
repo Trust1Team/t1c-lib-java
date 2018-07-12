@@ -1,6 +1,6 @@
 package com.t1t.t1c.exceptions;
 
-import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
 import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
@@ -170,11 +170,11 @@ public final class ExceptionFactory {
     /**
      * Creates container not available exception
      *
-     * @param type
+     * @param version
      * @return
      */
-    public static ContainerNotAvailableException containerNotAvailableException(ContainerType type) {
-        return new ContainerNotAvailableException("Container \"" + type.getId() + "\" not available in local installation");
+    public static ContainerNotAvailableException containerVersionNotAvailableException(ContainerVersion version) {
+        return new ContainerNotAvailableException("Container \"" + version.getId() + "\" not available in local installation");
     }
 
 

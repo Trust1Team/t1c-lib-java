@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -20,16 +21,23 @@ public class DsPublicKey {
     @SerializedName("encryptedAesKey")
     @Expose
     private String encryptedAesKey;
+    @SerializedName("ns")
+    @Expose
+    private String ns;
 
     /**
-     * @return The success
+     * 
+     * @return
+     *     The success
      */
     public Boolean getSuccess() {
         return success;
     }
 
     /**
-     * @param success The success
+     * 
+     * @param success
+     *     The success
      */
     public void setSuccess(Boolean success) {
         this.success = success;
@@ -41,14 +49,18 @@ public class DsPublicKey {
     }
 
     /**
-     * @return The encryptedPublicKey
+     * 
+     * @return
+     *     The encryptedPublicKey
      */
     public String getEncryptedPublicKey() {
         return encryptedPublicKey;
     }
 
     /**
-     * @param encryptedPublicKey The encryptedPublicKey
+     * 
+     * @param encryptedPublicKey
+     *     The encryptedPublicKey
      */
     public void setEncryptedPublicKey(String encryptedPublicKey) {
         this.encryptedPublicKey = encryptedPublicKey;
@@ -60,14 +72,18 @@ public class DsPublicKey {
     }
 
     /**
-     * @return The encryptedAesKey
+     * 
+     * @return
+     *     The encryptedAesKey
      */
     public String getEncryptedAesKey() {
         return encryptedAesKey;
     }
 
     /**
-     * @param encryptedAesKey The encryptedAesKey
+     * 
+     * @param encryptedAesKey
+     *     The encryptedAesKey
      */
     public void setEncryptedAesKey(String encryptedAesKey) {
         this.encryptedAesKey = encryptedAesKey;
@@ -78,6 +94,29 @@ public class DsPublicKey {
         return this;
     }
 
+    /**
+     * 
+     * @return
+     *     The ns
+     */
+    public String getNs() {
+        return ns;
+    }
+
+    /**
+     * 
+     * @param ns
+     *     The ns
+     */
+    public void setNs(String ns) {
+        this.ns = ns;
+    }
+
+    public DsPublicKey withNs(String ns) {
+        this.ns = ns;
+        return this;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -85,7 +124,7 @@ public class DsPublicKey {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(success).append(encryptedPublicKey).append(encryptedAesKey).toHashCode();
+        return new HashCodeBuilder().append(success).append(encryptedPublicKey).append(encryptedAesKey).append(ns).toHashCode();
     }
 
     @Override
@@ -97,7 +136,7 @@ public class DsPublicKey {
             return false;
         }
         DsPublicKey rhs = ((DsPublicKey) other);
-        return new EqualsBuilder().append(success, rhs.success).append(encryptedPublicKey, rhs.encryptedPublicKey).append(encryptedAesKey, rhs.encryptedAesKey).isEquals();
+        return new EqualsBuilder().append(success, rhs.success).append(encryptedPublicKey, rhs.encryptedPublicKey).append(encryptedAesKey, rhs.encryptedAesKey).append(ns, rhs.ns).isEquals();
     }
 
 }

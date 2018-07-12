@@ -32,7 +32,7 @@ public class OcraContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getOcraContainer(new GclReader().withId(MockResponseFactory.OCRA_READER_ID).withPinpad(true));
+        container = getClient().getOcraContainer(new GclReader().withId(MockResponseFactory.OCRA_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

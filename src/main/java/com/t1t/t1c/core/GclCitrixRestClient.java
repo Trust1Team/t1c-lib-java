@@ -17,9 +17,6 @@ public interface GclCitrixRestClient {
     @GET("/v2")
     Call<T1cResponse<GclInfo>> getStatus() throws RestException;
 
-    @GET("admin/certificate")
-    Call<T1cResponse<String>> getPublicKey() throws RestException;
-
     @GET("agent/{agentPort}/card-readers")
     Call<T1cResponse<List<GclReader>>> getCardReaders(@Path("agentPort") Integer agentPort) throws RestException, NoConsentException;
 

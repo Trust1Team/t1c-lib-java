@@ -7,6 +7,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
 
 @Generated("org.jsonschema2pojo")
 public class GclPublicKeys {
@@ -16,7 +18,7 @@ public class GclPublicKeys {
     private String device;
     @SerializedName("ds")
     @Expose
-    private String ds;
+    private List<GclDsPublicKey> ds = new ArrayList<GclDsPublicKey>();
     @SerializedName("ssl")
     @Expose
     private String ssl;
@@ -43,18 +45,18 @@ public class GclPublicKeys {
     /**
      * @return The ds
      */
-    public String getDs() {
+    public List<GclDsPublicKey> getDs() {
         return ds;
     }
 
     /**
      * @param ds The ds
      */
-    public void setDs(String ds) {
+    public void setDs(List<GclDsPublicKey> ds) {
         this.ds = ds;
     }
 
-    public GclPublicKeys withDs(String ds) {
+    public GclPublicKeys withDs(List<GclDsPublicKey> ds) {
         this.ds = ds;
         return this;
     }
@@ -93,7 +95,7 @@ public class GclPublicKeys {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GclPublicKeys) == false) {
+        if (!(other instanceof GclPublicKeys)) {
             return false;
         }
         GclPublicKeys rhs = ((GclPublicKeys) other);

@@ -35,7 +35,7 @@ public class AventraContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getAventraContainer(new GclReader().withId(MockResponseFactory.AVENTRA_READER_ID).withPinpad(true));
+        container = getClient().getAventraContainer(new GclReader().withId(MockResponseFactory.AVENTRA_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

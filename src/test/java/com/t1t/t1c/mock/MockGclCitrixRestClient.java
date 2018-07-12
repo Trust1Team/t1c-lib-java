@@ -27,11 +27,6 @@ public class MockGclCitrixRestClient implements GclCitrixRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getPublicKey() {
-        return delegate.returningResponse(MockResponseFactory.getGclAdminCertificatesResponse()).getPublicKey();
-    }
-
-    @Override
     public Call<T1cResponse<List<GclReader>>> getCardReaders(Integer agentPort) {
         return delegate.returningResponse(MockResponseFactory.getGclReadersResponse(null)).getCardReaders(agentPort);
     }

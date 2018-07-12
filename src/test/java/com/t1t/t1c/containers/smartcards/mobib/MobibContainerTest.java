@@ -34,7 +34,7 @@ public class MobibContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getMobibContainer(new GclReader().withId(MockResponseFactory.MOBIB_READER_ID).withPinpad(true));
+        container = getClient().getMobibContainer(new GclReader().withId(MockResponseFactory.MOBIB_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

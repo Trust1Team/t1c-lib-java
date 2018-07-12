@@ -8,6 +8,7 @@ import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -39,21 +40,21 @@ public interface ICore {
     Boolean activate() throws GclCoreException;
 
     /**
-     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
+     * Retrieve the Distribution Service public keys set for the installed T1C-GCL.
      *
-     * @return the public key
+     * @return the public keys
      * @throws GclCoreException: on failure
      */
-    T1cPublicKey getDsPubKey() throws GclCoreException;
+    Map<String, T1cPublicKey> getDsPubKeys() throws GclCoreException;
 
     /**
-     * Retrieve the Distribution Service public key set for the installed T1C-GCL.
+     * Retrieve the Distribution Service public keys set for the installed T1C-GCL.
      *
      * @param parse Boolean toggle to parse the public key
      * @return the public key
      * @throws GclCoreException: on failure
      */
-    T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException;
+    Map<String, T1cPublicKey> getDsPubKeys(Boolean parse) throws GclCoreException;
 
     /**
      * Retrieve the device public key for the installed T1C-GCL.
@@ -112,10 +113,11 @@ public interface ICore {
      *
      * @param encryptedPublicKey the public key to set.
      * @param encryptedAesKey    the aes key with which the public key was encrypted
+     * @param namespace          the distribution service namespace
      * @return true if successful
      * @throws GclCoreException: on failure
      */
-    Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException;
+    Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey, String namespace) throws GclCoreException;
 
     /**
      * Return T1C-GCL status information.
