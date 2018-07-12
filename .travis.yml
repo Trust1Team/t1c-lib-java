@@ -1,0 +1,20 @@
+language: java
+jdk:
+  - oraclejdk8
+
+notifications:
+  hipchat: 1d113a6bd1946fcbd488cf2b751112@T1T-Build
+
+cache:
+  directories:
+  - ~/.m2
+
+os:
+  - linux
+
+branches:
+  only:
+    - develop
+    - master
+
+install: mvn clean install
