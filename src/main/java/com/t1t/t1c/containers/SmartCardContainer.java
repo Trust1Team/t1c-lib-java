@@ -174,4 +174,9 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     public String getContainerVersionId() {
         return this.containerVersion.getId();
     }
+
+    @Override
+    public String getContainerUrlId() {
+        return getContainerVersionId().replace(".", "-");
+    }
 }

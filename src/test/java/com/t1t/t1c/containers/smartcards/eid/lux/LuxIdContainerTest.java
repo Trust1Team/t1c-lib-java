@@ -511,13 +511,13 @@ public class LuxIdContainerTest extends AbstractTestClass {
     }
 
     @Test
-    public void resetPin() {
-        assertTrue(container.resetPin("1111"));
+    public void unblockPin() {
+        assertTrue(container.unblockPin("1111"));
     }
 
     @Test(expected = VerifyPinException.class)
     public void resetPinWrongPuk() {
-        container.resetPin("1112");
+        container.unblockPin("1112");
     }
 
     @Test

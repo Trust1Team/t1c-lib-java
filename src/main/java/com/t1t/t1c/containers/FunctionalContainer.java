@@ -35,4 +35,9 @@ public abstract class FunctionalContainer<T extends FunctionalContainer, U> impl
     public String getContainerVersionId() {
         return containerVersion.getId();
     }
+
+    @Override
+    public String getContainerUrlId() {
+        return getContainerVersionId().replace("." , "-");
+    }
 }

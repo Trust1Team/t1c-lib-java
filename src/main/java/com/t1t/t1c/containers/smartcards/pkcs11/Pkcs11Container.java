@@ -117,7 +117,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
-            return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getContainerVersionId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
+            return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -128,7 +128,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     public GclPkcs11Info getPkcs11Info() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getPkcs11Info(getContainerVersionId(), reader.getId(), new GclPkcs11Request().withModule(modulePath)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getPkcs11Info(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath)), config.isConsentRequired());
     }
 
     public List<GclPkcs11Slot> getPkcs11Slots() throws RestException, NoConsentException {
@@ -144,7 +144,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     private List<GclPkcs11Slot> getPkcs11Slots(Boolean tokenPresent) {
-        return RestExecutor.returnData(httpClient.getPkcs11Slots(getContainerVersionId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getPkcs11Slots(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
     private void configureModulePath(ModuleConfiguration pkcs11Config) {

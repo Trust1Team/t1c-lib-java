@@ -11,4 +11,6 @@ public interface IGclContainer {
     String getTypeId();
 
     String getContainerVersionId();
+
+    String getContainerUrlId();
 }

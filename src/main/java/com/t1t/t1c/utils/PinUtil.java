@@ -76,11 +76,11 @@ public final class PinUtil {
                 .withOsDialog(osPinDialog);
     }
 
-    public static GclResetPinRequest createEncryptedPinResetRequest(Boolean pinpad, Boolean osPinDialog, String puk, String newPin) {
+    public static GclResetPinRequest createEncryptedPinResetRequest(Boolean pinpad, Boolean osPinDialog, boolean resetOnly, String puk, String newPin) {
         return new GclResetPinRequest()
                 .withOsDialog(osPinDialog)
                 .withPin(getEncryptedPinIfPresent(newPin))
                 .withPuk(getEncryptedPinIfPresent(puk))
-                .withResetOnly(StringUtils.isEmpty(newPin) && osPinDialog);
+                .withResetOnly(resetOnly);
     }
 }

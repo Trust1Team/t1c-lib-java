@@ -55,7 +55,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
 
     @Override
     public GclOcraAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getOcraAllData(getContainerVersionId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getOcraAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
@@ -67,7 +67,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -111,7 +111,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
             if (StringUtils.isNotEmpty(pin)) {
                 request.setPin(pin);
             }
-            return RestExecutor.returnData(httpClient.ocraChallenge(getContainerVersionId(), reader.getId(), request), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.ocraChallenge(getContainerUrlId(), reader.getId(), request), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -124,7 +124,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     public String readCounter(String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             String pinToUse = PinUtil.getEncryptedPinIfPresent(pin);
-            return RestExecutor.returnData(httpClient.readCounter(getContainerVersionId(), reader.getId(), pinToUse), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.readCounter(getContainerUrlId(), reader.getId(), pinToUse), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

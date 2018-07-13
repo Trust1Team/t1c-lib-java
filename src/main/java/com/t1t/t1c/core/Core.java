@@ -391,7 +391,8 @@ public class Core extends AbstractCore {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadContainers(new GclLoadContainersRequest().withContainerResponses(containerResponses))));
         } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("Failed to load containers: ", ex);
+            log.error("Failed to load containers: ", ex);
+            return false;
         }
     }
 
@@ -400,7 +401,8 @@ public class Core extends AbstractCore {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadAtrList(atrList)));
         } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("Failed to load ATR list: ", ex);
+            log.error("Failed to load ATR list: ", ex);
+            return false;
         }
     }
 
@@ -408,21 +410,26 @@ public class Core extends AbstractCore {
     public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers) throws GclCoreException {
         int totalTime = 0;
         int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
-        boolean downloadsComplete;
-        do {
-            GclInfo info = getInfo();
-            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
-            if (!downloadsComplete) {
-                try {
-                    Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
-                    totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
-                } catch (InterruptedException ex) {
-                    log.warn("error sleeping through polling interval: ", ex);
+        boolean downloadsComplete = false;
+        try {
+            do {
+                GclInfo info = getInfo();
+                downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
+                if (!downloadsComplete) {
+                    try {
+                        Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
+                        totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
+                    } catch (InterruptedException ex) {
+                        log.warn("error sleeping through polling interval: ", ex);
+                    }
                 }
+            } while (!downloadsComplete && totalTime < pollTimeout);
+
+            if (!downloadsComplete) {
+                throw ExceptionFactory.containerLoadingTimeoutExceeded();
             }
-        } while (!downloadsComplete && totalTime < pollTimeout);
-        if (!downloadsComplete) {
-            throw ExceptionFactory.containerLoadingTimeoutExceeded();
+        } catch (GclCoreException ex) {
+            log.error("Error during container loading: {}", ex);
         }
         return getInfo();
     }
@@ -451,6 +458,7 @@ public class Core extends AbstractCore {
                             installed++;
                             break;
                     }
+                    break;
                 }
             }
             if (!found) {

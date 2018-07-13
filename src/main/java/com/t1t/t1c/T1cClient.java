@@ -167,6 +167,7 @@ public class T1cClient implements IT1cClient {
             connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
         } catch (Exception ex) {
             if (!isRetry) {
+                log.warn("Error performing synchronisation, retrying: ", ex);
                 doSync(currentInfo, devicePublicKey, true);
             } else {
                 log.error("Error performing synchronisation: ", ex);

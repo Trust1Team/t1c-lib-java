@@ -56,7 +56,7 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
 
     @Override
     public GclEmvAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getEmvAllData(getContainerVersionId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getEmvAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerVersionId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -105,21 +105,21 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     }
 
     public List<GclEmvApplication> getApplications() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getEmvApplications(getContainerVersionId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getEmvApplications(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     public GclEmvApplicationData getApplicationData() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getEmvApplicationData(getContainerVersionId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getEmvApplicationData(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-        return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getContainerVersionId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getContainerUrlId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
 
     public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
-        return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getContainerVersionId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getContainerUrlId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
 
     @Override
