@@ -3,6 +3,7 @@ package com.t1t.t1c.containers.readerapi;
 import com.t1t.t1c.AbstractTestClass;
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.functional.readerapi.*;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.factories.ConnectionFactory;
 import com.t1t.t1c.rest.RestServiceBuilder;
@@ -30,7 +31,7 @@ public class ReaderApiContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true));
+        container = getClient().getReaderApiContainer(new GclReader().withId(MockResponseFactory.REMOTE_LOADING_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

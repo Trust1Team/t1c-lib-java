@@ -1,6 +1,6 @@
 package com.t1t.t1c.exceptions;
 
-import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainerException;
 import com.t1t.t1c.core.GclContainerInfo;
 import com.t1t.t1c.core.GclError;
@@ -170,11 +170,11 @@ public final class ExceptionFactory {
     /**
      * Creates container not available exception
      *
-     * @param type
+     * @param version
      * @return
      */
-    public static ContainerNotAvailableException containerNotAvailableException(ContainerType type) {
-        return new ContainerNotAvailableException("Container \"" + type.getId() + "\" not available in local installation");
+    public static ContainerNotAvailableException containerVersionNotAvailableException(ContainerVersion version) {
+        return new ContainerNotAvailableException("Container \"" + version.getId() + "\" not available in local installation");
     }
 
 
@@ -316,10 +316,19 @@ public final class ExceptionFactory {
      * Creates an UnsupportedDigestAlgorithmException
      *
      * @param selectedAlgorithm the unsupported, selected algorithm
-     * @param supported the supported algorithm(s)
+     * @param supported         the supported algorithm(s)
      * @return the exception
      */
     public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
         return new UnsupportedDigestAlgorithmException("Container does not support \"" + selectedAlgorithm.toString() + "\", must be one of: " + supported.toString());
+    }
+
+    /**
+     * Creates an illegal argument exception for constructors
+     * @param argumentName the name of the argument
+     * @return the exception
+     */
+    public static IllegalArgumentException nullOrEmptyConstructorArgument(String argumentName) {
+        return new IllegalArgumentException(String.format("\"%s\" is null or empty", argumentName));
     }
 }

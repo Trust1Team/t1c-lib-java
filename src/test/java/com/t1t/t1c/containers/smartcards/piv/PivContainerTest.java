@@ -36,12 +36,12 @@ public class PivContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(true), "1111");
+        container = getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(true),"v2.0.0", "1111");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void initContainerWithoutPin() {
-        getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(true), null);
+        getClient().getPivContainer(new GclReader().withId(MockResponseFactory.PIV_READER_ID).withPinpad(true),"v2.0.0", null);
     }
 
     @Test

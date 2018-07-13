@@ -1,12 +1,10 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.readerapi.GclReaderApiCcidFeature;
-import com.t1t.t1c.containers.readerapi.GclReaderApiCommand;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllCertificates;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAllData;
-import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn;
+import com.t1t.t1c.containers.ContainerVersion;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCcidFeature;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCommand;
+import com.t1t.t1c.containers.smartcards.eid.be.*;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllCertificates;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieAllData;
 import com.t1t.t1c.containers.smartcards.eid.dni.GclDnieInfo;
@@ -39,11 +37,13 @@ import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.utils.PinUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.testng.collections.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Guillaume Vandecasteele
@@ -92,8 +92,8 @@ public final class MockResponseFactory {
         return getSuccessResponse(getGclAdminCertificates());
     }
 
-    public static T1cResponse<String> getGclAdminDsCertificateResponse() {
-        return getSuccessResponse(getGclAdminDsCertificate());
+    public static T1cResponse<List<GclDsPublicKey>> getGclAdminDsCertificateResponse() {
+        return getSuccessResponse(Collections.singletonList(new GclDsPublicKey().withNs("accapim.t1t.be").withBase64(getGclAdminDsCertificate())));
     }
 
     public static T1cResponse<String> getGclAdminDeviceCertificateResponse() {
@@ -297,7 +297,6 @@ public final class MockResponseFactory {
                 .withCitrix(false)
                 .withConsent(false)
                 .withLogLevel("info")
-                .withManaged(false)
                 .withOs("macOS")
                 .withOsid("macos")
                 .withUid("B7289D3AEB22D233")
@@ -316,7 +315,7 @@ public final class MockResponseFactory {
     public static GclPublicKeys getGclAdminCertificates() {
         return new GclPublicKeys()
                 .withDevice(getGclAdminDeviceCertificate())
-                .withDs(getGclAdminDsCertificate())
+                .withDs(Collections.singletonList(new GclDsPublicKey().withNs("accapim.t1t.be").withBase64(getGclAdminDsCertificate())))
                 .withSsl(getGclAdminSslCertificate());
     }
 
@@ -337,7 +336,7 @@ public final class MockResponseFactory {
     //
 
     public static T1cResponse<String> getSignedHashResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+        if (pin != null && !"1111".equals(CryptUtil.decrypt(pin, getDevicePrivateKey()))) {
             throw new RestException("sign failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -348,7 +347,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<Object> verifyPin(String pin) throws RestException {
-        if (StringUtils.isNotEmpty(pin) && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+        if (StringUtils.isNotEmpty(pin) && !"1111".equals(CryptUtil.decrypt(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -814,7 +813,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<GclPtIdAddress> getPtIdAddressResponse(String pin) {
-        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+        if (pin != null && !"1111".equals(CryptUtil.decrypt(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -1209,7 +1208,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<String> getGclOcraCounterResponse(String pin) throws RestException {
-        if (pin != null && !"1111".equals(PinUtil.decryptPin(pin, getDevicePrivateKey()))) {
+        if (pin != null && !"1111".equals(CryptUtil.decrypt(pin, getDevicePrivateKey()))) {
             throw new RestException("PIN verification failed", 412, "https://localhost:10443/v2/containers/pluginid/readerid/method", "{\n" +
                     "  \"code\": 103,\n" +
                     "  \"description\": \"Wrong pin, 2 tries remaining\",\n" +
@@ -1598,20 +1597,19 @@ public final class MockResponseFactory {
 
     // TODO clean up the rest of the responses below
 
-    public static T1cResponse<String> getPublicKeyResponseDer() {
-        return new T1cResponse<String>()
-                .withSuccess(true)
-                .withData("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB");
+    public static DsPublicKey getPublicKeyResponse(String namespace) {
+        return getDsPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB", namespace);
     }
 
-    public static T1cResponse<String> getPublicKeyResponsePem() {
-        return new T1cResponse<String>()
-                .withSuccess(true)
-                .withData("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==");
+    public static DsPublicKey getDsPublicKey(String key, String namespace) {
+        return new DsPublicKey().withSuccess(true).withEncryptedPublicKey(key).withEncryptedAesKey("AESKEY").withNs(StringUtils.isEmpty(namespace) ? "accapim.t1t.be" : namespace);
     }
 
     public static DsDevice getDsDevice() {
-        return new DsDevice().withActivated(true).withCoreVersion("1.4.0").withManaged(false).withUuid("B7289D3AEB22D233");
+        return new DsDevice()
+                .withActivated(true)
+                .withCoreVersion("1.4.0")
+                .withUuid("B7289D3AEB22D233");
     }
 
     public static DsToken getToken() {
@@ -1630,62 +1628,61 @@ public final class MockResponseFactory {
         return new DsRegistrationSyncResponse()
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(false)
-                .withManaged(false)
                 .withCoreVersion("2.0.0")
-                .withContextToken(6L);
+                .withContextToken("6-accapim.t1t.be");
     }
 
     public static DsRegistrationSyncResponse getDsSyncResponse() {
         return new DsRegistrationSyncResponse()
                 .withUuid("FFF4D9C72F54A886")
                 .withActivated(true)
-                .withManaged(false)
                 .withCoreVersion("2.0.0")
-                .withContextToken(6L)
-                .withContainerResponses(
-                        Collections.singletonList(new DsContainerResponse()
-                                .withId("beid-v2.0.0")
-                                .withName("beid")
-                                .withVersion("v2.0.0")
-                                .withOsStorage(Arrays.asList(
-                                        new DsContainerStorage()
-                                                .withHash("656aebd2ac65b6a9a1128d4d0a4b5ba73f9c46fc7620a2ace11a2c5280769c8f")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win32.zip")
-                                                .withOs("win32"),
-                                        new DsContainerStorage()
-                                                .withHash("c4f5eda290b61577403fea74ae9d53f9000b7f715e4c5d2e64bb0c3efd351560")
-                                                .withOs("win64")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win64.zip"),
-                                        new DsContainerStorage()
-                                                .withHash("6099b8dfe1f698f03ee350a124584de25622ae93661736a7636a506c80976f3c")
-                                                .withOs("macos")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/macos.zip"),
-                                        new DsContainerStorage()
-                                                .withHash("968ffc5443480beb4f5e49b92068b5f50f0b5937b6e18bd563272d4ba092d823")
-                                                .withOs("linux")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/linux.zip")))
-                                .withLanguage("CPLUSPLUS")
-                                .withAvailability("PUB")
-                                .withDependsOn(Collections.<String>emptyList())
-                                .withStatus("INIT")
-                                .withAllowedOrigins(Collections.singletonList("*"))
-                        ))
+                .withContextToken("6-accapim.t1t.be")
+                .withContainerResponses(getContainerResponses())
                 .withAtrList(new DsAtrList()
                         .withHash("aabd94a5a37e91ed5ef2ceed2fec90282505f69d0534e07b3b9d159325c00696")
                         .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/atr/list-0.txt"));
     }
 
-    public static T1cResponse<List<GclAgent>> getAgentsResponse(Map<String, String> filters) {
-        List<GclAgent> agents = getAgents();
-        if (!filters.isEmpty() && filters.containsKey("username")) {
-            if (filters.get("username").equals("johndoe")) agents.remove(1);
-            else if (filters.get("username").equals("janedoe")) agents.remove(0);
+    private static List<DsContainerResponse> getContainerResponses() {
+        List<DsContainerResponse> containerResponses = new ArrayList<>();
+        for (ContainerType type : ContainerType.values()) {
+            ContainerVersion version = new ContainerVersion(type, "v2.0.0");
+            DsContainerResponse cr = new DsContainerResponse()
+                    .withId(version.getId())
+                    .withName(type.getId())
+                    .withVersion(version.getVersion())
+                    .withOsStorage(getOsStorageResponse(Arrays.asList("macos", "linux", "win32", "win64"), version))
+                    .withLanguage("CPLUSPLUS")
+                    .withAvailability("PUB")
+                    .withDependsOn(Collections.<String>emptyList())
+                    .withStatus("INIT")
+                    .withAllowedOrigins(Collections.singletonList("*"));
+            containerResponses.add(cr);
         }
+        return containerResponses;
+    }
+
+    private static List<DsContainerStorage> getOsStorageResponse(List<String> oss, ContainerVersion version) {
+        List<DsContainerStorage> containerStorages = new ArrayList<>();
+        for (String os : oss) {
+            containerStorages.add(new DsContainerStorage()
+                    .withHash("656aebd2ac65b6a9a1128d4d0a4b5ba73f9c46fc7620a2ace11a2c5280769c8f")
+                    .withOs(os)
+                    .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/" + version.getType().getId() + "/" + version.getVersion() + "/" + os + ".zip"));
+        }
+        return containerStorages;
+    }
+
+    public static T1cResponse<List<GclAgent>> getAgentsResponse(String req) {
+        List<GclAgent> agents = getAgents();
+        if ("johndoe".equals(req)) agents.remove(1);
+        if ("janedoe".equals(req)) agents.remove(0);
         return getSuccessResponse(agents);
     }
 
-    public static T1cResponse<GclAgent> getAgentResponse(Map<String, String> filters) {
-        return getSuccessResponse(getAgentsResponse(filters).getData().get(0));
+    public static T1cResponse<GclAgent> getAgentResponse(String request) {
+        return getSuccessResponse(getAgentsResponse(request).getData().get(0));
     }
 
     public static List<GclAgent> getAgents() {
@@ -1694,14 +1691,12 @@ public final class MockResponseFactory {
                 .withChallenge("2cd89c9f-d1e5-4648-a850-6ddf9313d052")
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:09:41.521521")
-                .withMetadata(Collections.<String, String>emptyMap())
                 .withPort(57061L)
                 .withUsername("johndoe"));
         agents.add(new GclAgent()
                 .withChallenge("43244235-d1e5-gfd548-a850-6hthrf9313po34")
                 .withHostname("macbook")
                 .withLastUpdate("2018-03-12T14:15:41.521521")
-                .withMetadata(Collections.<String, String>emptyMap())
                 .withPort(57043L)
                 .withUsername("janedoe"));
         return agents;
@@ -1771,5 +1766,33 @@ public final class MockResponseFactory {
 
     private static String getDevicePrivateKey() {
         return "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDHScjSSp9MI3imkS3Qr3X6WpvL/rqkfpsr1jdCvG4gP12LwHRCfbutCtD8t458SmaTkTGEuVGAt1cEoSPwZflSf3UffScpewzXw+yA/hfI6GRywET3u8riGtoA4tFimE4Zeob3e7Xv1hsw5GfAKdm5TTTzKnK2OX5HJf8vnJYYO5B8KNf9uQ5Q/GaDuYnELsYtCafEx2Oz12RvDCZyFDAuVVVRFWSGos4/UrQ8iRuDzPW4is37sJK8JPfUDhBpOECJEuPm55T4d4Q1ToMSgI5+hmtlFGuOjKiVLkYJpga+Vsyha4QKCkvRq6GF9SdL4D5a1aJpFHlDNLNyddk+Yz6PAgMBAAECggEBALVAwGuy/wsqv9MO+9JvoyfePRDeTzbJB6xpGr2Rz794okY29gZ7gLQzwDv5XphgusbAKX+DZUNifLxzKtK8jHSiBA5tr66kgdvEEFiJwWwzIRjVEmUW4cGflmNz5+h6iZ3WuOZiF+lYnEZtlodKCQHl3KDFHKvrwpRHVL8i9ch21mmkItqA0GbhIU+uGZqRBvLPV5nJcAp1uQDIWeR7V8b0qFCYK1t4WzTfopczwK6OwuxQZG/graxCLWssven62l/HqZpybx+AtgU56qSeNYYT3nnz0uMYXjeYtmC3L8P0Et87NIBzX2qG2vCCrEb8ifQIxAsecKz7yBP7dFN9CxECgYEA/s3/uQWB2HMMKWjydgJTlfVz6I55l+HgWsRtAVRWyN4JzFBRHCmbhWClWIr7fMtIPFk7Bn7piYlE5LTWJxLIeR4ku4A68OBzW2GVhWllOlIbeE9rLyhHWaippWPcs8Fc80TyhpCw3gD+ceISdBwIMwTiMqTWN6qvItNaAxBiBr0CgYEAyDkdTtZkBOpTrDWbHjMTKUKYgtR6vzyU9C5vGYQ1y9aNAmEU1mM/p/zBPLTvo1UGoQQKPfkeJXsQaRl0OVSuWFmCmYk7Eb36tEgfWMUHQQRkZtuecZDnoa13JEmuNn/tX4tl5XMzGiSWqFH1UbHfND8HyQx/fNMTdn4Xf1vyBTsCgYEA1qZhG9Oo29enUicnwgQZuAVrXGjRxAIzhyNcFLeg2Fw8ctLiUVA3xHdzMxD55No3AyfEUqeNQyDRWb2Bfq8TFP0wwoe2n37ljwC4/geYkDXlEEgPKk3LNZuhNkPXA9ML45+ck4HGjW7W6scg9pE60wf1Kea003ZFTZgwhs5BVh0CgYArK/2AyUNpt+jwweI/gb3I8L4Xv57z6ykm+XglJVfAKvPepnYqv92y6BH2eAEP076JK2jV8ggpBr8EGmPwFK0/CZXaazecXL1Y8BAqQNmOkFbhwssIK7l2KAP/hA+XWsAhENqYvd0v7uG5S2q9AcBh8JFKLXKzxIN20jtYz8eAjwKBgQDV+O/Vty6NWq81DA0QNul4gN8zi3abUf57jicjQ1FTYAUT6VxRJl7cl4gcZsiO755OFa62GcvCWHN5AuEZq1pdI0s6+KvIlFqH7FZxocDkz/+MmcZlfH917pZ/SXSkqoPdjC/7Cip0I4fRHmn9QEuUPE5VtF7G3UBXdLbx8nkuEA==";
+    }
+
+    public static T1cResponse<GclBeIdToken> getBeIdTokenResponse() {
+        return getSuccessResponse(getBeIdToken());
+    }
+
+    private static GclBeIdToken getBeIdToken() {
+        return new GclBeIdToken()
+                .withEidCompliant(48L)
+                .withElectricalPersoInterfaceVersion(0L)
+                .withElectricalPersoVersion(0L)
+                .withLabel("BELPIC")
+                .withPrnGeneration(4L)
+                .withRawData("MCcCAQAEEFNMR5BAEQABEjF1+RKSQjmABkJFTFBJQwMCBDCeBAAAADA=")
+                .withSerialNumber("534C479040110001123175F912924239")
+                .withVersion(0L)
+                .withVersionRfu(48L);
+    }
+
+    public static T1cResponse<Integer> getPinTryCount(GclPinTryCounterRequest request) {
+        switch (request.getPinReference()) {
+            case USER:
+                return getSuccessResponse(1);
+            case ADMIN:
+                return getSuccessResponse(2);
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 }

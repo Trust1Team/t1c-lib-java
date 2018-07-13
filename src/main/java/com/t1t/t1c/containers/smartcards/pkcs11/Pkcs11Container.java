@@ -3,7 +3,8 @@ package com.t1t.t1c.containers.smartcards.pkcs11;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.ContainerVersion;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
@@ -26,31 +27,31 @@ import java.util.Map;
  * @Author Michallis Pashidis
  * @Since 2017
  */
-public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11RestClient, Pkcs11AllData, AllCertificates> {
+public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs11RestClient, Pkcs11AllData, AllCertificates> {
 
     private String modulePath;
 
     // Default constructor for testing purposes
-    public Pkcs11Container(GclReader reader, GclPkcs11RestClient httpClient) {
+    public Pkcs11Container(GclReader reader, String containerVersion, GclPkcs11RestClient httpClient) {
         this.config = new LibConfig();
         this.reader = reader;
         this.httpClient = httpClient;
-        this.type = ContainerType.PKCS11;
+        this.containerVersion = new ContainerVersion(ContainerType.PKCS11, containerVersion);
         this.modulePath = "/usr/local/lib/libeTPkcs11.dylib";
     }
 
-    public Pkcs11Container(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, ModuleConfiguration pkcs11Config) {
-        super(config, reader, httpClient);
+    public Pkcs11Container(LibConfig config, GclReader reader, String containerVersion, GclPkcs11RestClient httpClient, ModuleConfiguration pkcs11Config) {
+        super(config, reader, containerVersion, httpClient);
         configureModulePath(pkcs11Config);
     }
 
     @Override
-    public Pkcs11Container createInstance(LibConfig config, GclReader reader, GclPkcs11RestClient httpClient, GclPace pace) {
+    public Pkcs11Container createInstance(LibConfig config, GclReader reader, String containerVersion, GclPkcs11RestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
-        this.type = ContainerType.PKCS11;
+        this.containerVersion = new ContainerVersion(ContainerType.PKCS11, containerVersion);
         if (this.modulePath == null) {
             configureModulePath(new ModuleConfiguration());
         }
@@ -103,16 +104,6 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
-    }
-
-    @Override
     public Class<Pkcs11AllData> getAllDataClass() {
         return Pkcs11AllData.class;
     }
@@ -126,7 +117,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
-            return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
+            return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -137,7 +128,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     public GclPkcs11Info getPkcs11Info() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getPkcs11Info(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getPkcs11Info(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath)), config.isConsentRequired());
     }
 
     public List<GclPkcs11Slot> getPkcs11Slots() throws RestException, NoConsentException {
@@ -153,7 +144,7 @@ public class Pkcs11Container extends GenericContainer<Pkcs11Container, GclPkcs11
     }
 
     private List<GclPkcs11Slot> getPkcs11Slots(Boolean tokenPresent) {
-        return RestExecutor.returnData(httpClient.getPkcs11Slots(getTypeId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getPkcs11Slots(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
     private void configureModulePath(ModuleConfiguration pkcs11Config) {

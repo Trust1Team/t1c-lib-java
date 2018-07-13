@@ -37,7 +37,7 @@ public class DnieContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getDnieContainer(new GclReader().withId(MockResponseFactory.DNIE_READER_ID).withPinpad(true));
+        container = getClient().getDnieContainer(new GclReader().withId(MockResponseFactory.DNIE_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

@@ -2,13 +2,12 @@ package com.t1t.t1c.containers.smartcards.eid.lux;
 
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
-import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.utils.PinUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -67,7 +66,7 @@ public class MockGclLuxIdRestClient extends AbstractMockRestClient<GclLuxIdRestC
 
     @Override
     public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId, Map<String, String> headers) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.verifyPin(PinUtil.encryptPin("1111"))).verifyPin(containerId, readerId, headers);
+        return delegate.returningResponse(MockResponseFactory.verifyPin(CryptUtil.encrypt("1111"))).verifyPin(containerId, readerId, headers);
     }
 
     @Override
@@ -96,12 +95,27 @@ public class MockGclLuxIdRestClient extends AbstractMockRestClient<GclLuxIdRestC
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId) {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableSignAlgos(containerId, readerId);
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(String containerId, String readerId, Map<String, String> headers) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableSignAlgos(containerId, readerId, headers);
     }
 
     @Override
-    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId) {
-        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableAuthenticateAlgos(containerId, readerId);
+    public Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(String containerId, String readerId, Map<String, String> headers) {
+        return delegate.returningResponse(MockResponseFactory.getSupportedAlgorithms(ContainerType.LUXID)).getAvailableAuthenticateAlgos(containerId, readerId, headers);
+    }
+
+    @Override
+    public Call<T1cResponse<Integer>> getPinTryCount(String containerId, String readerId, Map<String, String> headerMap, GclPinTryCounterRequest request) {
+        return delegate.returningResponse(MockResponseFactory.getPinTryCount(request)).getPinTryCount(containerId, readerId, headerMap, request);
+    }
+
+    @Override
+    public Call<T1cResponse<Boolean>> changePin(String containerId, String readerId, Map<String, String> headerMap, GclChangePinRequest request) {
+        return delegate.returningResponse(MockResponseFactory.verifyPin(request.getOldPin())).changePin(containerId, readerId, headerMap, request);
+    }
+
+    @Override
+    public Call<T1cResponse<Boolean>> resetPin(String containerId, String readerId, Map<String, String> headerMap, GclResetPinRequest request) {
+        return delegate.returningResponse(MockResponseFactory.verifyPin(request.getPuk())).resetPin(containerId, readerId, headerMap, request);
     }
 }

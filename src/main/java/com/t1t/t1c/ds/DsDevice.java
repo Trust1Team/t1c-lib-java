@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -17,22 +18,23 @@ public class DsDevice {
     @SerializedName("activated")
     @Expose
     private Boolean activated;
-    @SerializedName("managed")
-    @Expose
-    private Boolean managed;
     @SerializedName("coreVersion")
     @Expose
     private String coreVersion;
 
     /**
-     * @return The uuid
+     * 
+     * @return
+     *     The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid The uuid
+     * 
+     * @param uuid
+     *     The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -44,14 +46,18 @@ public class DsDevice {
     }
 
     /**
-     * @return The activated
+     * 
+     * @return
+     *     The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * @param activated The activated
+     * 
+     * @param activated
+     *     The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -63,33 +69,18 @@ public class DsDevice {
     }
 
     /**
-     * @return The managed
-     */
-    public Boolean getManaged() {
-        return managed;
-    }
-
-    /**
-     * @param managed The managed
-     */
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
-    }
-
-    public DsDevice withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
-     * @return The coreVersion
+     * 
+     * @return
+     *     The coreVersion
      */
     public String getCoreVersion() {
         return coreVersion;
     }
 
     /**
-     * @param coreVersion The coreVersion
+     * 
+     * @param coreVersion
+     *     The coreVersion
      */
     public void setCoreVersion(String coreVersion) {
         this.coreVersion = coreVersion;
@@ -107,7 +98,7 @@ public class DsDevice {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(uuid).append(activated).append(managed).append(coreVersion).toHashCode();
+        return new HashCodeBuilder().append(uuid).append(activated).append(coreVersion).toHashCode();
     }
 
     @Override
@@ -119,7 +110,7 @@ public class DsDevice {
             return false;
         }
         DsDevice rhs = ((DsDevice) other);
-        return new EqualsBuilder().append(uuid, rhs.uuid).append(activated, rhs.activated).append(managed, rhs.managed).append(coreVersion, rhs.coreVersion).isEquals();
+        return new EqualsBuilder().append(uuid, rhs.uuid).append(activated, rhs.activated).append(coreVersion, rhs.coreVersion).isEquals();
     }
 
 }

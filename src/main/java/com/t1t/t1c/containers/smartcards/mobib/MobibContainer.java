@@ -2,7 +2,8 @@ package com.t1t.t1c.containers.smartcards.mobib;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.ContainerVersion;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
@@ -24,19 +25,19 @@ import java.util.Map;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRestClient, GclMobibAllData, AllCertificates> {
+public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibRestClient, GclMobibAllData, AllCertificates> {
 
-    public MobibContainer(LibConfig config, GclReader reader, GclMobibRestClient httpClient) {
-        super(config, reader, httpClient);
+    public MobibContainer(LibConfig config, GclReader reader, String containerVersion, GclMobibRestClient httpClient) {
+        super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public MobibContainer createInstance(LibConfig config, GclReader reader, GclMobibRestClient httpClient, GclPace pace) {
+    public MobibContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclMobibRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
-        this.type = ContainerType.MOBIB;
+        this.containerVersion = new ContainerVersion(ContainerType.MOBIB, containerVersion);
         return this;
     }
 
@@ -52,7 +53,7 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
 
     @Override
     public GclMobibAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getMobibAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getMobibAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
@@ -86,16 +87,6 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
-    }
-
-    @Override
     public Class<GclMobibAllData> getAllDataClass() {
         return GclMobibAllData.class;
     }
@@ -106,19 +97,19 @@ public class MobibContainer extends GenericContainer<MobibContainer, GclMobibRes
     }
 
     public Boolean getStatus() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getMobibStatus(getTypeId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getMobibStatus(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     public String getPicture() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getMobibPicture(getTypeId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getMobibPicture(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     public GclMobibCardIssuing getCardIssuing() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getMobibCardIssuing(getTypeId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getMobibCardIssuing(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     public List<GclMobibContract> getContracts() throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getMobibContracts(getTypeId(), reader.getId()), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getMobibContracts(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
     @Override

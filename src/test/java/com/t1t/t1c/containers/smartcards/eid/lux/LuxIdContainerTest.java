@@ -5,6 +5,7 @@ import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.containers.ContainerType;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
+import com.t1t.t1c.core.GclPinReference;
 import com.t1t.t1c.core.GclReader;
 import com.t1t.t1c.exceptions.ErrorCodes;
 import com.t1t.t1c.exceptions.ExceptionFactory;
@@ -39,7 +40,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), new GclPace().withPin("123456"));
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "v2.0.0", new GclPace().withPin("123456"));
     }
 
     @Test
@@ -260,7 +261,7 @@ public class LuxIdContainerTest extends AbstractTestClass {
 
     @Test(expected = LuxIdContainerException.class)
     public void createInstance() {
-        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), null);
+        container = getClient().getLuxIdContainer(new GclReader().withPinpad(true).withId(MockResponseFactory.LUXID_READER_ID), "v2.0.0", null);
     }
 
     @Test
@@ -469,5 +470,58 @@ public class LuxIdContainerTest extends AbstractTestClass {
         assertNotNull(data.getAuthenticationCertificateChain());
         assertNotNull(data.getSigningCertificateChain());
         assertNotNull(data.getAllCertificates());
+    }
+
+    @Test
+    public void getAvailableAuthenticationAlgorithms() {
+        List<DigestAlgorithm> availableAuthAlgos = container.getAvailableAuthenticationAlgorithms();
+        assertEquals(Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512), availableAuthAlgos);
+    }
+
+    @Test
+    public void getAvailableSignAlgorithms() {
+        List<DigestAlgorithm> availableSignAlgos = container.getAvailableSignAlgorithms();
+        assertEquals(Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.MD5, DigestAlgorithm.SHA512), availableSignAlgos);
+    }
+
+    @Test
+    public void dumpData() {
+        ContainerData data = container.dumpData("1111");
+        assertNotNull(data);
+    }
+
+    @Test
+    public void getPinTryCounter() {
+        assertEquals(1, (int) container.getPinTryCounter(GclPinReference.USER));
+    }
+
+    @Test
+    public void getPukTryCounter() {
+        assertEquals(2, (int) container.getPinTryCounter(GclPinReference.ADMIN));
+    }
+
+    @Test
+    public void changePin() {
+        assertTrue(container.changePin("1111", "2222"));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void changePinWrongPin() {
+        container.changePin("1112", "2222");
+    }
+
+    @Test
+    public void unblockPin() {
+        assertTrue(container.unblockPin("1111"));
+    }
+
+    @Test(expected = VerifyPinException.class)
+    public void resetPinWrongPuk() {
+        container.unblockPin("1112");
+    }
+
+    @Test
+    public void resetPinNewPin() {
+        assertTrue(container.resetPin("1111", "2222"));
     }
 }

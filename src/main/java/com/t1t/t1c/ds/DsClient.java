@@ -4,7 +4,6 @@ import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.exceptions.DsClientException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.rest.RestExecutor;
 
@@ -33,14 +32,8 @@ public class DsClient implements IDsClient {
 
     @Override
     public DsPublicKey getPublicKey(String deviceId) throws DsClientException {
-        return getPublicKey(deviceId, null);
-    }
-
-    @Override
-    public DsPublicKey getPublicKey(String deviceId, DsPublicKeyEncoding encoding) throws DsClientException {
-        String encodingParam = encoding == null ? null : encoding.getQueryParamValue();
         try {
-            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(deviceId, encodingParam), false);
+            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(deviceId, config.getDsNamespace()), false);
             return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse : null;
         } catch (RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);

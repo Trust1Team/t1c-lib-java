@@ -81,7 +81,7 @@ public class RestExecutor {
             throw ExceptionFactory.restException(ex);
         } catch (JsonSyntaxException ex) {
             log.error("Failed to deserialize response: ", ex.getMessage());
-            throw ExceptionFactory.jsonConversionException(ex.getMessage());
+            throw ex;
         }
     }
 

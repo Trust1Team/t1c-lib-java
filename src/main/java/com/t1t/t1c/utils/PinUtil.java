@@ -1,24 +1,10 @@
 package com.t1t.t1c.utils;
 
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
-import com.t1t.t1c.core.GclPrivateKeyReference;
-import com.t1t.t1c.core.GclReader;
-import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.AbstractRuntimeException;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.RestException;
-import com.t1t.t1c.model.T1cPublicKey;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.PKCS8EncodedKeySpec;
 
 /**
  * @author Guillaume Vandecasteele
@@ -26,15 +12,16 @@ import java.security.spec.PKCS8EncodedKeySpec;
  */
 public final class PinUtil {
 
-    private static final String RSA = "RSA";
-
-    private static T1cPublicKey DEVICE_PUBLIC_KEY;
-
     private PinUtil() {
     }
 
-    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String pin) {
-        boolean pinPresent = StringUtils.isNotBlank(pin);
+    public static void pinEnforcementCheck(GclReader reader, boolean osPinDialog, boolean forcePinPad, String... pins) {
+        boolean pinPresent = true;
+        for (String pin : pins) {
+            if (StringUtils.isEmpty(pin)) {
+                pinPresent = false;
+            }
+        }
         boolean hardwarePinPadPresent = reader.getPinpad();
         if (forcePinPad) {
             if (hardwarePinPadPresent) {
@@ -57,34 +44,6 @@ public final class PinUtil {
         } else return ex;
     }
 
-    public static String encryptPin(String pin) {
-        try {
-            Cipher cipher = Cipher.getInstance(RSA);
-            cipher.init(Cipher.ENCRYPT_MODE, DEVICE_PUBLIC_KEY.getParsed());
-            return Base64.encodeBase64String(cipher.doFinal(pin.getBytes()));
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException ex) {
-            return null;
-        }
-    }
-
-    public static String decryptPin(String encryptedPin, String privateKey) {
-        try {
-            byte[] content = Base64.decodeBase64(privateKey.getBytes());
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(content);
-            KeyFactory kf = KeyFactory.getInstance(RSA);
-            Cipher cipher = Cipher.getInstance(RSA);
-            cipher.init(Cipher.DECRYPT_MODE, kf.generatePrivate(spec));
-            return new String(cipher.doFinal(Base64.decodeBase64(encryptedPin.getBytes())));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    public static void setDevicePublicKey(T1cPublicKey devicePublicKey) {
-        PinUtil.DEVICE_PUBLIC_KEY = devicePublicKey;
-    }
-
     public static GclAuthenticateOrSignData createEncryptedAuthSignData(String data, String algorithmReference, Boolean pinpad, Boolean osPinDialog, String pin) {
         return new GclAuthenticateOrSignData()
                 .withData(data)
@@ -95,7 +54,7 @@ public final class PinUtil {
     }
 
     public static String getEncryptedPinIfPresent(String pin) {
-        return StringUtils.isNotEmpty(pin) ? PinUtil.encryptPin(pin) : null;
+        return StringUtils.isNotEmpty(pin) ? CryptUtil.encrypt(pin) : null;
     }
 
     public static GclVerifyPinRequest createEncryptedRequest(Boolean pinpad, Boolean osPinDialog, String pin) {
@@ -108,5 +67,20 @@ public final class PinUtil {
                 .withPinpad(pinpad)
                 .withOsDialog(osPinDialog)
                 .withPrivateKeyReference(privateKeyReference);
+    }
+
+    public static GclChangePinRequest createEncryptedPinChangeRequest(Boolean pinpad, Boolean osPinDialog, String oldPin, String newPin) {
+        return new GclChangePinRequest()
+                .withNewPin(getEncryptedPinIfPresent(newPin))
+                .withOldPin(getEncryptedPinIfPresent(oldPin))
+                .withOsDialog(osPinDialog);
+    }
+
+    public static GclResetPinRequest createEncryptedPinResetRequest(Boolean pinpad, Boolean osPinDialog, boolean resetOnly, String puk, String newPin) {
+        return new GclResetPinRequest()
+                .withOsDialog(osPinDialog)
+                .withPin(getEncryptedPinIfPresent(newPin))
+                .withPuk(getEncryptedPinIfPresent(puk))
+                .withResetOnly(resetOnly);
     }
 }

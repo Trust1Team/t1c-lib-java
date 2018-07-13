@@ -1,7 +1,6 @@
 package com.t1t.t1c.ds;
 
 import com.t1t.t1c.exceptions.DsClientException;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import com.t1t.t1c.model.PlatformInfo;
 
 /**
@@ -26,17 +25,6 @@ public interface IDsClient {
      * @throws DsClientException: on failure
      */
     DsPublicKey getPublicKey(String deviceId) throws DsClientException;
-
-    /**
-     * Retrieves the public key of the T1C-DS.
-     * The key can be used for validation purposes.
-     *
-     * @param deviceId the device ID
-     * @param encoding can be used for different certificate encoding
-     * @return the DS public key
-     * @throws DsClientException: on failure
-     */
-    DsPublicKey getPublicKey(String deviceId, DsPublicKeyEncoding encoding) throws DsClientException;
 
     /**
      * Returns the download link based on the provided platform information.

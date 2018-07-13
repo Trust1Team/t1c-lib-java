@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.ds;
 
 import com.google.gson.annotations.Expose;
@@ -19,15 +20,12 @@ public class DsRegistrationSyncResponse {
     @SerializedName("activated")
     @Expose
     private Boolean activated;
-    @SerializedName("managed")
-    @Expose
-    private Boolean managed;
     @SerializedName("coreVersion")
     @Expose
     private String coreVersion;
     @SerializedName("contextToken")
     @Expose
-    private Long contextToken;
+    private String contextToken;
     @SerializedName("containerResponses")
     @Expose
     private List<DsContainerResponse> containerResponses = new ArrayList<DsContainerResponse>();
@@ -36,14 +34,18 @@ public class DsRegistrationSyncResponse {
     private DsAtrList atrList;
 
     /**
-     * @return The uuid
+     * 
+     * @return
+     *     The uuid
      */
     public String getUuid() {
         return uuid;
     }
 
     /**
-     * @param uuid The uuid
+     * 
+     * @param uuid
+     *     The uuid
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
@@ -55,14 +57,18 @@ public class DsRegistrationSyncResponse {
     }
 
     /**
-     * @return The activated
+     * 
+     * @return
+     *     The activated
      */
     public Boolean getActivated() {
         return activated;
     }
 
     /**
-     * @param activated The activated
+     * 
+     * @param activated
+     *     The activated
      */
     public void setActivated(Boolean activated) {
         this.activated = activated;
@@ -74,33 +80,18 @@ public class DsRegistrationSyncResponse {
     }
 
     /**
-     * @return The managed
-     */
-    public Boolean getManaged() {
-        return managed;
-    }
-
-    /**
-     * @param managed The managed
-     */
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
-    }
-
-    public DsRegistrationSyncResponse withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
-    }
-
-    /**
-     * @return The coreVersion
+     * 
+     * @return
+     *     The coreVersion
      */
     public String getCoreVersion() {
         return coreVersion;
     }
 
     /**
-     * @param coreVersion The coreVersion
+     * 
+     * @param coreVersion
+     *     The coreVersion
      */
     public void setCoreVersion(String coreVersion) {
         this.coreVersion = coreVersion;
@@ -112,33 +103,41 @@ public class DsRegistrationSyncResponse {
     }
 
     /**
-     * @return The contextToken
+     * 
+     * @return
+     *     The contextToken
      */
-    public Long getContextToken() {
+    public String getContextToken() {
         return contextToken;
     }
 
     /**
-     * @param contextToken The contextToken
+     * 
+     * @param contextToken
+     *     The contextToken
      */
-    public void setContextToken(Long contextToken) {
+    public void setContextToken(String contextToken) {
         this.contextToken = contextToken;
     }
 
-    public DsRegistrationSyncResponse withContextToken(Long contextToken) {
+    public DsRegistrationSyncResponse withContextToken(String contextToken) {
         this.contextToken = contextToken;
         return this;
     }
 
     /**
-     * @return The containerResponses
+     * 
+     * @return
+     *     The containerResponses
      */
     public List<DsContainerResponse> getContainerResponses() {
         return containerResponses;
     }
 
     /**
-     * @param containerResponses The containerResponses
+     * 
+     * @param containerResponses
+     *     The containerResponses
      */
     public void setContainerResponses(List<DsContainerResponse> containerResponses) {
         this.containerResponses = containerResponses;
@@ -150,14 +149,18 @@ public class DsRegistrationSyncResponse {
     }
 
     /**
-     * @return The atrList
+     * 
+     * @return
+     *     The atrList
      */
     public DsAtrList getAtrList() {
         return atrList;
     }
 
     /**
-     * @param atrList The atrList
+     * 
+     * @param atrList
+     *     The atrList
      */
     public void setAtrList(DsAtrList atrList) {
         this.atrList = atrList;
@@ -175,7 +178,7 @@ public class DsRegistrationSyncResponse {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(uuid).append(activated).append(managed).append(coreVersion).append(contextToken).append(containerResponses).append(atrList).toHashCode();
+        return new HashCodeBuilder().append(uuid).append(activated).append(coreVersion).append(contextToken).append(containerResponses).append(atrList).toHashCode();
     }
 
     @Override
@@ -187,7 +190,7 @@ public class DsRegistrationSyncResponse {
             return false;
         }
         DsRegistrationSyncResponse rhs = ((DsRegistrationSyncResponse) other);
-        return new EqualsBuilder().append(uuid, rhs.uuid).append(activated, rhs.activated).append(managed, rhs.managed).append(coreVersion, rhs.coreVersion).append(contextToken, rhs.contextToken).append(containerResponses, rhs.containerResponses).append(atrList, rhs.atrList).isEquals();
+        return new EqualsBuilder().append(uuid, rhs.uuid).append(activated, rhs.activated).append(coreVersion, rhs.coreVersion).append(contextToken, rhs.contextToken).append(containerResponses, rhs.containerResponses).append(atrList, rhs.atrList).isEquals();
     }
 
 }

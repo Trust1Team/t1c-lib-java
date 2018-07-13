@@ -36,7 +36,7 @@ public class BeIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(true));
+        container = getClient().getBeIdContainer(new GclReader().withId(MockResponseFactory.BEID_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

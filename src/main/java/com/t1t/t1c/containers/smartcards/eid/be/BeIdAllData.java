@@ -12,6 +12,7 @@ public class BeIdAllData implements AllData {
     private T1cCertificate nonRepudiationCertificate;
     private String picture;
     private GclBeIdRn rn;
+    private GclBeIdToken token;
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
@@ -22,6 +23,7 @@ public class BeIdAllData implements AllData {
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificate);
         this.picture = data.getPicture();
         this.rn = data.getRn();
+        this.token = data.getToken();
         this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificate);
         this.rrnCertificate = PkiUtil.createT1cCertificate(data.getRrnCertificate(), parseCertificate);
     }
@@ -178,6 +180,25 @@ public class BeIdAllData implements AllData {
         return this;
     }
 
+    /**
+     * @return the token
+     */
+    public GclBeIdToken getToken() {
+        return token;
+    }
+
+    /**
+     * @param token the token to set
+     */
+    public void setToken(GclBeIdToken token) {
+        this.token = token;
+    }
+
+    public BeIdAllData withToken(GclBeIdToken token) {
+        this.token = token;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "BeIdAllData{" +
@@ -187,6 +208,7 @@ public class BeIdAllData implements AllData {
                 ", nonRepudiationCertificate=" + nonRepudiationCertificate +
                 ", picture='" + picture + '\'' +
                 ", rn=" + rn +
+                ", token=" + token +
                 ", rootCertificate=" + rootCertificate +
                 ", rrnCertificate=" + rrnCertificate +
                 '}';
