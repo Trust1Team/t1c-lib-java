@@ -9,4 +9,8 @@ public interface IGclContainer {
     ContainerType getType();
 
     String getTypeId();
+
+    String getContainerVersionId();
+
+    String getContainerUrlId();
 }

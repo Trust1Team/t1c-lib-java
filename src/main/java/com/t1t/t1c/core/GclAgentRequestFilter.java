@@ -1,4 +1,5 @@
-package com.t1t.t1c.containers.readerapi;
+
+package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,28 +10,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclReaderApiCommandRequest {
+public class GclAgentRequestFilter {
 
-    @SerializedName("tx")
+    @SerializedName("username")
     @Expose
-    private String tx;
+    private String username;
 
     /**
-     * @return The tx
+     * 
+     * @return
+     *     The username
      */
-    public String getTx() {
-        return tx;
+    public String getUsername() {
+        return username;
     }
 
     /**
-     * @param tx The tx
+     * 
+     * @param username
+     *     The username
      */
-    public void setTx(String tx) {
-        this.tx = tx;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public GclReaderApiCommandRequest withTx(String tx) {
-        this.tx = tx;
+    public GclAgentRequestFilter withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -41,7 +46,7 @@ public class GclReaderApiCommandRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(tx).toHashCode();
+        return new HashCodeBuilder().append(username).toHashCode();
     }
 
     @Override
@@ -49,11 +54,11 @@ public class GclReaderApiCommandRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclReaderApiCommandRequest)) {
+        if (!(other instanceof GclAgentRequestFilter)) {
             return false;
         }
-        GclReaderApiCommandRequest rhs = ((GclReaderApiCommandRequest) other);
-        return new EqualsBuilder().append(tx, rhs.tx).isEquals();
+        GclAgentRequestFilter rhs = ((GclAgentRequestFilter) other);
+        return new EqualsBuilder().append(username, rhs.username).isEquals();
     }
 
 }

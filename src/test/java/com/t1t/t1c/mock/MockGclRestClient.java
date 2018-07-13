@@ -2,12 +2,12 @@ package com.t1t.t1c.mock;
 
 import com.t1t.t1c.MockResponseFactory;
 import com.t1t.t1c.core.*;
+import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -42,8 +42,13 @@ public class MockGclRestClient implements GclRestClient {
     }
 
     @Override
-    public Call<T1cResponse<List<GclAgent>>> getAgents(Map<String, String> filters) {
-        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(filters)).getAgents(filters);
+    public Call<T1cResponse<List<GclAgent>>> getAgents(GclAgentRequestFilter request) {
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(request.getUsername())).getAgents(request);
+    }
+
+    @Override
+    public Call<T1cResponse<List<GclAgent>>> resolveAgent(GclAgentResolutionRequest request) throws RestException {
+        return delegate.returningResponse(MockResponseFactory.getAgentsResponse(request.getChallenge())).resolveAgent(request);
     }
 
     @Override

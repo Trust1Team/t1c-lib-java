@@ -4,7 +4,6 @@
     "arch": "x86_64",
     "citrix": false,
     "log_level": "info",
-    "managed": false,
     "os": "10.13.1",
     "uid": "B7289D3AEB22D233",
     "version": "1.4.0"

@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "$id": "GclBeIdToken",
+  "javaType": "com.t1t.t1c.containers.smartcards.eid.be.GclBeIdToken",
+  "type": "object",
+  "properties": {
+    "eid_compliant": {
+      "type": "integer"
+    },
+    "electrical_perso_interface_version": {
+      "type": "integer"
+    },
+    "electrical_perso_version": {
+      "type": "integer"
+    },
+    "graphical_perso_version": {
+      "type": "integer"
+    },
+    "label": {
+      "type": "string"
+    },
+    "prn_generation": {
+      "type": "integer"
+    },
+    "raw_data": {
+      "type": "string"
+    },
+    "serial_number": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer"
+    },
+    "version_rfu": {
+      "type": "integer"
+    }
+  }
+}

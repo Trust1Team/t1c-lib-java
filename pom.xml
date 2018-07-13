@@ -76,7 +76,7 @@
         <version.jackson-databind>2.0.0</version.jackson-databind>
         <version.commons.codec>1.10</version.commons.codec>
         <version.jose4j>0.6.2</version.jose4j>
-        <version.cuid>0.1.1</version.cuid>
+        <version.bcprov>1.59</version.bcprov>
         <!-- Guava versions above 20.0 require java 1.8 -->
         <version.guava>20.0</version.guava>
     </properties>
@@ -218,9 +218,9 @@
             <version>${version.jose4j}</version>
         </dependency>
         <dependency>
-            <groupId>cool.graph</groupId>
-            <artifactId>cuid-java</artifactId>
-            <version>${version.cuid}</version>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${version.bcprov}</version>
         </dependency>
 
 
@@ -323,6 +323,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAdminPublicKeyUpdateResponse.json
                         </sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAuthenticateOrSignData.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclChangePinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclResetPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPinReference.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclPinTryCounterRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclCard.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclConsentType.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclAlertPosition.json</sourcePath>
@@ -336,7 +340,10 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/GclReader.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclUpdatePublicKeyRequest.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclVerifyPinRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclDsPublicKey.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclPublicKeys.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAgentResolutionRequest.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclAgentRequestFilter.json</sourcePath>
                         <!-- DS -->
                         <sourcePath>${basedir}/src/main/resources/schemas/DsDesktopApplication.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/DsAtrList.json</sourcePath>
@@ -369,8 +376,13 @@
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvError.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/OcvCertificateChainValidationResponse.json
                         </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvSignatureValidationRequest.json
+                        </sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/OcvSignatureValidationResponse.json
+                        </sourcePath>
                         <!-- BE ID -->
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAddress.json</sourcePath>
+                        <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdToken.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdRn.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIdAllData.json</sourcePath>
                         <sourcePath>${basedir}/src/main/resources/schemas/GclBeIDAllCertificates.json</sourcePath>

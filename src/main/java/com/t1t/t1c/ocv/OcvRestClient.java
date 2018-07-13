@@ -21,4 +21,7 @@ public interface OcvRestClient {
     @POST("certs/validate-chain")
     Call<OcvCertificateChainValidationResponse> validateCertificateChain(@Body OcvCertificateChainValidationRequest request);
 
+    @POST("signature/validate")
+    Call<OcvSignatureValidationResponse> validateSignature(@Body OcvSignatureValidationRequest request);
+
 }

@@ -1,0 +1,9 @@
+{
+  "$id": "GclPinReference",
+  "type": "object",
+  "definitions": {},
+  "javaType": "com.t1t.t1c.core.GclPinReference",
+  "enum": [
+    "user", "admin"
+  ]
+}

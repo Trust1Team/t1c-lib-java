@@ -1,3 +1,4 @@
+
 package com.t1t.t1c.core;
 
 import com.google.gson.annotations.Expose;
@@ -7,7 +8,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.annotation.Generated;
-import java.util.Map;
 
 @Generated("org.jsonschema2pojo")
 public class GclAgent {
@@ -21,25 +21,29 @@ public class GclAgent {
     @SerializedName("last_update")
     @Expose
     private String lastUpdate;
-    @SerializedName("metadata")
-    @Expose
-    private Map<String, String> metadata;
     @SerializedName("port")
     @Expose
     private Long port;
+    @SerializedName("type")
+    @Expose
+    private String type;
     @SerializedName("username")
     @Expose
     private String username;
 
     /**
-     * @return The challenge
+     * 
+     * @return
+     *     The challenge
      */
     public String getChallenge() {
         return challenge;
     }
 
     /**
-     * @param challenge The challenge
+     * 
+     * @param challenge
+     *     The challenge
      */
     public void setChallenge(String challenge) {
         this.challenge = challenge;
@@ -51,14 +55,18 @@ public class GclAgent {
     }
 
     /**
-     * @return The hostname
+     * 
+     * @return
+     *     The hostname
      */
     public String getHostname() {
         return hostname;
     }
 
     /**
-     * @param hostname The hostname
+     * 
+     * @param hostname
+     *     The hostname
      */
     public void setHostname(String hostname) {
         this.hostname = hostname;
@@ -70,14 +78,18 @@ public class GclAgent {
     }
 
     /**
-     * @return The lastUpdate
+     * 
+     * @return
+     *     The lastUpdate
      */
     public String getLastUpdate() {
         return lastUpdate;
     }
 
     /**
-     * @param lastUpdate The last_update
+     * 
+     * @param lastUpdate
+     *     The last_update
      */
     public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
@@ -89,33 +101,18 @@ public class GclAgent {
     }
 
     /**
-     * @return The metadata
-     */
-    public Map<String, String> getMetadata() {
-        return metadata;
-    }
-
-    /**
-     * @param metadata The metadata
-     */
-    public void setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-    }
-
-    public GclAgent withMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * @return The port
+     * 
+     * @return
+     *     The port
      */
     public Long getPort() {
         return port;
     }
 
     /**
-     * @param port The port
+     * 
+     * @param port
+     *     The port
      */
     public void setPort(Long port) {
         this.port = port;
@@ -127,14 +124,41 @@ public class GclAgent {
     }
 
     /**
-     * @return The username
+     * 
+     * @return
+     *     The type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 
+     * @param type
+     *     The type
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public GclAgent withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * 
+     * @return
+     *     The username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username The username
+     * 
+     * @param username
+     *     The username
      */
     public void setUsername(String username) {
         this.username = username;
@@ -152,7 +176,7 @@ public class GclAgent {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(challenge).append(hostname).append(lastUpdate).append(metadata).append(port).append(username).toHashCode();
+        return new HashCodeBuilder().append(challenge).append(hostname).append(lastUpdate).append(port).append(type).append(username).toHashCode();
     }
 
     @Override
@@ -164,7 +188,7 @@ public class GclAgent {
             return false;
         }
         GclAgent rhs = ((GclAgent) other);
-        return new EqualsBuilder().append(challenge, rhs.challenge).append(hostname, rhs.hostname).append(lastUpdate, rhs.lastUpdate).append(metadata, rhs.metadata).append(port, rhs.port).append(username, rhs.username).isEquals();
+        return new EqualsBuilder().append(challenge, rhs.challenge).append(hostname, rhs.hostname).append(lastUpdate, rhs.lastUpdate).append(port, rhs.port).append(type, rhs.type).append(username, rhs.username).isEquals();
     }
 
 }

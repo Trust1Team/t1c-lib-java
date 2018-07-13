@@ -69,7 +69,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
     /**
      * Dumps all the data on the card
      *
-     * @param filterParams      filter parameters to use
+     * @param filterParams filter parameters to use
      * @return AllData
      * @throws GenericContainerException: on failure
      * @throws NoConsentException:        if consent is required but has not been granted (or is expired)
@@ -109,7 +109,7 @@ public interface IGenericContainer<V extends AllData, W extends AllCertificates>
     /**
      * Dumps all the certificates on the card
      *
-     * @param filterParams      filter parameters to use
+     * @param filterParams filter parameters to use
      * @return AllCertificates
      * @throws GenericContainerException: on failure
      * @throws NoConsentException:        if consent is required but has not been granted (or is expired)

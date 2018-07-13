@@ -1,7 +1,14 @@
 package com.t1t.t1c.configuration;
 
 import com.t1t.t1c.containers.smartcards.pkcs11.ModuleConfiguration;
+import com.t1t.t1c.rest.SslConfig;
 import com.t1t.t1c.utils.UriUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Created by michallispashidis on 04/11/2017.
@@ -19,18 +26,19 @@ public class LibConfig {
     private String gclClientUri;
     private String ocvUri;
     private String proxyDomain;
+    private String dsNameSpace;
 
     // Auth
 
     private String apiKey;
+    private String gwJwt;
 
     // Post-initialization values
 
     private Boolean citrix;
     private Boolean consentRequired = false;
-    private Long contextToken;
+    private String contextToken;
     private String gclJwt;
-    private Boolean managed = false;
 
     // General Config
 
@@ -46,7 +54,8 @@ public class LibConfig {
     private Boolean osPinDialog = false;
     private ModuleConfiguration pkcs11Config;
     private Integer sessionTimeout;
-    private Boolean syncManaged = true;
+
+    private SslConfig customSslConfig;
 
     // Dynamic properties
 
@@ -85,6 +94,14 @@ public class LibConfig {
         this.authUri = authUri;
     }
 
+    public String getGwJwt() {
+        return gwJwt;
+    }
+
+    public void setGwJwt(String gwJwt) {
+        this.gwJwt = gwJwt;
+    }
+
     public String getDsUri() {
         return dsUri;
     }
@@ -107,14 +124,6 @@ public class LibConfig {
 
     public void setOcvUri(String ocvUri) {
         this.ocvUri = UriUtils.uriFinalSlashAppender(ocvUri);
-    }
-
-    public String getProxyDomain() {
-        return proxyDomain;
-    }
-
-    public void setProxyDomain(String proxyDomain) {
-        this.proxyDomain = proxyDomain;
     }
 
     public String getApiKey() {
@@ -141,11 +150,11 @@ public class LibConfig {
         this.consentRequired = consentRequired;
     }
 
-    public Long getContextToken() {
+    public String getContextToken() {
         return contextToken;
     }
 
-    public void setContextToken(Long contextToken) {
+    public void setContextToken(String contextToken) {
         this.contextToken = contextToken;
     }
 
@@ -155,14 +164,6 @@ public class LibConfig {
 
     public void setGclJwt(String gclJwt) {
         this.gclJwt = gclJwt;
-    }
-
-    public Boolean isManaged() {
-        return managed;
-    }
-
-    public void setManaged(Boolean managed) {
-        this.managed = managed;
     }
 
     public Integer getAgentPort() {
@@ -253,11 +254,45 @@ public class LibConfig {
         this.sessionTimeout = sessionTimeout;
     }
 
-    public Boolean isSyncManaged() {
-        return syncManaged;
+    public SslConfig getCustomSslConfig() {
+        return customSslConfig;
     }
 
-    public void setSyncManaged(Boolean syncManaged) {
-        this.syncManaged = syncManaged;
+    public void setCustomSslConfig(SslConfig customSslConfig) {
+        this.customSslConfig = customSslConfig;
+    }
+
+    public String getDsNamespace() {
+        if (StringUtils.isNotEmpty(this.dsUri)) {
+            if (StringUtils.isNotEmpty(this.dsNameSpace) && this.dsUri.contains(dsNameSpace)) {
+                return this.dsNameSpace;
+            } else {
+                try {
+                    URI uri = new URL(this.dsUri).toURI();
+                    this.dsNameSpace = uri.getHost();
+                    return this.dsNameSpace;
+                } catch (MalformedURLException | URISyntaxException ex) {
+                    // Do nothing
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getProxyDomain() {
+        if (StringUtils.isNotEmpty(this.dsUri)) {
+            if (StringUtils.isNotEmpty(this.proxyDomain) && this.dsUri.contains(this.proxyDomain)) {
+                return proxyDomain;
+            } else {
+                try {
+                    URI uri = new URL(this.dsUri).toURI();
+                    this.proxyDomain = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null).toString();
+                    return this.proxyDomain;
+                } catch (MalformedURLException | URISyntaxException ex) {
+                    // Do nothing
+                }
+            }
+        }
+        return null;
     }
 }

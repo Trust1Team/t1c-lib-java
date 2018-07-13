@@ -35,7 +35,7 @@ public class PtEIdContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(true));
+        container = getClient().getPtIdContainer(new GclReader().withId(MockResponseFactory.PT_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test

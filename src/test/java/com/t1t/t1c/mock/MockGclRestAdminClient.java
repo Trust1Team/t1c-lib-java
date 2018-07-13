@@ -1,14 +1,13 @@
 package com.t1t.t1c.mock;
 
-import com.t1t.t1c.core.GclAdminRestClient;
-import com.t1t.t1c.core.GclLoadContainersRequest;
-import com.t1t.t1c.core.GclPublicKeys;
-import com.t1t.t1c.core.GclUpdatePublicKeyRequest;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.ds.DsAtrList;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.T1cResponse;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
+
+import java.util.List;
 
 import static com.t1t.t1c.MockResponseFactory.*;
 
@@ -40,8 +39,8 @@ public class MockGclRestAdminClient implements GclAdminRestClient {
     }
 
     @Override
-    public Call<T1cResponse<String>> getDsCertificate() throws RestException {
-        return delegate.returningResponse(getGclAdminDsCertificateResponse()).getDsCertificate();
+    public Call<T1cResponse<List<GclDsPublicKey>>> getDsCertificates() throws RestException {
+        return delegate.returningResponse(getGclAdminDsCertificateResponse()).getDsCertificates();
     }
 
     @Override

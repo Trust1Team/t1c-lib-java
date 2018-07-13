@@ -26,9 +26,6 @@
     "log_level": {
       "type": "string"
     },
-    "managed": {
-      "type": "boolean"
-    },
     "os": {
       "type": "string"
     },

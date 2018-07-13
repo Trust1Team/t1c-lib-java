@@ -1,7 +1,11 @@
 package com.t1t.t1c.model;
 
+import com.t1t.t1c.core.GclDsPublicKey;
 import com.t1t.t1c.core.GclPublicKeys;
 import com.t1t.t1c.utils.PkiUtil;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Guillaume Vandecasteele
@@ -9,23 +13,26 @@ import com.t1t.t1c.utils.PkiUtil;
  */
 public class T1cAdminPublicKeys {
 
-    private T1cPublicKey ds;
+    private Map<String, T1cPublicKey> ds;
     private T1cPublicKey device;
     private T1cPublicKey ssl;
 
     public T1cAdminPublicKeys(GclPublicKeys publicKeys, Boolean parse) {
         if (publicKeys != null) {
-            this.ds = PkiUtil.createT1cPublicKey(publicKeys.getDs(), parse);
+            this.ds = new HashMap<>();
+            for (GclDsPublicKey key : publicKeys.getDs()) {
+                this.ds.put(key.getNs(), PkiUtil.createT1cPublicKey(key.getBase64(), parse));
+            }
             this.device = PkiUtil.createT1cPublicKey(publicKeys.getDevice(), parse);
             this.ssl = PkiUtil.createT1cPublicKey(publicKeys.getSsl(), parse);
         }
     }
 
-    public T1cPublicKey getDs() {
+    public Map<String, T1cPublicKey> getDs() {
         return ds;
     }
 
-    public void setDs(T1cPublicKey ds) {
+    public void setDs(Map<String, T1cPublicKey> ds) {
         this.ds = ds;
     }
 

@@ -33,6 +33,10 @@
     },
     "rrn_certificate": {
       "type": "string"
+    },
+    "token": {
+      "type": "object",
+      "$ref": "GclBeIdToken.json"
     }
   }
 }

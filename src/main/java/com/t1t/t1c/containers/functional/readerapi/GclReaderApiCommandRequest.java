@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.readerapi;
+package com.t1t.t1c.containers.functional.readerapi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,28 +9,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class GclReaderApiOpenSessionRequest {
+public class GclReaderApiCommandRequest {
 
-    @SerializedName("timeout")
+    @SerializedName("tx")
     @Expose
-    private Long timeout;
+    private String tx;
 
     /**
-     * @return The timeout
+     * @return The tx
      */
-    public Long getTimeout() {
-        return timeout;
+    public String getTx() {
+        return tx;
     }
 
     /**
-     * @param timeout The timeout
+     * @param tx The tx
      */
-    public void setTimeout(Long timeout) {
-        this.timeout = timeout;
+    public void setTx(String tx) {
+        this.tx = tx;
     }
 
-    public GclReaderApiOpenSessionRequest withTimeout(Long timeout) {
-        this.timeout = timeout;
+    public GclReaderApiCommandRequest withTx(String tx) {
+        this.tx = tx;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class GclReaderApiOpenSessionRequest {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(timeout).toHashCode();
+        return new HashCodeBuilder().append(tx).toHashCode();
     }
 
     @Override
@@ -49,11 +49,11 @@ public class GclReaderApiOpenSessionRequest {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof GclReaderApiOpenSessionRequest)) {
+        if (!(other instanceof GclReaderApiCommandRequest)) {
             return false;
         }
-        GclReaderApiOpenSessionRequest rhs = ((GclReaderApiOpenSessionRequest) other);
-        return new EqualsBuilder().append(timeout, rhs.timeout).isEquals();
+        GclReaderApiCommandRequest rhs = ((GclReaderApiCommandRequest) other);
+        return new EqualsBuilder().append(tx, rhs.tx).isEquals();
     }
 
 }

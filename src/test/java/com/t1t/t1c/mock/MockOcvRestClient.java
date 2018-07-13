@@ -34,4 +34,15 @@ public class MockOcvRestClient implements OcvRestClient {
                 .withCrlResponse(new OcvCrlResponse().withCrlLocations(Arrays.asList("string", "string")).withIssuerCertificate("String").withProductionDate("01/01/2000").withSignatureAlgorithm("sha1").withStatus(true).withVersion("1.0"))
                 .withOcspResponse(new OcvOcspResponse().withOcspLocation("string").withStatus(true))).validateCertificateChain(request);
     }
+
+    @Override
+    public Call<OcvSignatureValidationResponse> validateSignature(OcvSignatureValidationRequest request) {
+        return delegate.returningResponse(new OcvSignatureValidationResponse()
+                .withResult(true)
+                .withCertificate(request.getCertificate())
+                .withDigest(request.getDigest())
+                .withSignature(request.getSignature())
+                .withRawData(request.getRawData())
+        ).validateSignature(request);
+    }
 }

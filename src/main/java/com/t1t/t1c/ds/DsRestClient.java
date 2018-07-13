@@ -27,7 +27,7 @@ public interface DsRestClient {
 
     @GET("security/keys/public/{deviceId}")
     Call<DsPublicKey> getPubKey(@Path("deviceId") String deviceId,
-                                @Query("encoding") String encoding);
+                                @Query("namespace") String namespace);
 
     @POST("download/gcl")
     Call<DsDownloadLink> getDownloadLink(@Body DsDownloadRequest request);

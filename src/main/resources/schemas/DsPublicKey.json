@@ -12,6 +12,9 @@
     },
     "encryptedAesKey": {
       "type": "string"
+    },
+    "ns": {
+      "type": "string"
     }
   }
 }

@@ -1,0 +1,11 @@
+{
+  "$id": "GclAgentRequestFilter",
+  "type": "object",
+  "javaType": "com.t1t.t1c.core.GclAgentRequestFilter",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "username": {
+      "type": "string"
+    }
+  }
+}

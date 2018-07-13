@@ -6,22 +6,24 @@ import com.t1t.t1c.ds.DsAtrList;
 import com.t1t.t1c.ds.DsContainerResponse;
 import com.t1t.t1c.exceptions.ExceptionFactory;
 import com.t1t.t1c.exceptions.GclCoreException;
-import com.t1t.t1c.exceptions.JsonConversionException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.PlatformInfo;
 import com.t1t.t1c.model.T1cAdminPublicKeys;
 import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
+import com.t1t.t1c.utils.ClipboardUtil;
 import com.t1t.t1c.utils.ContainerUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import com.t1t.t1c.utils.PkiUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.datatransfer.Transferable;
 import java.net.ConnectException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +36,8 @@ public class Core extends AbstractCore {
     private static final Logger log = LoggerFactory.getLogger(Core.class);
 
     private static final Integer DOWNLOAD_STATUS_POLL_INTERVAL = 250;
+
+    private static final String USER_PROP_NAME = "user.name";
 
     private GclRestClient gclRestClient;
     private GclAdminRestClient gclAdminRestClient;
@@ -99,14 +103,19 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getDsPubKey() throws GclCoreException {
-        return getDsPubKey(null);
+    public Map<String, T1cPublicKey> getDsPubKeys() throws GclCoreException {
+        return getDsPubKeys(null);
     }
 
     @Override
-    public T1cPublicKey getDsPubKey(Boolean parse) throws GclCoreException {
+    public Map<String, T1cPublicKey> getDsPubKeys(Boolean parse) throws GclCoreException {
         try {
-            return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDsCertificate(), config.isConsentRequired()), parse);
+            List<GclDsPublicKey> keys = RestExecutor.returnData(gclAdminRestClient.getDsCertificates(), config.isConsentRequired());
+            Map<String, T1cPublicKey> pubKeys = new HashMap<>();
+            for (GclDsPublicKey pb : keys) {
+                pubKeys.put(pb.getNs(), PkiUtil.createT1cPublicKey(pb.getBase64(), parse));
+            }
+            return pubKeys;
         } catch (RestException ex) {
             GclError error = ex.getGclError();
             // If the error code returned is 201, that means the public has not been set (yet), return null
@@ -132,11 +141,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey) throws GclCoreException {
+    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey, String namespace) throws GclCoreException {
         try {
             GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
                     .withEncryptedPublicKey(encryptedPublicKey)
-                    .withEncryptedAesKey(encryptedAesKey);
+                    .withEncryptedAesKey(encryptedAesKey)
+                    .withNs(namespace);
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
         } catch (RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
@@ -305,18 +315,32 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclAgent> getAgents(Map<String, String> filterParams) throws GclCoreException {
+    public List<GclAgent> resolveAgent() throws GclCoreException {
+        String encryptedUsername = CryptUtil.encrypt(System.getProperty(USER_PROP_NAME)) + "blah";
+        return getAgents(encryptedUsername);
+    }
+
+    @Override
+    public List<GclAgent> resolveAgent(String challenge) throws GclCoreException {
         if (config.isCitrix()) {
             try {
-                try {
-                    return RestExecutor.returnData(gclCitrixRestClient.getAgents(filterParams), false);
-                } catch (JsonConversionException ex) {
-                    if (ex.isObjectInsteadOfArray()) {
-                        return Collections.singletonList(RestExecutor.returnData(gclCitrixRestClient.getAgent(filterParams), false));
-                    } else {
-                        throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
-                    }
-                }
+                Transferable clipboardBackup = ClipboardUtil.saveStringToClipboard(challenge);
+                List<GclAgent> agents = RestExecutor.returnData(gclCitrixRestClient.resolveAgent(new GclAgentResolutionRequest().withChallenge(challenge)), false);
+                ClipboardUtil.setClipboarContents(clipboardBackup);
+                return agents;
+            } catch (RestException ex) {
+                throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
+            }
+        } else {
+            throw ExceptionFactory.unsupportedOperationException("Not a citrix environment");
+        }
+    }
+
+    @Override
+    public List<GclAgent> getAgents(String usernameToFilter) throws GclCoreException {
+        if (config.isCitrix()) {
+            try {
+                return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(usernameToFilter)), false);
             } catch (RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
@@ -327,7 +351,7 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents() throws GclCoreException {
-        return getAgents(Collections.<String, String>emptyMap());
+        return getAgents(null);
     }
 
     @Override
@@ -367,7 +391,8 @@ public class Core extends AbstractCore {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadContainers(new GclLoadContainersRequest().withContainerResponses(containerResponses))));
         } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("Failed to load containers: ", ex);
+            log.error("Failed to load containers: ", ex);
+            return false;
         }
     }
 
@@ -376,7 +401,8 @@ public class Core extends AbstractCore {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadAtrList(atrList)));
         } catch (RestException ex) {
-            throw ExceptionFactory.gclCoreException("Failed to load ATR list: ", ex);
+            log.error("Failed to load ATR list: ", ex);
+            return false;
         }
     }
 
@@ -384,21 +410,26 @@ public class Core extends AbstractCore {
     public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers) throws GclCoreException {
         int totalTime = 0;
         int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
-        boolean downloadsComplete;
-        do {
-            GclInfo info = getInfo();
-            downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
-            if (!downloadsComplete) {
-                try {
-                    Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
-                    totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
-                } catch (InterruptedException ex) {
-                    log.warn("error sleeping through polling interval: ", ex);
+        boolean downloadsComplete = false;
+        try {
+            do {
+                GclInfo info = getInfo();
+                downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
+                if (!downloadsComplete) {
+                    try {
+                        Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
+                        totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
+                    } catch (InterruptedException ex) {
+                        log.warn("error sleeping through polling interval: ", ex);
+                    }
                 }
+            } while (!downloadsComplete && totalTime < pollTimeout);
+
+            if (!downloadsComplete) {
+                throw ExceptionFactory.containerLoadingTimeoutExceeded();
             }
-        } while (!downloadsComplete && totalTime < pollTimeout);
-        if (!downloadsComplete) {
-            throw ExceptionFactory.containerLoadingTimeoutExceeded();
+        } catch (GclCoreException ex) {
+            log.error("Error during container loading: {}", ex);
         }
         return getInfo();
     }
@@ -427,6 +458,7 @@ public class Core extends AbstractCore {
                             installed++;
                             break;
                     }
+                    break;
                 }
             }
             if (!found) {

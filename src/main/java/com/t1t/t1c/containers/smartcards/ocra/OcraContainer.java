@@ -3,7 +3,8 @@ package com.t1t.t1c.containers.smartcards.ocra;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.ContainerVersion;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
@@ -26,19 +27,19 @@ import java.util.Map;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestClient, GclOcraAllData, AllCertificates> {
+public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRestClient, GclOcraAllData, AllCertificates> {
 
-    public OcraContainer(LibConfig config, GclReader reader, GclOcraRestClient httpClient) {
-        super(config, reader, httpClient);
+    public OcraContainer(LibConfig config, GclReader reader, String containerVersion, GclOcraRestClient httpClient) {
+        super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public OcraContainer createInstance(LibConfig config, GclReader reader, GclOcraRestClient httpClient, GclPace pace) {
+    public OcraContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclOcraRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
-        this.type = ContainerType.OCRA;
+        this.containerVersion = new ContainerVersion(ContainerType.OCRA, containerVersion);
         return this;
     }
 
@@ -54,7 +55,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
 
     @Override
     public GclOcraAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        return RestExecutor.returnData(httpClient.getOcraAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
+        return RestExecutor.returnData(httpClient.getOcraAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
@@ -66,7 +67,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -93,16 +94,6 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     }
 
     @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
-    }
-
-    @Override
     public Class<GclOcraAllData> getAllDataClass() {
         return GclOcraAllData.class;
     }
@@ -120,7 +111,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
             if (StringUtils.isNotEmpty(pin)) {
                 request.setPin(pin);
             }
-            return RestExecutor.returnData(httpClient.ocraChallenge(getTypeId(), reader.getId(), request), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.ocraChallenge(getContainerUrlId(), reader.getId(), request), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -133,7 +124,7 @@ public class OcraContainer extends GenericContainer<OcraContainer, GclOcraRestCl
     public String readCounter(String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             String pinToUse = PinUtil.getEncryptedPinIfPresent(pin);
-            return RestExecutor.returnData(httpClient.readCounter(getTypeId(), reader.getId(), pinToUse), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.readCounter(getContainerUrlId(), reader.getId(), pinToUse), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

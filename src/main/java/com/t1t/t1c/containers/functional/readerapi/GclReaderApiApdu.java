@@ -1,4 +1,4 @@
-package com.t1t.t1c.containers.readerapi;
+package com.t1t.t1c.containers.functional.readerapi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

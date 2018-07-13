@@ -2,10 +2,16 @@ package com.t1t.t1c;
 
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.IGenericContainer;
-import com.t1t.t1c.containers.readerapi.GclReaderApiApdu;
-import com.t1t.t1c.containers.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.SmartCardContainer;
+import com.t1t.t1c.containers.functional.readerapi.GclReaderApiApdu;
+import com.t1t.t1c.containers.functional.readerapi.ReaderApiContainer;
+import com.t1t.t1c.containers.smartcards.ContainerData;
+import com.t1t.t1c.containers.smartcards.eid.be.BeIdAllData;
 import com.t1t.t1c.containers.smartcards.eid.be.BeIdContainer;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdAddress;
+import com.t1t.t1c.containers.smartcards.eid.be.GclBeIdRn;
 import com.t1t.t1c.containers.smartcards.eid.dni.DnieContainer;
 import com.t1t.t1c.containers.smartcards.eid.lux.LuxIdContainer;
 import com.t1t.t1c.containers.smartcards.eid.pt.PtEIdContainer;
@@ -27,10 +33,14 @@ import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cCertificate;
 import com.t1t.t1c.ocv.OcvChallengeVerificationRequest;
 import com.t1t.t1c.utils.ContainerUtil;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Paths;
 import java.util.*;
+
 
 /**
  * @author Guillaume Vandecasteele
@@ -63,7 +73,7 @@ public class JavaClientExample {
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
         System.out.println("3. Grant consent");
-        System.out.println("4. Select Citrix agent");
+        System.out.println("4. Resolve shared environment agent & reinitialize");
         System.out.println("5. Get Reader API container");
         System.out.println("6. Exit");
         System.out.println("===============================================");
@@ -96,83 +106,6 @@ public class JavaClientExample {
                 break;
         }
     }
-
-    private static void grantConsent() {
-        try {
-            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclAlertLevel.ERROR, GclAlertPosition.CENTER, GclConsentType.READER, 10));
-        } catch (UnsupportedOperationException ex) {
-            System.out.println(ex.getMessage());
-        }
-        showMenu();
-    }
-
-    private static void executeCitrixFunctionality() {
-        Boolean citrix = client.getCore().getInfo().getCitrix();
-        if (citrix == null || !citrix) {
-            System.out.println("No agents available: GCL not configured for Citrix");
-            showMenu();
-        } else {
-            List<GclAgent> agents = client.getCore().getAgents();
-            Scanner scan = new Scanner(System.in);
-            System.out.println("==================== Available agents (username) ====================");
-            int i;
-            for (i = 0; i < agents.size(); i++) {
-                System.out.println(i + ". Select agent with username: \"" + agents.get(i).getUsername() + "\"");
-            }
-            System.out.println(i + ". Back");
-            System.out.println("=====================================================================");
-            System.out.print("Please make a choice: ");
-            String input = scan.nextLine();
-            try {
-                Integer choice = Integer.valueOf(input);
-                if (choice >= 0 && choice < agents.size()) {
-                    GclAgent chosenAgent = agents.get(choice);
-                    conf.setAgentPort(chosenAgent.getPort().intValue());
-                    client = new T1cClient(conf);
-                    showMenu();
-                } else if (choice != i) {
-                    System.out.println("Invalid choice");
-                    executeCitrixFunctionality();
-                } else {
-                    showMenu();
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Invalid choice");
-                executeCitrixFunctionality();
-            }
-        }
-    }
-
-    private static void executeGenericContainerFunctionality(GclReader reader) {
-
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Provide PIN (optional, press enter to skip): ");
-        String pin = scan.nextLine();
-        IGenericContainer container = client.getGenericContainer(reader, new GclPace().withPin(pin));
-        // This returns a marker interface, the return value still needs to be cast to the correct class
-        System.out.println("Container all data: " + container.getAllData());
-        System.out.println("Container Certificates: " + container.getAllCertificates());
-
-        System.out.println("Generic data dump: " + container.dumpData());
-
-        System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
-        System.out.println("Signing chain: " + container.getSigningCertificateChain());
-
-        if (StringUtils.isNotBlank(pin)) {
-            try {
-                System.out.println("PIN verified: " + container.verifyPin(pin));
-
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-            } catch (VerifyPinException ex) {
-                System.out.println("PIN verification failed: " + ex.getMessage());
-            }
-        }
-    }
-
 
     private static void executeReaderSpecificContainerFunctionality(GclReader reader) {
         ContainerType type = ContainerUtil.determineContainer(reader.getCard());
@@ -222,8 +155,72 @@ public class JavaClientExample {
         }
     }
 
+    private static void grantConsent() {
+        try {
+            System.out.println("Consent granted: " + client.getCore().getConsent("Consent required", "SWORDFISH", 1, GclAlertLevel.ERROR, GclAlertPosition.CENTER, GclConsentType.READER, 10));
+        } catch (UnsupportedOperationException ex) {
+            System.out.println(ex.getMessage());
+        }
+        showMenu();
+    }
+
+    private static void executeCitrixFunctionality() {
+        Boolean citrix = client.getCore().getInfo().getCitrix();
+        if (citrix == null || !citrix) {
+            System.out.println("No agents available: GCL not configured for Citrix");
+            showMenu();
+        } else {
+            List<GclAgent> agents = client.getCore().resolveAgent();
+            if (CollectionUtils.isEmpty(agents)) {
+                System.out.println("No agents found matching the current user.");
+                showMenu();
+            } else {
+                try {
+                    GclAgent chosenAgent = agents.get(0);
+                    conf.setAgentPort(chosenAgent.getPort().intValue());
+                    client = new T1cClient(conf);
+                    showMenu();
+                } catch (NumberFormatException ex) {
+                    System.out.println("Invalid choice");
+                    executeCitrixFunctionality();
+                }
+            }
+        }
+    }
+
+    private static void executeGenericContainerFunctionality(GclReader reader) {
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Provide PIN (optional, press enter to skip): ");
+        String pin = scan.nextLine();
+        IGenericContainer container = client.getGenericContainer(reader, new GclPace().withPin(pin));
+        // This returns a marker interface, the return value still needs to be cast to the correct class
+        System.out.println("Container all data: " + container.getAllData());
+        System.out.println("Container Certificates: " + container.getAllCertificates());
+
+        System.out.println("Generic data dump: " + container.dumpData());
+
+        System.out.println("Authentication chain: " + container.getAuthenticationCertificateChain());
+        System.out.println("Signing chain: " + container.getSigningCertificateChain());
+
+        if (StringUtils.isNotBlank(pin)) {
+            try {
+                System.out.println("PIN verified: " + container.verifyPin(pin));
+
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                // Authenticate data
+                System.out.println("Signed challenge: " + container.authenticate("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+            } catch (VerifyPinException ex) {
+                System.out.println("PIN verification failed: " + ex.getMessage());
+            }
+        }
+    }
+
     private static void pkcs11UseCases(GclReader reader) {
-        Pkcs11Container container = client.getPkcs11Container(reader);
+        String version = getVersion(ContainerType.PKCS11);
+        Pkcs11Container container = client.getPkcs11Container(reader, version);
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -248,14 +245,13 @@ public class JavaClientExample {
     }
 
     private static void pivUseCases(GclReader reader) {
-
-
+        String version = getVersion(ContainerType.PIV);
         Scanner paceScanner = new Scanner(System.in);
         System.out.print("Please provide PIN: ");
         String pacePin = paceScanner.nextLine();
 
         if (StringUtils.isNotEmpty(pacePin)) {
-            PivContainer container = client.getPivContainer(reader, pacePin);
+            PivContainer container = client.getPivContainer(reader, version, pacePin);
 
             Scanner scan = new Scanner(System.in);
             String pin = null;
@@ -293,7 +289,8 @@ public class JavaClientExample {
     }
 
     private static void oberthurUseCases(GclReader reader) {
-        OberthurContainer container = client.getOberthurContainer(reader);
+        String version = getVersion(ContainerType.OBERTHUR);
+        OberthurContainer container = client.getOberthurContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -322,28 +319,12 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
     }
 
     private static void aventraUseCases(GclReader reader) {
-        AventraContainer container = client.getAventraContainer(reader);
+        String version = getVersion(ContainerType.AVENTRA);
+        AventraContainer container = client.getAventraContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -374,24 +355,7 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
 
         Scanner resetPin = new Scanner(System.in);
         System.out.print("Reset PIN? (Y/n): ");
@@ -420,7 +384,8 @@ public class JavaClientExample {
     }
 
     private static void ocraUseCases(GclReader reader) {
-        OcraContainer container = client.getOcraContainer(reader);
+        String version = getVersion(ContainerType.OCRA);
+        OcraContainer container = client.getOcraContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -444,7 +409,8 @@ public class JavaClientExample {
     }
 
     private static void mobibUseCases(GclReader reader) {
-        MobibContainer container = client.getMobibContainer(reader);
+        String version = getVersion(ContainerType.MOBIB);
+        MobibContainer container = client.getMobibContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData());
 
@@ -458,7 +424,8 @@ public class JavaClientExample {
     }
 
     private static void emvUseCases(GclReader reader) {
-        EmvContainer container = client.getEmvContainer(reader);
+        String version = getVersion(ContainerType.EMV);
+        EmvContainer container = client.getEmvContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -490,7 +457,8 @@ public class JavaClientExample {
     }
 
     private static void dnieUseCases(GclReader reader) {
-        DnieContainer container = client.getDnieContainer(reader);
+        String version = getVersion(ContainerType.DNIE);
+        DnieContainer container = client.getDnieContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -510,27 +478,12 @@ public class JavaClientExample {
             pin = scan.nextLine();
         }
 
-        try {
-            if (container.verifyPin(pin)) {
-                System.out.println("PIN verified");
-                // Sign data
-                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
-
-                // Authenticate data
-                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
-                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
-                        .withBase64Certificate(container.getAuthenticationCertificate().getBase64())
-                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
-                        .withHash(challenge)
-                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
-            }
-        } catch (VerifyPinException ex) {
-            System.out.println("PIN verification failed: " + ex.getMessage());
-        }
+        executeGenericCardUseCases(container, pin);
     }
 
     private static void ptIdUseCases(GclReader reader) {
-        PtEIdContainer container = client.getPtIdContainer(reader);
+        String version = getVersion(ContainerType.PT);
+        PtEIdContainer container = client.getPtIdContainer(reader, version);
 
         System.out.println("Card data dump: " + container.getAllData().toString());
 
@@ -596,11 +549,8 @@ public class JavaClientExample {
     }
 
     private static void beIdUseCases(GclReader reader) {
-
-        BeIdContainer container = client.getBeIdContainer(reader);
-
-        // With hardware PinPad/Without Java lib PIN input
-        //System.out.println("PIN verified: " + container.verifyPin());
+        String version = getVersion(ContainerType.BEID);
+        BeIdContainer container = client.getBeIdContainer(reader, version);
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -625,9 +575,11 @@ public class JavaClientExample {
                         .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
 
                 // Rn data
-                System.out.println("RN Data: " + container.getRnData().toString());
+                GclBeIdRn rn = container.getRnData();
+                System.out.println("RN Data: " + rn.toString());
                 // Address
-                System.out.println("Address: " + container.getBeIdAddress().toString());
+                GclBeIdAddress ad = container.getBeIdAddress();
+                System.out.println("Address: " + ad.toString());
                 // Picture
                 System.out.println("Base64 picture: " + container.getBeIdPicture());
                 // Root certificate
@@ -642,9 +594,15 @@ public class JavaClientExample {
                 System.out.println("Base64 RRN certificate: " + container.getRrnCertificate().getBase64());
 
                 // Card data dump
-                System.out.println("Card data dump: " + container.getAllData().toString());
+                BeIdAllData bData = container.getAllData(false);
+                System.out.println("Card data dump: " + bData.toString());
                 // Card certificate dump
                 System.out.println("Card certificate dump: " + container.getAllCertificates());
+
+                // Validate RN data
+                System.out.println("RN Data valid?: " + client.getOcvClient().validateSignature(rn.getRawData(), rn.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
+                // Validate Address
+                System.out.println("Address Data valid?: " + client.getOcvClient().validateSignature(Base64.encodeBase64String(ArrayUtils.addAll(Base64.decodeBase64(ad.getRawData()), Base64.decodeBase64(ad.getSignature()))), ad.getSignature(), DigestAlgorithm.SHA1, bData.getRrnCertificate().getBase64()).getResult());
             }
         } catch (VerifyPinException ex) {
             System.out.println("PIN verification failed: " + ex.getMessage());
@@ -652,10 +610,11 @@ public class JavaClientExample {
     }
 
     private static void luxIdUseCases(GclReader reader) {
+        String version = getVersion(ContainerType.LUXID);
         Scanner paceScan = new Scanner(System.in);
         System.out.print("Please provide PACE PIN: ");
         String pacePin = paceScan.nextLine();
-        LuxIdContainer container = client.getLuxIdContainer(reader, new GclPace().withPin(pacePin));
+        LuxIdContainer container = client.getLuxIdContainer(reader, version, new GclPace().withPin(pacePin));
 
         Scanner scan = new Scanner(System.in);
         String pin = null;
@@ -700,7 +659,8 @@ public class JavaClientExample {
     }
 
     private static void luxTrustUseCases(GclReader reader) {
-        LuxTrustContainer container = client.getLuxTrustContainer(reader);
+        String version = getVersion(ContainerType.LUXTRUST);
+        LuxTrustContainer container = client.getLuxTrustContainer(reader, version);
         System.out.println("Card is activated: " + container.isActivated());
 
         Scanner scan = new Scanner(System.in);
@@ -742,7 +702,8 @@ public class JavaClientExample {
     }
 
     private static void readerApiUseCases(GclReader reader) {
-        ReaderApiContainer container = client.getReaderApiContainer(reader);
+        String version = getVersion(ContainerType.READER_API);
+        ReaderApiContainer container = client.getReaderApiContainer(reader, version);
 
         System.out.println("ATR: " + container.getAtr());
 
@@ -793,4 +754,67 @@ public class JavaClientExample {
         System.out.println("Close session: " + container.closeSession(sessionId));
     }
 
+
+    public static void executeGenericCardUseCases(SmartCardContainer container, String pin) {
+        try {
+            if (container.verifyPin(pin)) {
+                System.out.println("PIN verified");
+                // Sign data
+                System.out.println("Signed hash: " + container.sign("mVEpdyxAT1FWgVnLsKcmqiWvsSuKP6uGAGT528AEQaQ=", DigestAlgorithm.SHA256, pin));
+
+                ContainerData data = container.dumpData();
+
+                String authCert = data.getAuthenticationCertificateChain().get(0).getBase64();
+
+                // Authenticate data
+                String challenge = client.getOcvClient().getChallenge(DigestAlgorithm.SHA256).getHash();
+                System.out.println("External challenge authenticated: " + client.getOcvClient().verifyChallenge(new OcvChallengeVerificationRequest()
+                        .withBase64Certificate(authCert)
+                        .withDigestAlgorithm(DigestAlgorithm.SHA256.getStringValue())
+                        .withHash(challenge)
+                        .withBase64Signature(container.authenticate(challenge, DigestAlgorithm.SHA256, pin))).getResult());
+            }
+        } catch (VerifyPinException ex) {
+            System.out.println("PIN verification failed: " + ex.getMessage());
+        }
+    }
+
+    private static String getVersion(ContainerType type) {
+        List<ContainerVersion> versions = client.getAvailableContainerVersions();
+        List<String> requestedContainerVersions = new ArrayList<>();
+        for (ContainerVersion version : versions) {
+            if (version.getType().equals(type)) {
+                requestedContainerVersions.add(version.getVersion());
+            }
+        }
+        if (requestedContainerVersions.size() == 1) {
+            return requestedContainerVersions.get(0);
+        } else if (requestedContainerVersions.size() > 1) {
+            Scanner scan = new Scanner(System.in);
+            System.out.println("===============================================");
+            int j = 0;
+            for (int i = 0; i < requestedContainerVersions.size(); i++) {
+                System.out.println(i + ". " + requestedContainerVersions.get(i));
+                j = i + 1;
+            }
+            System.out.println(j + ". Exit");
+            System.out.println("===============================================");
+            String choice = scan.nextLine();
+            try {
+                if (choice.equals(String.valueOf(j))) {
+                    return null;
+                } else {
+                    int i = Integer.valueOf(choice);
+                    return requestedContainerVersions.get(i);
+                }
+            } catch (Exception ex) {
+                System.out.println("Invalid choice");
+                return null;
+            }
+
+        } else {
+            System.out.println("No available versions for this container type: " + type);
+            return null;
+        }
+    }
 }

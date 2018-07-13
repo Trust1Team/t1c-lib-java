@@ -36,9 +36,9 @@ public class Pkcs11ContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = new Pkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true), getPkcs11RestClient());
+        container = new Pkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true), "v2.0.0", getPkcs11RestClient());
         try {
-            container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true));
+            container = getClient().getPkcs11Container(new GclReader().withId(MockResponseFactory.PKCS11_READER_ID).withPinpad(true), "v2.0.0");
         } catch (IllegalArgumentException ex) {
             // Do nothing
         }

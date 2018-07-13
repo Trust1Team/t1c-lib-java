@@ -1,7 +1,6 @@
 package com.t1t.t1c.containers.smartcards.eid.lux;
 
-import com.t1t.t1c.core.GclAuthenticateOrSignData;
-import com.t1t.t1c.core.GclVerifyPinRequest;
+import com.t1t.t1c.core.*;
 import com.t1t.t1c.exceptions.NoConsentException;
 import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.model.DigestAlgorithm;
@@ -65,8 +64,17 @@ public interface GclLuxIdRestClient {
     Call<T1cResponse<List<String>>> getRootCertificates(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap) throws RestException, NoConsentException;
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/sign")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableSignAlgos(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap);
 
     @GET(CONTAINER_AND_READER_CONTEXT_PATH + "/authenticate")
-    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(@Path("containerId") String containerId, @Path("reader") String readerId);
+    Call<T1cResponse<List<DigestAlgorithm>>> getAvailableAuthenticateAlgos(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/pin-try-counter")
+    Call<T1cResponse<Integer>> getPinTryCount(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap, @Body GclPinTryCounterRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/change-pin")
+    Call<T1cResponse<Boolean>> changePin(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap, @Body GclChangePinRequest request);
+
+    @POST(CONTAINER_AND_READER_CONTEXT_PATH + "/reset-pin")
+    Call<T1cResponse<Boolean>> resetPin(@Path("containerId") String containerId, @Path("reader") String readerId, @HeaderMap Map<String, String> headerMap, @Body GclResetPinRequest request);
 }

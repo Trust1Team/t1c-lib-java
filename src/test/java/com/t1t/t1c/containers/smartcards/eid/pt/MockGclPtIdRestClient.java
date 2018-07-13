@@ -8,7 +8,7 @@ import com.t1t.t1c.exceptions.RestException;
 import com.t1t.t1c.mock.AbstractMockRestClient;
 import com.t1t.t1c.model.DigestAlgorithm;
 import com.t1t.t1c.model.T1cResponse;
-import com.t1t.t1c.utils.PinUtil;
+import com.t1t.t1c.utils.CryptUtil;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -86,7 +86,7 @@ public class MockGclPtIdRestClient extends AbstractMockRestClient<GclPtIdRestCli
 
     @Override
     public Call<T1cResponse<Object>> verifyPin(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.verifyPin(PinUtil.encryptPin("1111"))).verifyPin(containerId, readerId);
+        return delegate.returningResponse(MockResponseFactory.verifyPin(CryptUtil.encrypt("1111"))).verifyPin(containerId, readerId);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class MockGclPtIdRestClient extends AbstractMockRestClient<GclPtIdRestCli
 
     @Override
     public Call<T1cResponse<GclPtIdAddress>> getAddress(String containerId, String readerId) throws RestException {
-        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse(PinUtil.encryptPin("1111"))).getAddress(containerId, readerId);
+        return delegate.returningResponse(MockResponseFactory.getPtIdAddressResponse(CryptUtil.encrypt("1111"))).getAddress(containerId, readerId);
     }
 
     @Override

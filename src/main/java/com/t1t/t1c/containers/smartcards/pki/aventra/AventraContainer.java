@@ -3,7 +3,8 @@ package com.t1t.t1c.containers.smartcards.pki.aventra;
 import com.google.common.base.Preconditions;
 import com.t1t.t1c.configuration.LibConfig;
 import com.t1t.t1c.containers.ContainerType;
-import com.t1t.t1c.containers.GenericContainer;
+import com.t1t.t1c.containers.ContainerVersion;
+import com.t1t.t1c.containers.SmartCardContainer;
 import com.t1t.t1c.containers.smartcards.ContainerData;
 import com.t1t.t1c.core.GclPace;
 import com.t1t.t1c.core.GclReader;
@@ -28,19 +29,19 @@ import java.util.Map;
  * @author Guillaume Vandecasteele
  * @since 2017
  */
-public class AventraContainer extends GenericContainer<AventraContainer, GclAventraRestClient, AventraAllData, AventraAllCertificates> {
+public class AventraContainer extends SmartCardContainer<AventraContainer, GclAventraRestClient, AventraAllData, AventraAllCertificates> {
 
-    public AventraContainer(LibConfig config, GclReader reader, GclAventraRestClient httpClient) {
-        super(config, reader, httpClient);
+    public AventraContainer(LibConfig config, GclReader reader, String containerVersion, GclAventraRestClient httpClient) {
+        super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public AventraContainer createInstance(LibConfig config, GclReader reader, GclAventraRestClient httpClient, GclPace pace) {
+    public AventraContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclAventraRestClient httpClient, GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
         this.pace = pace;
-        this.type = ContainerType.AVENTRA;
+        this.containerVersion = new ContainerVersion(ContainerType.AVENTRA, containerVersion);
         return this;
     }
 
@@ -57,19 +58,19 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
 
     @Override
     public AventraAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
-        return new AventraAllData(RestExecutor.returnData(httpClient.getAllData(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
+        return new AventraAllData(RestExecutor.returnData(httpClient.getAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
     public AventraAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
-        return new AventraAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getTypeId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
+        return new AventraAllCertificates(RestExecutor.returnData(httpClient.getAllCertificates(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
     public Boolean verifyPin(String pin) throws GenericContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getTypeId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -79,7 +80,7 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
     public List<DigestAlgorithm> getAvailableAuthenticationAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
-                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
@@ -94,7 +95,7 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
             isAuthenticateAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.authenticate(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.authenticate(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
@@ -104,7 +105,7 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
     public List<DigestAlgorithm> getAvailableSignAlgorithms() throws RestException, NoConsentException {
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
-                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getTypeId(), reader.getId()), config.isConsentRequired());
+                this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
             } catch (RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
@@ -119,20 +120,10 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
             isSignAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to sign must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
-            return RestExecutor.returnData(httpClient.sign(getTypeId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
+            return RestExecutor.returnData(httpClient.sign(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
-    }
-
-    @Override
-    public ContainerType getType() {
-        return type;
-    }
-
-    @Override
-    public String getTypeId() {
-        return type.getId();
     }
 
     @Override
@@ -150,31 +141,31 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
     }
 
     public List<DigestAlgorithm> getAllAlgoRefsForAuthentication() throws RestException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
+        return getAlgorithms(RestExecutor.returnData(httpClient.getAuthenticationAlgoRefs(getContainerUrlId(), reader.getId()), config.isConsentRequired()));
     }
 
     public List<DigestAlgorithm> getAllAlgoRefsForSigning() throws RestException {
-        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getTypeId(), reader.getId()), config.isConsentRequired()));
+        return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getContainerUrlId(), reader.getId()), config.isConsentRequired()));
     }
 
     public T1cCertificate getRootCertificate(Boolean parse) throws RestException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getIssuerCertificate(Boolean parse) throws RestException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIssuerCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIssuerCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getSigningCertificate(Boolean parse) throws RestException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getEncryptionCertificate(Boolean parse) throws RestException {
-        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getTypeId(), reader.getId()), config.isConsentRequired()), parse);
+        return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
     public T1cCertificate getRootCertificate() throws RestException {
@@ -203,7 +194,7 @@ public class AventraContainer extends GenericContainer<AventraContainer, GclAven
             Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "New PIN must not be null or empty");
             Preconditions.checkArgument(StringUtils.isNotEmpty(keyRef), "keyRef must not be null or empty");
             Preconditions.checkArgument(getAllKeyRefs().contains(keyRef), "keyRef must be one of: " + getAllKeyRefs().toString());
-            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.resetPin(getTypeId(), reader.getId(), new GclAventraPinResetRequest().withNewPin(pin).withPuk(puk).withPrivateKeyReference(keyRef)), config.isConsentRequired()));
+            return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.resetPin(getContainerUrlId(), reader.getId(), new GclAventraPinResetRequest().withNewPin(pin).withPuk(puk).withPrivateKeyReference(keyRef)), config.isConsentRequired()));
         } catch (RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }

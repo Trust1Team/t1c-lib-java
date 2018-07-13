@@ -35,7 +35,7 @@ public class EmvContainerTest extends AbstractTestClass {
 
     @Before
     public void initContainer() {
-        container = getClient().getEmvContainer(new GclReader().withId(MockResponseFactory.EMV_READER_ID).withPinpad(true));
+        container = getClient().getEmvContainer(new GclReader().withId(MockResponseFactory.EMV_READER_ID).withPinpad(true), "v2.0.0");
     }
 
     @Test
