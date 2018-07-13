@@ -12,8 +12,6 @@ import java.util.Arrays;
  */
 public class DigestUtil {
 
-    private static final String RSA = "RSA";
-
     private static final String MD5_DIGEST = "MD5";
     private static final String SHA1_DIGEST = "SHA1";
     private static final String SHA256_DIGEST = "SHA256";

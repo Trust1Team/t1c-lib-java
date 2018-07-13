@@ -1,7 +1,6 @@
 package com.t1t.t1c.mock;
 
 import com.t1t.t1c.ds.*;
-import com.t1t.t1c.model.DsPublicKeyEncoding;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 
@@ -35,12 +34,8 @@ public class MockDsRestClient implements DsRestClient {
     }
 
     @Override
-    public Call<DsPublicKey> getPubKey(String deviceId, String encoding) {
-        if (encoding.equalsIgnoreCase(DsPublicKeyEncoding.DER.getQueryParamValue())) {
-            return delegate.returningResponse(getPublicKeyResponseDer()).getPubKey(deviceId, null);
-        } else {
-            return delegate.returningResponse(getPublicKeyResponsePem()).getPubKey(deviceId, encoding);
-        }
+    public Call<DsPublicKey> getPubKey(String deviceId, String namespace) {
+        return delegate.returningResponse(getPublicKeyResponse(namespace)).getPubKey(deviceId, namespace);
     }
 
     @Override

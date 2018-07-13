@@ -1,6 +1,7 @@
 package com.t1t.t1c;
 
 import com.t1t.t1c.containers.ContainerType;
+import com.t1t.t1c.containers.ContainerVersion;
 import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCcidFeature;
 import com.t1t.t1c.containers.functional.readerapi.GclReaderApiCommand;
 import com.t1t.t1c.containers.smartcards.eid.be.*;
@@ -79,10 +80,6 @@ public final class MockResponseFactory {
         return new T1cResponse<T>().withSuccess(true).withData(data);
     }
 
-    private static <T> T1cResponse<T> getFailureResponse(T data) {
-        return new T1cResponse<T>().withSuccess(false).withData(data);
-    }
-
     //
     // GCL Core
     //
@@ -96,7 +93,7 @@ public final class MockResponseFactory {
     }
 
     public static T1cResponse<List<GclDsPublicKey>> getGclAdminDsCertificateResponse() {
-        return getSuccessResponse(Collections.singletonList(new GclDsPublicKey().withNs("accapimt.t1t.be").withBase64(getGclAdminDsCertificate())));
+        return getSuccessResponse(Collections.singletonList(new GclDsPublicKey().withNs("accapim.t1t.be").withBase64(getGclAdminDsCertificate())));
     }
 
     public static T1cResponse<String> getGclAdminDeviceCertificateResponse() {
@@ -318,7 +315,7 @@ public final class MockResponseFactory {
     public static GclPublicKeys getGclAdminCertificates() {
         return new GclPublicKeys()
                 .withDevice(getGclAdminDeviceCertificate())
-                .withDs(Collections.singletonList(new GclDsPublicKey().withNs("accapimt.t1t.be").withBase64(getGclAdminDsCertificate())))
+                .withDs(Collections.singletonList(new GclDsPublicKey().withNs("accapim.t1t.be").withBase64(getGclAdminDsCertificate())))
                 .withSsl(getGclAdminSslCertificate());
     }
 
@@ -1600,20 +1597,12 @@ public final class MockResponseFactory {
 
     // TODO clean up the rest of the responses below
 
-    public static T1cResponse<DsPublicKey> getPublicKeyResponseDer() {
-        return new T1cResponse<DsPublicKey>()
-                .withSuccess(true)
-                .withData(getDsPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB"));
+    public static DsPublicKey getPublicKeyResponse(String namespace) {
+        return getDsPublicKey("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjC4a5oOpZr7Yci7WEiLbZsOEk48TkjtvANpUkRMtwNyPVvhmaZib9qKx2JQRjg74cdpqvpCBQZ2w/7/30G1ptrB654PkDK0F3Z2AZJp0LEZoCaYQ+8ubWSbpAvM3dlUl9MeDP5O4gTuEaYatqrBGpSZwVc9xjCs/OKYKgIXXjV7tILogAWWo4MmxSfyr/c7fe1CUGN7uTuiGtR5djmk369SPGc1vUNuqxh2fC9Nsmp0mtB23jxi0D0bpi5Dn7G4Jif6DX9DiF2ktXpM9dmo93N6BOX3tbstw6I0KFyXpvjpVtAO8LYI/d7QlgNOp0fcQj5DUCH8UIY3x1nTnoPeC5QIDAQAB", namespace);
     }
 
-    public static DsPublicKey getDsPublicKey(String key) {
-        return new DsPublicKey().withEncryptedPublicKey(key).withEncryptedAesKey("AESKEY").withNs("accapimt.t1t.be");
-    }
-
-    public static T1cResponse<DsPublicKey> getPublicKeyResponsePem() {
-        return new T1cResponse<DsPublicKey>()
-                .withSuccess(true)
-                .withData(getDsPublicKey("LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFqQzRhNW9PcFpyN1ljaTdXRWlMYgpac09FazQ4VGtqdHZBTnBVa1JNdHdOeVBWdmhtYVppYjlxS3gySlFSamc3NGNkcHF2cENCUVoydy83LzMwRzFwCnRyQjY1NFBrREswRjNaMkFaSnAwTEVab0NhWVErOHViV1NicEF2TTNkbFVsOU1lRFA1TzRnVHVFYVlhdHFyQkcKcFNad1ZjOXhqQ3MvT0tZS2dJWFhqVjd0SUxvZ0FXV280TW14U2Z5ci9jN2ZlMUNVR043dVR1aUd0UjVkam1rMwo2OVNQR2MxdlVOdXF4aDJmQzlOc21wMG10QjIzanhpMEQwYnBpNURuN0c0SmlmNkRYOURpRjJrdFhwTTlkbW85CjNONkJPWDN0YnN0dzZJMEtGeVhwdmpwVnRBTzhMWUkvZDdRbGdOT3AwZmNRajVEVUNIOFVJWTN4MW5Ubm9QZUMKNVFJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg=="));
+    public static DsPublicKey getDsPublicKey(String key, String namespace) {
+        return new DsPublicKey().withSuccess(true).withEncryptedPublicKey(key).withEncryptedAesKey("AESKEY").withNs(StringUtils.isEmpty(namespace) ? "accapim.t1t.be" : namespace);
     }
 
     public static DsDevice getDsDevice() {
@@ -1649,43 +1638,46 @@ public final class MockResponseFactory {
                 .withActivated(true)
                 .withCoreVersion("2.0.0")
                 .withContextToken("6-accapim.t1t.be")
-                .withContainerResponses(
-                        Collections.singletonList(new DsContainerResponse()
-                                .withId("beid-v2.0.0")
-                                .withName("beid")
-                                .withVersion("v2.0.0")
-                                .withOsStorage(Arrays.asList(
-                                        new DsContainerStorage()
-                                                .withHash("656aebd2ac65b6a9a1128d4d0a4b5ba73f9c46fc7620a2ace11a2c5280769c8f")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win32.zip")
-                                                .withOs("win32"),
-                                        new DsContainerStorage()
-                                                .withHash("c4f5eda290b61577403fea74ae9d53f9000b7f715e4c5d2e64bb0c3efd351560")
-                                                .withOs("win64")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/win64.zip"),
-                                        new DsContainerStorage()
-                                                .withHash("6099b8dfe1f698f03ee350a124584de25622ae93661736a7636a506c80976f3c")
-                                                .withOs("macos")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/macos.zip"),
-                                        new DsContainerStorage()
-                                                .withHash("968ffc5443480beb4f5e49b92068b5f50f0b5937b6e18bd563272d4ba092d823")
-                                                .withOs("linux")
-                                                .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/beid/v2.0.0/linux.zip")))
-                                .withLanguage("CPLUSPLUS")
-                                .withAvailability("PUB")
-                                .withDependsOn(Collections.<String>emptyList())
-                                .withStatus("INIT")
-                                .withAllowedOrigins(Collections.singletonList("*"))
-                        ))
+                .withContainerResponses(getContainerResponses())
                 .withAtrList(new DsAtrList()
                         .withHash("aabd94a5a37e91ed5ef2ceed2fec90282505f69d0534e07b3b9d159325c00696")
                         .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/atr/list-0.txt"));
     }
 
+    private static List<DsContainerResponse> getContainerResponses() {
+        List<DsContainerResponse> containerResponses = new ArrayList<>();
+        for (ContainerType type : ContainerType.values()) {
+            ContainerVersion version = new ContainerVersion(type, "v2.0.0");
+            DsContainerResponse cr = new DsContainerResponse()
+                    .withId(version.getId())
+                    .withName(type.getId())
+                    .withVersion(version.getVersion())
+                    .withOsStorage(getOsStorageResponse(Arrays.asList("macos", "linux", "win32", "win64"), version))
+                    .withLanguage("CPLUSPLUS")
+                    .withAvailability("PUB")
+                    .withDependsOn(Collections.<String>emptyList())
+                    .withStatus("INIT")
+                    .withAllowedOrigins(Collections.singletonList("*"));
+            containerResponses.add(cr);
+        }
+        return containerResponses;
+    }
+
+    private static List<DsContainerStorage> getOsStorageResponse(List<String> oss, ContainerVersion version) {
+        List<DsContainerStorage> containerStorages = new ArrayList<>();
+        for (String os : oss) {
+            containerStorages.add(new DsContainerStorage()
+                    .withHash("656aebd2ac65b6a9a1128d4d0a4b5ba73f9c46fc7620a2ace11a2c5280769c8f")
+                    .withOs(os)
+                    .withStoragePath("https://accapim.t1t.be/trust1team/gclds-file/v1/plugins/" + version.getType().getId() + "/" + version.getVersion() + "/" + os + ".zip"));
+        }
+        return containerStorages;
+    }
+
     public static T1cResponse<List<GclAgent>> getAgentsResponse(String req) {
         List<GclAgent> agents = getAgents();
-        if (req.equals("johndoe")) agents.remove(1);
-        if (req.equals("janedoe")) agents.remove(0);
+        if ("johndoe".equals(req)) agents.remove(1);
+        if ("janedoe".equals(req)) agents.remove(0);
         return getSuccessResponse(agents);
     }
 

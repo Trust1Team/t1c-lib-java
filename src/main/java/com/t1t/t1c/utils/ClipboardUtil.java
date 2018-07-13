@@ -36,7 +36,7 @@ public final class ClipboardUtil {
         clipboard.setContents(content, new ClipboardOwner() {
             @Override
             public void lostOwnership(Clipboard clipboard, Transferable contents) {
-
+                // empty
             }
         });
     }

@@ -99,7 +99,7 @@ public class CoreTest extends AbstractTestClass {
         assertNotNull(publicKeys);
         assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
         assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be"));
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be").getDerEncoded());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class CoreTest extends AbstractTestClass {
         assertNotNull(publicKeys.getSsl().getParsed());
         assertEquals(MockResponseFactory.getGclAdminSslCertificate(), publicKeys.getSsl().getDerEncoded());
         assertEquals(MockResponseFactory.getGclAdminDeviceCertificate(), publicKeys.getDevice().getDerEncoded());
-        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be"));
+        assertEquals(MockResponseFactory.getGclAdminDsCertificate(), publicKeys.getDs().get("accapim.t1t.be").getDerEncoded());
     }
 
     @Test
