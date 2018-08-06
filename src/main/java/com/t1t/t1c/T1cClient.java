@@ -149,12 +149,12 @@ public class T1cClient implements IT1cClient {
     private GclInfo doSync(final GclInfo currentInfo, final String devicePublicKey, final boolean isRetry) {
         GclInfo info = currentInfo;
         try {
-            // Check if the DS public key is loaded into the Core
-            setDsPublicKey(info.getUid());
             // Sync the device with the DS
             DsSyncResponseDto syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
             // Reset the connections with the newly obtained DS JWT and context token
             connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
+            // Check if the DS public key is loaded into the Core
+            setDsPublicKey(info.getUid());
             // Load the ATR list
             log.info("Loaded ATR list: {}", getCore().loadAtrList(syncResponse.getAtrList()));
             log.info("Loaded Container info: {}", getCore().loadContainers(syncResponse.getContainerResponses()));

@@ -263,7 +263,10 @@ public class LibConfig {
     }
 
     public String getDsNamespace() {
-        if (StringUtils.isNotEmpty(this.dsUri)) {
+        if (StringUtils.isNotEmpty(this.dsNameSpace)) {
+            return this.dsNameSpace;
+        }
+        else if (StringUtils.isNotEmpty(this.dsUri)) {
             if (StringUtils.isNotEmpty(this.dsNameSpace) && this.dsUri.contains(dsNameSpace)) {
                 return this.dsNameSpace;
             } else {
@@ -279,8 +282,15 @@ public class LibConfig {
         return null;
     }
 
+    public void setDsNameSpace(String dsNameSpace) {
+        this.dsNameSpace = dsNameSpace;
+    }
+
     public String getProxyDomain() {
-        if (StringUtils.isNotEmpty(this.dsUri)) {
+        if (StringUtils.isNotEmpty(this.proxyDomain)) {
+            return this.proxyDomain;
+        }
+        else if (StringUtils.isNotEmpty(this.dsUri)) {
             if (StringUtils.isNotEmpty(this.proxyDomain) && this.dsUri.contains(this.proxyDomain)) {
                 return proxyDomain;
             } else {
@@ -294,5 +304,9 @@ public class LibConfig {
             }
         }
         return null;
+    }
+
+    public void setProxyDomain(String proxyDomain) {
+        this.proxyDomain = proxyDomain;
     }
 }
