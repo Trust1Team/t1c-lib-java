@@ -53,8 +53,30 @@ public class JavaClientExample {
 
     public static void main(String[] args) {
         try {
+            /*LibConfig conf = new LibConfig();
+            conf.setEnvironment(DEV);
+            conf.setAuthUri("https://accapim.t1t.be/apiengineauth/v1");
+            conf.setDsUri("https://accapim.t1t.be/trust1team/gclds/v2");
+            conf.setGclClientUri("https://localhost:10443/v2");
+            conf.setOcvUri("http://localhost:8080/ocv-api-web/v1");
+            conf.setGwJwt("PROVIDE_JWT_HERE");
+            conf.setClientFingerprintDirectoryPath("/usr/local/t1c");
+            conf.setContainerDownloadTimeout(30);
+            conf.setDefaultConsentDuration(1);
+            conf.setDefaultConsentTimeout(10);
+            conf.setHardwarePinPadForced(false);
+            conf.setOsPinDialog(false);
+            conf.setDefaultPollingIntervalInSeconds(2);
+            conf.setDefaultPollingTimeoutInSeconds(20);
+            conf.setSessionTimeout(60);
+            conf.setPkcs11Config(new ModuleConfiguration()
+                    .withMac(Paths.get("/usr/local/lib/libeTPkcs11.dylib"))
+                    .withLinux(Paths.get("C:\\Windows\\System32\\eTPKCS11.dll"))
+                    .withWindows(Paths.get("/usr/local/lib/libeTPkcs11.dylib")));
+
+            client = new T1cClient(conf);*/
             client = new T1cClient(Paths.get("/usr/local/t1c/application.conf"));
-            conf = client.getConnectionFactory().getConfig();
+            JavaClientExample.conf = client.getConnectionFactory().getConfig();
             showMenu();
         } catch (NoConsentException ex) {
             System.out.println("Consent required: Grant consent and try again");
@@ -68,7 +90,6 @@ public class JavaClientExample {
 
         // Copy the example configuration file to a folder of your choosing and adjust it below
 
-        System.out.println("DownloadLink: " + client.getDownloadLink());
         System.out.println("===============================================");
         System.out.println("1. Get generic container");
         System.out.println("2. Get reader specific container");
