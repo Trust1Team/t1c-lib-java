@@ -13,8 +13,9 @@ import com.t1t.t1c.model.T1cPublicKey;
 import com.t1t.t1c.rest.RestExecutor;
 import com.t1t.t1c.utils.ClipboardUtil;
 import com.t1t.t1c.utils.ContainerUtil;
-import com.t1t.t1c.utils.CryptUtil;
+import com.t1t.t1c.utils.DigestUtil;
 import com.t1t.t1c.utils.PkiUtil;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -316,8 +317,9 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> resolveAgent() throws GclCoreException {
-        String encryptedUsername = CryptUtil.encrypt(System.getProperty(USER_PROP_NAME)) + "blah";
-        return getAgents(encryptedUsername);
+        final String username =System.getProperty(USER_PROP_NAME);
+        final String hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(username.getBytes()));
+        return getAgents(hashedUsername);
     }
 
     @Override
