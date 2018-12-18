@@ -339,7 +339,12 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents(final String usernameToFilter) throws GclCoreException {
-        final String hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(usernameToFilter.getBytes()));
+        final String hashedUsername;
+        if (StringUtils.isNotBlank(usernameToFilter)) {
+            hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(usernameToFilter.getBytes()));
+        } else {
+            hashedUsername = null;
+        }
         if (config.isCitrix()) {
             try {
                 return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(hashedUsername)), false);
