@@ -6,7 +6,7 @@ package com.t1t.t1c.exceptions;
  */
 public class ContainerNotAvailableException extends AbstractRuntimeException {
 
-    public ContainerNotAvailableException(String message) {
+    public ContainerNotAvailableException(final String message) {
         super(message);
     }
 

@@ -21,11 +21,11 @@ public class T1cPublicKey {
     /**
      * @param derEncoded The derEncoded
      */
-    public void setDerEncoded(String derEncoded) {
+    public void setDerEncoded(final String derEncoded) {
         this.derEncoded = derEncoded;
     }
 
-    public T1cPublicKey withDerEncoded(String derEncoded) {
+    public T1cPublicKey withDerEncoded(final String derEncoded) {
         this.derEncoded = derEncoded;
         return this;
     }
@@ -40,11 +40,11 @@ public class T1cPublicKey {
     /**
      * @param parsed The parsed
      */
-    public void setParsed(PublicKey parsed) {
+    public void setParsed(final PublicKey parsed) {
         this.parsed = parsed;
     }
 
-    public T1cPublicKey withParsed(PublicKey parsed) {
+    public T1cPublicKey withParsed(final PublicKey parsed) {
         this.parsed = parsed;
         return this;
     }
@@ -60,14 +60,14 @@ public class T1cPublicKey {
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(final Object other) {
         if (other == this) {
             return true;
         }
         if (!(other instanceof T1cPublicKey)) {
             return false;
         }
-        T1cPublicKey rhs = ((T1cPublicKey) other);
+        final T1cPublicKey rhs = ((T1cPublicKey) other);
         return new EqualsBuilder().append(derEncoded, rhs.derEncoded).append(parsed, rhs.parsed).isEquals();
     }
 

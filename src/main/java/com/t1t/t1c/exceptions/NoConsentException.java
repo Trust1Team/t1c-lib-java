@@ -9,7 +9,7 @@ public class NoConsentException extends AbstractRuntimeException {
     private Integer httpCode = 400;
     private String uri;
 
-    public NoConsentException(String message, Integer httpCode, String uri) {
+    public NoConsentException(final String message, final Integer httpCode, final String uri) {
         super(message);
         this.httpCode = httpCode;
         this.uri = uri;

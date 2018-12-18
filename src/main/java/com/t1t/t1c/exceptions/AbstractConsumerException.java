@@ -18,7 +18,7 @@ public abstract class AbstractConsumerException extends AbstractRuntimeException
      *
      * @param message the exception message
      */
-    public AbstractConsumerException(String message) {
+    public AbstractConsumerException(final String message) {
         super(message);
     }
 
@@ -27,7 +27,7 @@ public abstract class AbstractConsumerException extends AbstractRuntimeException
      *
      * @param cause the exception cause
      */
-    public AbstractConsumerException(Throwable cause) {
+    public AbstractConsumerException(final Throwable cause) {
         super(cause);
     }
 
@@ -37,7 +37,7 @@ public abstract class AbstractConsumerException extends AbstractRuntimeException
      * @param message the exception message
      * @param cause   the exception cause
      */
-    public AbstractConsumerException(String message, Throwable cause) {
+    public AbstractConsumerException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

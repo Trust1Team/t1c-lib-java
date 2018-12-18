@@ -47,15 +47,15 @@ public class T1cConfigParser implements Serializable {
     private LibConfig appConfig;
 
     //config by param - enriching with property file info
-    public T1cConfigParser(LibConfig config) {
+    public T1cConfigParser(final LibConfig config) {
         setAppConfig(config);
         validateConfig();
         printAppConfig();
     }
 
     //config by path param
-    public T1cConfigParser(Path optionalPath) {
-        LibConfig configObj = new LibConfig();
+    public T1cConfigParser(final Path optionalPath) {
+        final LibConfig configObj = new LibConfig();
         //resolve configuration
         if (optionalPath != null && optionalPath.toFile().exists()) {
             config = ConfigFactory.parseFile(optionalPath.toFile());
@@ -89,7 +89,7 @@ public class T1cConfigParser implements Serializable {
      * @param info   core info
      * @return parsed and validated library configuration object
      */
-    public LibConfig parseConfig(LibConfig config, GclInfo info) {
+    public LibConfig parseConfig(final LibConfig config, final GclInfo info) {
         config.setCitrix(info.getCitrix());
         config.setConsentRequired(info.getConsent());
         setAppConfig(config);
@@ -105,7 +105,7 @@ public class T1cConfigParser implements Serializable {
      * @param syncResponse sync/registration response obtained from the DS
      * @return parsed and validated library configuration object
      */
-    public LibConfig parseConfig(LibConfig config, DsSyncResponseDto syncResponse) {
+    public LibConfig parseConfig(final LibConfig config, final DsSyncResponseDto syncResponse) {
         config.setGclJwt(syncResponse.getGclJwt());
         config.setContextToken(syncResponse.getContextToken());
         setAppConfig(config);
@@ -157,7 +157,7 @@ public class T1cConfigParser implements Serializable {
     private Environment getEnvironment() {
         try {
             return Environment.valueOf(getConfigString(IConfig.LIB_ENVIRONMENT));
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             return Environment.PROD;
         }
     }
@@ -198,7 +198,7 @@ public class T1cConfigParser implements Serializable {
         return appConfig;
     }
 
-    private void setAppConfig(LibConfig appConfig) {
+    private void setAppConfig(final LibConfig appConfig) {
         this.appConfig = appConfig;
         resolveProperties(readProperties());
     }
@@ -208,7 +208,7 @@ public class T1cConfigParser implements Serializable {
      *
      * @param optProperties
      */
-    private void resolveProperties(Properties optProperties) {
+    private void resolveProperties(final Properties optProperties) {
         if (this.getAppConfig() == null) setAppConfig(new LibConfig());
         this.getAppConfig().setBuild(optProperties.getProperty(IConfig.PROP_BUILD_DATE));
         this.getAppConfig().setVersion(optProperties.getProperty(IConfig.PROP_FILE_VERSION));
@@ -272,7 +272,7 @@ public class T1cConfigParser implements Serializable {
         if (StringUtils.isEmpty(this.appConfig.getClientFingerprintDirectoryPath())) {
             throw ExceptionFactory.initializationException("File path for client fingerprint token required");
         } else {
-            Path fingerprintPath = Paths.get(this.appConfig.getClientFingerprintDirectoryPath());
+            final Path fingerprintPath = Paths.get(this.appConfig.getClientFingerprintDirectoryPath());
             if (fingerprintPath.toFile().exists()) {
                 if (!fingerprintPath.toFile().isDirectory()) {
                     throw ExceptionFactory.initializationException("Client fingerprint directory does not reference a directory");
@@ -284,7 +284,7 @@ public class T1cConfigParser implements Serializable {
                     } else {
                         throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed");
                     }
-                } catch (SecurityException ex) {
+                } catch (final SecurityException ex) {
                     throw ExceptionFactory.initializationException("Client fingerprint directory does not exist, creation attempt failed: " + ex.getMessage());
                 }
             }
@@ -327,13 +327,13 @@ public class T1cConfigParser implements Serializable {
      * @return
      */
     private Properties readProperties() {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties");
-        Properties properties = new Properties();
+        final InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties");
+        final Properties properties = new Properties();
         if (is != null) {
             try {
                 properties.load(is);
                 return properties;
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 throw ExceptionFactory.systemErrorException("T1C client properties can not be loaded: " + e.getMessage());
             }
         } else {
@@ -341,37 +341,37 @@ public class T1cConfigParser implements Serializable {
         }
     }
 
-    private String getConfigString(String key) {
+    private String getConfigString(final String key) {
         try {
             return config.getString(key);
-        } catch (ConfigException ex) {
+        } catch (final ConfigException ex) {
             log.error("Missing configuration value: {}", key);
             return null;
         }
     }
 
-    private boolean getConfigBoolean(String key) {
+    private boolean getConfigBoolean(final String key) {
         try {
             return config.getBoolean(key);
-        } catch (ConfigException ex) {
+        } catch (final ConfigException ex) {
             log.error("Missing configuration value: {}", key);
             return false;
         }
     }
 
-    private Integer getConfigInteger(String key) {
+    private Integer getConfigInteger(final String key) {
         try {
             return config.getInt(key);
-        } catch (ConfigException ex) {
+        } catch (final ConfigException ex) {
             log.error("Missing configuration value: {}", key);
             return null;
         }
     }
 
-    private Path getConfigPath(String key) {
+    private Path getConfigPath(final String key) {
         try {
             return Paths.get(config.getString(key));
-        } catch (ConfigException ex) {
+        } catch (final ConfigException ex) {
             log.error("Missing configuration value: {}", key);
             return null;
         }

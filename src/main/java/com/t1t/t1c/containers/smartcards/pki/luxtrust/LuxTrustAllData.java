@@ -19,17 +19,17 @@ public class LuxTrustAllData implements AllData {
     private T1cCertificate signingCertificate;
     private List<T1cCertificate> rootCertificates;
 
-    public LuxTrustAllData(GclLuxTrustAllData data) {
+    public LuxTrustAllData(final GclLuxTrustAllData data) {
         this(data, null);
     }
 
-    public LuxTrustAllData(GclLuxTrustAllData data, Boolean parseCertificates) {
+    public LuxTrustAllData(final GclLuxTrustAllData data, final Boolean parseCertificates) {
         this.activated = data.getActivated();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(data.getRootCertificates())) {
-            List<T1cCertificate> rootCerts = new ArrayList<>();
-            for (String cert : data.getRootCertificates()) {
+            final List<T1cCertificate> rootCerts = new ArrayList<>();
+            for (final String cert : data.getRootCertificates()) {
                 rootCerts.add(PkiUtil.createT1cCertificate(cert, parseCertificates));
             }
             this.rootCertificates = rootCerts;
@@ -40,7 +40,7 @@ public class LuxTrustAllData implements AllData {
         return activated;
     }
 
-    public void setActivated(Boolean activated) {
+    public void setActivated(final Boolean activated) {
         this.activated = activated;
     }
 
@@ -48,7 +48,7 @@ public class LuxTrustAllData implements AllData {
         return authenticationCertificate;
     }
 
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
@@ -56,7 +56,7 @@ public class LuxTrustAllData implements AllData {
         return signingCertificate;
     }
 
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
@@ -64,7 +64,7 @@ public class LuxTrustAllData implements AllData {
         return rootCertificates;
     }
 
-    public void setRootCertificates(List<T1cCertificate> rootCertificates) {
+    public void setRootCertificates(final List<T1cCertificate> rootCertificates) {
         this.rootCertificates = rootCertificates;
     }
 

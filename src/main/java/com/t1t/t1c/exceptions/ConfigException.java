@@ -7,7 +7,7 @@ public class ConfigException extends AbstractConsumerException {
     public ConfigException() {
     }
 
-    public ConfigException(String message) {
+    public ConfigException(final String message) {
         super(message);
     }
 

@@ -16,7 +16,7 @@ public class DsClient implements IDsClient {
     private DsRestClient dsRestClient;
     private LibConfig config;
 
-    public DsClient(DsRestClient dsRestClient, LibConfig config) {
+    public DsClient(final DsRestClient dsRestClient, final LibConfig config) {
         this.dsRestClient = dsRestClient;
         this.config = config;
     }
@@ -25,17 +25,17 @@ public class DsClient implements IDsClient {
     public DsSystemStatus getInfo() throws DsClientException {
         try {
             return RestExecutor.executeCall(dsRestClient.getInfo(), false);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve Distribution Service info", ex);
         }
     }
 
     @Override
-    public DsPublicKey getPublicKey(String deviceId) throws DsClientException {
+    public DsPublicKey getPublicKey(final String deviceId) throws DsClientException {
         try {
-            DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(deviceId, config.getDsNamespace()), false);
+            final DsPublicKey publicKeyResponse = RestExecutor.executeCall(dsRestClient.getPubKey(deviceId, config.getDsNamespace()), false);
             return publicKeyResponse != null && publicKeyResponse.getSuccess() ? publicKeyResponse : null;
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclAdminClientException("Could not retrieve GCL public key", ex);
         }
     }
@@ -52,32 +52,32 @@ public class DsClient implements IDsClient {
             if (info == null) {
                 info = new PlatformInfo();
             }
-            DsDownloadRequest request = new DsDownloadRequest()
+            final DsDownloadRequest request = new DsDownloadRequest()
                     .withOs(new DsOs()
                             .withArchitecture(info.getOs().getArchitecture())
                             .withName(info.getOs().getName())
                             .withVersion(info.getOs().getVersion()))
                     .withProxyDomain(config.getProxyDomain());
             return RestExecutor.executeCall(dsRestClient.getDownloadLink(request), false).getLink();
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.dsClientException("Could not retrieve download link from Distribution Service", ex);
         }
     }
 
     @Override
-    public DsSyncResponseDto register(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+    public DsSyncResponseDto register(final String deviceId, final DsDeviceRegistrationRequest request) throws DsClientException {
         try {
             return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.register(deviceId, request), false));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
         }
     }
 
     @Override
-    public DsSyncResponseDto sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException {
+    public DsSyncResponseDto sync(final String deviceId, final DsDeviceRegistrationRequest request) throws DsClientException {
         try {
             return new DsSyncResponseDto(RestExecutor.executeCallAndReturnAccessTokenHeader(dsRestClient.sync(deviceId, request), false));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.dsClientException("Could not register device on Distribution Service", ex);
         }
     }

@@ -9,7 +9,7 @@ public class DsClientException extends AbstractRuntimeException {
     private Integer httpCode = 400;
     private String uri;
 
-    public DsClientException(String message, RestException cause) {
+    public DsClientException(final String message, final RestException cause) {
         super(message, cause);
         this.httpCode = cause.getHttpCode();
         this.uri = cause.getUri();

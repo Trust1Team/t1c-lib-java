@@ -26,7 +26,7 @@ public class DigestUtil {
     private static final String SHA256_SIG = "SHA256withRSA";
     private static final String SHA512_SIG = "SHA512withRSA";
 
-    public static String digestAlgorithmToSignatureAlgorithm(String digest) {
+    public static String digestAlgorithmToSignatureAlgorithm(final String digest) {
         switch (digest.toUpperCase()) {
             case MD5_DIGEST:
                 return MD5_SIG;
@@ -44,7 +44,7 @@ public class DigestUtil {
         }
     }
 
-    public static String signatureAlgorithmToDigest(String digest) {
+    public static String signatureAlgorithmToDigest(final String digest) {
         switch (digest.toUpperCase().replace("WITH", "with")) {
             case MD5_SIG:
                 return MD5_DIGEST;
@@ -59,7 +59,7 @@ public class DigestUtil {
         }
     }
 
-    public static byte[] digestOf(byte[] input, String digest) {
+    public static byte[] digestOf(final byte[] input, final String digest) {
         switch (digest.toUpperCase()) {
             case MD5_DIGEST:
                 return md5DigestOf(input);
@@ -74,41 +74,41 @@ public class DigestUtil {
         }
     }
 
-    public static String resolveDigest(String digest) {
-        String upperCaseDigest = digest.toUpperCase();
+    public static String resolveDigest(final String digest) {
+        final String upperCaseDigest = digest.toUpperCase();
         if (Arrays.asList(MD5_DIGEST, SHA1_DIGEST, SHA512_DIGEST, SHA1_DASH, SHA256_DASH, SHA512_DASH).contains(upperCaseDigest)) {
             return upperCaseDigest.replace("-", "");
         } else return SHA256_DIGEST;
     }
 
-    public static byte[] md5DigestOf(byte[] input) {
-        MD5Digest d = new MD5Digest();
+    public static byte[] md5DigestOf(final byte[] input) {
+        final MD5Digest d = new MD5Digest();
         d.update(input, 0, input.length);
-        byte[] result = new byte[d.getDigestSize()];
+        final byte[] result = new byte[d.getDigestSize()];
         d.doFinal(result, 0);
         return result;
     }
 
-    public static byte[] sha256DigestOf(byte[] input) {
-        SHA256Digest d = new SHA256Digest();
+    public static byte[] sha256DigestOf(final byte[] input) {
+        final SHA256Digest d = new SHA256Digest();
         d.update(input, 0, input.length);
-        byte[] result = new byte[d.getDigestSize()];
+        final byte[] result = new byte[d.getDigestSize()];
         d.doFinal(result, 0);
         return result;
     }
 
-    public static byte[] sha1DigestOf(byte[] input) {
-        SHA1Digest d = new SHA1Digest();
+    public static byte[] sha1DigestOf(final byte[] input) {
+        final SHA1Digest d = new SHA1Digest();
         d.update(input, 0, input.length);
-        byte[] result = new byte[d.getDigestSize()];
+        final byte[] result = new byte[d.getDigestSize()];
         d.doFinal(result, 0);
         return result;
     }
 
-    public static byte[] sha512DigestOf(byte[] input) {
-        SHA512Digest d = new SHA512Digest();
+    public static byte[] sha512DigestOf(final byte[] input) {
+        final SHA512Digest d = new SHA512Digest();
         d.update(input, 0, input.length);
-        byte[] result = new byte[d.getDigestSize()];
+        final byte[] result = new byte[d.getDigestSize()];
         d.doFinal(result, 0);
         return result;
     }

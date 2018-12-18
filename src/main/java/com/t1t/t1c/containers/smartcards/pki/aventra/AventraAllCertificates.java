@@ -12,11 +12,11 @@ public class AventraAllCertificates implements AllCertificates {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public AventraAllCertificates(GclAventraAllCertificates certs) {
+    public AventraAllCertificates(final GclAventraAllCertificates certs) {
         this(certs, null);
     }
 
-    public AventraAllCertificates(GclAventraAllCertificates certs, Boolean parseCertificates) {
+    public AventraAllCertificates(final GclAventraAllCertificates certs, final Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(certs.getRootCertificate(), parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificates);
@@ -28,7 +28,7 @@ public class AventraAllCertificates implements AllCertificates {
         return rootCertificate;
     }
 
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
@@ -36,7 +36,7 @@ public class AventraAllCertificates implements AllCertificates {
         return authenticationCertificate;
     }
 
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
@@ -44,7 +44,7 @@ public class AventraAllCertificates implements AllCertificates {
         return signingCertificate;
     }
 
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
@@ -52,7 +52,7 @@ public class AventraAllCertificates implements AllCertificates {
         return issuerCertificate;
     }
 
-    public void setIssuerCertificate(T1cCertificate issuerCertificate) {
+    public void setIssuerCertificate(final T1cCertificate issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
     }
 
@@ -60,7 +60,7 @@ public class AventraAllCertificates implements AllCertificates {
         return encryptionCertificate;
     }
 
-    public void setEncryptionCertificate(T1cCertificate encryptionCertificate) {
+    public void setEncryptionCertificate(final T1cCertificate encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
     }
 

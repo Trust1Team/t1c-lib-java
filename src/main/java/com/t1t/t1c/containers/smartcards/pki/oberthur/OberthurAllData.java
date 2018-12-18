@@ -13,11 +13,11 @@ public class OberthurAllData implements AllData, AllCertificates {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public OberthurAllData(GclOberthurAllData data) {
+    public OberthurAllData(final GclOberthurAllData data) {
         this(data, null);
     }
 
-    public OberthurAllData(GclOberthurAllData data, Boolean parseCertificates) {
+    public OberthurAllData(final GclOberthurAllData data, final Boolean parseCertificates) {
         this(data.getAuthenticationCertificate(),
                 data.getRootCertificate(),
                 data.getSigningCertificate(),
@@ -25,7 +25,7 @@ public class OberthurAllData implements AllData, AllCertificates {
                 data.getEncryptionCertificate(), parseCertificates);
     }
 
-    public OberthurAllData(String authenticationCertificate, String rootCertificate, String signingCertificate, String issuerCertificate, String encryptionCertificate, Boolean parseCertificates) {
+    public OberthurAllData(final String authenticationCertificate, final String rootCertificate, final String signingCertificate, final String issuerCertificate, final String encryptionCertificate, final Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(authenticationCertificate, parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(rootCertificate, parseCertificates);
         this.signingCertificate = PkiUtil.createT1cCertificate(signingCertificate, parseCertificates);
@@ -37,7 +37,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         return rootCertificate;
     }
 
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
@@ -45,7 +45,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         return authenticationCertificate;
     }
 
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
@@ -53,7 +53,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         return signingCertificate;
     }
 
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
@@ -61,7 +61,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         return issuerCertificate;
     }
 
-    public void setIssuerCertificate(T1cCertificate issuerCertificate) {
+    public void setIssuerCertificate(final T1cCertificate issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
     }
 
@@ -69,7 +69,7 @@ public class OberthurAllData implements AllData, AllCertificates {
         return encryptionCertificate;
     }
 
-    public void setEncryptionCertificate(T1cCertificate encryptionCertificate) {
+    public void setEncryptionCertificate(final T1cCertificate encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
     }
 

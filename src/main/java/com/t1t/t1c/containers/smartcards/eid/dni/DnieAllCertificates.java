@@ -10,7 +10,7 @@ public class DnieAllCertificates implements AllCertificates {
     private T1cCertificate intermediateCertificate;
     private T1cCertificate signingCertificate;
 
-    public DnieAllCertificates(GclDnieAllCertificates certificates, Boolean parseCertificate) {
+    public DnieAllCertificates(final GclDnieAllCertificates certificates, final Boolean parseCertificate) {
 
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificate);
         this.intermediateCertificate = PkiUtil.createT1cCertificate(certificates.getIntermediateCertificate(), parseCertificate);
@@ -27,11 +27,11 @@ public class DnieAllCertificates implements AllCertificates {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public DnieAllCertificates withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public DnieAllCertificates withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -46,11 +46,11 @@ public class DnieAllCertificates implements AllCertificates {
     /**
      * @param intermediateCertificate The intermediate_certificate
      */
-    public void setIntermediateCertificate(T1cCertificate intermediateCertificate) {
+    public void setIntermediateCertificate(final T1cCertificate intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
     }
 
-    public DnieAllCertificates withIntermediateCertificate(T1cCertificate intermediateCertificate) {
+    public DnieAllCertificates withIntermediateCertificate(final T1cCertificate intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
         return this;
     }
@@ -65,11 +65,11 @@ public class DnieAllCertificates implements AllCertificates {
     /**
      * @param signingCertificate The signing_certificate
      */
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
-    public DnieAllCertificates withSigningCertificate(T1cCertificate signingCertificate) {
+    public DnieAllCertificates withSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
         return this;
     }

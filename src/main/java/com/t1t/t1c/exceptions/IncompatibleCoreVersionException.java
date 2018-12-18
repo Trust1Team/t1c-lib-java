@@ -8,7 +8,7 @@ public class IncompatibleCoreVersionException extends AbstractConsumerException 
 
     private String downloadUrl;
 
-    public IncompatibleCoreVersionException(String message, String downloadUrl) {
+    public IncompatibleCoreVersionException(final String message, final String downloadUrl) {
         super(message);
         this.downloadUrl = downloadUrl;
     }

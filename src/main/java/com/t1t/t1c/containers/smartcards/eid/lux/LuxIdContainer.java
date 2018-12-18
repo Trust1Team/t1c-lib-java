@@ -32,12 +32,12 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
 
     private Map<String, String> headers;
 
-    public LuxIdContainer(LibConfig config, GclReader reader, String containerVersion, GclLuxIdRestClient gclLuxIdRestClient, GclPace pace) {
+    public LuxIdContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclLuxIdRestClient gclLuxIdRestClient, final GclPace pace) {
         super(config, reader, containerVersion, gclLuxIdRestClient, pace);
     }
 
     @Override
-    public LuxIdContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclLuxIdRestClient httpClient, GclPace pace) throws LuxIdContainerException {
+    public LuxIdContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclLuxIdRestClient httpClient, final GclPace pace) throws LuxIdContainerException {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -57,23 +57,23 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
     }
 
     @Override
-    public LuxIdAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getContainerUrlId(), reader.getId(), this.headers, createFilterParams(filterParams)), config.isConsentRequired());
+    public LuxIdAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
+        final GclLuxIdAllData data = RestExecutor.returnData(httpClient.getLuxIdAllData(getContainerUrlId(), reader.getId(), this.headers, createFilterParams(filterParams)), config.isConsentRequired());
         return new LuxIdAllData(data, parseCertificates);
     }
 
     @Override
-    public LuxIdAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
-        GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getContainerUrlId(), reader.getId(), this.headers, createFilterParams(filterParams)), config.isConsentRequired());
+    public LuxIdAllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
+        final GclLuxIdAllCertificates data = RestExecutor.returnData(httpClient.getLuxIdAllCertificates(getContainerUrlId(), reader.getId(), this.headers, createFilterParams(filterParams)), config.isConsentRequired());
         return new LuxIdAllCertificates(data, parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), this.headers, PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -83,7 +83,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
                 this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerUrlId(), reader.getId(), headers), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -92,13 +92,13 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isAuthenticateAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getContainerUrlId(), reader.getId(), this.headers, PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -108,7 +108,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
                 this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerUrlId(), reader.getId(), headers), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -117,13 +117,13 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isSignAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to sign must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getContainerUrlId(), reader.getId(), this.headers, PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -140,15 +140,15 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         return RestExecutor.returnData(httpClient.getLuxIdSignatureImage(getContainerUrlId(), reader.getId(), this.headers), config.isConsentRequired());
     }
 
-    public List<T1cCertificate> getRootCertificates(Boolean parse) throws RestException, NoConsentException {
+    public List<T1cCertificate> getRootCertificates(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getRootCertificates(getContainerUrlId(), reader.getId(), this.headers), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getAuthenticationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerUrlId(), reader.getId(), this.headers), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getNonRepudiationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getNonRepudiationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getContainerUrlId(), reader.getId(), this.headers), config.isConsentRequired()), parse);
     }
 
@@ -175,9 +175,9 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        LuxIdAllData allData = getAllData(true);
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final LuxIdAllData allData = getAllData(true);
 
         data.setGivenName(allData.getBiometric().getFirstName());
         data.setSurName(allData.getBiometric().getLastName());
@@ -199,29 +199,29 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         return data;
     }
 
-    private Map<Integer, T1cCertificate> getCertChain(List<T1cCertificate> rootCerts, T1cCertificate... additionalCerts) {
-        List<T1cCertificate> collatedCerts = new ArrayList<>(rootCerts);
+    private Map<Integer, T1cCertificate> getCertChain(final List<T1cCertificate> rootCerts, final T1cCertificate... additionalCerts) {
+        final List<T1cCertificate> collatedCerts = new ArrayList<>(rootCerts);
         collatedCerts.addAll(Arrays.asList(additionalCerts));
         return orderCertificates(collatedCerts);
     }
 
     @Override
     public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        LuxIdAllCertificates certs = getAllCertificates(true);
-        List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
+        final LuxIdAllCertificates certs = getAllCertificates(true);
+        final List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
         certsToOrder.add(certs.getNonRepudiationCertificate());
         return orderCertificates(certsToOrder);
     }
 
     @Override
     public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        LuxIdAllCertificates certs = getAllCertificates(true);
-        List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
+        final LuxIdAllCertificates certs = getAllCertificates(true);
+        final List<T1cCertificate> certsToOrder = new ArrayList<>(certs.getRootCertificates());
         certsToOrder.add(certs.getAuthenticationCertificate());
         return orderCertificates(certsToOrder);
     }
 
-    public Integer getPinTryCounter(GclPinReference reference) throws NoConsentException, RestException {
+    public Integer getPinTryCounter(final GclPinReference reference) throws NoConsentException, RestException {
         return RestExecutor.returnData(httpClient.getPinTryCount(getContainerUrlId(), reader.getId(), headers, new GclPinTryCounterRequest().withPinReference(reference)), config.isConsentRequired());
     }
 
@@ -229,11 +229,11 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         return changePin(null, null);
     }
 
-    public Boolean changePin(String oldPin, String newPin) throws NoConsentException, RestException {
+    public Boolean changePin(final String oldPin, final String newPin) throws NoConsentException, RestException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), oldPin, newPin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.changePin(getContainerUrlId(), reader.getId(), headers, PinUtil.createEncryptedPinChangeRequest(reader.getPinpad(), config.isOsPinDialog(), oldPin, newPin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -255,7 +255,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
      * @throws NoConsentException when no consent has been granted.
      * @throws RestException when a REST layer exception occurs.
      */
-    public Boolean unblockPin(String puk) throws NoConsentException, RestException {
+    public Boolean unblockPin(final String puk) throws NoConsentException, RestException {
         return resetPin(puk, null, true);
     }
 
@@ -267,7 +267,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
      * @throws NoConsentException when no consent has been granted.
      * @throws RestException when a REST layer exception occurs
      */
-    public Boolean resetPin(String puk, String newPin) throws NoConsentException, RestException {
+    public Boolean resetPin(final String puk, final String newPin) throws NoConsentException, RestException {
         return resetPin(puk, newPin, false);
     }
 
@@ -281,7 +281,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         return resetPin(null, null, false);
     }
 
-    private Boolean resetPin(String puk, String newPin, boolean resetOnly) throws NoConsentException, RestException {
+    private Boolean resetPin(final String puk, final String newPin, final boolean resetOnly) throws NoConsentException, RestException {
         try {
             if (resetOnly) {
                 PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), puk);
@@ -289,7 +289,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
                 PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), puk, newPin);
             }
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.resetPin(getContainerUrlId(), reader.getId(), headers, PinUtil.createEncryptedPinResetRequest(reader.getPinpad(), config.isOsPinDialog(), resetOnly, puk, newPin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -314,8 +314,8 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         throw ExceptionFactory.unsupportedOperationException("Not yet implemented");
     }*/
 
-    private Map<String, T1cCertificate> getCertificatesMap(LuxIdAllData allData) {
-        Map<String, T1cCertificate> certs = new HashMap<>();
+    private Map<String, T1cCertificate> getCertificatesMap(final LuxIdAllData allData) {
+        final Map<String, T1cCertificate> certs = new HashMap<>();
         for (int i = 0; i < allData.getRootCertificates().size(); i++) {
             certs.put("root-certificate-" + i + 1, allData.getRootCertificates().get(i));
         }
@@ -328,7 +328,7 @@ public class LuxIdContainer extends SmartCardContainer<LuxIdContainer, GclLuxIdR
         return this.pace;
     }
 
-    private void setPace(GclPace pace) {
+    private void setPace(final GclPace pace) {
         if (pace == null || (StringUtils.isEmpty(pace.getCan()) && StringUtils.isEmpty(pace.getPin()) && StringUtils.isEmpty(pace.getPuk()) && StringUtils.isEmpty(pace.getMrz()))) {
             throw ExceptionFactory.luxIdContainerException("PIN, PUK, MRZ or CAN is required to initialize Lux ID container");
         }

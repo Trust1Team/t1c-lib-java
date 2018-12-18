@@ -37,7 +37,7 @@ public class ContainerData {
         return givenName;
     }
 
-    public void setGivenName(String givenName) {
+    public void setGivenName(final String givenName) {
         this.givenName = givenName;
     }
 
@@ -45,7 +45,7 @@ public class ContainerData {
         return surName;
     }
 
-    public void setSurName(String surName) {
+    public void setSurName(final String surName) {
         this.surName = surName;
     }
 
@@ -53,7 +53,7 @@ public class ContainerData {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    public void setFullName(final String fullName) {
         this.fullName = fullName;
     }
 
@@ -61,7 +61,7 @@ public class ContainerData {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(final String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -69,7 +69,7 @@ public class ContainerData {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(final String gender) {
         this.gender = gender;
     }
 
@@ -77,7 +77,7 @@ public class ContainerData {
         return streetAndNumber;
     }
 
-    public void setStreetAndNumber(String streetAndNumber) {
+    public void setStreetAndNumber(final String streetAndNumber) {
         this.streetAndNumber = streetAndNumber;
     }
 
@@ -85,7 +85,7 @@ public class ContainerData {
         return municipality;
     }
 
-    public void setMunicipality(String municipality) {
+    public void setMunicipality(final String municipality) {
         this.municipality = municipality;
     }
 
@@ -93,7 +93,7 @@ public class ContainerData {
         return zipCode;
     }
 
-    public void setZipCode(String zipCode) {
+    public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -101,7 +101,7 @@ public class ContainerData {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -109,7 +109,7 @@ public class ContainerData {
         return nationality;
     }
 
-    public void setNationality(String nationality) {
+    public void setNationality(final String nationality) {
         this.nationality = nationality;
     }
 
@@ -117,7 +117,7 @@ public class ContainerData {
         return base64Picture;
     }
 
-    public void setBase64Picture(String base64Picture) {
+    public void setBase64Picture(final String base64Picture) {
         this.base64Picture = base64Picture;
     }
 
@@ -125,7 +125,7 @@ public class ContainerData {
         return validityStartDate;
     }
 
-    public void setValidityStartDate(String validityStartDate) {
+    public void setValidityStartDate(final String validityStartDate) {
         this.validityStartDate = validityStartDate;
     }
 
@@ -133,7 +133,7 @@ public class ContainerData {
         return validityEndDate;
     }
 
-    public void setValidityEndDate(String validityEndDate) {
+    public void setValidityEndDate(final String validityEndDate) {
         this.validityEndDate = validityEndDate;
     }
 
@@ -141,7 +141,7 @@ public class ContainerData {
         return documentId;
     }
 
-    public void setDocumentId(String documentId) {
+    public void setDocumentId(final String documentId) {
         this.documentId = documentId;
     }
 
@@ -149,7 +149,7 @@ public class ContainerData {
         return base64SignatureImage;
     }
 
-    public void setBase64SignatureImage(String base64SignatureImage) {
+    public void setBase64SignatureImage(final String base64SignatureImage) {
         this.base64SignatureImage = base64SignatureImage;
     }
 
@@ -157,7 +157,7 @@ public class ContainerData {
         return authenticationCertificateChain;
     }
 
-    public void setAuthenticationCertificateChain(Map<Integer, T1cCertificate> authenticationCertificateChain) {
+    public void setAuthenticationCertificateChain(final Map<Integer, T1cCertificate> authenticationCertificateChain) {
         this.authenticationCertificateChain = authenticationCertificateChain;
     }
 
@@ -165,7 +165,7 @@ public class ContainerData {
         return signingCertificateChain;
     }
 
-    public void setSigningCertificateChain(Map<Integer, T1cCertificate> signingCertificateChain) {
+    public void setSigningCertificateChain(final Map<Integer, T1cCertificate> signingCertificateChain) {
         this.signingCertificateChain = signingCertificateChain;
     }
 
@@ -173,7 +173,7 @@ public class ContainerData {
         return allCertificates;
     }
 
-    public void setAllCertificates(Map<String, T1cCertificate> allCertificates) {
+    public void setAllCertificates(final Map<String, T1cCertificate> allCertificates) {
         this.allCertificates = allCertificates;
     }
 

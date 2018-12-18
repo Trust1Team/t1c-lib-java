@@ -21,7 +21,7 @@ public final class ContainerUtil {
     private ContainerUtil() {
     }
 
-    public static boolean canAuthenticate(ContainerType type) {
+    public static boolean canAuthenticate(final ContainerType type) {
         switch (type) {
             case BEID:
             case LUXID:
@@ -41,12 +41,12 @@ public final class ContainerUtil {
         }
     }
 
-    public static boolean canAuthenticate(GclCard card) {
+    public static boolean canAuthenticate(final GclCard card) {
         Preconditions.checkNotNull(card, "Card info must be provided");
         return canAuthenticate(determineContainer(card));
     }
 
-    public static boolean canSign(ContainerType type) {
+    public static boolean canSign(final ContainerType type) {
         switch (type) {
             case BEID:
             case LUXID:
@@ -66,12 +66,12 @@ public final class ContainerUtil {
         }
     }
 
-    public static boolean canSign(GclCard card) {
+    public static boolean canSign(final GclCard card) {
         Preconditions.checkNotNull(card, "Card info must be provided");
         return canSign(determineContainer(card));
     }
 
-    public static boolean canVerifyPin(ContainerType type) {
+    public static boolean canVerifyPin(final ContainerType type) {
         switch (type) {
             case BEID:
             case LUXID:
@@ -91,12 +91,12 @@ public final class ContainerUtil {
         }
     }
 
-    public static boolean canVerifyPin(GclCard card) {
+    public static boolean canVerifyPin(final GclCard card) {
         Preconditions.checkNotNull(card, "Card info must be provided");
         return canVerifyPin(determineContainer(card));
     }
 
-    public static String determineDefaultAlgorithm(GclCard card) {
+    public static String determineDefaultAlgorithm(final GclCard card) {
         Preconditions.checkNotNull(card, "Card info must be provided");
         switch (determineContainer(card)) {
             case AVENTRA:
@@ -113,16 +113,16 @@ public final class ContainerUtil {
         }
     }
 
-    public static ContainerType determineContainer(GclCard card) {
+    public static ContainerType determineContainer(final GclCard card) {
         Preconditions.checkArgument(CollectionUtils.isNotEmpty(card.getDescription()), "Card description must be present");
-        for (String description : card.getDescription()) {
-            ContainerType type = ContainerType.valueOfCardDescription(description);
+        for (final String description : card.getDescription()) {
+            final ContainerType type = ContainerType.valueOfCardDescription(description);
             if (type != null) return type;
         }
         throw ExceptionFactory.genericContainerException("Could not determine container for card");
     }
 
-    public static Integer getPinVerificationRetriesLeftFor(Integer code) {
+    public static Integer getPinVerificationRetriesLeftFor(final Integer code) {
         if (code != null) {
             switch (code) {
                 case 111:

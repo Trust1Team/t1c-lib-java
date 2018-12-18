@@ -9,11 +9,11 @@ public class GclClientException extends AbstractRuntimeException {
     private Integer httpCode = 400;
     private String uri;
 
-    public GclClientException(String message) {
+    public GclClientException(final String message) {
         super(message);
     }
 
-    public GclClientException(String message, RestException cause) {
+    public GclClientException(final String message, final RestException cause) {
         super(message, cause);
         this.httpCode = cause.getHttpCode();
         this.uri = cause.getUri();

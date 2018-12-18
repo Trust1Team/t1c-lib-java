@@ -13,7 +13,7 @@ public class Pkcs11AllData implements AllData {
 
     private List<GclPkcs11Slot> slots;
 
-    public Pkcs11AllData(List<GclPkcs11Slot> slots) {
+    public Pkcs11AllData(final List<GclPkcs11Slot> slots) {
         this.slots = slots;
     }
 
@@ -21,16 +21,16 @@ public class Pkcs11AllData implements AllData {
         return slots;
     }
 
-    public void setSlots(List<GclPkcs11Slot> slots) {
+    public void setSlots(final List<GclPkcs11Slot> slots) {
         this.slots = slots;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof Pkcs11AllData)) return false;
 
-        Pkcs11AllData that = (Pkcs11AllData) o;
+        final Pkcs11AllData that = (Pkcs11AllData) o;
 
         return slots != null ? slots.equals(that.slots) : that.slots == null;
     }

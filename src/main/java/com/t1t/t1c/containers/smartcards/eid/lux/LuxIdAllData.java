@@ -18,12 +18,12 @@ public class LuxIdAllData implements AllData {
     private GclLuxIdSignatureImage signatureImage;
     private String signatureObject;
 
-    public LuxIdAllData(GclLuxIdAllData data, Boolean parseCertificates) {
+    public LuxIdAllData(final GclLuxIdAllData data, final Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(data.getNonRepudiationCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(data.getRootCertificates())) {
-            List<T1cCertificate> rootCerts = new ArrayList<>();
-            for (String cert : data.getRootCertificates()) {
+            final List<T1cCertificate> rootCerts = new ArrayList<>();
+            for (final String cert : data.getRootCertificates()) {
                 rootCerts.add(PkiUtil.createT1cCertificate(cert, parseCertificates));
             }
             this.rootCertificates = rootCerts;
@@ -44,11 +44,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public LuxIdAllData withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public LuxIdAllData withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -63,11 +63,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param nonRepudiationCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public void setNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
     }
 
-    public LuxIdAllData withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public LuxIdAllData withNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
         return this;
     }
@@ -82,11 +82,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param rootCertificates The root_certificates
      */
-    public void setRootCertificates(List<T1cCertificate> rootCertificates) {
+    public void setRootCertificates(final List<T1cCertificate> rootCertificates) {
         this.rootCertificates = rootCertificates;
     }
 
-    public LuxIdAllData withRootCertificates(List<T1cCertificate> rootCertificates) {
+    public LuxIdAllData withRootCertificates(final List<T1cCertificate> rootCertificates) {
         this.rootCertificates = rootCertificates;
         return this;
     }
@@ -101,11 +101,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param biometric The biometric
      */
-    public void setBiometric(GclLuxIdBiometric biometric) {
+    public void setBiometric(final GclLuxIdBiometric biometric) {
         this.biometric = biometric;
     }
 
-    public LuxIdAllData withBiometric(GclLuxIdBiometric biometric) {
+    public LuxIdAllData withBiometric(final GclLuxIdBiometric biometric) {
         this.biometric = biometric;
         return this;
     }
@@ -120,11 +120,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param picture The picture
      */
-    public void setPicture(GclLuxIdPicture picture) {
+    public void setPicture(final GclLuxIdPicture picture) {
         this.picture = picture;
     }
 
-    public LuxIdAllData withPicture(GclLuxIdPicture picture) {
+    public LuxIdAllData withPicture(final GclLuxIdPicture picture) {
         this.picture = picture;
         return this;
     }
@@ -139,11 +139,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param signatureImage The signature_image
      */
-    public void setSignatureImage(GclLuxIdSignatureImage signatureImage) {
+    public void setSignatureImage(final GclLuxIdSignatureImage signatureImage) {
         this.signatureImage = signatureImage;
     }
 
-    public LuxIdAllData withSignatureImage(GclLuxIdSignatureImage signatureImage) {
+    public LuxIdAllData withSignatureImage(final GclLuxIdSignatureImage signatureImage) {
         this.signatureImage = signatureImage;
         return this;
     }
@@ -158,11 +158,11 @@ public class LuxIdAllData implements AllData {
     /**
      * @param signatureObject The signature_object
      */
-    public void setSignatureObject(String signatureObject) {
+    public void setSignatureObject(final String signatureObject) {
         this.signatureObject = signatureObject;
     }
 
-    public LuxIdAllData withSignatureObject(String signatureObject) {
+    public LuxIdAllData withSignatureObject(final String signatureObject) {
         this.signatureObject = signatureObject;
         return this;
     }

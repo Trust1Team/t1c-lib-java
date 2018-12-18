@@ -9,7 +9,7 @@ public class GclAdminClientException extends AbstractRuntimeException {
     private Integer httpCode = 400;
     private String uri;
 
-    public GclAdminClientException(String message, RestException cause) {
+    public GclAdminClientException(final String message, final RestException cause) {
         super(message, cause);
         this.httpCode = cause.getHttpCode();
         this.uri = cause.getUri();

@@ -23,11 +23,11 @@ public class OsInfo {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof OsInfo)) return false;
 
-        OsInfo osInfo = (OsInfo) o;
+        final OsInfo osInfo = (OsInfo) o;
 
         if (name != null ? !name.equals(osInfo.name) : osInfo.name != null) return false;
         if (architecture != null ? !architecture.equals(osInfo.architecture) : osInfo.architecture != null)

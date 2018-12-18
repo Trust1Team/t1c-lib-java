@@ -31,18 +31,18 @@ public final class JwtUtil {
      * @param token
      * @return
      */
-    public static boolean isTokenAlmostExpired(String token) throws InvalidTokenException {
+    public static boolean isTokenAlmostExpired(final String token) throws InvalidTokenException {
         try {
             if (StringUtils.isEmpty(token)) {
                 return false;
             }
-            JwtConsumer consumer = new JwtConsumerBuilder().setSkipSignatureVerification().setSkipDefaultAudienceValidation().setAllowedClockSkewInSeconds(10).setRequireExpirationTime().build();
-            JwtContext context = consumer.process(token);
+            final JwtConsumer consumer = new JwtConsumerBuilder().setSkipSignatureVerification().setSkipDefaultAudienceValidation().setAllowedClockSkewInSeconds(10).setRequireExpirationTime().build();
+            final JwtContext context = consumer.process(token);
             log.debug("Token is not expired, claims: {}", context.getJwtClaims());
-            NumericDate shouldNotExceed = context.getJwtClaims().getExpirationTime();
+            final NumericDate shouldNotExceed = context.getJwtClaims().getExpirationTime();
             shouldNotExceed.addSeconds(SECONDS_BEFORE_EXPIRATION);
             return NumericDate.now().isOnOrAfter(shouldNotExceed);
-        } catch (InvalidJwtException | MalformedClaimException ex) {
+        } catch (final InvalidJwtException | MalformedClaimException ex) {
             throw ExceptionFactory.invalidTokenException(ex);
         }
     }

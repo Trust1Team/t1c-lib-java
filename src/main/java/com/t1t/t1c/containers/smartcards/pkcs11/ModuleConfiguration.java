@@ -19,7 +19,7 @@ public class ModuleConfiguration {
         this.windows = Paths.get("C:\\Windows\\System32\\eTPKCS11.dll");
     }
 
-    public ModuleConfiguration(Path linux, Path mac, Path windows) {
+    public ModuleConfiguration(final Path linux, final Path mac, final Path windows) {
         this.linux = linux;
         this.mac = mac;
         this.windows = windows;
@@ -29,11 +29,11 @@ public class ModuleConfiguration {
         return linux;
     }
 
-    public void setLinux(Path linux) {
+    public void setLinux(final Path linux) {
         this.linux = linux;
     }
 
-    public ModuleConfiguration withLinux(Path linux) {
+    public ModuleConfiguration withLinux(final Path linux) {
         this.linux = linux;
         return this;
     }
@@ -42,11 +42,11 @@ public class ModuleConfiguration {
         return mac;
     }
 
-    public void setMac(Path mac) {
+    public void setMac(final Path mac) {
         this.mac = mac;
     }
 
-    public ModuleConfiguration withMac(Path mac) {
+    public ModuleConfiguration withMac(final Path mac) {
         this.mac = mac;
         return this;
     }
@@ -55,21 +55,21 @@ public class ModuleConfiguration {
         return windows;
     }
 
-    public void setWindows(Path windows) {
+    public void setWindows(final Path windows) {
         this.windows = windows;
     }
 
-    public ModuleConfiguration withWindows(Path windows) {
+    public ModuleConfiguration withWindows(final Path windows) {
         this.windows = windows;
         return this;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof ModuleConfiguration)) return false;
 
-        ModuleConfiguration that = (ModuleConfiguration) o;
+        final ModuleConfiguration that = (ModuleConfiguration) o;
 
         if (linux != null ? !linux.equals(that.linux) : that.linux != null) return false;
         if (mac != null ? !mac.equals(that.mac) : that.mac != null) return false;

@@ -9,13 +9,13 @@ public class GenericContainerException extends AbstractRuntimeException {
     private Integer httpCode = 400;
     private String uri;
 
-    public GenericContainerException(String message) {
+    public GenericContainerException(final String message) {
         super(message);
         this.httpCode = null;
         this.uri = null;
     }
 
-    public GenericContainerException(String message, RestException cause) {
+    public GenericContainerException(final String message, final RestException cause) {
         super(message, cause);
         this.httpCode = cause.getHttpCode();
         this.uri = cause.getUri();

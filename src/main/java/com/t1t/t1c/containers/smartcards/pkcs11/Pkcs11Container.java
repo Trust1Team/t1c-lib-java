@@ -32,7 +32,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     private String modulePath;
 
     // Default constructor for testing purposes
-    public Pkcs11Container(GclReader reader, String containerVersion, GclPkcs11RestClient httpClient) {
+    public Pkcs11Container(final GclReader reader, final String containerVersion, final GclPkcs11RestClient httpClient) {
         this.config = new LibConfig();
         this.reader = reader;
         this.httpClient = httpClient;
@@ -40,13 +40,13 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
         this.modulePath = "/usr/local/lib/libeTPkcs11.dylib";
     }
 
-    public Pkcs11Container(LibConfig config, GclReader reader, String containerVersion, GclPkcs11RestClient httpClient, ModuleConfiguration pkcs11Config) {
+    public Pkcs11Container(final LibConfig config, final GclReader reader, final String containerVersion, final GclPkcs11RestClient httpClient, final ModuleConfiguration pkcs11Config) {
         super(config, reader, containerVersion, httpClient);
         configureModulePath(pkcs11Config);
     }
 
     @Override
-    public Pkcs11Container createInstance(LibConfig config, GclReader reader, String containerVersion, GclPkcs11RestClient httpClient, GclPace pace) {
+    public Pkcs11Container createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclPkcs11RestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -69,17 +69,17 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     @Override
-    public Pkcs11AllData getAllData(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
+    public Pkcs11AllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws GenericContainerException {
         return new Pkcs11AllData(getPkcs11Slots());
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
+    public AllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws GenericContainerException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws GenericContainerException, VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have PIN verification implementation");
     }
 
@@ -89,7 +89,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have authentication implementation");
     }
 
@@ -99,7 +99,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws GenericContainerException {
         throw ExceptionFactory.unsupportedOperationException("Container does not have signing implementation");
     }
 
@@ -113,17 +113,17 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
         throw ExceptionFactory.unsupportedOperationException("Container does not have certificate dump implementation");
     }
 
-    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin, Boolean parse) throws VerifyPinException, NoConsentException, RestException {
+    public Pkcs11Certificates getPkcs11Certificates(final Long slotId, final String pin, final Boolean parse) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkNotNull(slotId, "slotId must be provided");
         Preconditions.checkArgument(StringUtils.isNotEmpty(pin), "PIN must be provided");
         try {
             return new Pkcs11Certificates(PkiUtil.createT1cCertificates(RestExecutor.returnData(httpClient.getPkcs11Certificates(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath).withSlotId(slotId).withPin(pin)), config.isConsentRequired()), parse));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public Pkcs11Certificates getPkcs11Certificates(Long slotId, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public Pkcs11Certificates getPkcs11Certificates(final Long slotId, final String pin) throws VerifyPinException, NoConsentException, RestException {
         return getPkcs11Certificates(slotId, pin, null);
     }
 
@@ -135,7 +135,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
         return getPkcs11Slots(null);
     }
 
-    public List<GclPkcs11Slot> getPkcs11SlotsWithTokensPresent(boolean tokenPresent) throws RestException, NoConsentException {
+    public List<GclPkcs11Slot> getPkcs11SlotsWithTokensPresent(final boolean tokenPresent) throws RestException, NoConsentException {
         return getPkcs11Slots(tokenPresent);
     }
 
@@ -143,11 +143,11 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
         return modulePath;
     }
 
-    private List<GclPkcs11Slot> getPkcs11Slots(Boolean tokenPresent) {
+    private List<GclPkcs11Slot> getPkcs11Slots(final Boolean tokenPresent) {
         return RestExecutor.returnData(httpClient.getPkcs11Slots(getContainerUrlId(), reader.getId(), new GclPkcs11Request().withModule(modulePath), tokenPresent), config.isConsentRequired());
     }
 
-    private void configureModulePath(ModuleConfiguration pkcs11Config) {
+    private void configureModulePath(final ModuleConfiguration pkcs11Config) {
         File driver = null;
         ModuleConfiguration containerConfig = pkcs11Config;
         if (containerConfig == null) {
@@ -178,7 +178,7 @@ public class Pkcs11Container extends SmartCardContainer<Pkcs11Container, GclPkcs
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
         throw ExceptionFactory.unsupportedOperationException("Container does not provide data dump");
     }
 }

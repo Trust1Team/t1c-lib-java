@@ -27,12 +27,12 @@ import java.util.Map;
  */
 public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibRestClient, GclMobibAllData, AllCertificates> {
 
-    public MobibContainer(LibConfig config, GclReader reader, String containerVersion, GclMobibRestClient httpClient) {
+    public MobibContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclMobibRestClient httpClient) {
         super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public MobibContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclMobibRestClient httpClient, GclPace pace) {
+    public MobibContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclMobibRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -52,17 +52,17 @@ public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibR
     }
 
     @Override
-    public GclMobibAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public GclMobibAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getMobibAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public AllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         throw ExceptionFactory.unsupportedOperationException("container has no verify PIN capabilities");
     }
 
@@ -72,7 +72,7 @@ public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibR
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
@@ -82,7 +82,7 @@ public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibR
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
@@ -123,9 +123,9 @@ public class MobibContainer extends SmartCardContainer<MobibContainer, GclMobibR
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        GclMobibAllData allData = getAllData(true);
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final GclMobibAllData allData = getAllData(true);
 
         data.setFullName(allData.getCardIssuing().getCardHolderName());
         data.setDateOfBirth(allData.getCardIssuing().getCardHolderBirthDate());

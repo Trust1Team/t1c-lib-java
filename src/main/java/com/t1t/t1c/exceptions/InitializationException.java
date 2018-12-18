@@ -6,11 +6,11 @@ package com.t1t.t1c.exceptions;
  */
 public class InitializationException extends AbstractSystemException {
 
-    public InitializationException(String message) {
+    public InitializationException(final String message) {
         super(message);
     }
 
-    public InitializationException(String message, Throwable cause) {
+    public InitializationException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

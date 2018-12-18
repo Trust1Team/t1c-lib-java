@@ -29,12 +29,12 @@ import java.util.Map;
  */
 public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRestClient, GclOcraAllData, AllCertificates> {
 
-    public OcraContainer(LibConfig config, GclReader reader, String containerVersion, GclOcraRestClient httpClient) {
+    public OcraContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclOcraRestClient httpClient) {
         super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public OcraContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclOcraRestClient httpClient, GclPace pace) {
+    public OcraContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclOcraRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -54,21 +54,21 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     }
 
     @Override
-    public GclOcraAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public GclOcraAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getOcraAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public AllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -79,7 +79,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
@@ -89,7 +89,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws RestException, NoConsentException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
@@ -103,29 +103,29 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
-    public Long getChallengeOTP(String challenge, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public Long getChallengeOTP(final String challenge, final String pin) throws VerifyPinException, NoConsentException, RestException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(challenge), "challenge must not be null or empty");
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
-            GclOcraChallengeData request = new GclOcraChallengeData().withChallenge(challenge);
+            final GclOcraChallengeData request = new GclOcraChallengeData().withChallenge(challenge);
             if (StringUtils.isNotEmpty(pin)) {
                 request.setPin(pin);
             }
             return RestExecutor.returnData(httpClient.ocraChallenge(getContainerUrlId(), reader.getId(), request), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public Long getChallengeOTP(String challenge) throws VerifyPinException, NoConsentException, RestException {
+    public Long getChallengeOTP(final String challenge) throws VerifyPinException, NoConsentException, RestException {
         return getChallengeOTP(challenge, null);
     }
 
-    public String readCounter(String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String readCounter(final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
-            String pinToUse = PinUtil.getEncryptedPinIfPresent(pin);
+            final String pinToUse = PinUtil.getEncryptedPinIfPresent(pin);
             return RestExecutor.returnData(httpClient.readCounter(getContainerUrlId(), reader.getId(), pinToUse), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -135,7 +135,7 @@ public class OcraContainer extends SmartCardContainer<OcraContainer, GclOcraRest
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
         throw ExceptionFactory.unsupportedOperationException("Container does not implement data dump");
     }
 
