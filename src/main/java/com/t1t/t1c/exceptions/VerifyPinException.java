@@ -8,11 +8,11 @@ public class VerifyPinException extends AbstractRuntimeException {
 
     private Integer retriesLeft;
 
-    public VerifyPinException(String message) {
+    public VerifyPinException(final String message) {
         super(message);
     }
 
-    public VerifyPinException(String message, Integer retriesLeft) {
+    public VerifyPinException(final String message, final Integer retriesLeft) {
         super(message);
         this.retriesLeft = retriesLeft;
     }

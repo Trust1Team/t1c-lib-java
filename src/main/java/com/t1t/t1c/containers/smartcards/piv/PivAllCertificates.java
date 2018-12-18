@@ -13,11 +13,11 @@ public class PivAllCertificates implements AllCertificates {
     private T1cCertificate authenticationCertificate;
     private T1cCertificate signingCertificate;
 
-    public PivAllCertificates(GclPivAllCertificates certs) {
+    public PivAllCertificates(final GclPivAllCertificates certs) {
         this(certs, null);
     }
 
-    public PivAllCertificates(GclPivAllCertificates certs, Boolean parseCertificate) {
+    public PivAllCertificates(final GclPivAllCertificates certs, final Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
         this.signingCertificate = PkiUtil.createT1cCertificate(certs.getSigningCertificate(), parseCertificate);
     }
@@ -32,11 +32,11 @@ public class PivAllCertificates implements AllCertificates {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public PivAllCertificates withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public PivAllCertificates withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -51,11 +51,11 @@ public class PivAllCertificates implements AllCertificates {
     /**
      * @param signingCertificate The signing certificate
      */
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
-    public PivAllCertificates withSigningCertificate(T1cCertificate signingCertificate) {
+    public PivAllCertificates withSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
         return this;
     }

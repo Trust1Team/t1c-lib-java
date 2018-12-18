@@ -6,7 +6,7 @@ package com.t1t.t1c.exceptions;
  */
 public class UnsupportedDigestAlgorithmException extends AbstractConsumerException {
 
-    public UnsupportedDigestAlgorithmException(String message) {
+    public UnsupportedDigestAlgorithmException(final String message) {
         super(message);
     }
 

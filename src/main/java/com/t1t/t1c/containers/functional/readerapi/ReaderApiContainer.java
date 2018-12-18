@@ -19,12 +19,12 @@ import java.util.List;
  */
 public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, GclReaderApiRestClient> {
 
-    public ReaderApiContainer(LibConfig config, GclReader reader, String containerVersion, GclReaderApiRestClient httpClient) {
+    public ReaderApiContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclReaderApiRestClient httpClient) {
         super(config, reader, containerVersion, httpClient, null);
     }
 
     @Override
-    public ReaderApiContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclReaderApiRestClient httpClient, String pin) {
+    public ReaderApiContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclReaderApiRestClient httpClient, final String pin) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -37,31 +37,31 @@ public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, 
         return getAtr(null);
     }
 
-    public String getAtr(String sessionId) throws RestException {
+    public String getAtr(final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.getAtr(getContainerUrlId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
-    public GclReaderApiCommand executeApduCall(GclReaderApiApdu apdu) throws RestException {
+    public GclReaderApiCommand executeApduCall(final GclReaderApiApdu apdu) throws RestException {
         return executeApduCall(apdu, null);
     }
 
-    public GclReaderApiCommand executeApduCall(GclReaderApiApdu apdu, String sessionId) throws RestException {
+    public GclReaderApiCommand executeApduCall(final GclReaderApiApdu apdu, final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.executeApduCall(getContainerUrlId(), reader.getId(), apdu, sessionId), config.isConsentRequired());
     }
 
-    public List<GclReaderApiCommand> executeApduCalls(List<GclReaderApiApdu> apdus) throws RestException {
+    public List<GclReaderApiCommand> executeApduCalls(final List<GclReaderApiApdu> apdus) throws RestException {
         return executeApduCalls(apdus, null);
     }
 
-    public List<GclReaderApiCommand> executeApduCalls(List<GclReaderApiApdu> apdus, String sessionId) throws RestException {
+    public List<GclReaderApiCommand> executeApduCalls(final List<GclReaderApiApdu> apdus, final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.executeApduCalls(getContainerUrlId(), reader.getId(), apdus, sessionId), config.isConsentRequired());
     }
 
-    public GclReaderApiCommand executeCcid(String feature, String apdu) throws RestException {
+    public GclReaderApiCommand executeCcid(final String feature, final String apdu) throws RestException {
         return executeCcid(feature, apdu, null);
     }
 
-    public GclReaderApiCommand executeCcid(String feature, String apdu, String sessionId) throws RestException {
+    public GclReaderApiCommand executeCcid(final String feature, final String apdu, final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.executeCcid(getContainerUrlId(), reader.getId(), new GclReaderApiCcidRequest().withApdu(apdu).withFeature(feature), sessionId), config.isConsentRequired());
     }
 
@@ -69,25 +69,25 @@ public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, 
         return getCcidFeatures(null);
     }
 
-    public List<GclReaderApiCcidFeature> getCcidFeatures(String sessionId) throws RestException {
+    public List<GclReaderApiCcidFeature> getCcidFeatures(final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.getCcidFeatures(getContainerUrlId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
-    public GclReaderApiCommand executeCommand(String command) throws RestException {
+    public GclReaderApiCommand executeCommand(final String command) throws RestException {
         return executeCommand(command, null);
     }
 
-    public GclReaderApiCommand executeCommand(String command, String sessionId) throws RestException {
+    public GclReaderApiCommand executeCommand(final String command, final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.executeCommand(getContainerUrlId(), reader.getId(), new GclReaderApiCommandRequest().withTx(command), sessionId), config.isConsentRequired());
     }
 
-    public List<GclReaderApiCommand> executeCommands(List<String> commands) throws RestException {
+    public List<GclReaderApiCommand> executeCommands(final List<String> commands) throws RestException {
         return executeCommands(commands, null);
     }
 
-    public List<GclReaderApiCommand> executeCommands(List<String> commands, String sessionId) throws RestException {
-        List<GclReaderApiCommandRequest> commandRequests = new ArrayList<>();
-        for (String command : commands) {
+    public List<GclReaderApiCommand> executeCommands(final List<String> commands, final String sessionId) throws RestException {
+        final List<GclReaderApiCommandRequest> commandRequests = new ArrayList<>();
+        for (final String command : commands) {
             commandRequests.add(new GclReaderApiCommandRequest().withTx(command));
         }
         return RestExecutor.returnData(httpClient.executeCommands(getContainerUrlId(), reader.getId(), commandRequests, sessionId), config.isConsentRequired());
@@ -97,12 +97,12 @@ public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, 
         return isCardPresent(null);
     }
 
-    public Boolean isCardPresent(String sessionId) throws RestException {
+    public Boolean isCardPresent(final String sessionId) throws RestException {
         return RestExecutor.returnData(httpClient.isPresent(getContainerUrlId(), reader.getId(), sessionId), config.isConsentRequired());
     }
 
-    public String openSession(Integer timeout) throws RestException {
-        Long timeoutToUse;
+    public String openSession(final Integer timeout) throws RestException {
+        final Long timeoutToUse;
         if (timeout != null) {
             Preconditions.checkArgument(timeout > 0, "timeout value must be greater than 0");
             timeoutToUse = timeout.longValue();
@@ -116,7 +116,7 @@ public class ReaderApiContainer extends FunctionalContainer<ReaderApiContainer, 
         return closeSession(null);
     }
 
-    public Boolean closeSession(String sessionId) throws RestException {
+    public Boolean closeSession(final String sessionId) throws RestException {
         if (StringUtils.isNotEmpty(sessionId)) {
             return sessionId.equals(RestExecutor.returnData(httpClient.closeSession(getContainerUrlId(), reader.getId(), sessionId), config.isConsentRequired()));
         } else {

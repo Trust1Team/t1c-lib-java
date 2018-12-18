@@ -13,7 +13,7 @@ public class Pkcs11Certificates implements AllCertificates {
 
     private List<T1cCertificate> certificates;
 
-    public Pkcs11Certificates(List<T1cCertificate> certificates) {
+    public Pkcs11Certificates(final List<T1cCertificate> certificates) {
         this.certificates = certificates;
     }
 
@@ -21,16 +21,16 @@ public class Pkcs11Certificates implements AllCertificates {
         return certificates;
     }
 
-    public void setCertificates(List<T1cCertificate> certificates) {
+    public void setCertificates(final List<T1cCertificate> certificates) {
         this.certificates = certificates;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof Pkcs11Certificates)) return false;
 
-        Pkcs11Certificates that = (Pkcs11Certificates) o;
+        final Pkcs11Certificates that = (Pkcs11Certificates) o;
 
         return certificates != null ? certificates.equals(that.certificates) : that.certificates == null;
     }

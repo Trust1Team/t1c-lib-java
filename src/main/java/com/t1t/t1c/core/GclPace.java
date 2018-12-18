@@ -17,11 +17,11 @@ public class GclPace implements Serializable {
         return pin;
     }
 
-    public void setPin(String pin) {
+    public void setPin(final String pin) {
         this.pin = pin;
     }
 
-    public GclPace withPin(String pin) {
+    public GclPace withPin(final String pin) {
         this.pin = pin;
         return this;
     }
@@ -30,11 +30,11 @@ public class GclPace implements Serializable {
         return mrz;
     }
 
-    public void setMrz(String mrz) {
+    public void setMrz(final String mrz) {
         this.mrz = mrz;
     }
 
-    public GclPace withMrz(String mrz) {
+    public GclPace withMrz(final String mrz) {
         this.mrz = mrz;
         return this;
     }
@@ -43,11 +43,11 @@ public class GclPace implements Serializable {
         return can;
     }
 
-    public void setCan(String can) {
+    public void setCan(final String can) {
         this.can = can;
     }
 
-    public GclPace withCan(String can) {
+    public GclPace withCan(final String can) {
         this.can = can;
         return this;
     }
@@ -56,11 +56,11 @@ public class GclPace implements Serializable {
         return puk;
     }
 
-    public void setPuk(String puk) {
+    public void setPuk(final String puk) {
         this.puk = puk;
     }
 
-    public GclPace withPuk(String puk) {
+    public GclPace withPuk(final String puk) {
         this.puk = puk;
         return this;
     }

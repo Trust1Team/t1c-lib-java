@@ -15,7 +15,7 @@ public abstract class FunctionalContainer<T extends FunctionalContainer, U> impl
     protected LibConfig config;
     protected ContainerVersion containerVersion;
 
-    public FunctionalContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient, String pin) {
+    public FunctionalContainer(final LibConfig config, final GclReader reader, final String containerVersion, final U httpClient, final String pin) {
         createInstance(config, reader, containerVersion, httpClient, pin);
     }
 

@@ -12,11 +12,11 @@ public class PtIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rootNonRepudiationCertificate;
 
-    public PtIdAllCertificates(GclPtIdAllCertificates certificates) {
+    public PtIdAllCertificates(final GclPtIdAllCertificates certificates) {
         this(certificates, null);
     }
 
-    public PtIdAllCertificates(GclPtIdAllCertificates certificates, Boolean parseCertificates) {
+    public PtIdAllCertificates(final GclPtIdAllCertificates certificates, final Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
         this.rootAuthenticationCertificate = PkiUtil.createT1cCertificate(certificates.getRootAuthenticationCertificate(), parseCertificates);
@@ -34,11 +34,11 @@ public class PtIdAllCertificates implements AllCertificates {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public PtIdAllCertificates withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public PtIdAllCertificates withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -53,11 +53,11 @@ public class PtIdAllCertificates implements AllCertificates {
     /**
      * @param nonRepudiationCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public void setNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
     }
 
-    public PtIdAllCertificates withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public PtIdAllCertificates withNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
         return this;
     }
@@ -72,11 +72,11 @@ public class PtIdAllCertificates implements AllCertificates {
     /**
      * @param rootAuthenticationCertificate The root_authentication_certificate
      */
-    public void setRootAuthenticationCertificate(T1cCertificate rootAuthenticationCertificate) {
+    public void setRootAuthenticationCertificate(final T1cCertificate rootAuthenticationCertificate) {
         this.rootAuthenticationCertificate = rootAuthenticationCertificate;
     }
 
-    public PtIdAllCertificates withRootAuthenticationCertificate(T1cCertificate rootAuthenticationCertificate) {
+    public PtIdAllCertificates withRootAuthenticationCertificate(final T1cCertificate rootAuthenticationCertificate) {
         this.rootAuthenticationCertificate = rootAuthenticationCertificate;
         return this;
     }
@@ -91,11 +91,11 @@ public class PtIdAllCertificates implements AllCertificates {
     /**
      * @param rootCertificate The root_certificate
      */
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
-    public PtIdAllCertificates withRootCertificate(T1cCertificate rootCertificate) {
+    public PtIdAllCertificates withRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
         return this;
     }
@@ -110,11 +110,11 @@ public class PtIdAllCertificates implements AllCertificates {
     /**
      * @param rootNonRepudiationCertificate The root_non_repudiation_certificate
      */
-    public void setRootNonRepudiationCertificate(T1cCertificate rootNonRepudiationCertificate) {
+    public void setRootNonRepudiationCertificate(final T1cCertificate rootNonRepudiationCertificate) {
         this.rootNonRepudiationCertificate = rootNonRepudiationCertificate;
     }
 
-    public PtIdAllCertificates withRootNonRepudiationCertificate(T1cCertificate rootNonRepudiationCertificate) {
+    public PtIdAllCertificates withRootNonRepudiationCertificate(final T1cCertificate rootNonRepudiationCertificate) {
         this.rootNonRepudiationCertificate = rootNonRepudiationCertificate;
         return this;
     }

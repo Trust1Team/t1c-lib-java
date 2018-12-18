@@ -18,11 +18,11 @@ public class JavaInfo {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof JavaInfo)) return false;
 
-        JavaInfo javaInfo = (JavaInfo) o;
+        final JavaInfo javaInfo = (JavaInfo) o;
 
         if (version != null ? !version.equals(javaInfo.version) : javaInfo.version != null) return false;
         return specificationVersion != null ? specificationVersion.equals(javaInfo.specificationVersion) : javaInfo.specificationVersion == null;

@@ -16,7 +16,7 @@ public class BeIdAllCertificates implements AllCertificates {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllCertificates(GclBeIdAllCertificates certs, Boolean parseCertificate) {
+    public BeIdAllCertificates(final GclBeIdAllCertificates certs, final Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certs.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = PkiUtil.createT1cCertificate(certs.getCitizenCertificate(), parseCertificate);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certs.getNonRepudiationCertificate(), parseCertificate);
@@ -34,11 +34,11 @@ public class BeIdAllCertificates implements AllCertificates {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public BeIdAllCertificates withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public BeIdAllCertificates withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -53,11 +53,11 @@ public class BeIdAllCertificates implements AllCertificates {
     /**
      * @param citizenCertificate The citizen_certificate
      */
-    public void setCitizenCertificate(T1cCertificate citizenCertificate) {
+    public void setCitizenCertificate(final T1cCertificate citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
     }
 
-    public BeIdAllCertificates withCitizenCertificate(T1cCertificate citizenCertificate) {
+    public BeIdAllCertificates withCitizenCertificate(final T1cCertificate citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
         return this;
     }
@@ -72,11 +72,11 @@ public class BeIdAllCertificates implements AllCertificates {
     /**
      * @param nonRepudiationCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public void setNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
     }
 
-    public BeIdAllCertificates withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public BeIdAllCertificates withNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
         return this;
     }
@@ -91,11 +91,11 @@ public class BeIdAllCertificates implements AllCertificates {
     /**
      * @param rootCertificate The root_certificate
      */
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
-    public BeIdAllCertificates withRootCertificate(T1cCertificate rootCertificate) {
+    public BeIdAllCertificates withRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
         return this;
     }
@@ -110,11 +110,11 @@ public class BeIdAllCertificates implements AllCertificates {
     /**
      * @param rrnCertificate The rrn_certificate
      */
-    public void setRrnCertificate(T1cCertificate rrnCertificate) {
+    public void setRrnCertificate(final T1cCertificate rrnCertificate) {
         this.rrnCertificate = rrnCertificate;
     }
 
-    public BeIdAllCertificates withRrnCertificate(T1cCertificate rrnCertificate) {
+    public BeIdAllCertificates withRrnCertificate(final T1cCertificate rrnCertificate) {
         this.rrnCertificate = rrnCertificate;
         return this;
     }

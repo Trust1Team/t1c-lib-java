@@ -21,7 +21,7 @@ public abstract class AbstractException extends Exception {
      *
      * @param message the exception message
      */
-    public AbstractException(String message) {
+    public AbstractException(final String message) {
         super(message);
     }
 
@@ -30,7 +30,7 @@ public abstract class AbstractException extends Exception {
      *
      * @param cause the exception cause
      */
-    public AbstractException(Throwable cause) {
+    public AbstractException(final Throwable cause) {
         super(cause);
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractException extends Exception {
      * @param message the exception message
      * @param cause   the exception cause
      */
-    public AbstractException(String message, Throwable cause) {
+    public AbstractException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractException extends Exception {
     /**
      * @param stacktrace the stacktrace to set
      */
-    public void setServerStack(String stacktrace) {
+    public void setServerStack(final String stacktrace) {
         this.serverStack = stacktrace;
     }
 

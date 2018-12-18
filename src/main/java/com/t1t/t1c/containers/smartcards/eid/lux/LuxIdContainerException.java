@@ -9,7 +9,7 @@ import com.t1t.t1c.exceptions.GenericContainerException;
  */
 public class LuxIdContainerException extends GenericContainerException {
 
-    public LuxIdContainerException(String message) {
+    public LuxIdContainerException(final String message) {
         super(message);
     }
 

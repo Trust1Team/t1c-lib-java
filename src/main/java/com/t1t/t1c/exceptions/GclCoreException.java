@@ -8,15 +8,15 @@ public class GclCoreException extends AbstractRuntimeException {
 
     private Integer httpCode;
 
-    public GclCoreException(String message) {
+    public GclCoreException(final String message) {
         super(message);
     }
 
-    public GclCoreException(Throwable cause) {
+    public GclCoreException(final Throwable cause) {
         super(cause);
     }
 
-    public GclCoreException(String message, Throwable cause) {
+    public GclCoreException(final String message, final Throwable cause) {
         super(message, cause);
         if (cause instanceof RestException) {
             httpCode = ((RestException) cause).getHttpCode();

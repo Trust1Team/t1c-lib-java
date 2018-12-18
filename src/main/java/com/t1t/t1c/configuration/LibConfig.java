@@ -66,7 +66,7 @@ public class LibConfig {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(final String version) {
         this.version = version;
     }
 
@@ -74,7 +74,7 @@ public class LibConfig {
         return build;
     }
 
-    public void setBuild(String build) {
+    public void setBuild(final String build) {
         this.build = build;
     }
 
@@ -82,7 +82,7 @@ public class LibConfig {
         return environment;
     }
 
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(final Environment environment) {
         this.environment = environment;
     }
 
@@ -90,7 +90,7 @@ public class LibConfig {
         return authUri;
     }
 
-    public void setAuthUri(String authUri) {
+    public void setAuthUri(final String authUri) {
         this.authUri = authUri;
     }
 
@@ -98,7 +98,7 @@ public class LibConfig {
         return gwJwt;
     }
 
-    public void setGwJwt(String gwJwt) {
+    public void setGwJwt(final String gwJwt) {
         this.gwJwt = gwJwt;
     }
 
@@ -106,7 +106,7 @@ public class LibConfig {
         return dsUri;
     }
 
-    public void setDsUri(String dsUri) {
+    public void setDsUri(final String dsUri) {
         this.dsUri = UriUtils.uriFinalSlashAppender(dsUri);
     }
 
@@ -114,7 +114,7 @@ public class LibConfig {
         return gclClientUri;
     }
 
-    public void setGclClientUri(String gclClientUri) {
+    public void setGclClientUri(final String gclClientUri) {
         this.gclClientUri = UriUtils.uriFinalSlashAppender(gclClientUri);
     }
 
@@ -122,7 +122,7 @@ public class LibConfig {
         return ocvUri;
     }
 
-    public void setOcvUri(String ocvUri) {
+    public void setOcvUri(final String ocvUri) {
         this.ocvUri = UriUtils.uriFinalSlashAppender(ocvUri);
     }
 
@@ -130,7 +130,7 @@ public class LibConfig {
         return apiKey;
     }
 
-    public void setApiKey(String apiKey) {
+    public void setApiKey(final String apiKey) {
         this.apiKey = apiKey;
     }
 
@@ -138,7 +138,7 @@ public class LibConfig {
         return citrix;
     }
 
-    public void setCitrix(Boolean citrix) {
+    public void setCitrix(final Boolean citrix) {
         this.citrix = citrix;
     }
 
@@ -146,7 +146,7 @@ public class LibConfig {
         return consentRequired;
     }
 
-    public void setConsentRequired(Boolean consentRequired) {
+    public void setConsentRequired(final Boolean consentRequired) {
         this.consentRequired = consentRequired;
     }
 
@@ -154,7 +154,7 @@ public class LibConfig {
         return contextToken;
     }
 
-    public void setContextToken(String contextToken) {
+    public void setContextToken(final String contextToken) {
         this.contextToken = contextToken;
     }
 
@@ -162,7 +162,7 @@ public class LibConfig {
         return gclJwt;
     }
 
-    public void setGclJwt(String gclJwt) {
+    public void setGclJwt(final String gclJwt) {
         this.gclJwt = gclJwt;
     }
 
@@ -170,7 +170,7 @@ public class LibConfig {
         return agentPort;
     }
 
-    public void setAgentPort(Integer agentPort) {
+    public void setAgentPort(final Integer agentPort) {
         this.agentPort = agentPort;
     }
 
@@ -178,7 +178,7 @@ public class LibConfig {
         return clientFingerprintDirectoryPath;
     }
 
-    public void setClientFingerprintDirectoryPath(String clientFingerprintDirectoryPath) {
+    public void setClientFingerprintDirectoryPath(final String clientFingerprintDirectoryPath) {
         this.clientFingerprintDirectoryPath = clientFingerprintDirectoryPath;
     }
 
@@ -186,7 +186,7 @@ public class LibConfig {
         return containerDownloadTimeout;
     }
 
-    public void setContainerDownloadTimeout(Integer containerDownloadTimeout) {
+    public void setContainerDownloadTimeout(final Integer containerDownloadTimeout) {
         this.containerDownloadTimeout = containerDownloadTimeout;
     }
 
@@ -194,7 +194,7 @@ public class LibConfig {
         return defaultConsentDuration;
     }
 
-    public void setDefaultConsentDuration(Integer defaultConsentDuration) {
+    public void setDefaultConsentDuration(final Integer defaultConsentDuration) {
         this.defaultConsentDuration = defaultConsentDuration;
     }
 
@@ -202,7 +202,7 @@ public class LibConfig {
         return defaultConsentTimeout;
     }
 
-    public void setDefaultConsentTimeout(Integer defaultConsentTimeout) {
+    public void setDefaultConsentTimeout(final Integer defaultConsentTimeout) {
         this.defaultConsentTimeout = defaultConsentTimeout;
     }
 
@@ -210,7 +210,7 @@ public class LibConfig {
         return defaultPollingIntervalInSeconds;
     }
 
-    public void setDefaultPollingIntervalInSeconds(Integer defaultPollingIntervalInSeconds) {
+    public void setDefaultPollingIntervalInSeconds(final Integer defaultPollingIntervalInSeconds) {
         this.defaultPollingIntervalInSeconds = defaultPollingIntervalInSeconds;
     }
 
@@ -218,7 +218,7 @@ public class LibConfig {
         return defaultPollingTimeoutInSeconds;
     }
 
-    public void setDefaultPollingTimeoutInSeconds(Integer defaultPollingTimeoutInSeconds) {
+    public void setDefaultPollingTimeoutInSeconds(final Integer defaultPollingTimeoutInSeconds) {
         this.defaultPollingTimeoutInSeconds = defaultPollingTimeoutInSeconds;
     }
 
@@ -226,7 +226,7 @@ public class LibConfig {
         return hardwarePinPadForced;
     }
 
-    public void setHardwarePinPadForced(Boolean hardwarePinPadForced) {
+    public void setHardwarePinPadForced(final Boolean hardwarePinPadForced) {
         this.hardwarePinPadForced = hardwarePinPadForced;
     }
 
@@ -234,7 +234,7 @@ public class LibConfig {
         return osPinDialog;
     }
 
-    public void setOsPinDialog(Boolean osPinDialog) {
+    public void setOsPinDialog(final Boolean osPinDialog) {
         this.osPinDialog = osPinDialog;
     }
 
@@ -242,7 +242,7 @@ public class LibConfig {
         return pkcs11Config;
     }
 
-    public void setPkcs11Config(ModuleConfiguration pkcs11Config) {
+    public void setPkcs11Config(final ModuleConfiguration pkcs11Config) {
         this.pkcs11Config = pkcs11Config;
     }
 
@@ -250,7 +250,7 @@ public class LibConfig {
         return sessionTimeout;
     }
 
-    public void setSessionTimeout(Integer sessionTimeout) {
+    public void setSessionTimeout(final Integer sessionTimeout) {
         this.sessionTimeout = sessionTimeout;
     }
 
@@ -258,7 +258,7 @@ public class LibConfig {
         return customSslConfig;
     }
 
-    public void setCustomSslConfig(SslConfig customSslConfig) {
+    public void setCustomSslConfig(final SslConfig customSslConfig) {
         this.customSslConfig = customSslConfig;
     }
 
@@ -271,10 +271,10 @@ public class LibConfig {
                 return this.dsNameSpace;
             } else {
                 try {
-                    URI uri = new URL(this.dsUri).toURI();
+                    final URI uri = new URL(this.dsUri).toURI();
                     this.dsNameSpace = uri.getHost();
                     return this.dsNameSpace;
-                } catch (MalformedURLException | URISyntaxException ex) {
+                } catch (final MalformedURLException | URISyntaxException ex) {
                     // Do nothing
                 }
             }
@@ -282,7 +282,7 @@ public class LibConfig {
         return null;
     }
 
-    public void setDsNameSpace(String dsNameSpace) {
+    public void setDsNameSpace(final String dsNameSpace) {
         this.dsNameSpace = dsNameSpace;
     }
 
@@ -295,10 +295,10 @@ public class LibConfig {
                 return proxyDomain;
             } else {
                 try {
-                    URI uri = new URL(this.dsUri).toURI();
+                    final URI uri = new URL(this.dsUri).toURI();
                     this.proxyDomain = new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), null, null, null).toString();
                     return this.proxyDomain;
-                } catch (MalformedURLException | URISyntaxException ex) {
+                } catch (final MalformedURLException | URISyntaxException ex) {
                     // Do nothing
                 }
             }
@@ -306,7 +306,7 @@ public class LibConfig {
         return null;
     }
 
-    public void setProxyDomain(String proxyDomain) {
+    public void setProxyDomain(final String proxyDomain) {
         this.proxyDomain = proxyDomain;
     }
 }

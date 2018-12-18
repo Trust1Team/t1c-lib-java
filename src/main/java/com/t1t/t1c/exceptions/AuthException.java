@@ -6,7 +6,7 @@ package com.t1t.t1c.exceptions;
  */
 public class AuthException extends AbstractRuntimeException {
 
-    public AuthException(String message) {
+    public AuthException(final String message) {
         super(message);
     }
 

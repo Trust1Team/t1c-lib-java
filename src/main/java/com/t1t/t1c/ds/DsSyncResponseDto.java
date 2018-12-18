@@ -18,7 +18,7 @@ public class DsSyncResponseDto {
     private DsAtrList atrList;
     private String gclJwt;
 
-    public DsSyncResponseDto(Pair<DsRegistrationSyncResponse, String> response) {
+    public DsSyncResponseDto(final Pair<DsRegistrationSyncResponse, String> response) {
         this.uuid = response.getLeft().getUuid();
         this.activated = response.getLeft().getActivated();
         this.coreVersion = response.getLeft().getCoreVersion();
@@ -32,7 +32,7 @@ public class DsSyncResponseDto {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(final String uuid) {
         this.uuid = uuid;
     }
 
@@ -40,7 +40,7 @@ public class DsSyncResponseDto {
         return activated;
     }
 
-    public void setActivated(Boolean activated) {
+    public void setActivated(final Boolean activated) {
         this.activated = activated;
     }
 
@@ -48,7 +48,7 @@ public class DsSyncResponseDto {
         return coreVersion;
     }
 
-    public void setCoreVersion(String coreVersion) {
+    public void setCoreVersion(final String coreVersion) {
         this.coreVersion = coreVersion;
     }
 
@@ -56,7 +56,7 @@ public class DsSyncResponseDto {
         return contextToken;
     }
 
-    public void setContextToken(String contextToken) {
+    public void setContextToken(final String contextToken) {
         this.contextToken = contextToken;
     }
 
@@ -64,7 +64,7 @@ public class DsSyncResponseDto {
         return containerResponses;
     }
 
-    public void setContainerResponses(List<DsContainerResponse> containerResponses) {
+    public void setContainerResponses(final List<DsContainerResponse> containerResponses) {
         this.containerResponses = containerResponses;
     }
 
@@ -72,7 +72,7 @@ public class DsSyncResponseDto {
         return atrList;
     }
 
-    public void setAtrList(DsAtrList atrList) {
+    public void setAtrList(final DsAtrList atrList) {
         this.atrList = atrList;
     }
 
@@ -80,7 +80,7 @@ public class DsSyncResponseDto {
         return gclJwt;
     }
 
-    public void setGclJwt(String gclJwt) {
+    public void setGclJwt(final String gclJwt) {
         this.gclJwt = gclJwt;
     }
 }

@@ -30,12 +30,12 @@ import java.util.Map;
  */
 public class OberthurContainer extends SmartCardContainer<OberthurContainer, GclOberthurRestClient, OberthurAllData, OberthurAllData> {
 
-    public OberthurContainer(LibConfig config, GclReader reader, String containerVersion, GclOberthurRestClient httpClient) {
+    public OberthurContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclOberthurRestClient httpClient) {
         super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public OberthurContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclOberthurRestClient httpClient, GclPace pace) {
+    public OberthurContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclOberthurRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -56,21 +56,21 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
     }
 
     @Override
-    public OberthurAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
+    public OberthurAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws GenericContainerException {
         return new OberthurAllData(RestExecutor.returnData(httpClient.getAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public OberthurAllData getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws GenericContainerException {
+    public OberthurAllData getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws GenericContainerException {
         return new OberthurAllData(RestExecutor.returnData(httpClient.getAllCertificates(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws GenericContainerException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws GenericContainerException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -80,7 +80,7 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
                 this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
             }
@@ -89,13 +89,13 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws GenericContainerException {
         try {
             isAuthenticateAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -105,7 +105,7 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
                 this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.SHA1, DigestAlgorithm.SHA256);
             }
@@ -114,13 +114,13 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws GenericContainerException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws GenericContainerException {
         try {
             isSignAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to sign must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -143,23 +143,23 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
         return getAlgorithms(RestExecutor.returnData(httpClient.getSignAlgoRefs(getContainerUrlId(), reader.getId()), config.isConsentRequired()));
     }
 
-    public T1cCertificate getRootCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getRootCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getIssuerCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getIssuerCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIssuerCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getAuthenticationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getSigningCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getSigningCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getEncryptionCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getEncryptionCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getEncryptionCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
@@ -185,20 +185,20 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
 
     @Override
     public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        OberthurAllData certs = getAllCertificates(true);
+        final OberthurAllData certs = getAllCertificates(true);
         return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getAuthenticationCertificate());
     }
 
     @Override
     public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        OberthurAllData certs = getAllCertificates(true);
+        final OberthurAllData certs = getAllCertificates(true);
         return orderCertificates(certs.getRootCertificate(), certs.getIssuerCertificate(), certs.getSigningCertificate());
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        OberthurAllData allData = getAllData(true);
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final OberthurAllData allData = getAllData(true);
 
         data.setAuthenticationCertificateChain(orderCertificates(allData.getRootCertificate(), allData.getIssuerCertificate(), allData.getAuthenticationCertificate()));
         data.setSigningCertificateChain(orderCertificates(allData.getRootCertificate(), allData.getIssuerCertificate(), allData.getSigningCertificate()));
@@ -206,8 +206,8 @@ public class OberthurContainer extends SmartCardContainer<OberthurContainer, Gcl
         return data;
     }
 
-    private Map<String, T1cCertificate> getCertMap(OberthurAllData data) {
-        Map<String, T1cCertificate> certMap = new HashMap<>();
+    private Map<String, T1cCertificate> getCertMap(final OberthurAllData data) {
+        final Map<String, T1cCertificate> certMap = new HashMap<>();
         certMap.put("root-certificate", data.getRootCertificate());
         certMap.put("issuer-certificate", data.getIssuerCertificate());
         certMap.put("authentication-certificate", data.getAuthenticationCertificate());

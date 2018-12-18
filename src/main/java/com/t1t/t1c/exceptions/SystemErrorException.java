@@ -7,7 +7,7 @@ public class SystemErrorException extends AbstractSystemException {
     public SystemErrorException() {
     }
 
-    public SystemErrorException(String message) {
+    public SystemErrorException(final String message) {
         super(message);
     }
 
@@ -16,7 +16,7 @@ public class SystemErrorException extends AbstractSystemException {
      *
      * @param t the cause t
      */
-    public SystemErrorException(Throwable t) {
+    public SystemErrorException(final Throwable t) {
         super(t);
     }
 

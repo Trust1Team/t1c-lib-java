@@ -24,29 +24,29 @@ public final class CryptUtil {
 
     private CryptUtil() {}
 
-    public static void setDevicePublicKey(T1cPublicKey devicePublicKey) {
+    public static void setDevicePublicKey(final T1cPublicKey devicePublicKey) {
         CryptUtil.DEVICE_PUBLIC_KEY = devicePublicKey;
     }
 
-    public static String encrypt(String value) {
+    public static String encrypt(final String value) {
         try {
-            Cipher cipher = Cipher.getInstance(RSA);
+            final Cipher cipher = Cipher.getInstance(RSA);
             cipher.init(Cipher.ENCRYPT_MODE, DEVICE_PUBLIC_KEY.getParsed());
             return Base64.encodeBase64String(cipher.doFinal(value.getBytes()));
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException ex) {
+        } catch (final NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException ex) {
             return null;
         }
     }
 
-    public static String decrypt(String encryptedValue, String privateKey) {
+    public static String decrypt(final String encryptedValue, final String privateKey) {
         try {
-            byte[] content = Base64.decodeBase64(privateKey.getBytes());
-            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(content);
-            KeyFactory kf = KeyFactory.getInstance(RSA);
-            Cipher cipher = Cipher.getInstance(RSA);
+            final byte[] content = Base64.decodeBase64(privateKey.getBytes());
+            final PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(content);
+            final KeyFactory kf = KeyFactory.getInstance(RSA);
+            final Cipher cipher = Cipher.getInstance(RSA);
             cipher.init(Cipher.DECRYPT_MODE, kf.generatePrivate(spec));
             return new String(cipher.doFinal(Base64.decodeBase64(encryptedValue.getBytes())));
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
             return null;
         }

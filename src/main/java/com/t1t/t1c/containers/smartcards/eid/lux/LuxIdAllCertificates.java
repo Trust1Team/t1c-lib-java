@@ -14,12 +14,12 @@ public class LuxIdAllCertificates implements AllCertificates {
     private T1cCertificate nonRepudiationCertificate;
     private List<T1cCertificate> rootCertificates;
 
-    public LuxIdAllCertificates(GclLuxIdAllCertificates certificates, Boolean parseCertificates) {
+    public LuxIdAllCertificates(final GclLuxIdAllCertificates certificates, final Boolean parseCertificates) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(certificates.getAuthenticationCertificate(), parseCertificates);
         this.nonRepudiationCertificate = PkiUtil.createT1cCertificate(certificates.getNonRepudiationCertificate(), parseCertificates);
         if (CollectionUtils.isNotEmpty(certificates.getRootCertificates())) {
-            List<T1cCertificate> rootCerts = new ArrayList<>();
-            for (String cert : certificates.getRootCertificates()) {
+            final List<T1cCertificate> rootCerts = new ArrayList<>();
+            for (final String cert : certificates.getRootCertificates()) {
                 rootCerts.add(PkiUtil.createT1cCertificate(cert, parseCertificates));
             }
             this.rootCertificates = rootCerts;
@@ -36,11 +36,11 @@ public class LuxIdAllCertificates implements AllCertificates {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public LuxIdAllCertificates withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public LuxIdAllCertificates withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -55,11 +55,11 @@ public class LuxIdAllCertificates implements AllCertificates {
     /**
      * @param nonRepudiationCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public void setNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
     }
 
-    public LuxIdAllCertificates withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public LuxIdAllCertificates withNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
         return this;
     }
@@ -74,11 +74,11 @@ public class LuxIdAllCertificates implements AllCertificates {
     /**
      * @param rootCertificates The root_certificates
      */
-    public void setRootCertificates(List<T1cCertificate> rootCertificates) {
+    public void setRootCertificates(final List<T1cCertificate> rootCertificates) {
         this.rootCertificates = rootCertificates;
     }
 
-    public LuxIdAllCertificates withRootCertificates(List<T1cCertificate> rootCertificates) {
+    public LuxIdAllCertificates withRootCertificates(final List<T1cCertificate> rootCertificates) {
         this.rootCertificates = rootCertificates;
         return this;
     }

@@ -26,17 +26,17 @@ public class RestExecutor {
 
     private static final String ACCESS_TOKEN_HEADER_NAME = "access_token";
 
-    public static final synchronized <T> T executeCall(Call<T> call) throws RestException, NoConsentException {
+    public static final synchronized <T> T executeCall(final Call<T> call) throws RestException, NoConsentException {
         return executeCall(call, true);
     }
 
-    public static final synchronized <T> Pair<T, String> executeCallAndReturnAccessTokenHeader(Call<T> call, boolean consentRequired) {
+    public static final synchronized <T> Pair<T, String> executeCallAndReturnAccessTokenHeader(final Call<T> call, final boolean consentRequired) {
         return executeCall(call, true, consentRequired);
     }
 
-    public static final synchronized <T> Pair<T, String> executeCall(Call<T> call, boolean extractTokenFromHeader, boolean consentRequired) {
+    public static final synchronized <T> Pair<T, String> executeCall(final Call<T> call, final boolean extractTokenFromHeader, final boolean consentRequired) {
         try {
-            Response<T> response = call.execute();
+            final Response<T> response = call.execute();
             if (call.isExecuted() && response.isSuccessful()) {
                 log.debug("Response data: {}", new Gson().toJson(response.body()));
                 if (extractTokenFromHeader) {
@@ -47,10 +47,10 @@ public class RestExecutor {
             } else {
                 Integer httpCode = null;
                 String url = null;
-                StringBuilder message = new StringBuilder();
+                final StringBuilder message = new StringBuilder();
                 String jsonError = null;
                 if (response.errorBody() != null) {
-                    boolean isJson = MediaType.parse("application/json").equals(response.errorBody().contentType());
+                    final boolean isJson = MediaType.parse("application/json").equals(response.errorBody().contentType());
                     if (isJson) {
                         jsonError = response.errorBody().source().readUtf8();
                     } else {
@@ -76,22 +76,22 @@ public class RestExecutor {
                 }
                 throw ExceptionFactory.restException(message.toString(), httpCode, url, jsonError);
             }
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             log.error("Error executing request: ", ex);
             throw ExceptionFactory.restException(ex);
-        } catch (JsonSyntaxException ex) {
+        } catch (final JsonSyntaxException ex) {
             log.error("Failed to deserialize response: ", ex.getMessage());
             throw ex;
         }
     }
 
-    public static final synchronized <T> T executeCall(Call<T> call, boolean consentRequired) throws RestException, NoConsentException {
+    public static final synchronized <T> T executeCall(final Call<T> call, final boolean consentRequired) throws RestException, NoConsentException {
         return executeCall(call, false, consentRequired).getLeft();
     }
 
-    public static synchronized <T> T returnData(Call<T1cResponse<T>> call, boolean consentRequired) throws RestException, NoConsentException {
+    public static synchronized <T> T returnData(final Call<T1cResponse<T>> call, final boolean consentRequired) throws RestException, NoConsentException {
         if (call != null) {
-            T1cResponse<T> response = executeCall(call, consentRequired);
+            final T1cResponse<T> response = executeCall(call, consentRequired);
             if (isCallSuccessful(response)) {
                 return response.getData();
             } else {
@@ -101,7 +101,7 @@ public class RestExecutor {
         return null;
     }
 
-    public static boolean isCallSuccessful(T1cResponse response) {
+    public static boolean isCallSuccessful(final T1cResponse response) {
         if (response != null && response.getSuccess() != null) {
             return response.getSuccess();
         }

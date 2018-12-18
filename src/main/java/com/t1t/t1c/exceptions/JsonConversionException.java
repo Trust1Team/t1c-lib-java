@@ -12,7 +12,7 @@ public class JsonConversionException extends AbstractRuntimeException {
 
     private boolean objectInsteadOfArray = false;
 
-    public JsonConversionException(String message) {
+    public JsonConversionException(final String message) {
         super(message);
         if (StringUtils.isNotEmpty(message) && message.contains(EXPECTED_ARRAY)) {
             this.objectInsteadOfArray = true;

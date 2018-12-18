@@ -18,11 +18,11 @@ public class PlatformInfo {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof PlatformInfo)) return false;
 
-        PlatformInfo that = (PlatformInfo) o;
+        final PlatformInfo that = (PlatformInfo) o;
 
         if (!os.equals(that.os)) return false;
         return java.equals(that.java);

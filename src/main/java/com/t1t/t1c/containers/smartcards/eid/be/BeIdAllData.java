@@ -16,7 +16,7 @@ public class BeIdAllData implements AllData {
     private T1cCertificate rootCertificate;
     private T1cCertificate rrnCertificate;
 
-    public BeIdAllData(GclBeIdAllData data, Boolean parseCertificate) {
+    public BeIdAllData(final GclBeIdAllData data, final Boolean parseCertificate) {
         this.address = data.getAddress();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.citizenCertificate = PkiUtil.createT1cCertificate(data.getCitizenCertificate(), parseCertificate);
@@ -38,11 +38,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param address The address
      */
-    public void setAddress(GclBeIdAddress address) {
+    public void setAddress(final GclBeIdAddress address) {
         this.address = address;
     }
 
-    public BeIdAllData withAddress(GclBeIdAddress address) {
+    public BeIdAllData withAddress(final GclBeIdAddress address) {
         this.address = address;
         return this;
     }
@@ -57,11 +57,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public BeIdAllData withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public BeIdAllData withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -76,11 +76,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param citizenCertificate The citizen_certificate
      */
-    public void setCitizenCertificate(T1cCertificate citizenCertificate) {
+    public void setCitizenCertificate(final T1cCertificate citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
     }
 
-    public BeIdAllData withCitizenCertificate(T1cCertificate citizenCertificate) {
+    public BeIdAllData withCitizenCertificate(final T1cCertificate citizenCertificate) {
         this.citizenCertificate = citizenCertificate;
         return this;
     }
@@ -95,11 +95,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param nonRepudiationCertificate The non_repudiation_certificate
      */
-    public void setNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public void setNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
     }
 
-    public BeIdAllData withNonRepudiationCertificate(T1cCertificate nonRepudiationCertificate) {
+    public BeIdAllData withNonRepudiationCertificate(final T1cCertificate nonRepudiationCertificate) {
         this.nonRepudiationCertificate = nonRepudiationCertificate;
         return this;
     }
@@ -114,11 +114,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param picture The picture
      */
-    public void setPicture(String picture) {
+    public void setPicture(final String picture) {
         this.picture = picture;
     }
 
-    public BeIdAllData withPicture(String picture) {
+    public BeIdAllData withPicture(final String picture) {
         this.picture = picture;
         return this;
     }
@@ -133,11 +133,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param rn The rn
      */
-    public void setRn(GclBeIdRn rn) {
+    public void setRn(final GclBeIdRn rn) {
         this.rn = rn;
     }
 
-    public BeIdAllData withRn(GclBeIdRn rn) {
+    public BeIdAllData withRn(final GclBeIdRn rn) {
         this.rn = rn;
         return this;
     }
@@ -152,11 +152,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param rootCertificate The root_certificate
      */
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
-    public BeIdAllData withRootCertificate(T1cCertificate rootCertificate) {
+    public BeIdAllData withRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
         return this;
     }
@@ -171,11 +171,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param rrnCertificate The rrn_certificate
      */
-    public void setRrnCertificate(T1cCertificate rrnCertificate) {
+    public void setRrnCertificate(final T1cCertificate rrnCertificate) {
         this.rrnCertificate = rrnCertificate;
     }
 
-    public BeIdAllData withRrnCertificate(T1cCertificate rrnCertificate) {
+    public BeIdAllData withRrnCertificate(final T1cCertificate rrnCertificate) {
         this.rrnCertificate = rrnCertificate;
         return this;
     }
@@ -190,11 +190,11 @@ public class BeIdAllData implements AllData {
     /**
      * @param token the token to set
      */
-    public void setToken(GclBeIdToken token) {
+    public void setToken(final GclBeIdToken token) {
         this.token = token;
     }
 
-    public BeIdAllData withToken(GclBeIdToken token) {
+    public BeIdAllData withToken(final GclBeIdToken token) {
         this.token = token;
         return this;
     }

@@ -9,6 +9,27 @@ import com.t1t.t1c.model.PlatformInfo;
  */
 public interface IDsClient {
     /**
+     * Returns the download link based on the provided platform information.
+     * T1C-GCL has different distributables for each operating system.
+     * The downloadlink depends on the application context.
+     *
+     * @return a download link based application context
+     * @throws DsClientException: on failure
+     */
+    String getDownloadLink() throws DsClientException;
+
+    /**
+     * Returns the download link based on the provided platform information.
+     * T1C-GCL has different distributables for each operating system.
+     * The downloadlink depends on the application context.
+     *
+     * @param info the platform information
+     * @return the download link
+     * @throws DsClientException: on failure
+     */
+    String getDownloadLink(PlatformInfo info) throws DsClientException;
+
+    /**
      * Returns info for the T1C Distribution Server.
      *
      * @return the DS system status
@@ -25,17 +46,6 @@ public interface IDsClient {
      * @throws DsClientException: on failure
      */
     DsPublicKey getPublicKey(String deviceId) throws DsClientException;
-
-    /**
-     * Returns the download link based on the provided platform information.
-     * T1C-GCL has different distributables for each operating system.
-     * The downloadlink depends on the application context.
-     *
-     * @param info the platform information
-     * @return the download link
-     * @throws DsClientException: on failure
-     */
-    String getDownloadLink(PlatformInfo info) throws DsClientException;
 
     /**
      * Registers a device towards the T1C-DS.
@@ -58,14 +68,4 @@ public interface IDsClient {
      * @throws DsClientException: on failure
      */
     DsSyncResponseDto sync(String deviceId, DsDeviceRegistrationRequest request) throws DsClientException;
-
-    /**
-     * Returns the download link based on the provided platform information.
-     * T1C-GCL has different distributables for each operating system.
-     * The downloadlink depends on the application context.
-     *
-     * @return a download link based application context
-     * @throws DsClientException: on failure
-     */
-    String getDownloadLink() throws DsClientException;
 }

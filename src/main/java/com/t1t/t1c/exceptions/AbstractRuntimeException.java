@@ -21,7 +21,7 @@ public abstract class AbstractRuntimeException extends RuntimeException {
      *
      * @param message the exception message
      */
-    public AbstractRuntimeException(String message) {
+    public AbstractRuntimeException(final String message) {
         super(message);
     }
 
@@ -30,7 +30,7 @@ public abstract class AbstractRuntimeException extends RuntimeException {
      *
      * @param cause the exception cause
      */
-    public AbstractRuntimeException(Throwable cause) {
+    public AbstractRuntimeException(final Throwable cause) {
         super(cause);
     }
 
@@ -40,7 +40,7 @@ public abstract class AbstractRuntimeException extends RuntimeException {
      * @param message the exception message
      * @param cause   the exception cause
      */
-    public AbstractRuntimeException(String message, Throwable cause) {
+    public AbstractRuntimeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractRuntimeException extends RuntimeException {
     /**
      * @param stacktrace the stacktrace to set
      */
-    public void setServerStack(String stacktrace) {
+    public void setServerStack(final String stacktrace) {
         this.serverStack = stacktrace;
     }
 

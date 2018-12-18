@@ -30,12 +30,12 @@ import java.util.Map;
  */
 public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestClient, GclEmvAllData, AllCertificates> {
 
-    public EmvContainer(LibConfig config, GclReader reader, String containerVersion, GclEmvRestClient httpClient) {
+    public EmvContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclEmvRestClient httpClient) {
         super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public EmvContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclEmvRestClient httpClient, GclPace pace) {
+    public EmvContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclEmvRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -55,21 +55,21 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     }
 
     @Override
-    public GclEmvAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public GclEmvAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.getEmvAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired());
     }
 
     @Override
-    public AllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public AllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         throw ExceptionFactory.unsupportedOperationException("container has no certificate dump implementation");
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -80,7 +80,7 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no authentication capabilities");
     }
 
@@ -90,7 +90,7 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         throw ExceptionFactory.unsupportedOperationException("container has no signing capabilities");
     }
 
@@ -112,12 +112,12 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
         return RestExecutor.returnData(httpClient.getEmvApplicationData(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
-    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(String aid) throws RestException, NoConsentException {
+    public GclEmvPublicKeyCertificate getIssuerPublicKeyCertificate(final String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
         return RestExecutor.returnData(httpClient.getEmvIssuerPublicKeyCertificate(getContainerUrlId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
 
-    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(String aid) throws RestException, NoConsentException {
+    public GclEmvPublicKeyCertificate getIccPublicKeyCertificate(final String aid) throws RestException, NoConsentException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(aid), "aid must not be null");
         return RestExecutor.returnData(httpClient.getEmvIccPublicKeyCertificate(getContainerUrlId(), reader.getId(), new GclEmvAidRequest().withAid(aid)), config.isConsentRequired());
     }
@@ -133,9 +133,9 @@ public class EmvContainer extends SmartCardContainer<EmvContainer, GclEmvRestCli
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        GclEmvAllData allData = getAllData(true);
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final GclEmvAllData allData = getAllData(true);
 
         data.setFullName(allData.getApplicationData().getName());
 

@@ -19,7 +19,7 @@ public abstract class AbstractSystemException extends AbstractRuntimeException {
      *
      * @param message the exception message
      */
-    public AbstractSystemException(String message) {
+    public AbstractSystemException(final String message) {
         super(message);
     }
 
@@ -28,7 +28,7 @@ public abstract class AbstractSystemException extends AbstractRuntimeException {
      *
      * @param cause the exception cause
      */
-    public AbstractSystemException(Throwable cause) {
+    public AbstractSystemException(final Throwable cause) {
         super(cause);
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractSystemException extends AbstractRuntimeException {
      * @param message the exception message
      * @param cause   the exception cause
      */
-    public AbstractSystemException(String message, Throwable cause) {
+    public AbstractSystemException(final String message, final Throwable cause) {
         super(message, cause);
     }
 }

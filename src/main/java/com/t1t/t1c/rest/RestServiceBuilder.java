@@ -58,7 +58,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static GclRestClient getGclRestClient(LibConfig config) {
+    public static GclRestClient getGclRestClient(final LibConfig config) {
         return getLocalClient(config.getGclClientUri(), GclRestClient.class, config, false);
     }
 
@@ -69,7 +69,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static GclCitrixRestClient getGclCitrixRestClient(LibConfig config) {
+    public static GclCitrixRestClient getGclCitrixRestClient(final LibConfig config) {
         return getLocalClient(config.getGclClientUri(), GclCitrixRestClient.class, config, false);
     }
 
@@ -80,7 +80,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static GclAdminRestClient getGclAdminRestClient(LibConfig config) {
+    public static GclAdminRestClient getGclAdminRestClient(final LibConfig config) {
         return getLocalClient(config.getGclClientUri(), GclAdminRestClient.class, config, true);
     }
 
@@ -91,7 +91,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static DsRestClient getDsRestClient(LibConfig config) {
+    public static DsRestClient getDsRestClient(final LibConfig config) {
         return getClient(config.getDsUri(), DsRestClient.class, config, getGatewayAuthClient(config));
     }
 
@@ -101,7 +101,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static IGatewayAuthClient getGatewayAuthClient(LibConfig config) {
+    public static IGatewayAuthClient getGatewayAuthClient(final LibConfig config) {
         if (StringUtils.isNotEmpty(config.getApiKey())) {
             return new GatewayAuthClient(getClient(config.getAuthUri(), GatewayAuthRestClient.class, config, null));
         } else {
@@ -118,8 +118,8 @@ public final class RestServiceBuilder {
      * @param <U>
      * @return
      */
-    public static <U> U getContainerRestClient(LibConfig config, Class<U> clazz) {
-        String uri;
+    public static <U> U getContainerRestClient(final LibConfig config, final Class<U> clazz) {
+        final String uri;
         if (config.isCitrix() && config.getAgentPort() != null) {
             uri = UriUtils.uriFinalSlashAppender(config.getGclClientUri() + String.format(CITRIX_AGENT_PATH, config.getAgentPort()) + CONTAINER_CONTEXT_PATH);
         } else {
@@ -135,7 +135,7 @@ public final class RestServiceBuilder {
      * @param config
      * @return
      */
-    public static OcvRestClient getOcvRestClient(LibConfig config) {
+    public static OcvRestClient getOcvRestClient(final LibConfig config) {
         return getClient(config.getOcvUri(), OcvRestClient.class, config, getGatewayAuthClient(config));
     }
 
@@ -149,30 +149,30 @@ public final class RestServiceBuilder {
      * @param <T>
      * @return
      */
-    private static <T> T getClient(String uri, Class<T> iFace, LibConfig config, IGatewayAuthClient gatewayAuthClient) {
+    private static <T> T getClient(final String uri, final Class<T> iFace, final LibConfig config, final IGatewayAuthClient gatewayAuthClient) {
         try {
-            Builder retrofitBuilder = new Builder()
+            final Builder retrofitBuilder = new Builder()
                     .client(gethttpClient(config, gatewayAuthClient))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
             return retrofitBuilder.build().create(iFace);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.error("Error creating client: ", ex);
             throw ExceptionFactory.gclClientException("Error creating client: " + ex.getMessage());
         }
     }
 
     //TODO remove duplicate code
-    private static <T> T getLocalClient(String uri, Class<T> iFace, LibConfig config, boolean sendAuthToken) {
+    private static <T> T getLocalClient(final String uri, final Class<T> iFace, final LibConfig config, final boolean sendAuthToken) {
         try {
-            Builder retrofitBuilder = new Builder()
+            final Builder retrofitBuilder = new Builder()
                     .client(getHttpClientSkipTLS(config, sendAuthToken))
                     .addConverterFactory(GsonConverterFactory.create())
                     // base URL must always end with /
                     .baseUrl(UriUtils.uriFinalSlashAppender(uri));
             return retrofitBuilder.build().create(iFace);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             log.error("Error creating client: ", ex);
             throw ExceptionFactory.gclClientException("Error creating client: " + ex.getMessage());
         }
@@ -186,11 +186,11 @@ public final class RestServiceBuilder {
      * @return
      */
     private static OkHttpClient gethttpClient(final LibConfig config, final IGatewayAuthClient gatewayAuthClient) {
-        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
 
         final boolean apikeyPresent = StringUtils.isNotBlank(config.getApiKey());
 
-        String token;
+        final String token;
         if (gatewayAuthClient != null) {
             token = gatewayAuthClient.getToken();
         } else {
@@ -209,8 +209,8 @@ public final class RestServiceBuilder {
         if (apikeyPresent || jwtPresent) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder requestBuilder = chain.request().newBuilder();
+                public Response intercept(final Chain chain) throws IOException {
+                    final Request.Builder requestBuilder = chain.request().newBuilder();
                     if (apikeyPresent) {
                         requestBuilder.addHeader(APIKEY_HEADER_NAME, config.getApiKey());
                     }
@@ -241,14 +241,14 @@ public final class RestServiceBuilder {
     private static OkHttpClient getHttpClientSkipTLS(final LibConfig config, final boolean sendAuthToken) throws NoSuchAlgorithmException, KeyManagementException {
         // Create a trust manager that does not validate certificate chains
 
-        X509TrustManager x509TrustManager = new X509TrustManager() {
+        final X509TrustManager x509TrustManager = new X509TrustManager() {
             @Override
-            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {
+            public void checkClientTrusted(final X509Certificate[] x509Certificates, final String s) {
                 // Do nothing
             }
 
             @Override
-            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {
+            public void checkServerTrusted(final X509Certificate[] x509Certificates, final String s) {
                 // Do nothing
             }
 
@@ -264,11 +264,11 @@ public final class RestServiceBuilder {
         sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
         final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
+        final OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
         okHttpBuilder.sslSocketFactory(sslSocketFactory, x509TrustManager)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
-                    public boolean verify(String s, SSLSession sslSession) {
+                    public boolean verify(final String s, final SSLSession sslSession) {
                         return true;
                     }
                 });
@@ -278,8 +278,8 @@ public final class RestServiceBuilder {
         if (jwtPresent || contextTokenRequired) {
             okHttpBuilder.addInterceptor(new Interceptor() {
                 @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder requestBuilder = chain.request().newBuilder();
+                public Response intercept(final Chain chain) throws IOException {
+                    final Request.Builder requestBuilder = chain.request().newBuilder();
                     if (jwtPresent) {
                         requestBuilder.addHeader(AUTHORIZATION_HEADER_NAME, AUTHORIZATION_HEADER_VALUE_PREFIX + config.getGclJwt());
                     }
@@ -293,10 +293,10 @@ public final class RestServiceBuilder {
 
         okHttpBuilder.addInterceptor(new Interceptor() {
             @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request.Builder requestBuilder = chain.request().newBuilder();
+            public Response intercept(final Chain chain) throws IOException {
+                final Request.Builder requestBuilder = chain.request().newBuilder();
                 requestBuilder.addHeader(ORIGIN_HEADER_NAME, ORIGIN_HEADER_VALUE);
-                String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
+                final String fingerprint = ClientFingerprintUtil.getClientFingerPrint(config.getClientFingerprintDirectoryPath());
                 log.debug("client fingerprint: {}", fingerprint);
                 requestBuilder.addHeader(X_AUTH_HEADER_NAME, fingerprint);
                 return chain.proceed(requestBuilder.build());
@@ -306,7 +306,7 @@ public final class RestServiceBuilder {
         // Set timeouts a little higher, because reading data from cards can take time
         // The timeout should also be greater than the consent timeout, otherwise an error will occur when exceeding it
         // As such the timeout should default to either 30 seconds or the default consent timeout + 1s
-        int timeout = config.getDefaultConsentTimeout() + 1 < 30 ? 30 : config.getDefaultConsentTimeout() + 1;
+        final int timeout = config.getDefaultConsentTimeout() + 1 < 30 ? 30 : config.getDefaultConsentTimeout() + 1;
         return okHttpBuilder
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .readTimeout(timeout, TimeUnit.SECONDS)

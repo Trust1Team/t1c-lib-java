@@ -26,26 +26,26 @@ public final class ClientFingerprintUtil {
     private ClientFingerprintUtil() {
     }
 
-    public static String getClientFingerPrint(String fingerprintDirectoryPath) {
-        File tokenFile = Paths.get(validatePath(fingerprintDirectoryPath)).toFile();
+    public static String getClientFingerPrint(final String fingerprintDirectoryPath) {
+        final File tokenFile = Paths.get(validatePath(fingerprintDirectoryPath)).toFile();
         if (tokenFile.exists()) {
             try {
-                String token = FileUtils.readFileToString(tokenFile, ENCODING);
+                final String token = FileUtils.readFileToString(tokenFile, ENCODING);
                 if (validateFingerprint(token)) {
                     return token;
                 } else {
                     log.warn("Deleted token file: {}", tokenFile.delete());
                 }
-            } catch (IOException ex) {
+            } catch (final IOException ex) {
                 log.error("Error retrieving fingerprint token: ", ex);
                 log.warn("Deleted token file: {}", tokenFile.delete());
                 return getClientFingerPrint(fingerprintDirectoryPath);
             }
         }
-        String fingerprint = createFingerprint();
+        final String fingerprint = createFingerprint();
         try {
             FileUtils.writeStringToFile(tokenFile, fingerprint, ENCODING);
-        } catch (IOException ex) {
+        } catch (final IOException ex) {
             log.warn("Error writing client fingerprint token to disk: ", ex);
             throw ExceptionFactory.initializationException("Could not write fingerprint token to disk: " + ex.getMessage());
         }
@@ -58,25 +58,25 @@ public final class ClientFingerprintUtil {
         } else return fingerprintDirectoryPath + JLIB_AUTH_TOKEN_LOCATION;
     }
 
-    private static boolean validateFingerprint(String token) {
+    private static boolean validateFingerprint(final String token) {
         Boolean rval;
         try {
-            String resolvedToken = new String(Base64.decodeBase64(token));
-            String checkbits = resolvedToken.substring(resolvedToken.length()- 8, resolvedToken.length());
-            String initUuid = resolvedToken.substring(0, resolvedToken.length() - 9);
-            String initUuidSha = DatatypeConverter.printHexBinary(DigestUtil.sha256DigestOf(initUuid.getBytes())).toLowerCase();
-            String toBeVerified = initUuidSha.substring(initUuidSha.length() -8, initUuidSha.length());
+            final String resolvedToken = new String(Base64.decodeBase64(token));
+            final String checkbits = resolvedToken.substring(resolvedToken.length()- 8, resolvedToken.length());
+            final String initUuid = resolvedToken.substring(0, resolvedToken.length() - 9);
+            final String initUuidSha = DatatypeConverter.printHexBinary(DigestUtil.sha256DigestOf(initUuid.getBytes())).toLowerCase();
+            final String toBeVerified = initUuidSha.substring(initUuidSha.length() -8, initUuidSha.length());
             rval = toBeVerified.equals(checkbits);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             rval = false;
         }
         return rval;
     }
 
     private static String createFingerprint() {
-        String uuid = UUID.randomUUID().toString();
-        String sha256ClientFingerprint = DatatypeConverter.printHexBinary(DigestUtil.sha256DigestOf(uuid.getBytes()));
-        String checkBits = sha256ClientFingerprint.substring(sha256ClientFingerprint.length() - 8, sha256ClientFingerprint.length()).toLowerCase();
+        final String uuid = UUID.randomUUID().toString();
+        final String sha256ClientFingerprint = DatatypeConverter.printHexBinary(DigestUtil.sha256DigestOf(uuid.getBytes()));
+        final String checkBits = sha256ClientFingerprint.substring(sha256ClientFingerprint.length() - 8, sha256ClientFingerprint.length()).toLowerCase();
         return Base64.encodeBase64String((uuid + "-" + checkBits).getBytes());
 
     }

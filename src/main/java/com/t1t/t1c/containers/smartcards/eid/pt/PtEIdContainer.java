@@ -30,12 +30,12 @@ import java.util.Map;
  */
 public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRestClient, PtIdAllData, PtIdAllCertificates> {
 
-    public PtEIdContainer(LibConfig config, GclReader reader, String containerVersion, GclPtIdRestClient httpClient) {
+    public PtEIdContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclPtIdRestClient httpClient) {
         super(config, reader, containerVersion, httpClient);
     }
 
     @Override
-    public PtEIdContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclPtIdRestClient httpClient, GclPace pace) {
+    public PtEIdContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclPtIdRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -55,21 +55,21 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
     }
 
     @Override
-    public PtIdAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public PtIdAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return new PtIdAllData(RestExecutor.returnData(httpClient.getPtIdAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public PtIdAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public PtIdAllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return new PtIdAllCertificates(RestExecutor.returnData(httpClient.getPtIdAllCertificates(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -79,7 +79,7 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
                 this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -88,13 +88,13 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isAuthenticateAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -104,7 +104,7 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
                 this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -113,13 +113,13 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isSignAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to sign must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -138,7 +138,7 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         return getPtIdData(null);
     }
 
-    public GclPtIdData getPtIdData(Boolean includePhoto) throws RestException, NoConsentException {
+    public GclPtIdData getPtIdData(final Boolean includePhoto) throws RestException, NoConsentException {
         return RestExecutor.returnData(httpClient.
                 getPtIdData(getContainerUrlId(), reader.getId(), includePhoto), config.isConsentRequired());
     }
@@ -147,23 +147,23 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         return RestExecutor.returnData(httpClient.getPtIdPhoto(getContainerUrlId(), reader.getId()), config.isConsentRequired());
     }
 
-    public T1cCertificate getRootCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getRootCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getRootAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getRootAuthenticationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootAuthenticationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getRootNonRepudiationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getRootNonRepudiationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getRootNonRepudiationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getAuthenticationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getNonRepudiationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getNonRepudiationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getNonRepudiationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
@@ -187,7 +187,7 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         return getNonRepudiationCertificate(null);
     }
 
-    public GclPtIdAddress getAddress(String pin) throws VerifyPinException, NoConsentException, RestException {
+    public GclPtIdAddress getAddress(final String pin) throws VerifyPinException, NoConsentException, RestException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             if (StringUtils.isNotEmpty(pin)) {
@@ -195,7 +195,7 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
             } else {
                 return RestExecutor.returnData(httpClient.getAddress(getContainerUrlId(), reader.getId()), config.isConsentRequired());
             }
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -206,23 +206,23 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
 
     @Override
     public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        PtIdAllCertificates certs = getAllCertificates(true);
+        final PtIdAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getRootNonRepudiationCertificate(), certs.getNonRepudiationCertificate());
     }
 
     @Override
     public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        PtIdAllCertificates certs = getAllCertificates(true);
+        final PtIdAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getRootAuthenticationCertificate(), certs.getAuthenticationCertificate());
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        PtIdAllData allData = getAllData(true);
-        GclPtIdData id = allData.getId();
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final PtIdAllData allData = getAllData(true);
+        final GclPtIdData id = allData.getId();
         if (StringUtils.isNotEmpty(pin)) {
-            GclPtIdAddress address = getAddress(pin);
+            final GclPtIdAddress address = getAddress(pin);
             data.setMunicipality(address.getMunicipalityDescription());
             data.setStreetAndNumber(address.getStreetType() + " " + address.getStreetName() + " " + address.getDoorNo());
             data.setZipCode(address.getZip4() + "-" + address.getZip3());
@@ -245,8 +245,8 @@ public class PtEIdContainer extends SmartCardContainer<PtEIdContainer, GclPtIdRe
         return data;
     }
 
-    private Map<String, T1cCertificate> getAllCertificatesMap(PtIdAllData data) {
-        Map<String, T1cCertificate> certMap = new HashMap<>();
+    private Map<String, T1cCertificate> getAllCertificatesMap(final PtIdAllData data) {
+        final Map<String, T1cCertificate> certMap = new HashMap<>();
         certMap.put("root-certificate", data.getRootCertificate());
         certMap.put("root-authentication-certificate", data.getRootAuthenticationCertificate());
         certMap.put("root-non-repudiation-certificate", data.getRootNonRepudiationCertificate());
