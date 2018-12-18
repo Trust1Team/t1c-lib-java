@@ -13,12 +13,12 @@ public class ContainerVersion {
     private ContainerType type;
     private String version;
 
-    public ContainerVersion(ContainerType type, String version) {
+    public ContainerVersion(final ContainerType type, final String version) {
         this.type = type;
         this.version = version;
     }
 
-    public ContainerVersion(String containerVersionId) {
+    public ContainerVersion(final String containerVersionId) {
         setTypeAndVersionFromIdString(containerVersionId);
     }
 
@@ -26,7 +26,7 @@ public class ContainerVersion {
         return type;
     }
 
-    public void setType(ContainerType type) {
+    public void setType(final ContainerType type) {
         this.type = type;
     }
 
@@ -34,7 +34,7 @@ public class ContainerVersion {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(final String version) {
         this.version = version;
     }
 
@@ -42,16 +42,16 @@ public class ContainerVersion {
         return type.getId() + VERSION_SEPARATOR + version;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         setTypeAndVersionFromIdString(id);
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof ContainerVersion)) return false;
 
-        ContainerVersion that = (ContainerVersion) o;
+        final ContainerVersion that = (ContainerVersion) o;
 
         if (type != that.type) return false;
         return version != null ? version.equals(that.version) : that.version == null;
@@ -72,7 +72,7 @@ public class ContainerVersion {
                 '}';
     }
 
-    private void setTypeAndVersionFromIdString(String id) {
+    private void setTypeAndVersionFromIdString(final String id) {
         if (StringUtils.isNotEmpty(id) && id.contains(VERSION_SEPARATOR)) {
             this.type = ContainerType.valueOfId(id.substring(0, id.lastIndexOf(VERSION_SEPARATOR)));
             this.version = id.substring(id.lastIndexOf(VERSION_SEPARATOR) + 1);

@@ -46,9 +46,9 @@ public enum ContainerType {
     static {
         idMap = new HashMap<>();
         cardDescriptionMap = new HashMap<>();
-        for (ContainerType type : ContainerType.values()) {
+        for (final ContainerType type : ContainerType.values()) {
             idMap.put(type.id, type);
-            for (String cardDescription : type.cardDescriptions) {
+            for (final String cardDescription : type.cardDescriptions) {
                 cardDescriptionMap.put(cardDescription, type);
             }
         }
@@ -57,18 +57,18 @@ public enum ContainerType {
     private String id;
     private List<String> cardDescriptions;
 
-    ContainerType(String id, List<String> descriptions) {
+    ContainerType(final String id, final List<String> descriptions) {
         this.id = id;
         this.cardDescriptions = descriptions;
     }
 
-    public static ContainerType valueOfId(String id) {
+    public static ContainerType valueOfId(final String id) {
         return idMap.get(id);
     }
 
-    public static ContainerType valueOfCardDescription(String description) {
+    public static ContainerType valueOfCardDescription(final String description) {
         String keyToUse = null;
-        for (String key : cardDescriptionMap.keySet()) {
+        for (final String key : cardDescriptionMap.keySet()) {
             if (description.contains(key)) {
                 keyToUse = key;
             }

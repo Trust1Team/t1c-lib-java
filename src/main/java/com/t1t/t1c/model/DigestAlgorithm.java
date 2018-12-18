@@ -7,8 +7,8 @@ package com.t1t.t1c.model;
 public enum DigestAlgorithm {
     SHA1, SHA256, SHA512, MD5;
 
-    public static DigestAlgorithm getAlgoForRef(String ref) {
-        String parsed = ref.replace("-", "").toUpperCase();
+    public static DigestAlgorithm getAlgoForRef(final String ref) {
+        final String parsed = ref.replace("-", "").toUpperCase();
         return DigestAlgorithm.valueOf(parsed);
     }
 

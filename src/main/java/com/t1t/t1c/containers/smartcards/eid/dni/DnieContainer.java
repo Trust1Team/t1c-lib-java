@@ -29,12 +29,12 @@ import java.util.Map;
  */
 public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestClient, DnieAllData, DnieAllCertificates> {
 
-    public DnieContainer(LibConfig config, GclReader reader, String containerVersion, GclDniRestClient gclDniRestClient) {
+    public DnieContainer(final LibConfig config, final GclReader reader, final String containerVersion, final GclDniRestClient gclDniRestClient) {
         super(config, reader, containerVersion, gclDniRestClient);
     }
 
     @Override
-    public DnieContainer createInstance(LibConfig config, GclReader reader, String containerVersion, GclDniRestClient httpClient, GclPace pace) {
+    public DnieContainer createInstance(final LibConfig config, final GclReader reader, final String containerVersion, final GclDniRestClient httpClient, final GclPace pace) {
         this.config = config;
         this.reader = reader;
         this.httpClient = httpClient;
@@ -54,22 +54,22 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
     }
 
     @Override
-    public DnieAllData getAllData(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public DnieAllData getAllData(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return new DnieAllData(RestExecutor.returnData(httpClient.getDnieAllData(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
 
     }
 
     @Override
-    public DnieAllCertificates getAllCertificates(List<String> filterParams, Boolean parseCertificates) throws RestException, NoConsentException {
+    public DnieAllCertificates getAllCertificates(final List<String> filterParams, final Boolean parseCertificates) throws RestException, NoConsentException {
         return new DnieAllCertificates(RestExecutor.returnData(httpClient.getDnieAllCertificates(getContainerUrlId(), reader.getId(), createFilterParams(filterParams)), config.isConsentRequired()), parseCertificates);
     }
 
     @Override
-    public Boolean verifyPin(String pin) throws RestException, NoConsentException, VerifyPinException {
+    public Boolean verifyPin(final String pin) throws RestException, NoConsentException, VerifyPinException {
         PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(httpClient.verifyPin(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedRequest(reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -79,7 +79,7 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
         if (CollectionUtils.isEmpty(this.authenticateAlgos)) {
             try {
                 this.authenticateAlgos = RestExecutor.returnData(httpClient.getAvailableAuthenticateAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.authenticateAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -88,13 +88,13 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String authenticate(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isAuthenticateAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to authenticate must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.authenticate(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
@@ -104,7 +104,7 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
         if (CollectionUtils.isEmpty(this.signAlgos)) {
             try {
                 this.signAlgos = RestExecutor.returnData(httpClient.getAvailableSignAlgos(getContainerUrlId(), reader.getId()), config.isConsentRequired());
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 //Fall back to the container default
                 this.signAlgos = Arrays.asList(DigestAlgorithm.MD5, DigestAlgorithm.SHA1, DigestAlgorithm.SHA256, DigestAlgorithm.SHA512);
             }
@@ -113,26 +113,26 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo, String pin) throws VerifyPinException, NoConsentException, RestException {
+    public String sign(final String data, final DigestAlgorithm algo, final String pin) throws VerifyPinException, NoConsentException, RestException {
         try {
             isSignAlgorithmSupported(algo);
             Preconditions.checkNotNull(data, "data to sign must not be null");
             PinUtil.pinEnforcementCheck(reader, config.isOsPinDialog(), config.isHardwarePinPadForced(), pin);
             return RestExecutor.returnData(httpClient.sign(getContainerUrlId(), reader.getId(), PinUtil.createEncryptedAuthSignData(data, algo.getStringValue(), reader.getPinpad(), config.isOsPinDialog(), pin)), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw PinUtil.checkPinExceptionMessage(ex);
         }
     }
 
-    public T1cCertificate getAuthenticationCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getAuthenticationCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getAuthenticationCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getIntermediateCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getIntermediateCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getIntermediateCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
-    public T1cCertificate getSigningCertificate(Boolean parse) throws RestException, NoConsentException {
+    public T1cCertificate getSigningCertificate(final Boolean parse) throws RestException, NoConsentException {
         return PkiUtil.createT1cCertificate(RestExecutor.returnData(httpClient.getSigningCertificate(getContainerUrlId(), reader.getId()), config.isConsentRequired()), parse);
     }
 
@@ -163,13 +163,13 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
     }
 
     @Override
-    public ContainerData dumpData(String pin) throws RestException, NoConsentException, UnsupportedOperationException {
-        ContainerData data = new ContainerData();
-        DnieAllData allData = getAllData(true);
+    public ContainerData dumpData(final String pin) throws RestException, NoConsentException, UnsupportedOperationException {
+        final ContainerData data = new ContainerData();
+        final DnieAllData allData = getAllData(true);
         data.setAllCertificates(getCertificatesMap(allData));
         data.setSigningCertificateChain(orderCertificates(allData.getIntermediateCertificate(), allData.getSigningCertificate()));
         data.setAuthenticationCertificateChain(orderCertificates(allData.getIntermediateCertificate(), allData.getSigningCertificate()));
-        GclDnieInfo info = allData.getInfo();
+        final GclDnieInfo info = allData.getInfo();
         data.setGivenName(info.getFirstName());
         data.setSurName(info.getFirstLastName() + " " + info.getSecondLastName());
         data.setFullName(info.getFirstName() + " " + data.getSurName());
@@ -179,18 +179,18 @@ public class DnieContainer extends SmartCardContainer<DnieContainer, GclDniRestC
 
     @Override
     public Map<Integer, T1cCertificate> getSigningCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        DnieAllCertificates certs = getAllCertificates(true);
+        final DnieAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getSigningCertificate(), certs.getIntermediateCertificate());
     }
 
     @Override
     public Map<Integer, T1cCertificate> getAuthenticationCertificateChain() throws VerifyPinException, NoConsentException, RestException {
-        DnieAllCertificates certs = getAllCertificates(true);
+        final DnieAllCertificates certs = getAllCertificates(true);
         return orderCertificates(certs.getAuthenticationCertificate(), certs.getIntermediateCertificate());
     }
 
-    private Map<String, T1cCertificate> getCertificatesMap(DnieAllData allData) {
-        Map<String, T1cCertificate> certs = new HashMap<>();
+    private Map<String, T1cCertificate> getCertificatesMap(final DnieAllData allData) {
+        final Map<String, T1cCertificate> certs = new HashMap<>();
         certs.put("intermediate-certificate", allData.getIntermediateCertificate());
         certs.put("authentication-certificate", allData.getAuthenticationCertificate());
         certs.put("signing-certificate", allData.getSigningCertificate());

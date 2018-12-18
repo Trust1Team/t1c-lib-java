@@ -19,20 +19,20 @@ public class RestException extends AbstractRuntimeException {
     private String uri;
     private GclError gclError;
 
-    public RestException(String message, Integer httpCode, String uri, String jsonError) {
+    public RestException(final String message, final Integer httpCode, final String uri, final String jsonError) {
         super(message);
         this.httpCode = httpCode;
         this.uri = uri;
         if (StringUtils.isNotEmpty(jsonError)) {
             try {
                 this.gclError = new Gson().fromJson(jsonError, GclError.class);
-            } catch (JsonSyntaxException e) {
+            } catch (final JsonSyntaxException e) {
                 log.error("Couldn't decode error message: ", e);
             }
         }
     }
 
-    public RestException(Throwable cause) {
+    public RestException(final Throwable cause) {
         super(cause);
 
     }

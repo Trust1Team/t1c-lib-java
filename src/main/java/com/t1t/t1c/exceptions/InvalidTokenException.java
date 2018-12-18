@@ -6,7 +6,7 @@ package com.t1t.t1c.exceptions;
  */
 public class InvalidTokenException extends AbstractSystemException {
 
-    public InvalidTokenException(Throwable cause) {
+    public InvalidTokenException(final Throwable cause) {
         super(cause);
     }
 

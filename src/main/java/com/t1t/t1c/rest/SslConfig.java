@@ -24,7 +24,7 @@ public class SslConfig {
      * @param trustManager the trust manager.
      * @throws IllegalArgumentException if either the trust managers are empty or null or the SSL context is null.
      */
-    public SslConfig(SSLContext sslContext, X509TrustManager trustManager) throws IllegalArgumentException {
+    public SslConfig(final SSLContext sslContext, final X509TrustManager trustManager) throws IllegalArgumentException {
         validateConstructorArgs(sslContext, trustManager);
         this.sslContext = sslContext;
         this.trustManager = trustManager;
@@ -40,7 +40,7 @@ public class SslConfig {
      * @param hostnameVerifier the host name verifier.
      * @throws IllegalArgumentException if any of the constructor arguments are empty or null.
      */
-    public SslConfig(SSLContext sslContext, X509TrustManager trustManager, HostnameVerifier hostnameVerifier) throws IllegalArgumentException {
+    public SslConfig(final SSLContext sslContext, final X509TrustManager trustManager, final HostnameVerifier hostnameVerifier) throws IllegalArgumentException {
         validateConstructorArgs(sslContext, trustManager);
 
         if (hostnameVerifier == null) {
@@ -63,7 +63,7 @@ public class SslConfig {
         return hostnameVerifier;
     }
 
-    private void validateConstructorArgs(SSLContext context, X509TrustManager trustManager) {
+    private void validateConstructorArgs(final SSLContext context, final X509TrustManager trustManager) {
         if (trustManager == null) {
             throw ExceptionFactory.nullOrEmptyConstructorArgument("trustManager");
         }

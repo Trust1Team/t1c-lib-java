@@ -20,11 +20,11 @@ public class T1cResponse<T> implements Serializable {
         return data;
     }
 
-    public void setData(T data) {
+    public void setData(final T data) {
         this.data = data;
     }
 
-    public T1cResponse<T> withData(T data) {
+    public T1cResponse<T> withData(final T data) {
         setData(data);
         return this;
     }
@@ -33,21 +33,21 @@ public class T1cResponse<T> implements Serializable {
         return success;
     }
 
-    public void setSuccess(Boolean success) {
+    public void setSuccess(final Boolean success) {
         this.success = success;
     }
 
-    public T1cResponse<T> withSuccess(Boolean success) {
+    public T1cResponse<T> withSuccess(final Boolean success) {
         setSuccess(success);
         return this;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof T1cResponse)) return false;
 
-        T1cResponse<?> that = (T1cResponse<?>) o;
+        final T1cResponse<?> that = (T1cResponse<?>) o;
 
         if (data != null ? !data.equals(that.data) : that.data != null) return false;
         return success != null ? success.equals(that.success) : that.success == null;

@@ -13,11 +13,11 @@ public class AventraAllData implements AllData {
     private T1cCertificate issuerCertificate;
     private T1cCertificate encryptionCertificate;
 
-    public AventraAllData(GclAventraAllData data) {
+    public AventraAllData(final GclAventraAllData data) {
         this(data, null);
     }
 
-    public AventraAllData(GclAventraAllData data, Boolean parseCertificates) {
+    public AventraAllData(final GclAventraAllData data, final Boolean parseCertificates) {
         this.appletInfo = data.getAppletInfo();
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificates);
         this.rootCertificate = PkiUtil.createT1cCertificate(data.getRootCertificate(), parseCertificates);
@@ -30,7 +30,7 @@ public class AventraAllData implements AllData {
         return appletInfo;
     }
 
-    public void setAppletInfo(GclAventraAppletInfo appletInfo) {
+    public void setAppletInfo(final GclAventraAppletInfo appletInfo) {
         this.appletInfo = appletInfo;
     }
 
@@ -38,7 +38,7 @@ public class AventraAllData implements AllData {
         return rootCertificate;
     }
 
-    public void setRootCertificate(T1cCertificate rootCertificate) {
+    public void setRootCertificate(final T1cCertificate rootCertificate) {
         this.rootCertificate = rootCertificate;
     }
 
@@ -46,7 +46,7 @@ public class AventraAllData implements AllData {
         return authenticationCertificate;
     }
 
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
@@ -54,7 +54,7 @@ public class AventraAllData implements AllData {
         return signingCertificate;
     }
 
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
@@ -62,7 +62,7 @@ public class AventraAllData implements AllData {
         return issuerCertificate;
     }
 
-    public void setIssuerCertificate(T1cCertificate issuerCertificate) {
+    public void setIssuerCertificate(final T1cCertificate issuerCertificate) {
         this.issuerCertificate = issuerCertificate;
     }
 
@@ -70,7 +70,7 @@ public class AventraAllData implements AllData {
         return encryptionCertificate;
     }
 
-    public void setEncryptionCertificate(T1cCertificate encryptionCertificate) {
+    public void setEncryptionCertificate(final T1cCertificate encryptionCertificate) {
         this.encryptionCertificate = encryptionCertificate;
     }
 

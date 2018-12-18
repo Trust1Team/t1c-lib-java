@@ -12,11 +12,11 @@ public class PivAllData implements AllData {
     private GclPivFacialImage facialImage;
     private GclPivPrintedInformation printedInformation;
 
-    public PivAllData(GclPivAllData data) {
+    public PivAllData(final GclPivAllData data) {
         this(data, null);
     }
 
-    public PivAllData(GclPivAllData data, Boolean parseCertificate) {
+    public PivAllData(final GclPivAllData data, final Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
         this.facialImage = data.getFacialImage();
@@ -33,11 +33,11 @@ public class PivAllData implements AllData {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public PivAllData withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public PivAllData withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -52,11 +52,11 @@ public class PivAllData implements AllData {
     /**
      * @param signingCertificate The signing_certificate
      */
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
-    public PivAllData withSigningCertificate(T1cCertificate signingCertificate) {
+    public PivAllData withSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
         return this;
     }
@@ -72,11 +72,11 @@ public class PivAllData implements AllData {
     /**
      * @param facialImage The facialImage
      */
-    public void setFacialImage(GclPivFacialImage facialImage) {
+    public void setFacialImage(final GclPivFacialImage facialImage) {
         this.facialImage = facialImage;
     }
 
-    public PivAllData withFacialImage(GclPivFacialImage facialImage) {
+    public PivAllData withFacialImage(final GclPivFacialImage facialImage) {
         this.facialImage = facialImage;
         return this;
     }
@@ -91,11 +91,11 @@ public class PivAllData implements AllData {
     /**
      * @param printedInformation The printed information
      */
-    public void setPrintedInformation(GclPivPrintedInformation printedInformation) {
+    public void setPrintedInformation(final GclPivPrintedInformation printedInformation) {
         this.printedInformation = printedInformation;
     }
 
-    public PivAllData withPrintedInformation(GclPivPrintedInformation printedInformation) {
+    public PivAllData withPrintedInformation(final GclPivPrintedInformation printedInformation) {
         this.printedInformation = printedInformation;
         return this;
     }

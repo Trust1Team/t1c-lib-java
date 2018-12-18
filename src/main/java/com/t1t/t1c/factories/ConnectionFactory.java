@@ -52,7 +52,7 @@ public final class ConnectionFactory {
     private GclOberthurRestClient gclOberthurRestClient;
     private GclReaderApiRestClient gclReaderApiRestClient;
 
-    public ConnectionFactory(LibConfig config) {
+    public ConnectionFactory(final LibConfig config) {
         this.config = config;
         resetConnections();
     }
@@ -158,7 +158,7 @@ public final class ConnectionFactory {
         return config;
     }
 
-    public void setConfig(LibConfig config) {
+    public void setConfig(final LibConfig config) {
         this.config = config;
         resetConnections();
     }

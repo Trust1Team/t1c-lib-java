@@ -45,11 +45,11 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     public SmartCardContainer() {
     }
 
-    public SmartCardContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient) {
+    public SmartCardContainer(final LibConfig config, final GclReader reader, final String containerVersion, final U httpClient) {
         createInstance(config, reader, containerVersion, httpClient, new GclPace());
     }
 
-    public SmartCardContainer(LibConfig config, GclReader reader, String containerVersion, U httpClient, GclPace pace) {
+    public SmartCardContainer(final LibConfig config, final GclReader reader, final String containerVersion, final U httpClient, final GclPace pace) {
         createInstance(config, reader, containerVersion, httpClient, pace);
     }
 
@@ -61,12 +61,12 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     }
 
     @Override
-    public V getAllData(Boolean parseCertificates) throws RestException, NoConsentException {
+    public V getAllData(final Boolean parseCertificates) throws RestException, NoConsentException {
         return getAllData(null, parseCertificates);
     }
 
     @Override
-    public V getAllData(List<String> filterParams) throws RestException, NoConsentException {
+    public V getAllData(final List<String> filterParams) throws RestException, NoConsentException {
         return getAllData(filterParams, null);
     }
 
@@ -76,12 +76,12 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     }
 
     @Override
-    public W getAllCertificates(Boolean parseCertificates) throws RestException, NoConsentException {
+    public W getAllCertificates(final Boolean parseCertificates) throws RestException, NoConsentException {
         return getAllCertificates(null, parseCertificates);
     }
 
     @Override
-    public W getAllCertificates(List<String> filterParams) throws RestException, NoConsentException {
+    public W getAllCertificates(final List<String> filterParams) throws RestException, NoConsentException {
         return getAllCertificates(filterParams, null);
     }
 
@@ -91,12 +91,12 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     }
 
     @Override
-    public String authenticate(String data, DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
+    public String authenticate(final String data, final DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
         return authenticate(data, algo, null);
     }
 
     @Override
-    public String sign(String data, DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
+    public String sign(final String data, final DigestAlgorithm algo) throws VerifyPinException, RestException, NoConsentException {
         return sign(data, algo, null);
     }
 
@@ -105,18 +105,18 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
         return dumpData(null);
     }
 
-    protected String createFilterParams(List<String> params) {
+    protected String createFilterParams(final List<String> params) {
         String returnValue = null;
         if (CollectionUtils.isNotEmpty(params)) {
-            StringBuilder sb = new StringBuilder("");
-            Iterator it = params.iterator();
+            final StringBuilder sb = new StringBuilder("");
+            final Iterator it = params.iterator();
             while (it.hasNext()) {
                 sb.append(it.next());
                 if (it.hasNext()) {
                     sb.append(",");
                 }
             }
-            String filter = sb.toString();
+            final String filter = sb.toString();
             if (StringUtils.isNotEmpty(filter)) {
                 returnValue = filter;
             }
@@ -125,35 +125,35 @@ public abstract class SmartCardContainer<T extends SmartCardContainer, U, V exte
     }
 
 
-    protected List<DigestAlgorithm> getAlgorithms(List<String> algoRefs) {
-        List<DigestAlgorithm> returnValue = new ArrayList<>();
+    protected List<DigestAlgorithm> getAlgorithms(final List<String> algoRefs) {
+        final List<DigestAlgorithm> returnValue = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(algoRefs)) {
-            for (String algoRef : algoRefs) {
+            for (final String algoRef : algoRefs) {
                 returnValue.add(DigestAlgorithm.getAlgoForRef(algoRef));
             }
         }
         return returnValue;
     }
 
-    protected Map<Integer, T1cCertificate> orderCertificates(T1cCertificate... certs) {
+    protected Map<Integer, T1cCertificate> orderCertificates(final T1cCertificate... certs) {
         if (certs == null || certs.length == 0) {
             return Collections.emptyMap();
         } else return orderCertificates(Arrays.asList(certs));
     }
 
-    protected Map<Integer, T1cCertificate> orderCertificates(List<T1cCertificate> certs) {
+    protected Map<Integer, T1cCertificate> orderCertificates(final List<T1cCertificate> certs) {
         return PkiUtil.orderCertificates(certs);
     }
 
-    protected void isSignAlgorithmSupported(DigestAlgorithm selectedAlgorithm) {
+    protected void isSignAlgorithmSupported(final DigestAlgorithm selectedAlgorithm) {
         isSupported(selectedAlgorithm, getAvailableSignAlgorithms());
     }
 
-    protected void isAuthenticateAlgorithmSupported(DigestAlgorithm selectedAlgorithm) {
+    protected void isAuthenticateAlgorithmSupported(final DigestAlgorithm selectedAlgorithm) {
         isSupported(selectedAlgorithm, getAvailableAuthenticationAlgorithms());
     }
 
-    private void isSupported(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
+    private void isSupported(final DigestAlgorithm selectedAlgorithm, final List<DigestAlgorithm> supported) {
         Preconditions.checkNotNull(selectedAlgorithm, "digest algorithm must not be null");
         if (!supported.contains(selectedAlgorithm)) {
             throw ExceptionFactory.unsupportedDigestAlgorithm(selectedAlgorithm, supported);

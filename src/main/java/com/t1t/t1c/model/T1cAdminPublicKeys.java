@@ -17,10 +17,10 @@ public class T1cAdminPublicKeys {
     private T1cPublicKey device;
     private T1cPublicKey ssl;
 
-    public T1cAdminPublicKeys(GclPublicKeys publicKeys, Boolean parse) {
+    public T1cAdminPublicKeys(final GclPublicKeys publicKeys, final Boolean parse) {
         if (publicKeys != null) {
             this.ds = new HashMap<>();
-            for (GclDsPublicKey key : publicKeys.getDs()) {
+            for (final GclDsPublicKey key : publicKeys.getDs()) {
                 this.ds.put(key.getNs(), PkiUtil.createT1cPublicKey(key.getBase64(), parse));
             }
             this.device = PkiUtil.createT1cPublicKey(publicKeys.getDevice(), parse);
@@ -32,7 +32,7 @@ public class T1cAdminPublicKeys {
         return ds;
     }
 
-    public void setDs(Map<String, T1cPublicKey> ds) {
+    public void setDs(final Map<String, T1cPublicKey> ds) {
         this.ds = ds;
     }
 
@@ -40,7 +40,7 @@ public class T1cAdminPublicKeys {
         return device;
     }
 
-    public void setDevice(T1cPublicKey device) {
+    public void setDevice(final T1cPublicKey device) {
         this.device = device;
     }
 
@@ -48,16 +48,16 @@ public class T1cAdminPublicKeys {
         return ssl;
     }
 
-    public void setSsl(T1cPublicKey ssl) {
+    public void setSsl(final T1cPublicKey ssl) {
         this.ssl = ssl;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (!(o instanceof T1cAdminPublicKeys)) return false;
 
-        T1cAdminPublicKeys that = (T1cAdminPublicKeys) o;
+        final T1cAdminPublicKeys that = (T1cAdminPublicKeys) o;
 
         if (ds != null ? !ds.equals(that.ds) : that.ds != null) return false;
         if (device != null ? !device.equals(that.device) : that.device != null) return false;

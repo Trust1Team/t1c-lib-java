@@ -45,7 +45,7 @@ public class Core extends AbstractCore {
     private GclCitrixRestClient gclCitrixRestClient;
     private LibConfig config;
 
-    public Core(GclRestClient gclRestClient, GclAdminRestClient gclAdminRestClient, GclCitrixRestClient gclCitrixRestClient, LibConfig config) {
+    public Core(final GclRestClient gclRestClient, final GclAdminRestClient gclAdminRestClient, final GclCitrixRestClient gclCitrixRestClient, final LibConfig config) {
         this.gclAdminRestClient = gclAdminRestClient;
         this.gclRestClient = gclRestClient;
         this.config = config;
@@ -61,7 +61,7 @@ public class Core extends AbstractCore {
     public String getVersion() throws GclCoreException {
         try {
             return getInfo().getVersion();
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving version", ex);
         }
     }
@@ -70,7 +70,7 @@ public class Core extends AbstractCore {
     public Boolean activate() throws GclCoreException {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.activate(), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error activating the GCL", ex);
         }
     }
@@ -81,10 +81,10 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getDevicePubKey(Boolean parse) throws GclCoreException {
+    public T1cPublicKey getDevicePubKey(final Boolean parse) throws GclCoreException {
         try {
             return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getDeviceCertificate(), config.isConsentRequired()), parse);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("Error retrieving device public key", ex);
         }
     }
@@ -95,10 +95,10 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cPublicKey getSslPubKey(Boolean parse) throws GclCoreException {
+    public T1cPublicKey getSslPubKey(final Boolean parse) throws GclCoreException {
         try {
             return PkiUtil.createT1cPublicKey(RestExecutor.returnData(gclAdminRestClient.getSslCertificate(), config.isConsentRequired()), parse);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("Error retrieving SSL public key", ex);
         }
     }
@@ -109,16 +109,16 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public Map<String, T1cPublicKey> getDsPubKeys(Boolean parse) throws GclCoreException {
+    public Map<String, T1cPublicKey> getDsPubKeys(final Boolean parse) throws GclCoreException {
         try {
-            List<GclDsPublicKey> keys = RestExecutor.returnData(gclAdminRestClient.getDsCertificates(), config.isConsentRequired());
-            Map<String, T1cPublicKey> pubKeys = new HashMap<>();
-            for (GclDsPublicKey pb : keys) {
+            final List<GclDsPublicKey> keys = RestExecutor.returnData(gclAdminRestClient.getDsCertificates(), config.isConsentRequired());
+            final Map<String, T1cPublicKey> pubKeys = new HashMap<>();
+            for (final GclDsPublicKey pb : keys) {
                 pubKeys.put(pb.getNs(), PkiUtil.createT1cPublicKey(pb.getBase64(), parse));
             }
             return pubKeys;
-        } catch (RestException ex) {
-            GclError error = ex.getGclError();
+        } catch (final RestException ex) {
+            final GclError error = ex.getGclError();
             // If the error code returned is 201, that means the public has not been set (yet), return null
             if (error != null && error.getCode() == 201) {
                 return null;
@@ -133,23 +133,23 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public T1cAdminPublicKeys getAdminPublicKeys(Boolean parse) throws GclCoreException {
+    public T1cAdminPublicKeys getAdminPublicKeys(final Boolean parse) throws GclCoreException {
         try {
             return new T1cAdminPublicKeys(RestExecutor.returnData(gclAdminRestClient.getCertificates(), config.isConsentRequired()), parse);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("Error retrieving admin certificates", ex);
         }
     }
 
     @Override
-    public Boolean setDsPubKey(String encryptedPublicKey, String encryptedAesKey, String namespace) throws GclCoreException {
+    public Boolean setDsPubKey(final String encryptedPublicKey, final String encryptedAesKey, final String namespace) throws GclCoreException {
         try {
-            GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
+            final GclUpdatePublicKeyRequest keyReq = new GclUpdatePublicKeyRequest()
                     .withEncryptedPublicKey(encryptedPublicKey)
                     .withEncryptedAesKey(encryptedAesKey)
                     .withNs(namespace);
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.setDsPublicKey(keyReq), config.isConsentRequired()));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error setting GCL admin public key", ex);
         }
     }
@@ -158,7 +158,7 @@ public class Core extends AbstractCore {
     public GclInfo getInfo() throws GclCoreException {
         try {
             return RestExecutor.returnData(gclRestClient.getStatus(), config.isConsentRequired());
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             if (ex.getCause() instanceof ConnectException) {
                 throw ExceptionFactory.gclCoreException("GCL core not found at " + config.getGclClientUri(), ex);
             }
@@ -172,13 +172,13 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclReader pollCardInserted(Integer pollIntervalInSeconds) throws GclCoreException {
+    public GclReader pollCardInserted(final Integer pollIntervalInSeconds) throws GclCoreException {
         return pollCardInserted(pollIntervalInSeconds, null);
     }
 
     @Override
-    public GclReader pollCardInserted(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
-        List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds, pollTimeoutInSeconds);
+    public GclReader pollCardInserted(final Integer pollIntervalInSeconds, final Integer pollTimeoutInSeconds) throws GclCoreException {
+        final List<GclReader> readers = pollReadersWithCards(pollIntervalInSeconds, pollTimeoutInSeconds);
         return CollectionUtils.isNotEmpty(readers) ? readers.get(0) : null;
     }
 
@@ -188,23 +188,23 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds) throws GclCoreException {
+    public List<GclReader> pollReadersWithCards(final Integer pollIntervalInSeconds) throws GclCoreException {
         return pollReadersWithCards(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> pollReadersWithCards(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
+    public List<GclReader> pollReadersWithCards(final Integer pollIntervalInSeconds, final Integer pollTimeoutInSeconds) throws GclCoreException {
         List<GclReader> readers = new ArrayList<>();
         int totalTime = 0;
-        int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
-        int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
+        final int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
+        final int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
             readers = getReadersWithInsertedCard();
             if (CollectionUtils.isEmpty(readers)) {
                 try {
                     Thread.sleep(pollInterval);
                     totalTime += pollInterval;
-                } catch (InterruptedException ex) {
+                } catch (final InterruptedException ex) {
                     log.warn("error sleeping through polling interval: ", ex);
                 }
             }
@@ -218,23 +218,23 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds) throws GclCoreException {
+    public List<GclReader> pollReaders(final Integer pollIntervalInSeconds) throws GclCoreException {
         return pollReaders(pollIntervalInSeconds, null);
     }
 
     @Override
-    public List<GclReader> pollReaders(Integer pollIntervalInSeconds, Integer pollTimeoutInSeconds) throws GclCoreException {
+    public List<GclReader> pollReaders(final Integer pollIntervalInSeconds, final Integer pollTimeoutInSeconds) throws GclCoreException {
         List<GclReader> readers = new ArrayList<>();
         int totalTime = 0;
-        int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
-        int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
+        final int pollTimeout = getPollingTimeoutInMillis(pollTimeoutInSeconds);
+        final int pollInterval = getPollingIntervalInMillis(pollIntervalInSeconds);
         while (CollectionUtils.isEmpty(readers) && totalTime < pollTimeout) {
             readers = getReaders();
             if (CollectionUtils.isEmpty(readers)) {
                 try {
                     Thread.sleep(pollInterval);
                     totalTime += pollInterval;
-                } catch (InterruptedException ex) {
+                } catch (final InterruptedException ex) {
                     log.warn("error sleeping through polling interval: ", ex);
                 }
             }
@@ -244,9 +244,9 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclReader> getAuthenticationCapableReaders() throws GclCoreException {
-        List<GclReader> readers = new ArrayList<>();
-        List<GclReader> readersWithCards = getReadersWithInsertedCard();
-        for (GclReader reader : readersWithCards) {
+        final List<GclReader> readers = new ArrayList<>();
+        final List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (final GclReader reader : readersWithCards) {
             if (ContainerUtil.canAuthenticate(reader.getCard())) {
                 readers.add(reader);
             }
@@ -256,9 +256,9 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclReader> getSignCapableReaders() throws GclCoreException {
-        List<GclReader> readers = new ArrayList<>();
-        List<GclReader> readersWithCards = getReadersWithInsertedCard();
-        for (GclReader reader : readersWithCards) {
+        final List<GclReader> readers = new ArrayList<>();
+        final List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (final GclReader reader : readersWithCards) {
             if (ContainerUtil.canSign((reader.getCard()))) {
                 readers.add(reader);
             }
@@ -268,9 +268,9 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclReader> getPinVerificationCapableReaders() throws GclCoreException {
-        List<GclReader> readers = new ArrayList<>();
-        List<GclReader> readersWithCards = getReadersWithInsertedCard();
-        for (GclReader reader : readersWithCards) {
+        final List<GclReader> readers = new ArrayList<>();
+        final List<GclReader> readersWithCards = getReadersWithInsertedCard();
+        for (final GclReader reader : readersWithCards) {
             if (ContainerUtil.canVerifyPin(reader.getCard())) {
                 readers.add(reader);
             }
@@ -279,7 +279,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public GclReader getReader(String readerId) throws GclCoreException {
+    public GclReader getReader(final String readerId) throws GclCoreException {
         Preconditions.checkArgument(StringUtils.isNotEmpty(readerId), "Reader ID is required");
         try {
             if (checkCitrix()) {
@@ -287,7 +287,7 @@ public class Core extends AbstractCore {
             } else {
                 return RestExecutor.returnData(gclRestClient.getCardReader(readerId), config.isConsentRequired());
             }
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving reader with id \"" + readerId + "\"", ex);
         }
     }
@@ -300,7 +300,7 @@ public class Core extends AbstractCore {
             } else {
                 return RestExecutor.returnData(gclRestClient.getCardReaders(), config.isConsentRequired());
             }
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers", ex);
         }
     }
@@ -322,14 +322,14 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclAgent> resolveAgent(String challenge) throws GclCoreException {
+    public List<GclAgent> resolveAgent(final String challenge) throws GclCoreException {
         if (config.isCitrix()) {
             try {
-                Transferable clipboardBackup = ClipboardUtil.saveStringToClipboard(challenge);
-                List<GclAgent> agents = RestExecutor.returnData(gclCitrixRestClient.resolveAgent(new GclAgentResolutionRequest().withChallenge(challenge)), false);
+                final Transferable clipboardBackup = ClipboardUtil.saveStringToClipboard(challenge);
+                final List<GclAgent> agents = RestExecutor.returnData(gclCitrixRestClient.resolveAgent(new GclAgentResolutionRequest().withChallenge(challenge)), false);
                 ClipboardUtil.setClipboarContents(clipboardBackup);
                 return agents;
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
         } else {
@@ -338,12 +338,12 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public List<GclAgent> getAgents(String usernameToFilter) throws GclCoreException {
+    public List<GclAgent> getAgents(final String usernameToFilter) throws GclCoreException {
         final String hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(usernameToFilter.getBytes()));
         if (config.isCitrix()) {
             try {
                 return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(hashedUsername)), false);
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }
         } else {
@@ -357,7 +357,7 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public boolean getConsent(String title, String codeWord) throws GclCoreException {
+    public boolean getConsent(final String title, final String codeWord) throws GclCoreException {
         return getConsent(title, codeWord, config.getDefaultConsentDuration(), GclAlertLevel.WARNING, GclAlertPosition.STANDARD, GclConsentType.READER, config.getDefaultConsentTimeout());
     }
 
@@ -366,7 +366,7 @@ public class Core extends AbstractCore {
         Preconditions.checkArgument(StringUtils.isNotEmpty(title), "Title is required!");
         Preconditions.checkArgument(StringUtils.isNotEmpty(codeWord), "Code word is required!");
         Preconditions.checkArgument(timeoutInSeconds == null || timeoutInSeconds <= config.getDefaultConsentTimeout(), "Consent dialog timeout may not exceed default value!");
-        GclConsent request = new GclConsent()
+        final GclConsent request = new GclConsent()
                 .withTitle(title)
                 .withText(codeWord)
                 .withDays(getDurationInDays(durationInDays))
@@ -380,7 +380,7 @@ public class Core extends AbstractCore {
             } else {
                 return RestExecutor.returnData(gclRestClient.getConsent(request), false);
             }
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             if (ex.getHttpCode().equals(404)) {
                 throw ExceptionFactory.unsupportedOperationException("Consent functionality not available");
             }
@@ -389,20 +389,20 @@ public class Core extends AbstractCore {
     }
 
     @Override
-    public boolean loadContainers(List<DsContainerResponse> containerResponses) throws GclCoreException {
+    public boolean loadContainers(final List<DsContainerResponse> containerResponses) throws GclCoreException {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadContainers(new GclLoadContainersRequest().withContainerResponses(containerResponses))));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             log.error("Failed to load containers: ", ex);
             return false;
         }
     }
 
     @Override
-    public boolean loadAtrList(DsAtrList atrList) throws GclCoreException {
+    public boolean loadAtrList(final DsAtrList atrList) throws GclCoreException {
         try {
             return RestExecutor.isCallSuccessful(RestExecutor.executeCall(gclAdminRestClient.loadAtrList(atrList)));
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             log.error("Failed to load ATR list: ", ex);
             return false;
         }
@@ -411,17 +411,17 @@ public class Core extends AbstractCore {
     @Override
     public GclInfo pollContainerDownloadStatus(final List<DsContainerResponse> containers) throws GclCoreException {
         int totalTime = 0;
-        int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
+        final int pollTimeout = getDownloadStatusPollingTimeoutInMillis();
         boolean downloadsComplete = false;
         try {
             do {
-                GclInfo info = getInfo();
+                final GclInfo info = getInfo();
                 downloadsComplete = checkIfDownloadsCompleted(info.getContainers(), containers);
                 if (!downloadsComplete) {
                     try {
                         Thread.sleep(DOWNLOAD_STATUS_POLL_INTERVAL);
                         totalTime += DOWNLOAD_STATUS_POLL_INTERVAL;
-                    } catch (InterruptedException ex) {
+                    } catch (final InterruptedException ex) {
                         log.warn("error sleeping through polling interval: ", ex);
                     }
                 }
@@ -430,21 +430,21 @@ public class Core extends AbstractCore {
             if (!downloadsComplete) {
                 throw ExceptionFactory.containerLoadingTimeoutExceeded();
             }
-        } catch (GclCoreException ex) {
+        } catch (final GclCoreException ex) {
             log.error("Error during container loading: {}", ex);
         }
         return getInfo();
     }
 
-    private boolean checkIfDownloadsCompleted(List<GclContainerInfo> currentContainers, List<DsContainerResponse> containersToLoad) {
-        boolean completed;
+    private boolean checkIfDownloadsCompleted(final List<GclContainerInfo> currentContainers, final List<DsContainerResponse> containersToLoad) {
+        final boolean completed;
         int errored = 0;
         int missing = 0;
         int ongoing = 0;
         int installed = 0;
-        for (DsContainerResponse ctl : containersToLoad) {
+        for (final DsContainerResponse ctl : containersToLoad) {
             boolean found = false;
-            for (GclContainerInfo cc : currentContainers) {
+            for (final GclContainerInfo cc : currentContainers) {
                 if (ctl.getName().equalsIgnoreCase(cc.getName()) && ctl.getVersion().equalsIgnoreCase(cc.getVersion())) {
                     found = true;
                     switch (cc.getStatus()) {
@@ -494,19 +494,19 @@ public class Core extends AbstractCore {
         return consentType == null ? GclConsentType.READER : consentType;
     }
 
-    private List<GclReader> getReaders(boolean cardInserted) {
+    private List<GclReader> getReaders(final boolean cardInserted) {
         try {
             if (checkCitrix()) {
                 return RestExecutor.returnData(gclCitrixRestClient.getCardInsertedReaders(config.getAgentPort(), cardInserted), config.isConsentRequired());
             } else {
                 return RestExecutor.returnData(gclRestClient.getCardInsertedReaders(cardInserted), config.isConsentRequired());
             }
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.gclCoreException("error retrieving card readers without cards", ex);
         }
     }
 
-    private int getPollingIntervalInMillis(Integer pollIntervalInSeconds) {
+    private int getPollingIntervalInMillis(final Integer pollIntervalInSeconds) {
         int interval = config.getDefaultPollingIntervalInSeconds();
         if (pollIntervalInSeconds != null) {
             Preconditions.checkArgument(pollIntervalInSeconds > 0 && pollIntervalInSeconds < 60, "Polling interval must be a value between 0 & 60");
@@ -515,7 +515,7 @@ public class Core extends AbstractCore {
         return 1000 * interval;
     }
 
-    private int getPollingTimeoutInMillis(Integer pollTimeoutInSeconds) {
+    private int getPollingTimeoutInMillis(final Integer pollTimeoutInSeconds) {
         int timeout = config.getDefaultPollingTimeoutInSeconds();
         if (pollTimeoutInSeconds != null) {
             Preconditions.checkArgument(pollTimeoutInSeconds > 0 && pollTimeoutInSeconds < 60, "Polling timout must be a value between 0 & 60");
@@ -525,7 +525,7 @@ public class Core extends AbstractCore {
     }
 
     private int getDownloadStatusPollingTimeoutInMillis() {
-        int timeout = config.getContainerDownloadTimeout();
+        final int timeout = config.getContainerDownloadTimeout();
         return 1000 * timeout;
     }
 

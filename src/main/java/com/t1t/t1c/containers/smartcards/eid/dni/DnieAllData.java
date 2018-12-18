@@ -11,7 +11,7 @@ public class DnieAllData implements AllData {
     private T1cCertificate signingCertificate;
     private GclDnieInfo info;
 
-    public DnieAllData(GclDnieAllData data, Boolean parseCertificate) {
+    public DnieAllData(final GclDnieAllData data, final Boolean parseCertificate) {
         this.authenticationCertificate = PkiUtil.createT1cCertificate(data.getAuthenticationCertificate(), parseCertificate);
         this.intermediateCertificate = PkiUtil.createT1cCertificate(data.getIntermediateCertificate(), parseCertificate);
         this.signingCertificate = PkiUtil.createT1cCertificate(data.getSigningCertificate(), parseCertificate);
@@ -28,11 +28,11 @@ public class DnieAllData implements AllData {
     /**
      * @param authenticationCertificate The authentication_certificate
      */
-    public void setAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public void setAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
     }
 
-    public DnieAllData withAuthenticationCertificate(T1cCertificate authenticationCertificate) {
+    public DnieAllData withAuthenticationCertificate(final T1cCertificate authenticationCertificate) {
         this.authenticationCertificate = authenticationCertificate;
         return this;
     }
@@ -47,11 +47,11 @@ public class DnieAllData implements AllData {
     /**
      * @param intermediateCertificate The intermediate_certificate
      */
-    public void setIntermediateCertificate(T1cCertificate intermediateCertificate) {
+    public void setIntermediateCertificate(final T1cCertificate intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
     }
 
-    public DnieAllData withIntermediateCertificate(T1cCertificate intermediateCertificate) {
+    public DnieAllData withIntermediateCertificate(final T1cCertificate intermediateCertificate) {
         this.intermediateCertificate = intermediateCertificate;
         return this;
     }
@@ -66,11 +66,11 @@ public class DnieAllData implements AllData {
     /**
      * @param signingCertificate The signing_certificate
      */
-    public void setSigningCertificate(T1cCertificate signingCertificate) {
+    public void setSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
     }
 
-    public DnieAllData withSigningCertificate(T1cCertificate signingCertificate) {
+    public DnieAllData withSigningCertificate(final T1cCertificate signingCertificate) {
         this.signingCertificate = signingCertificate;
         return this;
     }
@@ -85,11 +85,11 @@ public class DnieAllData implements AllData {
     /**
      * @param info The info
      */
-    public void setInfo(GclDnieInfo info) {
+    public void setInfo(final GclDnieInfo info) {
         this.info = info;
     }
 
-    public DnieAllData withInfo(GclDnieInfo info) {
+    public DnieAllData withInfo(final GclDnieInfo info) {
         this.info = info;
         return this;
     }

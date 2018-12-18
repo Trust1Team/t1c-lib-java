@@ -16,51 +16,51 @@ import java.util.List;
 public class OcvClient implements IOcvClient {
     private OcvRestClient ocvRestClient;
 
-    public OcvClient(OcvRestClient ocvRestClient) {
+    public OcvClient(final OcvRestClient ocvRestClient) {
         this.ocvRestClient = ocvRestClient;
     }
 
     @Override
-    public OcvChallengeRequest getChallenge(DigestAlgorithm digestAlgorithm) throws OcvClientException {
+    public OcvChallengeRequest getChallenge(final DigestAlgorithm digestAlgorithm) throws OcvClientException {
         try {
             return RestExecutor.executeCall(ocvRestClient.getChallenge(digestAlgorithm.toString().toLowerCase()), false);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.ocvException("Could not retrieve challenge", ex);
         }
     }
 
     @Override
-    public OcvChallengeVerificationResponse verifyChallenge(OcvChallengeVerificationRequest request) throws OcvClientException {
+    public OcvChallengeVerificationResponse verifyChallenge(final OcvChallengeVerificationRequest request) throws OcvClientException {
         try {
             return RestExecutor.executeCall(ocvRestClient.verifyChallenge(request), false);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.ocvException("Could not verify challenge", ex);
         }
     }
 
     @Override
-    public OcvCertificateChainValidationResponse validateCertificateChain(String... certificates) throws OcvClientException {
+    public OcvCertificateChainValidationResponse validateCertificateChain(final String... certificates) throws OcvClientException {
         if (certificates != null && certificates.length > 0) {
-            List<OcvCertificate> orderedCertificates = new ArrayList<>();
+            final List<OcvCertificate> orderedCertificates = new ArrayList<>();
             long order = 0;
-            for (String certificate : certificates) {
+            for (final String certificate : certificates) {
                 orderedCertificates.add(new OcvCertificate().withOrder(order).withCertificate(certificate));
                 order++;
             }
-            OcvCertificateChainValidationRequest request = new OcvCertificateChainValidationRequest().withCertificateChain(orderedCertificates);
+            final OcvCertificateChainValidationRequest request = new OcvCertificateChainValidationRequest().withCertificateChain(orderedCertificates);
             try {
                 return RestExecutor.executeCall(ocvRestClient.validateCertificateChain(request), false);
-            } catch (RestException ex) {
+            } catch (final RestException ex) {
                 throw ExceptionFactory.ocvException("Could not validate certificate chain", ex);
             }
         } else return null;
     }
 
     @Override
-    public OcvSignatureValidationResponse validateSignature(String base64RawData, String base64Signature, DigestAlgorithm digestAlgorithm, String base64SignatureCertificate) throws OcvClientException {
+    public OcvSignatureValidationResponse validateSignature(final String base64RawData, final String base64Signature, final DigestAlgorithm digestAlgorithm, final String base64SignatureCertificate) throws OcvClientException {
         try {
             return RestExecutor.executeCall(ocvRestClient.validateSignature(new OcvSignatureValidationRequest().withRawData(base64RawData).withSignature(base64Signature).withDigest(digestAlgorithm.getStringValue()).withCertificate(base64SignatureCertificate)), false);
-        } catch (RestException ex) {
+        } catch (final RestException ex) {
             throw ExceptionFactory.ocvException("Could not validate signature", ex);
         }
     }

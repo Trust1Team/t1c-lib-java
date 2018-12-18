@@ -20,7 +20,7 @@ public final class ExceptionFactory {
      * @param throwable
      * @return
      */
-    public static final SystemErrorException systemErrorException(Throwable throwable) {
+    public static final SystemErrorException systemErrorException(final Throwable throwable) {
         return new SystemErrorException(throwable);
     }
 
@@ -30,7 +30,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static final SystemErrorException systemErrorException(String message) {
+    public static final SystemErrorException systemErrorException(final String message) {
         return new SystemErrorException(message);
     }
 
@@ -40,7 +40,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static GclClientException gclClientException(String message) {
+    public static GclClientException gclClientException(final String message) {
         return new GclClientException(message);
     }
 
@@ -51,7 +51,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static GclClientException gclClientException(String message, RestException cause) {
+    public static GclClientException gclClientException(final String message, final RestException cause) {
         String errorMessage = "Communication error with GCL";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new GclClientException(errorMessage, cause);
@@ -64,7 +64,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static GclAdminClientException gclAdminClientException(String message, RestException cause) {
+    public static GclAdminClientException gclAdminClientException(final String message, final RestException cause) {
         String errorMessage = "Communication error with GCL Admin interface";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new GclAdminClientException(errorMessage, cause);
@@ -77,7 +77,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static DsClientException dsClientException(String message, RestException cause) {
+    public static DsClientException dsClientException(final String message, final RestException cause) {
         String errorMessage = "Communication error with Distribution Service";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new DsClientException(errorMessage, cause);
@@ -89,7 +89,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static InitializationException initializationException(String message) {
+    public static InitializationException initializationException(final String message) {
         return new InitializationException(message);
     }
 
@@ -100,8 +100,8 @@ public final class ExceptionFactory {
      * @param downloadUrl   download url for compatible package
      * @return the exception
      */
-    public static IncompatibleCoreVersionException incompatibleCoreVersionException(String actualVersion, String downloadUrl) {
-        String message = "GCL version \"" + actualVersion + "\" not compatible with library. Download and install new version: " + downloadUrl;
+    public static IncompatibleCoreVersionException incompatibleCoreVersionException(final String actualVersion, final String downloadUrl) {
+        final String message = "GCL version \"" + actualVersion + "\" not compatible with library. Download and install new version: " + downloadUrl;
         return new IncompatibleCoreVersionException(message, downloadUrl);
     }
 
@@ -112,7 +112,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static InitializationException initializationException(String message, Throwable cause) {
+    public static InitializationException initializationException(final String message, final Throwable cause) {
         return new InitializationException(message, cause);
     }
 
@@ -123,7 +123,7 @@ public final class ExceptionFactory {
      * @param httpCode
      * @return
      */
-    public static RestException restException(String message, Integer httpCode, String uri, String jsonError) {
+    public static RestException restException(final String message, final Integer httpCode, final String uri, final String jsonError) {
         return new RestException(message, httpCode, uri, jsonError);
     }
 
@@ -133,7 +133,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static RestException restException(Throwable cause) {
+    public static RestException restException(final Throwable cause) {
         return new RestException(cause);
     }
 
@@ -143,7 +143,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static JsonConversionException jsonConversionException(String message) {
+    public static JsonConversionException jsonConversionException(final String message) {
         return new JsonConversionException(message);
     }
 
@@ -152,7 +152,7 @@ public final class ExceptionFactory {
      *
      * @return
      */
-    public static GenericContainerException genericContainerException(String message, RestException cause) {
+    public static GenericContainerException genericContainerException(final String message, final RestException cause) {
         String errorMessage = "Communication error with generic container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new GenericContainerException(errorMessage, cause);
@@ -163,7 +163,7 @@ public final class ExceptionFactory {
      *
      * @return
      */
-    public static GenericContainerException genericContainerException(String message) {
+    public static GenericContainerException genericContainerException(final String message) {
         return new GenericContainerException(message);
     }
 
@@ -173,7 +173,7 @@ public final class ExceptionFactory {
      * @param version
      * @return
      */
-    public static ContainerNotAvailableException containerVersionNotAvailableException(ContainerVersion version) {
+    public static ContainerNotAvailableException containerVersionNotAvailableException(final ContainerVersion version) {
         return new ContainerNotAvailableException("Container \"" + version.getId() + "\" not available in local installation");
     }
 
@@ -184,7 +184,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static VerifyPinException verifyPinException(String message) {
+    public static VerifyPinException verifyPinException(final String message) {
         return new VerifyPinException(message);
     }
 
@@ -194,7 +194,7 @@ public final class ExceptionFactory {
      * @param error
      * @return
      */
-    public static VerifyPinException verifyPinException(GclError error) {
+    public static VerifyPinException verifyPinException(final GclError error) {
         if (error != null) {
             return new VerifyPinException(error.getDescription(), ContainerUtil.getPinVerificationRetriesLeftFor(error.getCode().intValue()));
         } else {
@@ -208,7 +208,7 @@ public final class ExceptionFactory {
      * @param message
      * @return
      */
-    public static AuthException authenticateException(String message) {
+    public static AuthException authenticateException(final String message) {
         return new AuthException(message);
     }
 
@@ -218,7 +218,7 @@ public final class ExceptionFactory {
      * @param message the message
      * @return an UnsupportedOperationException
      */
-    public static UnsupportedOperationException unsupportedOperationException(String message) {
+    public static UnsupportedOperationException unsupportedOperationException(final String message) {
         return new UnsupportedOperationException(message);
     }
 
@@ -229,7 +229,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static OcvClientException ocvException(String message, RestException cause) {
+    public static OcvClientException ocvException(final String message, final RestException cause) {
         String errorMessage = "Communication error with OCV";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
@@ -243,7 +243,7 @@ public final class ExceptionFactory {
      * @param cause
      * @return
      */
-    public static GclCoreException gclCoreException(String message, Throwable cause) {
+    public static GclCoreException gclCoreException(final String message, final Throwable cause) {
         String errorMessage = "Communication error with GCL core";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         if (StringUtils.isNotEmpty(cause.getMessage())) errorMessage = errorMessage + " - " + cause.getMessage();
@@ -256,7 +256,7 @@ public final class ExceptionFactory {
      * @param containerInfo
      * @return
      */
-    public static GclCoreException containerLoadingFailed(List<GclContainerInfo> containerInfo) {
+    public static GclCoreException containerLoadingFailed(final List<GclContainerInfo> containerInfo) {
         return new GclCoreException("Container download failed: " + containerInfo.toString());
     }
 
@@ -274,7 +274,7 @@ public final class ExceptionFactory {
      *
      * @return
      */
-    public static LuxIdContainerException luxIdContainerException(String message) {
+    public static LuxIdContainerException luxIdContainerException(final String message) {
         String errorMessage = "Communication error with Lux ID container";
         if (StringUtils.isNotBlank(message)) errorMessage = message + " - " + errorMessage;
         return new LuxIdContainerException(errorMessage);
@@ -286,7 +286,7 @@ public final class ExceptionFactory {
      * @param message the message
      * @return an exception
      */
-    public static CertificateOrderingException certificateOrderingException(String message) {
+    public static CertificateOrderingException certificateOrderingException(final String message) {
         return new CertificateOrderingException(message);
     }
 
@@ -298,7 +298,7 @@ public final class ExceptionFactory {
      * @param url      the url for which consent is required
      * @return an exception
      */
-    public static NoConsentException noConsentException(String message, Integer httpCode, String url) {
+    public static NoConsentException noConsentException(final String message, final Integer httpCode, final String url) {
         return new NoConsentException(message, httpCode, url);
     }
 
@@ -308,7 +308,7 @@ public final class ExceptionFactory {
      * @param cause the cause
      * @return the exception
      */
-    public static InvalidTokenException invalidTokenException(Throwable cause) {
+    public static InvalidTokenException invalidTokenException(final Throwable cause) {
         throw new InvalidTokenException(cause);
     }
 
@@ -319,7 +319,7 @@ public final class ExceptionFactory {
      * @param supported         the supported algorithm(s)
      * @return the exception
      */
-    public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(DigestAlgorithm selectedAlgorithm, List<DigestAlgorithm> supported) {
+    public static UnsupportedDigestAlgorithmException unsupportedDigestAlgorithm(final DigestAlgorithm selectedAlgorithm, final List<DigestAlgorithm> supported) {
         return new UnsupportedDigestAlgorithmException("Container does not support \"" + selectedAlgorithm.toString() + "\", must be one of: " + supported.toString());
     }
 
@@ -328,7 +328,7 @@ public final class ExceptionFactory {
      * @param argumentName the name of the argument
      * @return the exception
      */
-    public static IllegalArgumentException nullOrEmptyConstructorArgument(String argumentName) {
+    public static IllegalArgumentException nullOrEmptyConstructorArgument(final String argumentName) {
         return new IllegalArgumentException(String.format("\"%s\" is null or empty", argumentName));
     }
 }

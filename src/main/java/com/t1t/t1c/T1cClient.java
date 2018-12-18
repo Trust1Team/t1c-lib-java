@@ -65,11 +65,11 @@ public class T1cClient implements IT1cClient {
     private List<ContainerVersion> availableApplicationContainerVersions;
 
     /*Constructors*/
-    public T1cClient(LibConfig config) {
+    public T1cClient(final LibConfig config) {
         init(config, null);
     }
 
-    public T1cClient(Path toConfigurationFile) {
+    public T1cClient(final Path toConfigurationFile) {
         init(null, toConfigurationFile);
     }
 
@@ -79,7 +79,7 @@ public class T1cClient implements IT1cClient {
      * @param config
      * @param toConfigurationFile
      */
-    private void init(LibConfig config, Path toConfigurationFile) {
+    private void init(final LibConfig config, final Path toConfigurationFile) {
         // Configure
         this.configParser = null;
         if (config != null) {
@@ -90,7 +90,7 @@ public class T1cClient implements IT1cClient {
         if ((configParser == null || configParser.getAppConfig() == null) && config == null) {
             throw ExceptionFactory.initializationException("Could not initialize config");
         }
-        LibConfig validatedConfig = configParser.getAppConfig();
+        final LibConfig validatedConfig = configParser.getAppConfig();
         // Instantiate connections
         connFactory = new ConnectionFactory(validatedConfig);
 
@@ -101,7 +101,7 @@ public class T1cClient implements IT1cClient {
     /**
      * Initialize the library & device
      */
-    private void initializeLibrary(LibConfig validatedConfig) {
+    private void initializeLibrary(final LibConfig validatedConfig) {
         // Get Core info, enrich config with core info and reset connection
         GclInfo info = getCore().getInfo();
         connFactory.setConfig(configParser.parseConfig(validatedConfig, info));
@@ -110,7 +110,7 @@ public class T1cClient implements IT1cClient {
         if (isV2Compatible(info)) {
 
             // Get the device's public key
-            T1cPublicKey devicePublicKey = getCore().getDevicePubKey(true);
+            final T1cPublicKey devicePublicKey = getCore().getDevicePubKey(true);
             // Set the device's public key in the PIN util for encryption
             CryptUtil.setDevicePublicKey(devicePublicKey);
 
@@ -129,9 +129,9 @@ public class T1cClient implements IT1cClient {
         }
     }
 
-    private void setInstalledContainerVersions(GclInfo info) {
-        List<ContainerVersion> installedContainers = new ArrayList<>();
-        for (GclContainerInfo containerInfo : info.getContainers()) {
+    private void setInstalledContainerVersions(final GclInfo info) {
+        final List<ContainerVersion> installedContainers = new ArrayList<>();
+        for (final GclContainerInfo containerInfo : info.getContainers()) {
             if (containerInfo.getStatus().equals(GclContainerStatus.INSTALLED)) {
                 installedContainers.add(new ContainerVersion(ContainerType.valueOfId(containerInfo.getName()), containerInfo.getVersion()));
             }
@@ -139,9 +139,9 @@ public class T1cClient implements IT1cClient {
         this.installedContainerVersions = installedContainers;
     }
 
-    private void setAvailableApplicationContainerVersions(List<DsContainerResponse> appContainers) {
-        List<ContainerVersion> appContainerVersions = new ArrayList<>();
-        for (DsContainerResponse appContainer : appContainers) {
+    private void setAvailableApplicationContainerVersions(final List<DsContainerResponse> appContainers) {
+        final List<ContainerVersion> appContainerVersions = new ArrayList<>();
+        for (final DsContainerResponse appContainer : appContainers) {
             appContainerVersions.add(new ContainerVersion(appContainer.getId()));
         }
         this.availableApplicationContainerVersions = new ArrayList<>(CollectionUtils.intersection(installedContainerVersions, appContainerVersions));
@@ -166,7 +166,7 @@ public class T1cClient implements IT1cClient {
             syncResponse = getDsClient().sync(info.getUid(), createRegistrationOrSyncRequest(info, devicePublicKey));
             setAvailableApplicationContainerVersions(syncResponse.getContainerResponses());
             connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), syncResponse));
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (!isRetry) {
                 log.warn("Error performing synchronisation, retrying: ", ex);
                 doSync(currentInfo, devicePublicKey, true);
@@ -179,7 +179,7 @@ public class T1cClient implements IT1cClient {
 
     private GclInfo doActivation(final GclInfo info, final String devicePubKey) {
         // Register the device and its public key with the Distribution service
-        DsSyncResponseDto registrationResponse = getDsClient().register(info.getUid(), createRegistrationOrSyncRequest(info, devicePubKey));
+        final DsSyncResponseDto registrationResponse = getDsClient().register(info.getUid(), createRegistrationOrSyncRequest(info, devicePubKey));
         // Reset the connection to make use of the newly obtained JWT from the DS
         connFactory.setConfig(this.configParser.parseConfig(connFactory.getConfig(), registrationResponse));
         // Set the pub key
@@ -189,14 +189,14 @@ public class T1cClient implements IT1cClient {
         return getCore().getInfo();
     }
 
-    private boolean isV2Compatible(GclInfo info) {
-        String sanitized = info.getVersion().split("-")[0];
+    private boolean isV2Compatible(final GclInfo info) {
+        final String sanitized = info.getVersion().split("-")[0];
         return sanitized.compareToIgnoreCase("2.0.0") >= 0;
     }
 
-    private void setDsPublicKey(String deviceId) {
+    private void setDsPublicKey(final String deviceId) {
         // Get the encrypted DS key for the device
-        DsPublicKey dsPublicKey = getDsClient().getPublicKey(deviceId);
+        final DsPublicKey dsPublicKey = getDsClient().getPublicKey(deviceId);
         log.info("Loaded DS Public key: {}", getCore().setDsPubKey(dsPublicKey.getEncryptedPublicKey(), dsPublicKey.getEncryptedAesKey(), dsPublicKey.getNs()));
     }
 
@@ -210,8 +210,8 @@ public class T1cClient implements IT1cClient {
         return (StringUtils.isNotEmpty((connFactory.getConfig().getApiKey())) || StringUtils.isNotEmpty(connFactory.getConfig().getGwJwt())) && StringUtils.isNotEmpty(connFactory.getConfig().getDsUri());
     }
 
-    private DsDeviceRegistrationRequest createRegistrationOrSyncRequest(GclInfo info, String devicePublicKey) {
-        PlatformInfo platformInfo = getCore().getPlatformInfo();
+    private DsDeviceRegistrationRequest createRegistrationOrSyncRequest(final GclInfo info, final String devicePublicKey) {
+        final PlatformInfo platformInfo = getCore().getPlatformInfo();
         return new DsDeviceRegistrationRequest()
                 .withActivated(info.getActivated())
                 .withUuid(info.getUid())
@@ -253,98 +253,98 @@ public class T1cClient implements IT1cClient {
     }
 
     @Override
-    public BeIdContainer getBeIdContainer(GclReader reader, String version) {
+    public BeIdContainer getBeIdContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.BEID, version);
         return new BeIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclBeIdRestClient());
     }
 
     @Override
-    public LuxIdContainer getLuxIdContainer(GclReader reader, String version, GclPace pace) {
+    public LuxIdContainer getLuxIdContainer(final GclReader reader, final String version, final GclPace pace) {
         containerVersionAvailabilityCheck(ContainerType.LUXID, version);
         return new LuxIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclLuxIdRestClient(), pace);
     }
 
     @Override
-    public LuxTrustContainer getLuxTrustContainer(GclReader reader, String version) {
+    public LuxTrustContainer getLuxTrustContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.LUXTRUST, version);
         return new LuxTrustContainer(connFactory.getConfig(), reader, version, connFactory.getGclLuxTrustRestClient());
     }
 
     @Override
-    public DnieContainer getDnieContainer(GclReader reader, String version) {
+    public DnieContainer getDnieContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.DNIE, version);
         return new DnieContainer(connFactory.getConfig(), reader, version, connFactory.getGclDniRestClient());
     }
 
     @Override
-    public EmvContainer getEmvContainer(GclReader reader, String version) {
+    public EmvContainer getEmvContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.EMV, version);
         return new EmvContainer(connFactory.getConfig(), reader, version, connFactory.getGclEmvRestClient());
     }
 
     @Override
-    public MobibContainer getMobibContainer(GclReader reader, String version) {
+    public MobibContainer getMobibContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.MOBIB, version);
         return new MobibContainer(connFactory.getConfig(), reader, version, connFactory.getGclMobibRestClient());
     }
 
     @Override
-    public OcraContainer getOcraContainer(GclReader reader, String version) {
+    public OcraContainer getOcraContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.OCRA, version);
         return new OcraContainer(connFactory.getConfig(), reader, version, connFactory.getGclOcraRestClient());
     }
 
     @Override
-    public AventraContainer getAventraContainer(GclReader reader, String version) {
+    public AventraContainer getAventraContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.AVENTRA, version);
         return new AventraContainer(connFactory.getConfig(), reader, version, connFactory.getGclAventraRestClient());
     }
 
     @Override
-    public OberthurContainer getOberthurContainer(GclReader reader, String version) {
+    public OberthurContainer getOberthurContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.OBERTHUR, version);
         return new OberthurContainer(connFactory.getConfig(), reader, version, connFactory.getGclOberthurRestClient());
     }
 
     @Override
-    public PivContainer getPivContainer(GclReader reader, String version, String pin) {
+    public PivContainer getPivContainer(final GclReader reader, final String version, final String pin) {
         containerVersionAvailabilityCheck(ContainerType.PIV, version);
         return new PivContainer(connFactory.getConfig(), reader, version, connFactory.getGclPivRestClient(), pin);
     }
 
     @Override
-    public PtEIdContainer getPtIdContainer(GclReader reader, String version) {
+    public PtEIdContainer getPtIdContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.PT, version);
         return new PtEIdContainer(connFactory.getConfig(), reader, version, connFactory.getGclPtRestClient());
     }
 
     @Override
-    public Pkcs11Container getPkcs11Container(GclReader reader, String version) {
+    public Pkcs11Container getPkcs11Container(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.PIV, version);
         return getPkcs11Container(reader, version, new ModuleConfiguration());
     }
 
     @Override
-    public Pkcs11Container getPkcs11Container(GclReader reader, String version, ModuleConfiguration configuration) {
+    public Pkcs11Container getPkcs11Container(final GclReader reader, final String version, final ModuleConfiguration configuration) {
         containerVersionAvailabilityCheck(ContainerType.PKCS11, version);
         return new Pkcs11Container(connFactory.getConfig(), reader, version, connFactory.getGclSafenetRestClient(), configuration);
     }
 
     @Override
-    public ReaderApiContainer getReaderApiContainer(GclReader reader, String version) {
+    public ReaderApiContainer getReaderApiContainer(final GclReader reader, final String version) {
         containerVersionAvailabilityCheck(ContainerType.READER_API, version);
         return new ReaderApiContainer(connFactory.getConfig(), reader, version, connFactory.getGclReaderApiRestClient());
     }
 
     @Override
-    public IGenericContainer getGenericContainer(GclReader reader) {
+    public IGenericContainer getGenericContainer(final GclReader reader) {
         return getGenericContainer(reader, null);
     }
 
     @Override
-    public IGenericContainer getGenericContainer(GclReader reader, GclPace pace) {
-        ContainerType type = ContainerUtil.determineContainer(reader.getCard());
-        IGenericContainer container;
+    public IGenericContainer getGenericContainer(final GclReader reader, final GclPace pace) {
+        final ContainerType type = ContainerUtil.determineContainer(reader.getCard());
+        final IGenericContainer container;
         switch (type) {
             case AVENTRA:
                 container = getAventraContainer(reader, getFirstAvailableVersion(type));
@@ -418,19 +418,19 @@ public class T1cClient implements IT1cClient {
         return this.installedContainerVersions;
     }
 
-    private void containerVersionAvailabilityCheck(ContainerType type, String version) {
-        ContainerVersion cv = new ContainerVersion(type, version);
+    private void containerVersionAvailabilityCheck(final ContainerType type, final String version) {
+        final ContainerVersion cv = new ContainerVersion(type, version);
         if (CollectionUtils.isNotEmpty(this.availableApplicationContainerVersions) && !this.availableApplicationContainerVersions.contains(new ContainerVersion(type, version))) {
             throw ExceptionFactory.containerVersionNotAvailableException(cv);
         }
     }
 
-    private String getFirstAvailableVersion(ContainerType type) {
-        for (ContainerVersion cv : availableApplicationContainerVersions) {
+    private String getFirstAvailableVersion(final ContainerType type) {
+        for (final ContainerVersion cv : availableApplicationContainerVersions) {
             if (Objects.equals(cv.getType(), type)) return cv.getVersion();
         }
         // Fall back to the first installed version
-        for (ContainerVersion cv : installedContainerVersions) {
+        for (final ContainerVersion cv : installedContainerVersions) {
             if (Objects.equals(cv.getType(), type)) return cv.getVersion();
         }
         throw ExceptionFactory.containerVersionNotAvailableException(new ContainerVersion(type, "unknown"));
