@@ -318,8 +318,7 @@ public class Core extends AbstractCore {
     @Override
     public List<GclAgent> resolveAgent() throws GclCoreException {
         final String username =System.getProperty(USER_PROP_NAME);
-        final String hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(username.getBytes()));
-        return getAgents(hashedUsername);
+        return getAgents(username);
     }
 
     @Override
@@ -340,9 +339,10 @@ public class Core extends AbstractCore {
 
     @Override
     public List<GclAgent> getAgents(String usernameToFilter) throws GclCoreException {
+        final String hashedUsername = Base64.encodeBase64String(DigestUtil.sha256DigestOf(usernameToFilter.getBytes()));
         if (config.isCitrix()) {
             try {
-                return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(usernameToFilter)), false);
+                return RestExecutor.returnData(gclCitrixRestClient.getAgents(new GclAgentRequestFilter().withUsername(hashedUsername)), false);
             } catch (RestException ex) {
                 throw ExceptionFactory.gclCoreException("Error retrieving available agents", ex);
             }

@@ -19,15 +19,6 @@ public interface IOcvClient {
     OcvChallengeRequest getChallenge(DigestAlgorithm digestAlgorithm) throws OcvClientException;
 
     /**
-     * Verify the signed challenge
-     *
-     * @param request the verification request
-     * @return the verification results
-     * @throws OcvClientException
-     */
-    OcvChallengeVerificationResponse verifyChallenge(OcvChallengeVerificationRequest request) throws OcvClientException;
-
-    /**
      * Validate a certificate chain. The chain must be built up with the leaf certificate as the first certificate.
      *
      * @param certificates the certicates to validate, ordered
@@ -47,5 +38,14 @@ public interface IOcvClient {
      * @throws OcvClientException
      */
     OcvSignatureValidationResponse validateSignature(String base64RawData, String base64Signature, DigestAlgorithm digestAlgorithm, String base64SignatureCertificate) throws OcvClientException;
+
+    /**
+     * Verify the signed challenge
+     *
+     * @param request the verification request
+     * @return the verification results
+     * @throws OcvClientException
+     */
+    OcvChallengeVerificationResponse verifyChallenge(OcvChallengeVerificationRequest request) throws OcvClientException;
 
 }

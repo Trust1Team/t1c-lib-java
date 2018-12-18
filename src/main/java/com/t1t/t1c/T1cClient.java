@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author Michallis Pashidis
@@ -426,11 +427,11 @@ public class T1cClient implements IT1cClient {
 
     private String getFirstAvailableVersion(ContainerType type) {
         for (ContainerVersion cv : availableApplicationContainerVersions) {
-            if (cv.getType().equals(type)) return cv.getVersion();
+            if (Objects.equals(cv.getType(), type)) return cv.getVersion();
         }
         // Fall back to the first installed version
         for (ContainerVersion cv : installedContainerVersions) {
-            if (cv.getType().equals(type)) return cv.getVersion();
+            if (Objects.equals(cv.getType(), type)) return cv.getVersion();
         }
         throw ExceptionFactory.containerVersionNotAvailableException(new ContainerVersion(type, "unknown"));
     }

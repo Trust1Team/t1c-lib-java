@@ -34,7 +34,11 @@ public enum ContainerType {
     READER_API("readerapi",
             Collections.<String>emptyList()),
     PKCS11("pkcs11",
-            Arrays.asList("Pkcs11", "SafeNet"));
+            Arrays.asList("Pkcs11", "SafeNet")),
+    FILE_EXCHANGE("file-exchange",
+            Collections.<String>emptyList()),
+    JAVA_KEYTOOL("java-keytool",
+            Collections.<String>emptyList());
 
     private static final Map<String, ContainerType> idMap;
     private static final Map<String, ContainerType> cardDescriptionMap;
